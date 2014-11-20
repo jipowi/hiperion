@@ -1,0 +1,275 @@
+package ec.com.avila.hiperion.emision.entities;
+
+import java.io.Serializable;
+import javax.persistence.*;
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.List;
+
+
+/**
+ * The persistent class for the ramo_transporte database table.
+ * 
+ */
+@Entity
+@Table(name="ramo_transporte")
+@NamedQuery(name="RamoTransporte.findAll", query="SELECT r FROM RamoTransporte r")
+public class RamoTransporte implements Serializable {
+	private static final long serialVersionUID = 1L;
+
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name="id_transporte")
+	private Integer idTransporte;
+
+	@Column(name="cond_importantes_transporte")
+	private String condImportantesTransporte;
+
+	@Column(name="embarque_trans")
+	private BigDecimal embarqueTrans;
+
+	private String estado;
+
+	@Temporal(TemporalType.DATE)
+	@Column(name="fecha_actualizacion")
+	private Date fechaActualizacion;
+
+	@Temporal(TemporalType.DATE)
+	@Column(name="fecha_creacion")
+	private Date fechaCreacion;
+
+	@Column(name="id_usuario_actualizacion")
+	private Integer idUsuarioActualizacion;
+
+	@Column(name="id_usuario_creacion")
+	private Integer idUsuarioCreacion;
+
+	@Column(name="minimo_embarque_trans")
+	private BigDecimal minimoEmbarqueTrans;
+
+	@Column(name="minimo_siniestro_trans")
+	private BigDecimal minimoSiniestroTrans;
+
+	@Column(name="siniestro_trans")
+	private BigDecimal siniestroTrans;
+
+	@Column(name="tasa_transporte")
+	private BigDecimal tasaTransporte;
+
+	//bi-directional many-to-one association to ClausulasAddTran
+	@OneToMany(mappedBy="ramoTransporte")
+	private List<ClausulasAddTran> clausulasAddTrans;
+
+	//bi-directional many-to-one association to CondEspTran
+	@OneToMany(mappedBy="ramoTransporte")
+	private List<CondEspTran> condEspTrans;
+
+	//bi-directional many-to-one association to Poliza
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="id_poliza")
+	private Poliza poliza;
+
+	//bi-directional many-to-one association to CobertTran
+	@OneToMany(mappedBy="ramoTransporte")
+	private List<CobertTran> cobertTrans;
+
+	//bi-directional many-to-one association to ObjAsegTransporte
+	@OneToMany(mappedBy="ramoTransporte")
+	private List<ObjAsegTransporte> objAsegTransportes;
+
+	public RamoTransporte() {
+	}
+
+	public Integer getIdTransporte() {
+		return this.idTransporte;
+	}
+
+	public void setIdTransporte(Integer idTransporte) {
+		this.idTransporte = idTransporte;
+	}
+
+	public String getCondImportantesTransporte() {
+		return this.condImportantesTransporte;
+	}
+
+	public void setCondImportantesTransporte(String condImportantesTransporte) {
+		this.condImportantesTransporte = condImportantesTransporte;
+	}
+
+	public BigDecimal getEmbarqueTrans() {
+		return this.embarqueTrans;
+	}
+
+	public void setEmbarqueTrans(BigDecimal embarqueTrans) {
+		this.embarqueTrans = embarqueTrans;
+	}
+
+	public String getEstado() {
+		return this.estado;
+	}
+
+	public void setEstado(String estado) {
+		this.estado = estado;
+	}
+
+	public Date getFechaActualizacion() {
+		return this.fechaActualizacion;
+	}
+
+	public void setFechaActualizacion(Date fechaActualizacion) {
+		this.fechaActualizacion = fechaActualizacion;
+	}
+
+	public Date getFechaCreacion() {
+		return this.fechaCreacion;
+	}
+
+	public void setFechaCreacion(Date fechaCreacion) {
+		this.fechaCreacion = fechaCreacion;
+	}
+
+	public Integer getIdUsuarioActualizacion() {
+		return this.idUsuarioActualizacion;
+	}
+
+	public void setIdUsuarioActualizacion(Integer idUsuarioActualizacion) {
+		this.idUsuarioActualizacion = idUsuarioActualizacion;
+	}
+
+	public Integer getIdUsuarioCreacion() {
+		return this.idUsuarioCreacion;
+	}
+
+	public void setIdUsuarioCreacion(Integer idUsuarioCreacion) {
+		this.idUsuarioCreacion = idUsuarioCreacion;
+	}
+
+	public BigDecimal getMinimoEmbarqueTrans() {
+		return this.minimoEmbarqueTrans;
+	}
+
+	public void setMinimoEmbarqueTrans(BigDecimal minimoEmbarqueTrans) {
+		this.minimoEmbarqueTrans = minimoEmbarqueTrans;
+	}
+
+	public BigDecimal getMinimoSiniestroTrans() {
+		return this.minimoSiniestroTrans;
+	}
+
+	public void setMinimoSiniestroTrans(BigDecimal minimoSiniestroTrans) {
+		this.minimoSiniestroTrans = minimoSiniestroTrans;
+	}
+
+	public BigDecimal getSiniestroTrans() {
+		return this.siniestroTrans;
+	}
+
+	public void setSiniestroTrans(BigDecimal siniestroTrans) {
+		this.siniestroTrans = siniestroTrans;
+	}
+
+	public BigDecimal getTasaTransporte() {
+		return this.tasaTransporte;
+	}
+
+	public void setTasaTransporte(BigDecimal tasaTransporte) {
+		this.tasaTransporte = tasaTransporte;
+	}
+
+	public List<ClausulasAddTran> getClausulasAddTrans() {
+		return this.clausulasAddTrans;
+	}
+
+	public void setClausulasAddTrans(List<ClausulasAddTran> clausulasAddTrans) {
+		this.clausulasAddTrans = clausulasAddTrans;
+	}
+
+	public ClausulasAddTran addClausulasAddTran(ClausulasAddTran clausulasAddTran) {
+		getClausulasAddTrans().add(clausulasAddTran);
+		clausulasAddTran.setRamoTransporte(this);
+
+		return clausulasAddTran;
+	}
+
+	public ClausulasAddTran removeClausulasAddTran(ClausulasAddTran clausulasAddTran) {
+		getClausulasAddTrans().remove(clausulasAddTran);
+		clausulasAddTran.setRamoTransporte(null);
+
+		return clausulasAddTran;
+	}
+
+	public List<CondEspTran> getCondEspTrans() {
+		return this.condEspTrans;
+	}
+
+	public void setCondEspTrans(List<CondEspTran> condEspTrans) {
+		this.condEspTrans = condEspTrans;
+	}
+
+	public CondEspTran addCondEspTran(CondEspTran condEspTran) {
+		getCondEspTrans().add(condEspTran);
+		condEspTran.setRamoTransporte(this);
+
+		return condEspTran;
+	}
+
+	public CondEspTran removeCondEspTran(CondEspTran condEspTran) {
+		getCondEspTrans().remove(condEspTran);
+		condEspTran.setRamoTransporte(null);
+
+		return condEspTran;
+	}
+
+	public Poliza getPoliza() {
+		return this.poliza;
+	}
+
+	public void setPoliza(Poliza poliza) {
+		this.poliza = poliza;
+	}
+
+	public List<CobertTran> getCobertTrans() {
+		return this.cobertTrans;
+	}
+
+	public void setCobertTrans(List<CobertTran> cobertTrans) {
+		this.cobertTrans = cobertTrans;
+	}
+
+	public CobertTran addCobertTran(CobertTran cobertTran) {
+		getCobertTrans().add(cobertTran);
+		cobertTran.setRamoTransporte(this);
+
+		return cobertTran;
+	}
+
+	public CobertTran removeCobertTran(CobertTran cobertTran) {
+		getCobertTrans().remove(cobertTran);
+		cobertTran.setRamoTransporte(null);
+
+		return cobertTran;
+	}
+
+	public List<ObjAsegTransporte> getObjAsegTransportes() {
+		return this.objAsegTransportes;
+	}
+
+	public void setObjAsegTransportes(List<ObjAsegTransporte> objAsegTransportes) {
+		this.objAsegTransportes = objAsegTransportes;
+	}
+
+	public ObjAsegTransporte addObjAsegTransporte(ObjAsegTransporte objAsegTransporte) {
+		getObjAsegTransportes().add(objAsegTransporte);
+		objAsegTransporte.setRamoTransporte(this);
+
+		return objAsegTransporte;
+	}
+
+	public ObjAsegTransporte removeObjAsegTransporte(ObjAsegTransporte objAsegTransporte) {
+		getObjAsegTransportes().remove(objAsegTransporte);
+		objAsegTransporte.setRamoTransporte(null);
+
+		return objAsegTransporte;
+	}
+
+}
