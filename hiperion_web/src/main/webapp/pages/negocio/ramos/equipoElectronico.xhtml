@@ -1,0 +1,332 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui">
+<ui:composition template="/templates/menuPrincipalTemplate.xhtml">
+	<ui:define name="content">
+		<ui:decorate template="/templates/polizaTemplate.xhtml">
+			<ui:define name="content">
+				<ui:decorate template="/templates/ramoTemplate.xhtml">
+					<ui:define name="ramoHeader">
+						<div align="center">
+							<p:outputLabel value="#{emision['equipoElectronico.tituloPantalla']}" styleClass="negrita" />
+							<p:separator id="customSeparator" style="width:auto;height:1px" />
+							<p:spacer height="5px;" />
+							<h:panelGroup style="display:block; text-align:center">
+								<h:graphicImage name="banner_equipoElectronico.jpg" library="img/ramos/equipo_electronico" width="1000px" height="160px" />
+							</h:panelGroup>
+							<p:spacer height="15px;" />
+						</div>
+					</ui:define>
+					<ui:define name="ramoContent">
+						<p:panel>
+							<p:tabView id="tabGeneral">
+								<p:tab id="tabRamo" title="#{emision['equipoElectronico.tab.principal']}">
+									<p:outputPanel>
+										<p:messages id="messageEquipoElectronico" showDetail="true" autoUpdate="true" closable="true" />
+									</p:outputPanel>
+
+									<h:form id="formPrincipal">
+										<div align="center">
+											<h:panelGrid columns="1" width="80%">
+
+												<h:panelGrid columns="2" id="ramoEquipoElectronico">
+													<h:outputLabel value="#{emision['emision.tasas']}" />
+													<h:graphicImage name="tasa.jpg" library="img" />
+
+													<h:outputLabel value="#{emision['equipoElectronico.tasa.fijos']}" styleClass="negrita" />
+													<p:inputText value="#{ramoEquipoElectronicoBean.tasaFijos}" />
+
+													<h:outputLabel value="#{emision['equipoElectronico.tasa.datos']}" styleClass="negrita" />
+													<p:inputText value="#{ramoEquipoElectronicoBean.tasaDatos}" />
+
+													<h:outputLabel value="#{emision['equipoElectronico.tasa.operacion']}" styleClass="negrita" />
+													<p:inputText value="#{ramoEquipoElectronicoBean.tasaOperacion}" />
+
+													<h:outputLabel value="#{emision['equipoElectronico.tasa.portatiles']}" styleClass="negrita" />
+													<p:inputText value="#{ramoEquipoElectronicoBean.tasaPortatiles}" />
+
+													<h:outputLabel value="#{emision['equipoElectronico.tasa.celulares']}" styleClass="negrita" />
+													<p:inputText value="#{ramoEquipoElectronicoBean.tasaCelulares}" />
+
+													<h:outputLabel value="#{emision['equipoElectronico.tasa.hurto']}" styleClass="negrita" />
+													<p:inputText value="#{ramoEquipoElectronicoBean.tasaHurto}" />
+
+													<h:outputLabel value="#{emision['equipoElectronico.tasa.otros']}" styleClass="negrita" />
+													<p:inputText value="#{ramoEquipoElectronicoBean.tasaOtros}" />
+												</h:panelGrid>
+
+												<h:panelGrid columns="2">
+													<h:outputLabel value="#{emision['emision.deducibles']}" />
+													<h:graphicImage name="deducibles.jpg" library="img" />
+												</h:panelGrid>
+												<p:growl id="growl" sticky="true" showDetail="true" />
+												<p:wizard flowListener="#{equipoElectronicoWizard.onFlowProcess}">
+													<p:tab id="fijos" title="#{emision['equipoElectronico.deducible.fijos']}" titleStyle="font-size: 12px;">
+														<p:panel>
+															<h:panelGrid columns="2">
+																<h:outputLabel value="#{emision['equipoElectronico.deducible.fijos.porcentajeValorSiniestro']}" styleClass="negrita" />
+																<p:inputText value="#{equipoElectronicoWizard.deducible.porcentajeValorSiniestroFijos}" />
+
+																<h:outputLabel value="#{emision['equipoElectronico.deducible.fijos.minimo']}" styleClass="negrita" />
+																<p:inputText value="#{equipoElectronicoWizard.deducible.minimoFijos}" />
+
+																<h:outputLabel value="#{emision['equipoElectronico.deducible.skip']}" />
+																<h:selectBooleanCheckbox value="#{equipoElectronicoWizard.skip}" />
+															</h:panelGrid>
+														</p:panel>
+													</p:tab>
+													<p:tab id="datos" title="#{emision['equipoElectronico.deducible.datos']}" titleStyle="font-size: 12px;">
+														<p:panel>
+															<h:panelGrid columns="2">
+																<h:outputLabel value="#{emision['equipoElectronico.deducible.datos.porcentajeValorSiniestro']}" styleClass="negrita" />
+																<p:inputText value="#{equipoElectronicoWizard.deducible.porcentajeValorSiniestroDatos}" />
+
+																<h:outputLabel value="#{emision['equipoElectronico.deducible.datos.minimo']}" styleClass="negrita" />
+																<p:inputText value="#{equipoElectronicoWizard.deducible.minimoDatos}" />
+
+																<h:outputLabel value="#{emision['equipoElectronico.deducible.skip']}" />
+																<h:selectBooleanCheckbox value="#{equipoElectronicoWizard.skip}" />
+															</h:panelGrid>
+														</p:panel>
+													</p:tab>
+													<p:tab id="operacion" title="#{emision['equipoElectronico.deducible.operacion']}" titleStyle="font-size: 12px;">
+														<p:panel>
+															<h:panelGrid columns="2">
+																<h:outputLabel value="#{emision['equipoElectronico.deducible.operacion.numeroDias']}" styleClass="negrita" />
+																<p:inputText value="#{equipoElectronicoWizard.deducible.numeroDiasOperaciones}" />
+
+																<h:outputLabel value="#{emision['equipoElectronico.deducible.skip']}" />
+																<h:selectBooleanCheckbox value="#{equipoElectronicoWizard.skip}" />
+															</h:panelGrid>
+														</p:panel>
+													</p:tab>
+													<p:tab id="portatiles" title="#{emision['equipoElectronico.deducible.portatiles']}" titleStyle="font-size: 12px;">
+														<p:panel>
+															<h:panelGrid columns="2">
+																<h:outputLabel value="#{emision['equipoElectronico.deducible.portatiles.porcentajeValorSiniestro']}" styleClass="negrita" />
+																<p:inputText value="#{equipoElectronicoWizard.deducible.porcentajeValorSiniestroPortatiles}" />
+
+																<h:outputLabel value="#{emision['equipoElectronico.deducible.portatiles.minimo']}" styleClass="negrita" />
+																<p:inputText value="#{equipoElectronicoWizard.deducible.minimoPortatiles}" />
+
+																<h:outputLabel value="#{emision['equipoElectronico.deducible.skip']}" />
+																<h:selectBooleanCheckbox value="#{equipoElectronicoWizard.skip}" />
+															</h:panelGrid>
+														</p:panel>
+													</p:tab>
+													<p:tab id="celulares" title="#{emision['equipoElectronico.deducible.celulares']}" titleStyle="font-size: 12px;">
+														<p:panel>
+															<h:panelGrid columns="2">
+																<h:outputLabel value="#{emision['equipoElectronico.deducible.celulares.porcentajeValorSiniestro']}" styleClass="negrita" />
+																<p:inputText value="#{equipoElectronicoWizard.deducible.porcentajeValorSiniestroCelulares}" />
+
+																<h:outputLabel value="#{emision['equipoElectronico.deducible.celulares.minimo']}" styleClass="negrita" />
+																<p:inputText value="#{equipoElectronicoWizard.deducible.minimoCelulares}" />
+															</h:panelGrid>
+														</p:panel>
+													</p:tab>
+													<p:tab id="hurto" title="#{emision['equipoElectronico.deducible.hurto']}" titleStyle="font-size: 12px;">
+														<p:panel>
+															<h:panelGrid columns="2">
+																<h:outputLabel value="#{emision['equipoElectronico.deducible.hurto.porcentajeValorSiniestro']}" styleClass="negrita" />
+																<p:inputText value="#{equipoElectronicoWizard.deducible.porcentajeValorSiniestroHurto}" />
+
+																<h:outputLabel value="#{emision['equipoElectronico.deducible.hurto.minimo']}" styleClass="negrita" />
+																<p:inputText value="#{equipoElectronicoWizard.deducible.minimoHurto}" />
+															</h:panelGrid>
+														</p:panel>
+													</p:tab>
+												</p:wizard>
+												<h:panelGrid columns="1" cellpadding="3">
+													<p:outputLabel value="#{emision['equipoElectronico.filePolizaVigente']}" styleClass="negrita" />
+													<p:fileUpload fileLimit="1" />
+												</h:panelGrid>
+											</h:panelGrid>
+											<div align="center">
+												<p:commandButton id="guardarBtnId" actionListener="#{equipoElectronicoBacking.setearInfRamo()}" icon="icon-save"
+													value="#{emision['boton.aceptar']}" title="Guardar" update="formPrincipal,ramoEquipoElectronico" />
+												<p:commandButton id="cancelarBtnId" icon="icon-cancel" value="#{emision['boton.cancelar']}" process="@this" title="Cancelar" />
+											</div>
+										</div>
+									</h:form>
+								</p:tab>
+								<!-- OBJETO ASEGURADO -->
+								<p:tab title="#{emision['equipoElectronico.tab.objetoAsegurado']}">
+									<h:form id="form1">
+										<div align="center">
+
+											<h:panelGrid columns="1">
+												<f:facet name="header">
+													<p:outputLabel value="#{emision['equipoElectronico.objeto.tituloPantalla']}" styleClass="negrita" />
+												</f:facet>
+												<p:separator id="customSeparator" style="width:auto;height:1px" />
+												<p:growl id="messages" showDetail="true" />
+												<p:panelGrid columns="2">
+													<h:outputLabel value="#{emision['equipoElectronico.objeto.item']}" styleClass="negrita" />
+													<p:inputText value="#{ramoEquipoElectronicoBean.numeroItem}" />
+
+													<h:outputLabel value="#{emision['equipoElectronico.objeto.ubicacion']}" styleClass="negrita" />
+													<p:inputText value="#{ramoEquipoElectronicoBean.ubicacionRiesgo}" />
+
+													<h:outputLabel value="#{emision['equipoElectronico.objeto.detalle']}" styleClass="negrita" />
+													<p:selectOneMenu id="sectorId" value="#{ramoEquipoElectronicoBean.detalle}" effect="drop">
+														<f:selectItem itemLabel="Seleccione" noSelectionOption="true" />
+														<f:selectItems value="#{equipoElectronicoBacking.detalleItems}" />
+													</p:selectOneMenu>
+
+													<h:outputLabel value="#{emision['equipoElectronico.objeto.valorObjeto']}" styleClass="negrita" />
+													<p:inputText value="#{ramoEquipoElectronicoBean.valorObjeto}" />
+
+													<h:outputLabel value="#{emision['equipoElectronico.objeto.descripcion']}" styleClass="negrita" />
+													<p:inputTextarea value="#{ramoEquipoElectronicoBean.descripcion}" cols="50" rows="2" />
+
+												</p:panelGrid>
+												<f:facet name="footer">
+													<div align="center">
+														<p:commandButton id="agregarObjeto" update="form1, messages" icon="icon-add" value="#{emision['boton.agregar']}"
+															actionListener="#{ramoEquipoElectronicoBean.addAction}" title="Agregar" />
+													</div>
+												</f:facet>
+											</h:panelGrid>
+											<p:spacer height="30px;" />
+											<p:dataTable value="#{ramoEquipoElectronicoBean.orderlist}" var="obj" widgetVar="50" style="width: 50%;" editable="true">
+												<p:ajax event="rowEdit" listener="#{ramoEquipoElectronicoBean.onEdit}" />
+												<p:ajax event="rowEditCancel" listener="#{ramoEquipoElectronicoBean.onCancel}" />
+												<p:column>
+													<f:facet name="header">
+														<h:outputText value="#{emision['equipoElectronico.objeto.item']}" />
+													</f:facet>
+													<p:cellEditor>
+														<f:facet name="output">
+															<h:outputText value="#{obj.numeroItem}" />
+														</f:facet>
+														<f:facet name="input">
+															<p:inputText value="#{obj.numeroItem}" style="width:100%" />
+														</f:facet>
+													</p:cellEditor>
+												</p:column>
+												<p:column>
+													<f:facet name="header">
+														<h:outputText value="#{emision['equipoElectronico.objeto.ubicacion']}" />
+													</f:facet>
+													<p:cellEditor>
+														<f:facet name="output">
+															<h:outputText value="#{obj.ubicacionRiesgo}" />
+														</f:facet>
+														<f:facet name="input">
+															<p:inputText value="#{obj.ubicacionRiesgo}" style="width:100%" />
+														</f:facet>
+													</p:cellEditor>
+												</p:column>
+
+												<p:column>
+													<f:facet name="header">
+														<h:outputText value="#{emision['equipoElectronico.objeto.descripcion']}" />
+													</f:facet>
+													<p:cellEditor>
+														<f:facet name="output">
+															<h:outputText value="#{obj.descripcion}" />
+														</f:facet>
+														<f:facet name="input">
+															<p:inputText value="#{obj.descripcion}" style="width:100%" />
+														</f:facet>
+													</p:cellEditor>
+												</p:column>
+												<p:column>
+													<f:facet name="header">
+														<h:outputText value="#{emision['equipoElectronico.objeto.detalle']}" />
+													</f:facet>
+													<p:cellEditor>
+														<f:facet name="output">
+															<h:outputText value="#{obj.detalle}" />
+														</f:facet>
+														<f:facet name="input">
+															<p:inputText value="#{obj.detalle}" style="width:100%" />
+														</f:facet>
+													</p:cellEditor>
+												</p:column>
+												<p:column>
+													<f:facet name="header">
+														<h:outputText value="#{emision['equipoElectronico.objeto.valorObjeto']}" />
+													</f:facet>
+													<p:cellEditor>
+														<f:facet name="output">
+															<h:outputText value="#{obj.valorObjeto}" />
+														</f:facet>
+														<f:facet name="input">
+															<p:inputText value="#{obj.valorObjeto}" style="width:100%" />
+														</f:facet>
+													</p:cellEditor>
+												</p:column>
+												<p:column headerText="Options" style="width:50px">
+													<p:rowEditor />
+												</p:column>
+											</p:dataTable>
+											<p:spacer height="30px;" />
+											<p:commandButton id="guardarObjAseguradoBtnId" actionListener="#{equipoElectronicoBacking.guardarRamo()}" icon="icon-save"
+												value="#{emision['boton.guardar']}" update="form1" title="Guardar" />
+											<p:commandButton id="cancelarBtnId" icon="icon-cancel" value="#{emision['boton.cancelar']}" title="Cancelar" />
+										</div>
+									</h:form>
+
+								</p:tab>
+								<!-- CLAUSULAS ADICIONALES -->
+								<p:tab title="#{emision['anexo.titulo.tab.cad']}">
+									<h:form id="caCAFormId">
+										<p:dataTable id="caCATblId" var="clausula" value="#{equipoElectronicoBacking.obtenerClausulasAdicionales()}" paginator="true" rows="4"
+											selection="#{equipoElectronicoBacking.selectClausulasAdicionales}">
+											<f:facet name="header">#{emision['anexo.titulo.cad']}</f:facet>
+											<p:column selectionMode="multiple" style="width:2%" />
+											<p:column headerText="#{emision['anexo.ca.nombre']}">#{clausula.nombreDetalleAnexo}</p:column>
+										</p:dataTable>
+									</h:form>
+								</p:tab>
+								<!-- COBERTURAS -->
+								<p:tab title="#{emision['anexo.titulo.tab.cob']}">
+									<p:accordionPanel dynamic="true" cache="true" activeIndex="null">
+										<!-- Para Todo Riesgo -->
+										<p:tab title="#{emision['titulo.cob.cobTodoRiesgo']}">
+											<h:form id="cobTodRiesgEEFormId">
+												<p:dataTable id="cobTodRiesgEETblId" var="clausula" value="#{equipoElectronicoBacking.obtenerCoberturasTodoRiesgo()}" paginator="true"
+													rows="4" selection="#{equipoElectronicoBacking.selectCoberturasTodoRiesgo}">
+													<f:facet name="header">#{emision['titulo.cob.cobTodoRiesgo']}</f:facet>
+													<p:column selectionMode="multiple" style="width:2%" />
+													<p:column headerText="#{emision['anexo.ca.nombre']}">#{clausula.nombreDetalleAnexo}</p:column>
+												</p:dataTable>
+											</h:form>
+										</p:tab>
+									</p:accordionPanel>
+								</p:tab>
+								<!-- COBERTURAS ADICIONALES -->
+								<p:tab title="#{emision['anexo.titulo.tab.cobad']}">
+									<h:form id="cobAdEEFormId">
+										<p:dataTable id="cobAdEETblId" var="clausula" value="#{equipoElectronicoBacking.obtenerCoberturasAdicionales()}" paginator="true" rows="4"
+											selection="#{equipoElectronicoBacking.selectCoberturasAdicionales}">
+											<f:facet name="header">#{emision['anexo.titulo.cobad']}</f:facet>
+											<p:column selectionMode="multiple" style="width:2%" />
+											<p:column headerText="#{emision['anexo.ca.nombre']}">#{clausula.nombreDetalleAnexo}</p:column>
+										</p:dataTable>
+									</h:form>
+								</p:tab>
+								<!-- GARANTIAS DE LA POLIZA -->
+								<p:tab title="#{emision['titulo.gp.garatiaPoliza']}">
+									<h:form id="gpEEFormId">
+										<p:dataTable id="gpEETblId" var="garantiaPoliza" value="#{equipoElectronicoBacking.obtenerGarantiasPoliza()}" paginator="true" rows="4"
+											selection="#{equipoElectronicoBacking.selectGarantiasPoliza}">
+											<f:facet name="header">#{emision['titulo.gp.garatiaPoliza']}</f:facet>
+											<p:column selectionMode="multiple" style="width:2%" />
+											<p:column headerText="#{emision['anexo.ca.nombre']}">#{garantiaPoliza.nombreDetalleAnexo}</p:column>
+										</p:dataTable>
+									</h:form>
+								</p:tab>
+							</p:tabView>
+
+
+						</p:panel>
+					</ui:define>
+				</ui:decorate>
+			</ui:define>
+		</ui:decorate>
+	</ui:define>
+</ui:composition>
+</html>

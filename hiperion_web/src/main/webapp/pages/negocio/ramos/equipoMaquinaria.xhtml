@@ -1,0 +1,301 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui">
+<ui:composition template="/templates/menuPrincipalTemplate.xhtml">
+	<ui:define name="content">
+		<ui:decorate template="/templates/polizaTemplate.xhtml">
+			<ui:define name="content">
+				<ui:decorate template="/templates/ramoTemplate.xhtml">
+					<ui:define name="ramoHeader">
+						<div align="center">
+							<p:outputLabel value="#{emision['equipoMaquinaria.tab.principal']}" styleClass="negrita" />
+							<p:separator id="customSeparator" style="width:auto;height:1px" />
+							<p:spacer height="5px;" />
+							<h:panelGroup style="display:block; text-align:center">
+								<h:graphicImage name="banner_equipoMaquinaria.jpg" library="img/ramos/equipo_maquinaria" width="1000px" height="160px" />
+							</h:panelGroup>
+							<p:spacer height="15px;" />
+						</div>
+					</ui:define>
+					<ui:define name="ramoContent">
+						<p:panel>
+							<p:tabView effect="blind" effectDuration="normal">
+								<p:tab title="#{emision['equipoMaquinaria.tab.principal']}">
+									<p:outputPanel>
+										<p:messages id="messageEquipoMaquinaria" showDetail="true" autoUpdate="true" closable="true" />
+									</p:outputPanel>
+									<h:form id="formPrincipal">
+										<div align="center">
+											<h:panelGrid columns="1" id="ramoEquipoMaquinaria">
+
+												<p:panel>
+
+													<h:panelGrid columns="2">
+														<h:outputLabel value="#{emision['emision.tasas']}" />
+														<h:graphicImage name="tasa.jpg" library="img" />
+													</h:panelGrid>
+
+													<h:panelGrid columns="2">
+														<p:outputLabel for="idTasa" value="#{emision['equipoMaquinaria.tasa']}" styleClass="negrita" />
+														<p:inputText id="idTasa" value="#{ramoEquipoMaquinaraBean.tasa}" required="true"
+															requiredMessage="#{emision['equipoMaquinaria.tasa.msn']}" />
+													</h:panelGrid>
+
+													<h:panelGrid columns="2">
+														<h:outputLabel value="#{emision['emision.deducibles']}" />
+														<h:graphicImage name="deducibles.jpg" library="img" />
+													</h:panelGrid>
+
+													<h:panelGrid columns="2">
+														<h:outputLabel for="idPorcentajeValorSiniestro" value="#{emision['equipoMaquinaria.deducible.porcentajeValorSiniestro']}"
+															styleClass="negrita" />
+														<p:inputText id="idPorcentajeSiniestro" value="#{ramoEquipoMaquinaraBean.porcentajeSiniestro}" required="true"
+															requiredMessage="#{emision['equipoMaquinaria.deducible.porcentajeValorSiniestro.msn']}" />
+
+														<h:outputLabel for="idMinimoAsegurado" value="#{emision['equipoMaquinaria.deducible.minimoPorcentajeValorAsegurado']}"
+															styleClass="negrita" />
+														<p:inputText id="idMinimoAsegurado" value="#{ramoEquipoMaquinaraBean.minimoAsegurado}" required="true"
+															requiredMessage="#{emision['equipoMaquinaria.deducible.minimoPorcentajeValorAsegurado.msn']}" />
+
+														<h:outputLabel for="idMinimoSiniestro" value="#{emision['equipoMaquinaria.deducible.minimoSiniestro']}" styleClass="negrita" />
+														<p:inputText id="idMinimoSiniestro" value="#{ramoEquipoMaquinaraBean.minimoSiniestro}" required="true"
+															requiredMessage="#{emision['equipoMaquinaria.deducible.minimoSiniestro.msn']}" />
+													</h:panelGrid>
+													<p:spacer height="30px;" />
+													<h:panelGrid columns="1" cellpadding="3">
+														<p:outputLabel value="#{emision['equipoMaquinaria.filePolizaVigente']}" styleClass="negrita" />
+														<p:fileUpload fileLimit="1" />
+													</h:panelGrid>
+												</p:panel>
+
+												<p:spacer height="30px;" />
+
+												<!-- Footer del Formulario -->
+												<f:facet name="footer">
+													<div align="center">
+														<p:commandButton id="guardarBtnId" actionListener="#{equipoMaquinariaBacking.setearInfRamo()}" icon="icon-save"
+															value="#{emision['boton.aceptar']}" title="Guardar" update="formPrincipal, ramoEquipoMaquinaria" />
+														<p:commandButton id="cancelarBtnId" icon="icon-cancel" value="#{emision['boton.cancelar']}" process="@this" title="Cancelar" />
+													</div>
+												</f:facet>
+											</h:panelGrid>
+										</div>
+									</h:form>
+
+								</p:tab>
+								<!-- OBJETO ASEGURADO -->
+								<p:tab title="#{emision['equipoMaquinaria.tab.objetoAsegurado']}">
+									<div align="center">
+										<h:form id="form1">
+											<p:messages id="messagesObjEquipMaquinaria" showDetail="true" autoUpdate="true" closable="true" />
+											<h:panelGrid columns="1">
+												<f:facet name="header">
+													<p:outputLabel value="#{emision['equipoMaquinaria.objeto.tituloPantalla']}" styleClass="negrita" />
+												</f:facet>
+												<p:separator id="customSeparator" style="width:auto;height:1px" />
+												<p:growl id="messages" showDetail="true" />
+												<p:panelGrid columns="4">
+													<h:outputLabel value="#{emision['equipoMaquinaria.objeto.item']}" styleClass="negrita" />
+													<p:inputText value="#{ramoEquipoMaquinaraBean.item}" />
+													<h:outputLabel value="#{emision['equipoMaquinaria.objeto.marca']}" styleClass="negrita" />
+													<p:inputText value="#{ramoEquipoMaquinaraBean.marca}" />
+
+													<h:outputLabel value="#{emision['equipoMaquinaria.objeto.modelo']}" styleClass="negrita" />
+													<p:inputText value="#{ramoEquipoMaquinaraBean.modelo}" />
+													<h:outputLabel value="#{emision['equipoMaquinaria.objeto.anio']}" styleClass="negrita" />
+													<p:inputText value="#{ramoEquipoMaquinaraBean.anio}" />
+
+													<h:outputLabel value="#{emision['equipoMaquinaria.objeto.motor']}" styleClass="negrita" />
+													<p:inputText value="#{ramoEquipoMaquinaraBean.motor}" />
+													<h:outputLabel value="#{emision['equipoMaquinaria.objeto.chasis']}" styleClass="negrita" />
+													<p:inputText value="#{ramoEquipoMaquinaraBean.chasis}" />
+
+													<h:outputLabel value="#{emision['equipoMaquinaria.objeto.color']}" styleClass="negrita" />
+													<p:inputText value="#{ramoEquipoMaquinaraBean.color}" />
+													<h:outputLabel value="#{emision['equipoMaquinaria.objeto.valorAsegurado']}" styleClass="negrita" />
+													<p:inputText value="#{ramoEquipoMaquinaraBean.color}" />
+
+													<h:outputLabel value="#{emision['equipoMaquinaria.objeto.serie']}" styleClass="negrita" />
+													<p:inputText value="#{ramoEquipoMaquinaraBean.color}" />
+
+												</p:panelGrid>
+												<f:facet name="footer">
+													<div align="center">
+														<p:commandButton id="agregarObjeto" update="form1, messages" icon="icon-add" value="#{emision['boton.agregar']}"
+															actionListener="#{ramoEquipoMaquinaraBean.addAction}" title="Agregar" />
+													</div>
+												</f:facet>
+											</h:panelGrid>
+											<p:spacer height="30px;" />
+											<p:dataTable value="#{ramoEquipoMaquinaraBean.getObjetoAseguradoList()}" var="obj" widgetVar="50" editable="true">
+												<p:ajax event="rowEdit" listener="#{ramoEquipoMaquinaraBean.onEdit}" />
+												<p:ajax event="rowEditCancel" listener="#{ramoEquipoMaquinaraBean.onCancel}" />
+												<p:column>
+													<f:facet name="header">
+														<h:outputText value="#{emision['equipoMaquinaria.objeto.item']}" />
+													</f:facet>
+													<p:cellEditor>
+														<f:facet name="output">
+															<h:outputText value="#{obj.item}" />
+														</f:facet>
+														<f:facet name="input">
+															<p:inputText value="#{obj.item}" style="width:100%" />
+														</f:facet>
+													</p:cellEditor>
+												</p:column>
+												<p:column>
+													<f:facet name="header">
+														<h:outputText value="#{emision['equipoMaquinaria.objeto.marca']}" />
+													</f:facet>
+													<p:cellEditor>
+														<f:facet name="output">
+															<h:outputText value="#{obj.marca}" />
+														</f:facet>
+														<f:facet name="input">
+															<p:inputText value="#{obj.marca}" style="width:100%" />
+														</f:facet>
+													</p:cellEditor>
+												</p:column>
+												<p:column>
+													<f:facet name="header">
+														<h:outputText value="#{emision['equipoMaquinaria.objeto.modelo']}" />
+													</f:facet>
+													<p:cellEditor>
+														<f:facet name="output">
+															<h:outputText value="#{obj.modelo}" />
+														</f:facet>
+														<f:facet name="input">
+															<p:inputText value="#{obj.modelo}" style="width:100%" />
+														</f:facet>
+													</p:cellEditor>
+												</p:column>
+												<p:column>
+													<f:facet name="header">
+														<h:outputText value="#{emision['equipoMaquinaria.objeto.anio']}" />
+													</f:facet>
+													<p:cellEditor>
+														<f:facet name="output">
+															<h:outputText value="#{obj.anio}" />
+														</f:facet>
+														<f:facet name="input">
+															<p:inputText value="#{obj.anio}" style="width:100%" />
+														</f:facet>
+													</p:cellEditor>
+												</p:column>
+
+												<p:column>
+													<f:facet name="header">
+														<h:outputText value="#{emision['equipoMaquinaria.objeto.motor']}" />
+													</f:facet>
+													<p:cellEditor>
+														<f:facet name="output">
+															<h:outputText value="#{obj.motor}" />
+														</f:facet>
+														<f:facet name="input">
+															<p:inputText value="#{obj.motor}" style="width:100%" />
+														</f:facet>
+													</p:cellEditor>
+												</p:column>
+												<p:column>
+													<f:facet name="header">
+														<h:outputText value="#{emision['equipoMaquinaria.objeto.chasis']}" />
+													</f:facet>
+													<p:cellEditor>
+														<f:facet name="output">
+															<h:outputText value="#{obj.chasis}" />
+														</f:facet>
+														<f:facet name="input">
+															<p:inputText value="#{obj.chasis}" style="width:100%" />
+														</f:facet>
+													</p:cellEditor>
+												</p:column>
+												<p:column>
+													<f:facet name="header">
+														<h:outputText value="#{emision['equipoMaquinaria.objeto.color']}" />
+													</f:facet>
+													<p:cellEditor>
+														<f:facet name="output">
+															<h:outputText value="#{obj.color}" />
+														</f:facet>
+														<f:facet name="input">
+															<p:inputText value="#{obj.color}" style="width:100%" />
+														</f:facet>
+													</p:cellEditor>
+												</p:column>
+												<p:column>
+													<f:facet name="header">
+														<h:outputText value="#{emision['equipoMaquinaria.objeto.valorAsegurado']}" />
+													</f:facet>
+													<p:cellEditor>
+														<f:facet name="output">
+															<h:outputText value="#{obj.valorAsegurado}" />
+														</f:facet>
+														<f:facet name="input">
+															<p:inputText value="#{obj.valorAsegurado}" style="width:100%" />
+														</f:facet>
+													</p:cellEditor>
+												</p:column>
+												<p:column>
+													<f:facet name="header">
+														<h:outputText value="#{emision['equipoMaquinaria.objeto.serie']}" />
+													</f:facet>
+													<p:cellEditor>
+														<f:facet name="output">
+															<h:outputText value="#{obj.serie}" />
+														</f:facet>
+														<f:facet name="input">
+															<p:inputText value="#{obj.serie}" style="width:100%" />
+														</f:facet>
+													</p:cellEditor>
+												</p:column>
+												<p:column headerText="Options" style="width:50px">
+													<p:rowEditor />
+												</p:column>
+											</p:dataTable>
+
+											<p:spacer height="30px;" />
+											<p:commandButton id="guardarObjAseguradoBtnId" actionListener="#{equipoMaquinariaBacking
+											.guardarRamo()}" icon="icon-save"
+												value="#{emision['boton.guardar']}" update="form1" title="Guardar" />
+											<p:commandButton id="cancelarBtnId" icon="icon-cancel" value="#{emision['boton.cancelar']}" title="Cancelar" />
+										</h:form>
+									</div>
+
+								</p:tab>
+								<!-- COBERTURAS -->
+								<p:tab title="#{emision['anexo.titulo.tab.cob']}">
+									<p:accordionPanel dynamic="true" cache="true" activeIndex="null">
+										<!-- Para Todo Riesgo -->
+										<p:tab title="#{emision['titulo.cob.cobTodoRiesgo']}">
+											<h:form id="cobTodRiesgEMFormId">
+												<p:dataTable id="cobTodRiesgEMTblId" var="todoRiesgo" value="#{equipoMaquinariaBacking.obtenerCoberturasTodoRiesgo()}" paginator="true"
+													rows="4" selection="#{equipoMaquinariaBacking.selectCoberturasTodoRiesgo}">
+													<f:facet name="header">#{emision['titulo.cob.cobTodoRiesgo']}</f:facet>
+													<p:column selectionMode="multiple" style="width:2%" />
+													<p:column headerText="#{emision['anexo.ca.nombre']}">#{todoRiesgo.nombreDetalleAnexo}</p:column>
+												</p:dataTable>
+											</h:form>
+										</p:tab>
+									</p:accordionPanel>
+								</p:tab>
+								<!-- COBERTURAS ADICIONALES -->
+								<p:tab title="#{emision['anexo.titulo.tab.cobad']}">
+									<h:form id="cobAdEEFormId">
+										<p:dataTable id="cobAdEETblId" var="cobAdicional" value="#{equipoMaquinariaBacking.obtenerCoberturasAdicionales()}" paginator="true"
+											rows="4" selection="#{equipoMaquinariaBacking.selectCoberturasAdicionales}">
+											<f:facet name="header">#{emision['anexo.titulo.cobad']}</f:facet>
+											<p:column selectionMode="multiple" style="width:2%" />
+											<p:column headerText="#{emision['anexo.ca.nombre']}">#{cobAdicional.nombreDetalleAnexo}</p:column>
+										</p:dataTable>
+									</h:form>
+								</p:tab>
+							</p:tabView>
+
+						</p:panel>
+					</ui:define>
+				</ui:decorate>
+			</ui:define>
+		</ui:decorate>
+	</ui:define>
+</ui:composition>
+</html>

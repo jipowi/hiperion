@@ -1,0 +1,286 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui">
+<ui:composition template="/templates/menuPrincipalTemplate.xhtml">
+	<ui:define name="content">
+		<ui:decorate template="/templates/polizaTemplate.xhtml">
+			<ui:define name="content">
+				<ui:decorate template="/templates/ramoTemplate.xhtml">
+					<ui:define name="ramoHeader">
+						<div align="center">
+							<p:outputLabel value="#{emision['vida.tituloPantalla']}" styleClass="negrita" />
+							<p:separator id="customSeparator" style="width:auto;height:1px" />
+							<p:spacer height="5px;" />
+							<h:panelGroup style="display:block; text-align:center">
+								<h:graphicImage name="bannerVida.jpg" library="img/ramos/vida" width="1000px" height="160px" />
+							</h:panelGroup>
+							<p:spacer height="15px;" />
+						</div>
+					</ui:define>
+					<ui:define name="ramoContent">
+						<p:tabView id="tabGeneral">
+							<p:tab id="tabRamo" title="#{emision['vida.tab.principal']}">
+								<p:outputPanel id="messageVida">
+									<p:messages id="messagesVida" showDetail="true" autoUpdate="true" closable="true" />
+								</p:outputPanel>
+								<h:form>
+									<div align="center">
+										<h:panelGrid columns="1">
+
+											<p:spacer height="15px;" />
+											<p:panel>
+												<h:panelGrid columns="2">
+													<p:outputLabel value="#{emision['vida.primaNeta']}" styleClass="negrita" />
+													<p:inputText value="#{ramoVidaBean.primaNetaPersona}" />
+
+													<p:outputLabel value="#{emision['vida.primaTotal']}" styleClass="negrita" />
+													<p:inputText value="#{ramoVidaBean.primaTotalPersona}" />
+
+													<p:outputLabel value="#{emision['vida.tasaVida']}" styleClass="negrita" />
+													<p:inputText value="#{ramoVidaBean.tasaVida}" />
+
+													<p:outputLabel value="#{emision['vida.tasaMuerte']}" styleClass="negrita" />
+													<p:inputText value="#{ramoVidaBean.tasaMuerte}" />
+
+													<p:outputLabel value="#{emision['vida.tasaIncapacidad']}" styleClass="negrita" />
+													<p:inputText value="#{ramoVidaBean.tasaIncapacidad}" />
+
+													<p:outputLabel value="#{emision['vida.totalAsegurados']}" styleClass="negrita" />
+													<p:inputText value="#{ramoVidaBean.totalAsegurados}" />
+												</h:panelGrid>
+												<h:panelGrid columns="1" cellpadding="3">
+													<p:outputLabel value="#{emision['vida.filePolizaVigente']}" styleClass="negrita" />
+													<p:fileUpload fileLimit="1" />
+												</h:panelGrid>
+											</p:panel>
+
+											<!-- Footer del Formulario -->
+											<f:facet name="footer">
+												<div align="center">
+													<p:commandButton id="guardarBtnId" oncomplete="vidaDlg.hide();" actionListener="#{ramoVidaBacking.guardar}" icon="icon-save"
+														value="#{emision['boton.guardar']}" title="Guardar" />
+													<p:commandButton id="cancelarBtnId" oncomplete="vidaDlg.hide();" icon="icon-cancel" value="#{emision['boton.cancelar']}" process="@this"
+														title="Cancelar" />
+												</div>
+											</f:facet>
+										</h:panelGrid>
+									</div>
+
+								</h:form>
+							</p:tab>
+
+							<p:tab title="#{emision['vida.tab.gruposVida']}">
+								<div align="center">
+									<h:form id="form1">
+										<h:panelGrid columns="1">
+											<f:facet name="header">
+												<p:outputLabel value="#{emision['vida.grupo.tituloAsegurados']}" styleClass="negrita" />
+											</f:facet>
+											<p:separator id="customSeparatorAsegurado" style="width:auto;height:1px" />
+											<p:growl id="messagesAsegurado" showDetail="true" />
+											<p:panelGrid columns="2">
+												<h:outputLabel value="#{emision['vida.nombreAsegurado']}" styleClass="negrita" />
+												<p:inputText value="#{ramoVidaBean.nombreAsegurado}" />
+
+												<h:outputLabel value="#{emision['vida.apellidoAsegurado']}" styleClass="negrita" />
+												<p:inputText value="#{ramoVidaBean.apellidoAsegurado}" />
+
+												<h:outputLabel value="#{emision['vida.cedulaAsegurado']}" styleClass="negrita" />
+												<p:inputText value="#{ramoVidaBean.cedulaAsegurado}" />
+
+												<h:outputLabel value="#{emision['vida.edad']}" styleClass="negrita" />
+												<p:inputText value="#{ramoVidaBean.edadAsegurado}" />
+											</p:panelGrid>
+											<f:facet name="footer">
+												<div align="center">
+													<p:commandButton id="agregarAsegurado" update="form1, messagesAsegurado" icon="icon-add" value="#{emision['boton.agregar']}"
+														actionListener="#{ramoVidaBean.addAsegurado}" title="Agregar" />
+												</div>
+											</f:facet>
+										</h:panelGrid>
+										<p:spacer height="30px;" />
+										<p:dataTable value="#{ramoVidaBean.aseguradolist}" var="obj" widgetVar="50" style="width: 50%;" editable="true">
+											<p:ajax event="rowEdit" listener="#{ramoVidaBean.onEditAsegurado}" />
+											<p:ajax event="rowEditCancel" listener="#{ramoVidaBean.onCancelAsegurado}" />
+											<p:column>
+												<f:facet name="header">
+													<h:outputText value="#{emision['vida.apellidoAsegurado']}" />
+												</f:facet>
+												<p:cellEditor>
+													<f:facet name="output">
+														<h:outputText value="#{obj.apellidos}" />
+													</f:facet>
+													<f:facet name="input">
+														<p:inputText value="#{obj.apellidos}" style="width:100%" />
+													</f:facet>
+												</p:cellEditor>
+											</p:column>
+											<p:column>
+												<f:facet name="header">
+													<h:outputText value="#{emision['vida.nombreAsegurado']}" />
+												</f:facet>
+												<p:cellEditor>
+													<f:facet name="output">
+														<h:outputText value="#{obj.nombres}" />
+													</f:facet>
+													<f:facet name="input">
+														<p:inputText value="#{obj.nombres}" style="width:100%" />
+													</f:facet>
+												</p:cellEditor>
+											</p:column>
+											<p:column>
+												<f:facet name="header">
+													<h:outputText value="#{emision['vida.cedulaAsegurado']}" />
+												</f:facet>
+												<p:cellEditor>
+													<f:facet name="output">
+														<h:outputText value="#{obj.cedula}" />
+													</f:facet>
+													<f:facet name="input">
+														<p:inputText value="#{obj.cedula}" style="width:100%" />
+													</f:facet>
+												</p:cellEditor>
+											</p:column>
+											<p:column>
+												<f:facet name="header">
+													<h:outputText value="#{emision['vida.edad']}" />
+												</f:facet>
+												<p:cellEditor>
+													<f:facet name="output">
+														<h:outputText value="#{obj.edad}" />
+													</f:facet>
+													<f:facet name="input">
+														<p:inputText value="#{obj.edad}" style="width:100%" />
+													</f:facet>
+												</p:cellEditor>
+											</p:column>
+											<p:column headerText="Options" style="width:50px">
+												<p:rowEditor />
+											</p:column>
+											<p:column>
+												<p:commandLink title="Agregar beneficiarios" onclick="beneficiario.show();">
+													<h:graphicImage name="addPerson.png" library="img/icon" />
+												</p:commandLink>
+											</p:column>
+										</p:dataTable>
+									</h:form>
+								</div>
+								<!-- POPUP BENEFICIARIOS -->
+								<p:dialog header="Beneficiarios" widgetVar="beneficiario" modal="true" position="center">
+									<h:form id="formBeneficiarios">
+										<div align="center">
+											<h:panelGrid columns="1">
+												<f:facet name="header">
+													<p:outputLabel value="#{emision['vida.grupo.tituloBeneficiarios']}" styleClass="negrita" />
+												</f:facet>
+												<p:separator id="customSeparatorBeneficiario" style="width:auto;height:1px" />
+												<p:growl id="messagesBeneficiario" showDetail="true" />
+												<p:panelGrid columns="2">
+													<h:outputLabel value="#{emision['vida.nombreAsegurado']}" styleClass="negrita" />
+													<p:inputText value="#{ramoVidaBean.nombreBeneficiario}" />
+
+													<h:outputLabel value="#{emision['vida.apellidoAsegurado']}" styleClass="negrita" />
+													<p:inputText value="#{ramoVidaBean.apellidoBeneficiario}" />
+
+													<h:outputLabel value="#{emision['vida.edad']}" styleClass="negrita" />
+													<p:inputText value="#{ramoVidaBean.edadBeneficiario}" />
+
+													<h:outputLabel value="#{emision['vida.parentezco']}" styleClass="negrita" />
+													<p:inputText value="#{ramoVidaBean.parentezco}" />
+
+													<h:outputLabel value="#{emision['vida.porcentajeDesignado']}" styleClass="negrita" />
+													<p:inputText value="#{ramoVidaBean.porcentajeDesignado}" />
+												</p:panelGrid>
+												<f:facet name="footer">
+													<div align="center">
+														<p:commandButton id="agregarBeneficiario" update="messagesBeneficiario, formBeneficiarios" icon="icon-add"
+															value="#{emision['boton.agregar']}" actionListener="#{ramoVidaBean.addBeneficiario}" title="Agregar" />
+													</div>
+												</f:facet>
+											</h:panelGrid>
+											<p:spacer height="30px;" />
+											<p:dataTable value="#{ramoVidaBean.beneficiariolist}" var="obj" widgetVar="50" style="width: 60%;" editable="true">
+												<p:ajax event="rowEdit" listener="#{ramoVidaBean.onEditBeneficiario}" />
+												<p:ajax event="rowEditCancel" listener="#{ramoVidaBean.onCancelBeneficiario}" />
+												<p:column>
+													<f:facet name="header">
+														<h:outputText value="#{emision['vida.apellidoAsegurado']}" />
+													</f:facet>
+													<p:cellEditor>
+														<f:facet name="output">
+															<h:outputText value="#{obj.apellidos}" />
+														</f:facet>
+														<f:facet name="input">
+															<p:inputText value="#{obj.apellidos}" style="width:100%" />
+														</f:facet>
+													</p:cellEditor>
+												</p:column>
+												<p:column>
+													<f:facet name="header">
+														<h:outputText value="#{emision['vida.nombreAsegurado']}" />
+													</f:facet>
+													<p:cellEditor>
+														<f:facet name="output">
+															<h:outputText value="#{obj.nombres}" />
+														</f:facet>
+														<f:facet name="input">
+															<p:inputText value="#{obj.nombres}" style="width:100%" />
+														</f:facet>
+													</p:cellEditor>
+												</p:column>
+												<p:column>
+													<f:facet name="header">
+														<h:outputText value="#{emision['vida.edad']}" />
+													</f:facet>
+													<p:cellEditor>
+														<f:facet name="output">
+															<h:outputText value="#{obj.edad}" />
+														</f:facet>
+														<f:facet name="input">
+															<p:inputText value="#{obj.edad}" style="width:100%" />
+														</f:facet>
+													</p:cellEditor>
+												</p:column>
+												<p:column>
+													<f:facet name="header">
+														<h:outputText value="#{emision['vida.parentezco']}" />
+													</f:facet>
+													<p:cellEditor>
+														<f:facet name="output">
+															<h:outputText value="#{obj.parentezco}" />
+														</f:facet>
+														<f:facet name="input">
+															<p:inputText value="#{obj.parentezco}" style="width:100%" />
+														</f:facet>
+													</p:cellEditor>
+												</p:column>
+												<p:column>
+													<f:facet name="header">
+														<h:outputText value="#{emision['vida.porcentajeDesignado']}" />
+													</f:facet>
+													<p:cellEditor>
+														<f:facet name="output">
+															<h:outputText value="#{obj.porcentajeDesignado}" />
+														</f:facet>
+														<f:facet name="input">
+															<p:inputText value="#{obj.porcentajeDesignado}" style="width:100%" />
+														</f:facet>
+													</p:cellEditor>
+												</p:column>
+												<p:column headerText="Options" style="width:50px">
+													<p:rowEditor />
+												</p:column>
+
+											</p:dataTable>
+										</div>
+									</h:form>
+								</p:dialog>
+							</p:tab>
+						</p:tabView>
+					</ui:define>
+				</ui:decorate>
+			</ui:define>
+		</ui:decorate>
+	</ui:define>
+</ui:composition>
+</html>

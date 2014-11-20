@@ -1,0 +1,252 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui">
+<ui:composition template="/templates/menuPrincipalTemplate.xhtml">
+	<ui:define name="content">
+		<ui:decorate template="/templates/polizaTemplate.xhtml">
+			<ui:define name="content">
+				<ui:decorate template="/templates/ramoTemplate.xhtml">
+					<ui:define name="ramoHeader">
+						<div align="center">
+							<p:outputLabel value="#{emision['emision.ramo.transporte.tituloPantalla']}" styleClass="negrita" />
+							<p:separator id="customSeparator" style="width:auto;height:1px" />
+							<p:spacer height="5px;" />
+							<h:panelGroup style="display:block; text-align:center">
+								<h:graphicImage name="transporte.jpg" library="img/ramos/transporte" width="1000px" height="160px" />
+							</h:panelGroup>
+							<p:spacer height="15px;" />
+						</div>
+					</ui:define>
+					<ui:define name="ramoContent">
+						<!-- RAMO TRANSPORTE -->
+						<p:tabView effect="blind" effectDuration="normal">
+							<p:tab title="#{emision['emision.ramo.transporte']}">
+								<p:outputPanel id="messageTransporte">
+									<p:messages id="messagesTransporte" showDetail="true" autoUpdate="true" closable="true" />
+								</p:outputPanel>
+								<h:form id="formPrincipal">
+									<div align="center">
+										<h:panelGrid columns="1" id="ramoTransporte">
+											<p:spacer height="15px;" />
+											<p:panel>
+												<h:panelGrid columns="2" cellpadding="3">
+													<p:outputLabel for="idTasa" value="#{emision['emision.ramo.label.tasas']}" styleClass="negrita" />
+													<p:inputText id="idTasa" value="#{ramoTransporteBean.tasa}" required="true" requiredMessage="#{emision['emision.ramo.label.tasas.msn']}" />
+												</h:panelGrid>
+												<h:panelGrid columns="1" cellpadding="3">
+													<p:outputLabel value="#{emision['emision.ramo.textarea.condiciones']}" styleClass="negrita" />
+													<p:inputTextarea value="#{ramoTransporteBean.condImportantes}" cols="50" rows="2" />
+												</h:panelGrid>
+												<h:panelGrid columns="2">
+													<h:outputLabel value="#{emision['emision.deducibles']}" />
+													<h:graphicImage name="deducibles.jpg" library="img" />
+												</h:panelGrid>
+												<h:panelGrid columns="4" cellpadding="3">
+													<p:outputLabel for="idPorcentajeSiniestro" value="#{emision['emision.ramo.transporte.deducible.valorSiniestro']}" styleClass="negrita" />
+													<p:inputText id="idPorcentajeSiniestro" value="#{ramoTransporteBean.porcentajeSiniestro}" required="true"
+														requiredMessage="#{emision['emision.ramo.transporte.deducible.valorSiniestro.msn']}" />
+													<p:outputLabel for="idMinimo" value="#{emision['emision.ramo.transporte.deducible.minimoSiniestro']}" styleClass="negrita" />
+													<p:inputText id="idMinimo" value="#{ramoTransporteBean.minimoSiniestro}" required="true"
+														requiredMessage="#{emision['emision.ramo.transporte.deducible.minimoSiniestro.msn']}" />
+
+													<p:outputLabel for="idPorcentajeEmbarque" value="#{emision['emision.ramo.transporte.deducible.valorEmbarque']}" styleClass="negrita" />
+													<p:inputText id="idPorcentajeEmbarque" value="#{ramoTransporteBean.porcentajeEmbarque}" required="true"
+														requiredMessage="#{emision['emision.ramo.transporte.deducible.valorEmbarque.msn']}" />
+													<p:outputLabel value="#{emision['emision.ramo.transporte.deducible.minimoEmbarque']}" styleClass="negrita" />
+													<p:inputText value="#{ramoTransporteBean.minimoEmbarque}" />
+												</h:panelGrid>
+
+											</p:panel>
+											<!-- Footer del Formulario -->
+											<f:facet name="footer">
+												<div align="center">
+													<p:commandButton id="guardarTransporteBtnId" actionListener="#{transporteBacking.setearInfRammo()}" icon="icon-save"
+														value="#{emision['boton.aceptar']}" title="Guardar" update="formPrincipal, ramoTransporte" />
+													<p:commandButton id="cancelarTransporteBtnId" icon="icon-cancel" value="#{emision['boton.cancelar']}" process="@this" title="Cancelar" />
+												</div>
+											</f:facet>
+										</h:panelGrid>
+									</div>
+								</h:form>
+							</p:tab>
+							<!-- OBJETO ASEGURADO -->
+							<p:tab title="#{emision['emision.ramo.transporte.objetoAsegurado']}">
+								<div align="center">
+									<h:form id="form1">
+										<h:panelGrid columns="1">
+											<f:facet name="header">
+												<p:outputLabel value="#{emision['emision.ramo.transporte.objeto.tituloPantalla']}" styleClass="negrita" />
+											</f:facet>
+											<p:separator id="customSeparator" style="width:auto;height:1px" />
+											<p:growl id="messages" showDetail="true" />
+											<p:panelGrid columns="2">
+												<h:outputLabel value="#{emision['emision.ramo.transporte.objeto.item']}" styleClass="negrita" />
+												<p:inputText value="#{ramoTransporteBean.item}" />
+
+												<h:outputLabel value="#{emision['emision.ramo.transporte.objeto.limiteEstimadoMov']}" styleClass="negrita" />
+												<p:inputText value="#{ramoTransporteBean.limiteMovilizacionAnual}" />
+
+												<h:outputLabel value="#{emision['emision.ramo.transporte.objeto.limiteEmbarque']}" styleClass="negrita" />
+												<p:inputText value="#{ramoTransporteBean.limiteEmbarque}" />
+
+												<h:outputLabel value="#{emision['emision.ramo.transporte.objeto.medioTransporte']}" styleClass="negrita" />
+												<p:selectOneMenu id="tipoTransporteId" value="#{ramoTransporteBean.medioTransporte}" effect="drop">
+													<f:selectItem itemLabel="Seleccione" noSelectionOption="true" />
+													<f:selectItems value="#{transporteBacking.tipoTransporteItems}" />
+												</p:selectOneMenu>
+
+												<h:outputLabel value="#{emision['emision.ramo.transporte.objeto.trayectoDesde']}" styleClass="negrita" />
+												<p:inputText value="#{ramoTransporteBean.trayectoDesde}" />
+
+												<h:outputLabel value="#{emision['emision.ramo.transporte.objeto.trayectoHasta']}" styleClass="negrita" />
+												<p:inputText value="#{ramoTransporteBean.trayectoHasta}" />
+
+												<h:outputLabel value="#{emision['emision.ramo.transporte.objeto.tipoEmbalaje']}" styleClass="negrita" />
+												<p:inputText value="#{ramoTransporteBean.tipoEmbalaje}" />
+
+												<h:outputLabel value="#{emision['emision.ramo.transporte.objeto.valuacion']}" styleClass="negrita" />
+												<p:inputText value="#{ramoTransporteBean.valuacion}" />
+											</p:panelGrid>
+											<f:facet name="footer">
+												<div align="center">
+													<p:commandButton id="agregarObjeto" update="form1, messages" icon="icon-add" value="#{emision['boton.agregar']}"
+														actionListener="#{ramoTransporteBean.addObjeto}" title="Agregar" />
+												</div>
+											</f:facet>
+										</h:panelGrid>
+										<p:spacer height="30px;" />
+										<p:dataTable value="#{ramoTransporteBean.objetoaseguradolist}" var="obj" widgetVar="50" style="width: 60%;" editable="true">
+											<p:ajax event="rowEdit" listener="#{ramoTransporteBean.editObjeto}" />
+											<p:ajax event="rowEditCancel" listener="#{ramoTransporteBean.cancelObjeto}" />
+											<p:column>
+												<f:facet name="header">
+													<h:outputText value="#{emision['emision.ramo.transporte.objeto.item']}" />
+												</f:facet>
+												<p:cellEditor>
+													<f:facet name="output">
+														<h:outputText value="#{obj.item}" />
+													</f:facet>
+													<f:facet name="input">
+														<p:inputText value="#{obj.item}" style="width:100%" />
+													</f:facet>
+												</p:cellEditor>
+											</p:column>
+											<p:column>
+												<f:facet name="header">
+													<h:outputText value="#{emision['emision.ramo.transporte.objeto.limiteEstimadoMov']}" />
+												</f:facet>
+												<p:cellEditor>
+													<f:facet name="output">
+														<h:outputText value="#{obj.limiteMovilizacionAnual}" />
+													</f:facet>
+													<f:facet name="input">
+														<p:inputText value="#{obj.limiteMovilizacionAnual}" style="width:100%" />
+													</f:facet>
+												</p:cellEditor>
+											</p:column>
+											<p:column>
+												<f:facet name="header">
+													<h:outputText value="#{emision['emision.ramo.transporte.objeto.limiteEmbarque']}" />
+												</f:facet>
+												<p:cellEditor>
+													<f:facet name="output">
+														<h:outputText value="#{obj.limiteEmbarque}" />
+													</f:facet>
+													<f:facet name="input">
+														<p:inputText value="#{obj.limiteEmbarque}" style="width:100%" />
+													</f:facet>
+												</p:cellEditor>
+											</p:column>
+											<p:column>
+												<f:facet name="header">
+													<h:outputText value="#{emision['emision.ramo.transporte.objeto.medioTransporte']}" />
+												</f:facet>
+												<p:cellEditor>
+													<f:facet name="output">
+														<h:outputText value="#{obj.medioTransporte}" />
+													</f:facet>
+													<f:facet name="input">
+														<p:inputText value="#{obj.medioTransporte}" style="width:100%" />
+													</f:facet>
+												</p:cellEditor>
+											</p:column>
+											<p:column>
+												<f:facet name="header">
+													<h:outputText value="#{emision['emision.ramo.transporte.objeto.trayectoDesde']}" />
+												</f:facet>
+												<p:cellEditor>
+													<f:facet name="output">
+														<h:outputText value="#{obj.trayectoDesde}" />
+													</f:facet>
+													<f:facet name="input">
+														<p:inputText value="#{obj.trayectoDesde}" style="width:100%" />
+													</f:facet>
+												</p:cellEditor>
+											</p:column>
+											<p:column>
+												<f:facet name="header">
+													<h:outputText value="#{emision['emision.ramo.transporte.objeto.trayectoHasta']}" />
+												</f:facet>
+												<p:cellEditor>
+													<f:facet name="output">
+														<h:outputText value="#{obj.trayectoHasta}" />
+													</f:facet>
+													<f:facet name="input">
+														<p:inputText value="#{obj.trayectoHasta}" style="width:100%" />
+													</f:facet>
+												</p:cellEditor>
+											</p:column>
+											<p:column>
+												<f:facet name="header">
+													<h:outputText value="#{emision['emision.ramo.transporte.objeto.tipoEmbalaje']}" />
+												</f:facet>
+												<p:cellEditor>
+													<f:facet name="output">
+														<h:outputText value="#{obj.tipoEmbalaje}" />
+													</f:facet>
+													<f:facet name="input">
+														<p:inputText value="#{obj.tipoEmbalaje}" style="width:100%" />
+													</f:facet>
+												</p:cellEditor>
+											</p:column>
+											<p:column>
+												<f:facet name="header">
+													<h:outputText value="#{emision['emision.ramo.transporte.objeto.valuacion']}" />
+												</f:facet>
+												<p:cellEditor>
+													<f:facet name="output">
+														<h:outputText value="#{obj.valuacion}" />
+													</f:facet>
+													<f:facet name="input">
+														<p:inputText value="#{obj.valuacion}" style="width:100%" />
+													</f:facet>
+												</p:cellEditor>
+											</p:column>
+											<p:column headerText="Options" style="width:50px">
+												<p:rowEditor />
+											</p:column>
+										</p:dataTable>
+										<p:spacer height="30px;" />
+										<div align="center">
+											<p:commandButton actionListener="#{transporteBacking.guardarRamo()}" icon="icon-save" value="#{emision['boton.guardar']}" title="Guardar"
+												update="form1" />
+											<p:commandButton id="cancelarTransporteBtnId" icon="icon-cancel" value="#{emision['boton.cancelar']}" process="@this" title="Cancelar" />
+										</div>
+									</h:form>
+								</div>
+							</p:tab>
+							<!-- COBERTURAS -->
+							<p:tab title="#{emision['emision.ramo.transporte.coberturas']}"></p:tab>
+							<p:tab title="#{emision['emision.ramo.transporte.clausulas']}">
+							</p:tab>
+							<p:tab title="#{emision['emision.ramo.transporte.condiciones']}">
+							</p:tab>
+
+						</p:tabView>
+					</ui:define>
+				</ui:decorate>
+			</ui:define>
+		</ui:decorate>
+	</ui:define>
+</ui:composition>
+</html>

@@ -1,0 +1,145 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui">
+<ui:composition template="/templates/menuPrincipalTemplate.xhtml">
+	<ui:define name="content">
+		<ui:decorate template="/templates/polizaTemplate.xhtml">
+			<ui:define name="content">
+				<ui:decorate template="/templates/ramoTemplate.xhtml">
+					<ui:define name="ramoHeader">
+						<div align="center">
+							<p:outputLabel value="#{emision['soat.tituloPantalla']}" styleClass="negrita" />
+							<p:separator id="customSeparator" style="width:auto;height:1px" />
+							<p:spacer height="5px;" />
+							<h:panelGroup style="display:block; text-align:center">
+								<h:graphicImage name="soat.jpg" library="img/ramos/soat" width="1000px" height="160px" />
+							</h:panelGroup>
+							<p:spacer height="15px;" />
+						</div>
+					</ui:define>
+					<ui:define name="ramoContent">
+						<p:tabView effect="blind" effectDuration="normal">
+							<p:tab title="#{emision['soat.tab.principal']}">
+								<p:outputPanel>
+									<p:messages id="messagesSoat" showDetail="true" autoUpdate="true" closable="true" />
+								</p:outputPanel>
+								<h:form id="formSoat">
+									<div align="center">
+										<h:panelGrid columns="1" id="idPnlSoat">
+											<p:spacer height="15px;" />
+											<p:panel>
+												<h:panelGrid id="marcas" columns="6" cellpadding="3">
+
+													<p:outputLabel value="#{emision['soat.tipoVehiculo']}" styleClass="negrita" />
+													<p:selectOneMenu id="tipoVehiculoId" value="#{ramoSoatBean.tipoVehiculo}" effect="drop">
+														<f:selectItem itemLabel="Seleccione" noSelectionOption="true" />
+														<f:selectItems value="#{soatBacking.tipoVehiculoItems}" />
+														<p:ajax event="change" listener="#{soatBacking.selectClaseVehiculo}" update=" marcas, idMarcaLiviano, idMarcaPesado, idMarcaMoto" />
+													</p:selectOneMenu>
+
+													<h:panelGrid id="idMarcaLiviano" columns="2" rendered="#{soatBacking.activarMarcaAuto}">
+														<p:outputLabel value="#{emision['soat.marca']}" styleClass="negrita" />
+														<p:selectOneMenu value="#{autoCompleteBean.selectedMarcaLiviano}" converter="marca" height="250" effect="fade" var="m">
+															<f:selectItem itemLabel="Select One" itemValue="" />
+															<f:selectItems value="#{autoCompleteBean.marcasLivianos}" var="marca" itemLabel="#{marca.marca}" itemValue="#{marca}" />
+															<p:ajax event="change" listener="#{soatBacking.obtenerModelo(autoCompleteBean.selectedMarcaLiviano)}" update="idModelo" />
+															<p:column>
+																<p:graphicImage name="#{m.logo}" library="img/logosAutos" />
+															</p:column>
+															<p:column>  
+											                #{m.marca} 
+											            	</p:column>
+														</p:selectOneMenu>
+													</h:panelGrid>
+													<h:panelGrid id="idMarcaPesado" columns="2" rendered="#{soatBacking.activarMarcaPesado}">
+														<p:outputLabel value="#{emision['soat.marca']}" styleClass="negrita" />
+														<p:selectOneMenu value="#{autoCompleteBean.selectedMarcaPesado}" converter="marca" height="250" effect="fade" var="m">
+															<f:selectItem itemLabel="Select One" itemValue="" />
+															<f:selectItems value="#{autoCompleteBean.marcasPesados}" var="marca" itemLabel="#{marca.marca}" itemValue="#{marca}" />
+															<p:ajax event="change" listener="#{soatBacking.obtenerModelo(autoCompleteBean.selectedMarcaPesado)}" update="idModelo" />
+															<p:column>
+																<p:graphicImage name="#{m.logo}" library="img/logosPesados" />
+															</p:column>
+															<p:column>  
+											                #{m.marca} 
+											            	</p:column>
+														</p:selectOneMenu>
+													</h:panelGrid>
+													<h:panelGrid id="idMarcaMoto" columns="2" rendered="#{soatBacking.activarMarcaMoto}">
+														<p:outputLabel value="#{emision['soat.marca']}" styleClass="negrita" />
+														<p:selectOneMenu value="#{autoCompleteBean.selectedMarcaMoto}" converter="marca" height="250" effect="fade" var="m">
+															<f:selectItem itemLabel="Select One" itemValue="" />
+															<f:selectItems value="#{autoCompleteBean.marcasMotos}" var="marca" itemLabel="#{marca.marca}" itemValue="#{marca}" />
+															<p:ajax event="change" listener="#{soatBacking.obtenerModelo(autoCompleteBean.selectedMarcaMoto)}" update="idModelo" />
+															<p:column>
+																<p:graphicImage name="#{m.logo}" library="img/logosMotos" />
+															</p:column>
+															<p:column>  
+											                #{m.marca} 
+											            	</p:column>
+														</p:selectOneMenu>
+													</h:panelGrid>
+
+													<h:panelGrid id="idModelo" columns="2">
+														<p:outputLabel value="#{emision['soat.modelo']}" styleClass="negrita" />
+														<p:selectOneMenu value="#{ramoSoatBean.modelo}" effect="drop">
+															<f:selectItem itemLabel="Seleccione" noSelectionOption="true" />
+															<f:selectItems value="#{soatBacking.modeloItems}" />
+														</p:selectOneMenu>
+													</h:panelGrid>
+												</h:panelGrid>
+
+												<h:panelGrid columns="4" cellpadding="3">
+
+													<p:outputLabel for="nombreAsegurado" value="#{emision['soat.nombreAsegurado']}" styleClass="negrita" />
+													<p:inputText id="nombreAsegurado" value="#{ramoSoatBean.asegurado}" required="true"
+														requiredMessage="#{emision['soat.nombreAsegurado.msn']}" />
+													<p:outputLabel for="color" value="#{emision['soat.color']}" styleClass="negrita" />
+													<p:inputText id="color" value="#{ramoSoatBean.color}" required="true" requiredMessage="#{emision['soat.color.msn']}" />
+
+													<p:outputLabel for="placa" value="#{emision['soat.placa']}" styleClass="negrita" />
+													<p:inputText id="placa" value="#{ramoSoatBean.placa}" required="true" requiredMessage="#{emision['soat.placa.msn']}" />
+													<p:outputLabel for="chasis" value="#{emision['soat.chasis']}" styleClass="negrita" />
+													<p:inputText id="chasis" value="#{ramoSoatBean.chasis}" required="true" requiredMessage="#{emision['soat.chasis.msn']}" />
+
+													<p:outputLabel for="anio" value="#{emision['soat.anio']}" styleClass="negrita" />
+													<p:inputText id="anio" value="#{ramoSoatBean.anio}" required="true" requiredMessage="#{emision['soat.anio.msn']}" />
+													<p:outputLabel for="cilindraje" value="#{emision['soat.cilindraje']}" styleClass="negrita" />
+													<p:inputText id="cilindraje" value="#{ramoSoatBean.cilindraje}" required="true" requiredMessage="#{emision['soat.cilindraje.msn']}" />
+
+													<p:outputLabel for="pasajeros" value="#{emision['soat.pasajeros']}" styleClass="negrita" />
+													<p:inputText id="pasajeros" value="#{ramoSoatBean.pasajeros}" required="true" requiredMessage="#{emision['soat.pasajeros.msn']}" />
+													<p:outputLabel value="#{emision['soat.tipo']}" styleClass="negrita" />
+													<p:selectOneMenu id="tipoSoatId" value="#{ramoSoatBean.tipoSoat}" effect="drop" required="true"
+														requiredMessage="#{emision['soat.tipo.msn']}">
+														<f:selectItem itemLabel="Selecione un tipo" itemValue="" />
+														<f:selectItems value="#{soatBacking.tipoSoatItems}" />
+													</p:selectOneMenu>
+												</h:panelGrid>
+												<h:panelGrid columns="1" cellpadding="3">
+													<p:outputLabel value="#{emision['soat.fileCertificado']}" styleClass="negrita" />
+													<p:fileUpload fileLimit="1" />
+												</h:panelGrid>
+											</p:panel>
+											<!-- Footer del Formulario -->
+											<f:facet name="footer">
+												<div align="center">
+													<p:commandButton id="guardarBtnId" actionListener="#{soatBacking.guardarRamo}" icon="icon-save" value="#{emision['boton.guardar']}"
+														title="Guardar" update="formSoat, idPnlSoat" />
+													<p:commandButton id="cancelarBtnId" icon="icon-cancel" value="#{emision['boton.cancelar']}" process="@this" title="Cancelar" />
+												</div>
+											</f:facet>
+										</h:panelGrid>
+									</div>
+								</h:form>
+							</p:tab>
+							<!-- COBERTURAS -->
+							<p:tab title="#{emision['soat.tab.coberturas']}"></p:tab>
+						</p:tabView>
+					</ui:define>
+				</ui:decorate>
+			</ui:define>
+		</ui:decorate>
+	</ui:define>
+</ui:composition>
+</html>

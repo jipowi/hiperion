@@ -1,0 +1,199 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui">
+<ui:composition template="/templates/menuPrincipalTemplate.xhtml">
+	<ui:define name="content">
+		<ui:decorate template="/templates/polizaTemplate.xhtml">
+			<ui:define name="content">
+				<ui:decorate template="/templates/ramoTemplate.xhtml">
+					<ui:define name="ramoHeader">
+						<div align="center">
+							<p:outputLabel value="#{emision['emision.ramo.lcila']}" styleClass="negrita" />
+							<p:separator id="customSeparator" style="width:auto;height:1px" />
+							<p:spacer height="5px;" />
+							<h:panelGroup style="display:block; text-align:center">
+								<h:graphicImage name="banner_lucroCesanteIncendioLineasAliadas.jpg" library="img/ramos/lucro_cesante_incendio_lineas_aliadas" width="1000px"
+									height="160px" />
+							</h:panelGroup>
+							<p:spacer height="15px;" />
+						</div>
+					</ui:define>
+					<ui:define name="ramoContent">
+						<!-- RAMO LUCRO CESANTE INCENDIO Y LINEAS ALIADAS -->
+						<p:tabView effect="blind" effectDuration="normal">
+							<p:tab title="#{emision['emision.ramo.lcila']}">
+								<p:outputPanel>
+									<p:messages id="messageLucroCesanteIncendio" showDetail="true" autoUpdate="true" closable="true" />
+								</p:outputPanel>
+								<h:form id="formPrincipal">
+									<div align="center">
+										<h:panelGrid columns="1" id="ramoLucroCesanteIncendioLineasAliada">
+											<p:spacer height="15px;" />
+											<p:panel>
+												<h:panelGrid columns="2" cellpadding="3">
+													<p:outputLabel for="idValorItems" value="#{emision['emision.ramo.lcila.label.valoritems']}" styleClass="negrita" />
+													<p:inputText id="idValorItems" value="#{ramoLucroCesanteIncendioBean.valorItems}" required="true"
+														requiredMessage="#{emision['emision.ramo.lcila.label.valoritems.msn']}" />
+
+													<p:outputLabel value="#{emision['emision.ramo.lcila.label.periodoIndemnizacion']}" styleClass="negrita" />
+													<p:inputText value="#{ramoLucroCesanteIncendioBean.periodoIndemnizacion}" />
+
+													<p:outputLabel for="idTasaComprensiva" value="#{emision['emision.ramo.lcila.label.tasaComprensiva']}" styleClass="negrita" />
+													<p:inputText id="idTasaComprensiva" value="#{ramoLucroCesanteIncendioBean.tasaComprensiva}" required="true"
+														requiredMessage="#{emision['emision.ramo.lcila.label.tasaComprensiva.msn']}" />
+
+													<p:outputLabel value="#{emision['emision.ramo.lcila.label.deduciblecatastrofico']}" styleClass="negrita" />
+													<p:inputText value="#{ramoLucroCesanteIncendioBean.deducibleCatastrofico}" />
+
+													<p:outputLabel value="#{emision['emision.ramo.lcila.label.deducibleotros']}" styleClass="negrita" />
+													<p:inputText value="#{ramoLucroCesanteIncendioBean.deducibleOtros}" />
+												</h:panelGrid>
+												<h:panelGrid columns="1" cellpadding="3">
+													<p:outputLabel value="#{emision['emision.ramo.lcila.label.filepolizavigente']}" styleClass="negrita" />
+													<p:fileUpload fileLimit="1" />
+												</h:panelGrid>
+											</p:panel>
+											<!-- Footer del Formulario -->
+											<f:facet name="footer">
+												<div align="center">
+													<p:commandButton id="guardarBtnId" actionListener="#{lucroCesanteIncendioBacking.setearInfRamo()}" icon="icon-save"
+														value="#{emision['boton.aceptar']}" title="Guardar" update="formPrincipal, ramoLucroCesanteIncendioLineasAliada" />
+													<p:commandButton id="cancelarBtnId" icon="icon-cancel" value="#{emision['boton.cancelar']}" process="@this" title="Cancelar" />
+												</div>
+											</f:facet>
+										</h:panelGrid>
+									</div>
+								</h:form>
+
+							</p:tab>
+							<!-- OBJETO ASEGURADO -->
+							<p:tab title="#{emision['emision.ramo.lcila.objetoasegurado']}">
+								<div align="center">
+									<h:form id="form1">
+									<p:messages id="messageObjLucroCesanteIncendio" showDetail="true" autoUpdate="true" closable="true" />
+										<h:panelGrid columns="1">
+											<f:facet name="header">
+												<p:outputLabel value="#{emision['emision.ramo.lcila.objeto.tituloPantalla']}" styleClass="negrita" />
+											</f:facet>
+											<p:separator id="customSeparator" style="width:auto;height:1px" />
+											<p:growl id="messages" showDetail="true" />
+
+											<p:panelGrid columns="2">
+												<h:outputLabel value="#{emision['emision.ramo.lcila.objeto.item']}" styleClass="negrita" />
+												<p:inputText value="#{ramoLucroCesanteIncendioBean.numeroItem}" />
+
+												<h:outputLabel value="#{emision['emision.ramo.lcila.objeto.ubicacion']}" styleClass="negrita" />
+												<p:inputText value="#{ramoLucroCesanteIncendioBean.ubicacionRiesgo}" />
+
+
+												<h:outputLabel value="#{emision['emision.ramo.lcila.objeto.formaSeguro']}" styleClass="negrita" />
+												<p:selectOneMenu id="formaSeguroId" value="#{ramoLucroCesanteIncendioBean.formaSeguro}" effect="drop">
+													<f:selectItem itemLabel="Seleccione" noSelectionOption="true" />
+													<f:selectItems value="#{lucroCesanteIncendioBacking.formaSeguroItems}" />
+												</p:selectOneMenu>
+
+												<h:outputLabel value="#{emision['emision.ramo.lcila.objeto.utilidad']}" styleClass="negrita" />
+												<p:inputText value="#{ramoLucroCesanteIncendioBean.utilidadBruta}" />
+
+												<h:outputLabel value="#{emision['emision.ramo.lcila.objeto.detalle']}" styleClass="negrita" />
+												<p:inputText value="#{ramoLucroCesanteIncendioBean.detalle}" />
+											</p:panelGrid>
+
+											<f:facet name="footer">
+												<div align="center">
+													<p:commandButton id="agregarObjeto" update="form1, messages" icon="icon-add" value="#{emision['boton.agregar']}"
+														actionListener="#{ramoLucroCesanteIncendioBean.addAction}" title="Agregar" />
+												</div>
+											</f:facet>
+										</h:panelGrid>
+										<p:spacer height="30px;" />
+										<p:dataTable value="#{ramoLucroCesanteIncendioBean.orderlist}" var="obj" widgetVar="50" style="width: 50%;" editable="true">
+											<p:ajax event="rowEdit" listener="#{ramoLucroCesanteIncendioBean.onEdit}" />
+											<p:ajax event="rowEditCancel" listener="#{ramoLucroCesanteIncendioBean.onCancel}" />
+											<p:column>
+												<f:facet name="header">
+													<h:outputText value="#{emision['emision.ramo.lcila.objeto.item']}" />
+												</f:facet>
+												<p:cellEditor>
+													<f:facet name="output">
+														<h:outputText value="#{obj.numeroItem}" />
+													</f:facet>
+													<f:facet name="input">
+														<p:inputText value="#{obj.numeroItem}" style="width:100%" />
+													</f:facet>
+												</p:cellEditor>
+											</p:column>
+											<p:column>
+												<f:facet name="header">
+													<h:outputText value="#{emision['emision.ramo.lcila.objeto.ubicacion']}" />
+												</f:facet>
+												<p:cellEditor>
+													<f:facet name="output">
+														<h:outputText value="#{obj.ubicacionRiesgo}" />
+													</f:facet>
+													<f:facet name="input">
+														<p:inputText value="#{obj.ubicacionRiesgo}" style="width:100%" />
+													</f:facet>
+												</p:cellEditor>
+											</p:column>
+
+											<p:column>
+												<f:facet name="header">
+													<h:outputText value="#{emision['emision.ramo.lcila.objeto.formaSeguro']}" />
+												</f:facet>
+												<p:cellEditor>
+													<f:facet name="output">
+														<h:outputText value="#{obj.formaSeguro}" />
+													</f:facet>
+													<f:facet name="input">
+														<p:inputText value="#{obj.formaSeguro}" style="width:100%" />
+													</f:facet>
+												</p:cellEditor>
+											</p:column>
+
+											<p:column>
+												<f:facet name="header">
+													<h:outputText value="#{emision['emision.ramo.lcila.objeto.utilidad']}" />
+												</f:facet>
+												<p:cellEditor>
+													<f:facet name="output">
+														<h:outputText value="#{obj.utilidad}" />
+													</f:facet>
+													<f:facet name="input">
+														<p:inputText value="#{obj.utilidad}" style="width:100%" />
+													</f:facet>
+												</p:cellEditor>
+											</p:column>
+											<p:column>
+												<f:facet name="header">
+													<h:outputText value="#{emision['emision.ramo.lcila.objeto.detalle']}" />
+												</f:facet>
+												<p:cellEditor>
+													<f:facet name="output">
+														<h:outputText value="#{obj.detalle}" />
+													</f:facet>
+													<f:facet name="input">
+														<p:inputText value="#{obj.detalle}" style="width:100%" />
+													</f:facet>
+												</p:cellEditor>
+											</p:column>
+											<p:column headerText="Options" style="width:50px">
+												<p:rowEditor />
+											</p:column>
+										</p:dataTable>
+										<p:spacer height="30px;" />
+										<p:commandButton id="guardarObjAseguradoBtnId" actionListener="#{lucroCesanteIncendioBacking.guardarRamo()}" icon="icon-save"
+											value="#{emision['boton.guardar']}" update="form1" title="Guardar" />
+										<p:commandButton id="cancelarBtnId" icon="icon-cancel" value="#{emision['boton.cancelar']}" title="Cancelar" />
+
+									</h:form>
+								</div>
+							</p:tab>
+						</p:tabView>
+					</ui:define>
+				</ui:decorate>
+			</ui:define>
+		</ui:decorate>
+	</ui:define>
+</ui:composition>
+</html>

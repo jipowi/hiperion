@@ -1,0 +1,87 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui">
+<ui:composition template="/templates/menuPrincipalTemplate.xhtml">
+	<ui:define name="content">
+		<ui:decorate template="/templates/polizaTemplate.xhtml">
+			<ui:define name="content">
+				<ui:decorate template="/templates/ramoTemplate.xhtml">
+					<ui:define name="ramoHeader">
+						<div align="center">
+							<p:outputLabel value="#{emision['calidadMateriales.tituloPantalla']}" styleClass="negrita" />
+							<p:separator id="customSeparator" style="width:auto;height:1px" />
+							<p:spacer height="5px;" />
+							<h:panelGroup style="display:block; text-align:center">
+								<h:graphicImage name="banner_calidaMateriales.jpg" library="img/ramos/buena_calida_materiales" width="1000px" height="160px" />
+							</h:panelGroup>
+							<p:spacer height="15px;" />
+						</div>
+					</ui:define>
+					<ui:define name="ramoContent">
+						<p:panel>
+							<p:tabView effect="blind" effectDuration="normal">
+								<p:tab title="#{emision['calidadMateriales.tab.principal']}">
+									<p:outputPanel id="messageMateriales">
+										<p:messages id="messagesMateriales" showDetail="true" autoUpdate="true" closable="true" />
+									</p:outputPanel>
+									<h:form id="formPrincipal">
+										<div align="center">
+											<h:panelGrid columns="1" id="ramoMateriales">
+												<p:panel> 
+													<h:panelGrid columns="2" cellpadding="3">
+														<p:outputLabel value="#{emision['calidadMateriales.sector']}" styleClass="negrita" />
+														<p:selectOneMenu id="sectorId" value="#{ramoBuenaCalMatBean.sector}" effect="drop" required="true"
+															requiredMessage="#{emision['calidadMateriales.sector.msn']}">
+															<f:selectItem itemLabel="Seleccione" noSelectionOption="true" />
+															<f:selectItems value="#{buenaCalidadMaterialesBacking.sectorItems}" />
+														</p:selectOneMenu>
+
+														<p:outputLabel for="valorContrato" value="#{emision['calidadMateriales.valorContrato']}" styleClass="negrita" />
+														<p:inputText id="valorContrato" value="#{ramoBuenaCalMatBean.valorContrato}" required="true"
+															requiredMessage="#{emision['calidadMateriales.valorContrato.msn']}" />
+
+														<p:outputLabel for="valorPoliza" value="#{emision['calidadMateriales.valorPoliza']}" styleClass="negrita" />
+														<p:inputText id="valorPoliza" value="#{ramoBuenaCalMatBean.valorPoliza}" required="true"
+															requiredMessage="#{emision['calidadMateriales.valorPoliza.msn']}" />
+
+														<p:outputLabel for="objetoAsegurado" value="#{emision['calidadMateriales.objetoAsegurado']}" styleClass="negrita" />
+														<p:inputTextarea id="objetoAsegurado" cols="50" rows="2" value="#{ramoBuenaCalMatBean.objetoAsegurado}" required="true"
+															requiredMessage="#{emision['calidadMateriales.objetoAsegurado.msn']}" />
+
+													</h:panelGrid>
+													<h:panelGrid columns="1" cellpadding="3">
+														<p:outputLabel value="#{emision['calidadMateriales.fileContrato']}" styleClass="negrita" />
+														<p:fileUpload fileLimit="1" />
+														<p:outputLabel for="filePoliza" value="#{emision['calidadMateriales.filePoliza']}" styleClass="negrita" />
+														<p:fileUpload id="filePoliza" fileLimit="1" />
+													</h:panelGrid>
+												</p:panel>
+											</h:panelGrid>
+											<p:spacer height="30px;" />
+											<p:commandButton id="guardarBtnId"  actionListener="#{buenaCalidadMaterialesBacking.guardarRamo}"
+												icon="icon-save" value="#{emision['boton.guardar']}" title="Guardar" update="ramoMateriales, formPrincipal"/>
+											<p:commandButton id="cancelarBtnId" oncomplete="materialesDlg.hide();" icon="icon-cancel" value="#{emision['boton.cancelar']}"
+												process="@this" title="Cancelar" />
+										</div>
+									</h:form>
+								</p:tab>
+								<!-- COBERTURAS -->
+								<p:tab title="#{emision['ap.tab.coberturas']}">
+									<h:form id="cobBCMFormId">
+										<p:dataTable id="cobBCMTblId" var="cobertura" value="#{buenaCalidadMaterialesBacking.obtenerCoberturas()}"
+											selection="#{buenaCalidadMaterialesBacking.selectCoberturas}">
+											<f:facet name="header">#{emision['anexo.titulo.cob']}</f:facet>
+											<p:column selectionMode="multiple" style="width:2%" />
+											<p:column headerText="#{emision['anexo.ca.nombre']}">#{cobertura.nombreDetalleAnexo}</p:column>
+										</p:dataTable>
+									</h:form>
+								</p:tab>
+							</p:tabView>
+						</p:panel>
+					</ui:define>
+				</ui:decorate>
+			</ui:define>
+		</ui:decorate>
+	</ui:define>
+</ui:composition>
+</html>

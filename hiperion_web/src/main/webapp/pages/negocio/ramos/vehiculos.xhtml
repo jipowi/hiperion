@@ -1,0 +1,263 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui">
+<ui:composition template="/templates/menuPrincipalTemplate.xhtml">
+	<ui:define name="content">
+		<ui:decorate template="/templates/polizaTemplate.xhtml">
+			<ui:define name="content">
+				<ui:decorate template="/templates/ramoTemplate.xhtml">
+					<ui:define name="ramoHeader">
+						<div align="center">
+							<p:outputLabel value="#{emision['vehiculo.tituloPantalla']}" styleClass="negrita" />
+							<p:separator id="customSeparator" style="width:auto;height:1px" />
+							<p:spacer height="5px;" />
+							<h:panelGroup style="display:block; text-align:center">
+								<h:graphicImage name="banner_autos.png" library="img/ramos/vehiculos" width="1000px" height="160px" />
+							</h:panelGroup>
+							<p:spacer height="15px;" />
+						</div>
+					</ui:define>
+					<ui:define name="ramoContent">
+						<p:tabView id="tabPrincipal">
+							<p:tab id="tabRamo" title="#{emision['vehiculo.tab.principal']}">
+								<p:outputPanel>
+									<p:messages id="messageVehiculo" showDetail="true" autoUpdate="true" closable="true" />
+								</p:outputPanel>
+								<h:form id="formVehiculos">
+									<div align="center">
+										<h:panelGrid columns="1" id="ramoVehiculos">
+											<p:panel>
+												<h:panelGrid columns="6" cellpadding="3">
+													<p:outputLabel for="claseVehiculoId" value="#{emision['vehiculo.claseVehiculo']}" styleClass="negrita" />
+													<p:selectOneMenu id="claseVehiculoId" value="#{ramoVehiculoBean.claseVehiculo}" effect="drop" required="true" requiredMessage="#{emision['vehiculo.claseVehiculo.msn']}">
+														<f:selectItem itemLabel="Seleccione" noSelectionOption="true" />
+														<f:selectItems value="#{vehiculosBacking.claseVehiculoItems}" />
+														<p:ajax event="change" listener="#{vehiculosBacking.selectClaseVehiculo()}"
+															update=" marcas, idMarcaVehiculo, idMarcaPesado, idMarcaMoto" />
+													</p:selectOneMenu>
+
+													<p:outputLabel for="tipoVehiculoId" value="#{emision['vehiculo.tipoVehiculo']}" styleClass="negrita" />
+													<p:selectOneMenu id="tipoVehiculoId" value="#{ramoVehiculoBean.tipoVehiculo}" effect="drop" required="true" requiredMessage="#{emision['vehiculo.tipoVehiculo.msn']}">
+														<f:selectItem itemLabel="Seleccione" noSelectionOption="true" />
+														<f:selectItems value="#{vehiculosBacking.tipoVehiculoItems}" />
+													</p:selectOneMenu>
+
+													<p:outputLabel for="usoVehiculoId" value="#{emision['vehiculo.uso']}" styleClass="negrita" />
+													<p:selectOneMenu id="usoVehiculoId" value="#{ramoVehiculoBean.uso}" effect="drop" required="true" requiredMessage="#{emision['vehiculo.uso.msn']}" >
+														<f:selectItem itemLabel="Seleccione" noSelectionOption="true" />
+														<f:selectItems value="#{vehiculosBacking.usoVehiculoItems}" />
+													</p:selectOneMenu>
+
+												</h:panelGrid>
+												<h:panelGrid id="marcas" columns="6" cellpadding="3">
+													<h:panelGrid id="idMarcaVehiculo" columns="2" rendered="#{vehiculosBacking.activarMarcaAuto}">
+														<p:outputLabel value="#{emision['vehiculo.marca']}" styleClass="negrita" />
+														<p:selectOneMenu value="#{autoCompleteBean.selectedMarcaLiviano}" converter="marca" height="250" effect="fade" var="m">
+															<f:selectItem itemLabel="Select One" itemValue="" />
+															<f:selectItems value="#{autoCompleteBean.marcasLivianos}" var="marca" itemLabel="#{marca.marca}" itemValue="#{marca}" />
+															<p:ajax event="change" listener="#{vehiculosBacking.obtenerModelo(autoCompleteBean.selectedMarcaLiviano)}" update="idModelo" />
+															<p:column>
+																<p:graphicImage name="#{m.logo}" library="img/logosAutos" />
+															</p:column>
+															<p:column>  
+											                #{m.marca} 
+											            	</p:column>
+														</p:selectOneMenu>
+													</h:panelGrid>
+													<h:panelGrid id="idMarcaPesado" columns="2" rendered="#{vehiculosBacking.activarMarcaPesado}">
+														<p:outputLabel value="#{emision['vehiculo.marca']}" styleClass="negrita" />
+														<p:selectOneMenu value="#{autoCompleteBean.selectedMarcaPesado}" converter="marca" height="250" effect="fade" var="m">
+															<f:selectItem itemLabel="Select One" itemValue="" />
+															<f:selectItems value="#{autoCompleteBean.marcasPesados}" var="marca" itemLabel="#{marca.marca}" itemValue="#{marca}" />
+															<p:ajax event="change" listener="#{vehiculosBacking.obtenerModelo(autoCompleteBean.selectedMarcaPesado)}" update="idModelo" />
+															<p:column>
+																<p:graphicImage name="#{m.logo}" library="img/logosPesados" />
+															</p:column>
+															<p:column>  
+											                #{m.marca} 
+											            	</p:column>
+														</p:selectOneMenu>
+													</h:panelGrid>
+													<h:panelGrid id="idMarcaMoto" columns="2" rendered="#{vehiculosBacking.activarMarcaMoto}">
+														<p:outputLabel value="#{emision['vehiculo.marca']}" styleClass="negrita" />
+														<p:selectOneMenu value="#{autoCompleteBean.selectedMarcaMoto}" converter="marca" height="250" effect="fade" var="m">
+															<f:selectItem itemLabel="Select One" itemValue="" />
+															<f:selectItems value="#{autoCompleteBean.marcasMotos}" var="marca" itemLabel="#{marca.marca}" itemValue="#{marca}" />
+															<p:ajax event="change" listener="#{vehiculosBacking.obtenerModelo(autoCompleteBean.selectedMarcaMoto)}" update="idModelo" />
+															<p:column>
+																<p:graphicImage name="#{m.logo}" library="img/logosMotos" />
+															</p:column>
+															<p:column>  
+											                #{m.marca} 
+											            	</p:column>
+														</p:selectOneMenu>
+													</h:panelGrid>
+
+													<h:panelGrid id="idModelo" columns="2">
+														<p:outputLabel value="#{emision['vehiculo.modelo']}" styleClass="negrita" />
+														<p:selectOneMenu value="#{ramoVehiculoBean.modelo}" effect="drop">
+															<f:selectItem itemLabel="Seleccione" noSelectionOption="true" />
+															<f:selectItems value="#{vehiculosBacking.modeloItems}" />
+														</p:selectOneMenu>
+													</h:panelGrid>
+													<h:panelGrid columns="2">
+														<p:outputLabel value="#{emision['vehiculo.detalleModelo']}" styleClass="negrita" />
+														<p:inputText value="#{ramoVehiculoBean.detalleModelo}" />
+													</h:panelGrid>
+												</h:panelGrid>
+											</p:panel>
+											<p:spacer height="15px;" />
+											<p:panel>
+												<h:panelGrid columns="6" cellpadding="3">
+													<p:outputLabel for="idItem" value="#{emision['vehiculo.item']}" styleClass="negrita" />
+													<p:inputText id="idItem" value="#{ramoVehiculoBean.item}" required="true" requiredMessage="#{emision['vehiculo.item.msn']}" />
+													<p:outputLabel for="idPropietario" value="#{emision['vehiculo.nombrePropietario']}" styleClass="negrita" />
+													<p:inputText id="idPropietario" value="#{ramoVehiculoBean.propietario}" required="true" requiredMessage="#{emision['vehiculo.nombrePropietario.msn']}" />
+													<p:outputLabel for="idPlaca" value="#{emision['vehiculo.placa']}" styleClass="negrita" />
+													<p:inputText id="idPlaca" value="#{ramoVehiculoBean.placa}" required="true" requiredMessage="#{emision['vehiculo.placa.msn']}" />
+
+													<p:outputLabel for="idMotor" value="#{emision['vehiculo.motor']}" styleClass="negrita" />
+													<p:inputText id="idMotor" value="#{ramoVehiculoBean.motor}" required="true" requiredMessage="#{emision['vehiculo.motor.msn']}" />
+													<p:outputLabel for="idChasis" value="#{emision['vehiculo.chasis']}" styleClass="negrita" />
+													<p:inputText id="idChasis" value="#{ramoVehiculoBean.chasis}" required="true" requiredMessage="#{emision['vehiculo.chasis.msn']}"/>
+													<p:outputLabel for="idAnioFabricacion" value="#{emision['vehiculo.anio']}" styleClass="negrita" />
+													<p:inputText id="idAnioFabricacion" value="#{ramoVehiculoBean.anio}" required="true"  requiredMessage="#{emision['vehiculo.anio.msn']}"/>
+
+													<p:outputLabel for="idColor" value="#{emision['vehiculo.color']}" styleClass="negrita" />
+													<p:inputText id="idColor" value="#{ramoVehiculoBean.color}" required="true" requiredMessage="#{emision['vehiculo.color.msn']}" />
+													<p:outputLabel for="idValorAsegurado" value="#{emision['vehiculo.valorAsegurado']}" styleClass="negrita" />
+													<p:inputText id="idValorAsegurado" value="#{ramoVehiculoBean.valorAsegurado}" required="true" requiredMessage="#{emision['vehiculo.valorAsegurado.msn']}" />
+													<p:outputLabel for="idValorTotalItem" value="#{emision['vehiculo.valorTotalItem']}" styleClass="negrita" />
+													<p:inputText id="idValorTotalItem" value="#{ramoVehiculoBean.valorTotalItem}" required="true" requiredMessage="#{emision['vehiculo.valorTotalItem.msn']}" />
+
+													<p:outputLabel for="idTasa" value="#{emision['vehiculo.tasa']}" styleClass="negrita" />
+													<p:inputText id="idTasa" value="#{ramoVehiculoBean.tasa}" required="true" requiredMessage="#{emision['vehiculo.tasa.msn']}" />
+													<p:outputLabel value="#{emision['vehiculo.consideracionesImportantes']}" styleClass="negrita" />
+													<p:inputText value="#{ramoVehiculoBean.consideraciones}" />
+													<p:outputLabel value="#{emision['vehiculo.amparoPatrimonial']}" styleClass="negrita" />
+													<p:inputText value="#{ramoVehiculoBean.amparoPatrimonial}" />
+
+													<p:outputLabel value="#{emision['vehiculo.coberturaPactoAndino']}" styleClass="negrita" />
+													<p:inputText value="#{ramoVehiculoBean.coberturaPactoAndino}" />
+													<p:outputLabel value="#{emision['vehiculo.asistenciaVehicular']}" styleClass="negrita" />
+													<p:inputText value="#{ramoVehiculoBean.asistenciaVehicular}" />
+													<p:outputLabel value="#{emision['vehiculo.autoSustituto']}" styleClass="negrita" />
+													<p:inputText value="#{ramoVehiculoBean.autoSustituto}" />
+												</h:panelGrid>
+												<p:spacer height="15px;" />
+												<h:panelGrid columns="2">
+													<h:outputLabel value="#{emision['emision.deducibles']}" />
+													<h:graphicImage name="deducibles.jpg" library="img" />
+												</h:panelGrid>
+												<h:panelGrid columns="4" cellpadding="3">
+													<p:outputLabel for="idPorcentajeDeducible" value="#{emision['vehiculo.porcentajeDeducible']}" styleClass="negrita" />
+													<p:inputText id="idPorcentajeDeducible" value="#{ramoVehiculoBean.porcentajeDeducible}" required="true" requiredMessage="#{emision['vehiculo.porcentajeDeducible.msn']}" />
+													<p:outputLabel for="idPorcentajeSiniestro" value="#{emision['vehiculo.porcentajeSiniesto']}" styleClass="negrita" />
+													<p:inputText id="idPorcentajeSiniestro" value="#{ramoVehiculoBean.porcentajeSiniestro}" required="true" requiredMessage="#{emision['vehiculo.porcentajeSiniesto.msn']}"/>
+
+													<p:outputLabel for="idMinimoSiniestro" value="#{emision['vehiculo.minimoSiniestro']}" styleClass="negrita" />
+													<p:inputText id="idMinimoSiniestro" value="#{ramoVehiculoBean.minimoSiniestro}" required="true" requiredMessage="#{emision['vehiculo.minimoSiniestro.msn']}" />
+													<p:outputLabel value="#{emision['vehiculo.porcentajeValorAsegurado']}" styleClass="negrita" />
+													<p:inputText value="#{ramoVehiculoBean.porcentajeValorAsegurado}" />
+												</h:panelGrid>
+												<p:spacer height="15px;" />
+												<h:panelGrid columns="1" cellpadding="3">
+													<p:outputLabel value="#{emision['vehiculo.polizaVigente']}" styleClass="negrita" />
+													<p:fileUpload fileLimit="1" />
+												</h:panelGrid>
+											</p:panel>
+										</h:panelGrid>
+										<p:commandButton id="guardarVehiculoBtnId" actionListener="#{vehiculosBacking.guardarRamo}" icon="icon-save"
+											value="#{emision['boton.guardar']}" title="Guardar" update="formVehiculos, ramoVehiculos" />
+										<p:commandButton id="cancelarVehiculoBtnId" icon="icon-cancel" value="#{emision['boton.cancelar']}" process="@this" title="Cancelar" />
+									</div>
+								</h:form>
+							</p:tab>
+							<p:tab title="#{emision['vehiculo.tab.extras']}">
+								<div align="center">
+									<h:form id="form1">
+										<h:panelGrid columns="1">
+											<f:facet name="header">
+												<p:outputLabel value="#{emision['vehiculo.titulo.extra']}" styleClass="negrita" />
+											</f:facet>
+											<p:separator id="customSeparator" style="width:auto;height:1px" />
+											<p:growl id="messages" showDetail="true" />
+
+											<p:panelGrid columns="2">
+												<h:outputLabel value="#{emision['vehiculo.extra']}" styleClass="negrita" />
+												<p:inputText value="#{ramoVehiculoBean.extra}" />
+
+												<h:outputLabel value="#{emision['vehiculo.cantidadExtra']}" styleClass="negrita" />
+												<p:inputText value="#{ramoVehiculoBean.cantidadExtra}" />
+
+												<h:outputLabel value="#{emision['vehiculo.valorExtra']}" styleClass="negrita" />
+												<p:inputText value="#{ramoVehiculoBean.valorExtra}" />
+											</p:panelGrid>
+											<f:facet name="footer">
+												<div align="center">
+													<p:commandButton id="agregarExtra" update="form1, messages" icon="icon-add" value="#{emision['boton.agregar']}"
+														actionListener="#{ramoVehiculoBean.addExtras}" title="Agregar" />
+												</div>
+											</f:facet>
+										</h:panelGrid>
+										<p:spacer height="30px;" />
+										<p:dataTable value="#{ramoVehiculoBean.extraslist}" var="extra" widgetVar="50" style="width: 60%;" editable="true">
+											<p:ajax event="rowEdit" listener="#{ramoVehiculoBean.editExtra}" />
+											<p:ajax event="rowEditCancel" listener="#{ramoVehiculoBean.cancelExtra}" />
+
+											<p:column>
+												<f:facet name="header">
+													<h:outputText value="#{emision['vehiculo.extra']}" />
+												</f:facet>
+												<p:cellEditor>
+													<f:facet name="output">
+														<h:outputText value="#{extra.extra}" />
+													</f:facet>
+													<f:facet name="input">
+														<p:inputText value="#{extra.extra}" style="width:100%" />
+													</f:facet>
+												</p:cellEditor>
+											</p:column>
+											<p:column>
+												<f:facet name="header">
+													<h:outputText value="#{emision['vehiculo.cantidadExtra']}" />
+												</f:facet>
+												<p:cellEditor>
+													<f:facet name="output">
+														<h:outputText value="#{extra.cantidadExtra}" />
+													</f:facet>
+													<f:facet name="input">
+														<p:inputText value="#{extra.cantidadExtra}" style="width:100%" />
+													</f:facet>
+												</p:cellEditor>
+											</p:column>
+											<p:column>
+												<f:facet name="header">
+													<h:outputText value="#{emision['vehiculo.valorExtra']}" />
+												</f:facet>
+												<p:cellEditor>
+													<f:facet name="output">
+														<h:outputText value="#{extra.valorExtra}" />
+													</f:facet>
+													<f:facet name="input">
+														<p:inputText value="#{extra.valorExtra}" style="width:100%" />
+													</f:facet>
+												</p:cellEditor>
+											</p:column>
+											<p:column headerText="Options" style="width:50px">
+												<p:rowEditor />
+											</p:column>
+										</p:dataTable>
+									</h:form>
+								</div>
+							</p:tab>
+							<p:tab title="#{emision['vehiculo.tab.clausulasAdicionales']}"></p:tab>
+							<p:tab title="#{emision['vehiculo.tab.condicionesEspeciales']}"></p:tab>
+						</p:tabView>
+					</ui:define>
+				</ui:decorate>
+			</ui:define>
+		</ui:decorate>
+	</ui:define>
+</ui:composition>
+</html>

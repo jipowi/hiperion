@@ -1,0 +1,85 @@
+#top {
+	position: relative;
+	background-color: #036fab;
+	color: white;
+	padding: 5px;
+	margin: 0px 0px 1px 0px;
+	height: 55px;
+}
+
+#bottom {
+	position: relative;
+	background-color: #c2dfef;
+	padding: 5px;
+	margin: 300px auto auto auto;
+}
+
+#left {
+	float: left;
+	width: 200px;
+	height: auto;
+}
+
+#right {
+	float: right;
+	background-color: #FFFFFF;
+	padding: 5px;
+	width: 150px;
+}
+
+.left_content {
+	background-color: #dddddd;
+	margin-left: 205px;
+	width: auto;
+	height: auto;
+}
+
+.center_content {
+	position: relative;
+	background-color: #dddddd;
+	padding: 5px;
+	margin-top: 1px;
+	min-height: 60px;
+}
+
+.right_content {
+	background-color: #dddddd;
+	padding: 5px;
+	margin: 0px 170px 0px 170px;
+}
+
+#top a:link,#top a:visited {
+	color: white;
+	font-weight: bold;
+	text-decoration: none;
+}
+
+#top a:link:hover,#top a:visited:hover {
+	color: black;
+	font-weight: bold;
+	text-decoration: underline;
+}
+
+#container {
+	width: auto;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.template_top {
+	background-color: #F5F3F3;
+	margin-right: auto;
+	margin-left: auto;
+}
+
+.template_content {
+	position: relative;
+	background-color: #dddddd;	
+	padding: 2px;
+	margin-top: 1px;
+	min-height: 5px;
+}
+
+.topAligned {
+    vertical-align: top;
+}

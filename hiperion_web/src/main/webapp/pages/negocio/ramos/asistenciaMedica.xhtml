@@ -1,0 +1,430 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui">
+<ui:composition template="/templates/menuPrincipalTemplate.xhtml">
+	<ui:define name="content">
+		<ui:decorate template="/templates/polizaTemplate.xhtml">
+			<ui:define name="content">
+				<ui:decorate template="/templates/ramoTemplate.xhtml">
+					<ui:define name="ramoHeader">
+						<div align="center">
+							<p:outputLabel value="#{emision['asm.tituloPantalla']}" styleClass="negrita" />
+							<p:separator id="customSeparator" style="width:auto;height:1px" />
+							<p:spacer height="5px;" />
+							<h:panelGroup style="display:block; text-align:center">
+								<h:graphicImage name="asistencia_medica.jpg" library="img/ramos/asistencia_medica" width="1000px" height="160px" />
+							</h:panelGroup>
+							<p:spacer height="15px;" />
+						</div>
+					</ui:define>
+					<ui:define name="ramoContent">
+						<p:tabView id="tabGeneral">
+							<p:tab id="tabRamo" title="#{emision['asm.tab.principal']}">
+								<h:form id="formGeneral">
+									<div align="center">
+										<h:panelGrid columns="1">
+											<p:panel>
+												<h:panelGrid columns="2">
+													<p:outputLabel value="#{emision['asm.totalMensualGrupo']}" styleClass="negrita" />
+													<p:inputText value="#{ramoAsistenciaMedicaBean.totalMensualGrupo}" />
+												</h:panelGrid>
+											</p:panel>
+											<h:panelGrid columns="1" cellpadding="3">
+												<p:outputLabel value="#{emision['asm.polizaVigente']}" styleClass="negrita" />
+												<p:fileUpload fileLimit="1" />
+											</h:panelGrid>
+
+											<!-- Footer del Formulario -->
+											<f:facet name="footer">
+												<div align="center">
+													<p:commandButton id="guardarAsmBtnId" oncomplete="asmDlg.hide();" actionListener="#{asistenciaMedicaBacking.guardar}" icon="icon-save"
+														value="#{emision['boton.guardar']}" title="Guardar" />
+													<p:commandButton id="cancelarAsmBtnId" oncomplete="asmDlg.hide();" icon="icon-cancel" value="#{emision['boton.cancelar']}"
+														process="@this" title="Cancelar" />
+												</div>
+											</f:facet>
+										</h:panelGrid>
+									</div>
+								</h:form>
+							</p:tab>
+							<!-- LIMITES Y COSTOS -->
+							<p:tab id="tabLimites" title="#{emision['asm.tab.limitesCostos']}">
+								<p:accordionPanel dynamic="true" cache="true" activeIndex="null">
+									<!-- Beneficios -->
+									<p:tab title="BENEFICIOS">
+										<h:form id="lcASMBenFormId">
+											<p:dataTable id="lcASMBenTblId" var="limCost" value="#{asistenciaMedicaBacking.obtenerLimitesCostosBeneficios()}" paginator="true" rows="4"
+												selection="#{asistenciaMedicaBacking.selectLimitesCostosBeneficios}">
+												<f:facet name="header">Transporte</f:facet>
+												<p:column selectionMode="multiple" style="width:2%" />
+												<p:column headerText="#{emision['anexo.ca.nombre']}">#{limCost.nombreDetalleAnexo}</p:column>
+											</p:dataTable>
+										</h:form>
+									</p:tab>
+									<!-- Beneficios Adicionales -->
+									<p:tab title="BENEFICIOS ADICIONALES">
+										<h:form id="lcASMBenAddFormId">
+											<p:dataTable id="lcASMBenAddTblId" var="limCost" value="#{asistenciaMedicaBacking.obtenerLimitesCostosBenAdd()}" paginator="true" rows="4"
+												selection="#{asistenciaMedicaBacking.selectLimitesCostosBenAdd}">
+												<f:facet name="header">Transporte</f:facet>
+												<p:column selectionMode="multiple" style="width:2%" />
+												<p:column headerText="#{emision['anexo.ca.nombre']}">#{limCost.nombreDetalleAnexo}</p:column>
+											</p:dataTable>
+										</h:form>
+									</p:tab>
+									<!-- Maternidad -->
+									<p:tab title="MATERNIDAD">
+										<h:form id="lcASMMatFormId">
+											<p:dataTable id="lcASMMatTblId" var="limCost" value="#{asistenciaMedicaBacking.obtenerLimitesCostosMaternidad()}" paginator="true" rows="4"
+												selection="#{asistenciaMedicaBacking.selectLimitesCostosMaternidad}">
+												<f:facet name="header">Transporte</f:facet>
+												<p:column selectionMode="multiple" style="width:2%" />
+												<p:column headerText="#{emision['anexo.ca.nombre']}">#{limCost.nombreDetalleAnexo}</p:column>
+											</p:dataTable>
+										</h:form>
+									</p:tab>
+								</p:accordionPanel>
+							</p:tab>
+							<!-- CONDICIONES PARTICULARES -->
+							<p:tab id="tabCondiciones" title="#{emision['asm.tab.condicionesParticulares']}"></p:tab>
+							<!-- MODALIDAD -->
+							<p:tab id="tabModalidad" title="#{emision['asm.tab.modalidad']}">
+								<p:accordionPanel multiple="true">
+									<p:tab title="#{emision['asm.modalidad.tituloTitular']}">
+										<div align="center">
+											<h:form id="formTitular">
+												<p:spacer height="30px;" />
+												<h:panelGrid columns="1">
+													<p:growl id="messagesTitular" showDetail="true" />
+													<h:panelGrid columns="2">
+														<h:outputLabel value="#{emision['asm.modalidad.nombre']}" styleClass="negrita" />
+														<p:inputText value="#{ramoAsistenciaMedicaBean.nombreTitular}" />
+
+														<h:outputLabel value="#{emision['asm.modalidad.fechaNacimiento']}" styleClass="negrita" />
+														<p:calendar value="#{ramoAsistenciaMedicaBean.fechaNacimientoTitular}" pattern="dd/MM/yyyy HH:mm" locale="es" navigator="true" />
+
+														<h:outputLabel value="#{emision['asm.modalidad.cedula']}" styleClass="negrita" />
+														<p:inputText value="#{ramoAsistenciaMedicaBean.cedulaTitular}" />
+
+														<h:outputLabel value="#{emision['asm.modalidad.edad']}" styleClass="negrita" />
+														<p:inputText value="#{ramoAsistenciaMedicaBean.edadTitular}" />
+
+														<h:outputLabel value="#{emision['asm.modalidad.primaNetaTitular']}" styleClass="negrita" />
+														<p:inputText value="#{ramoAsistenciaMedicaBean.primaNetaTitular}" />
+
+														<h:outputLabel value="#{emision['asm.modalidad.grupo']}" styleClass="negrita" />
+														<p:selectOneRadio id="grupoId" value="#{ramoAsistenciaMedicaBean.grupo}">
+															<f:selectItem itemLabel="Grupo 1" itemValue="1" />
+															<f:selectItem itemLabel="Grupo 2" itemValue="2" />
+															<f:selectItem itemLabel="Grupo 3" itemValue="3" />
+															<f:selectItem itemLabel="Grupo 4" itemValue="4" />
+														</p:selectOneRadio>
+														<h:outputLabel value="#{emision['asm.modalidad.valorGrupo']}" styleClass="negrita" />
+														<p:inputText value="#{ramoAsistenciaMedicaBean.valorGrupo}" />
+													</h:panelGrid>
+													<f:facet name="footer">
+														<div align="center">
+															<p:commandButton id="agregarTitular" update="formTitular, messagesTitular" icon="icon-add" value="#{emision['boton.agregar']}"
+																actionListener="#{ramoAsistenciaMedicaBean.addActionTitular()}" title="Agregar" />
+														</div>
+													</f:facet>
+												</h:panelGrid>
+												<p:spacer height="30px;" />
+												<p:dataTable value="#{ramoAsistenciaMedicaBean.titularlist}" var="obj" widgetVar="50" style="width: 700px;" editable="true">
+													<p:ajax event="rowEdit" listener="#{ramoAsistenciaMedicaBean.onEditTitular}" />
+													<p:ajax event="rowEditCancel" listener="#{ramoAsistenciaMedicaBean.onCancelTitular}" />
+													<p:column>
+														<f:facet name="header">
+															<h:outputText value="#{emision['asm.modalidad.nombre']}" />
+														</f:facet>
+														<p:cellEditor>
+															<f:facet name="output">
+																<h:outputText value="#{obj.nombre}" />
+															</f:facet>
+															<f:facet name="input">
+																<p:inputText value="#{obj.nombre}" style="width:100%" />
+															</f:facet>
+														</p:cellEditor>
+													</p:column>
+													<p:column>
+														<f:facet name="header">
+															<h:outputText value="#{emision['asm.modalidad.fechaNacimiento']}" />
+														</f:facet>
+														<p:cellEditor>
+															<f:facet name="output">
+																<h:outputText value="#{obj.fechaNacimiento}" />
+															</f:facet>
+															<f:facet name="input">
+																<p:inputText value="#{obj.fechaNacimiento}" style="width:100%" />
+															</f:facet>
+														</p:cellEditor>
+													</p:column>
+													<p:column>
+														<f:facet name="header">
+															<h:outputText value="#{emision['asm.modalidad.cedula']}" />
+														</f:facet>
+														<p:cellEditor>
+															<f:facet name="output">
+																<h:outputText value="#{obj.cedula}" />
+															</f:facet>
+															<f:facet name="input">
+																<p:inputText value="#{obj.cedula}" style="width:100%" />
+															</f:facet>
+														</p:cellEditor>
+													</p:column>
+													<p:column>
+														<f:facet name="header">
+															<h:outputText value="#{emision['asm.modalidad.edad']}" />
+														</f:facet>
+														<p:cellEditor>
+															<f:facet name="output">
+																<h:outputText value="#{obj.edad}" />
+															</f:facet>
+															<f:facet name="input">
+																<p:inputText value="#{obj.edad}" style="width:100%" />
+															</f:facet>
+														</p:cellEditor>
+													</p:column>
+													<p:column>
+														<f:facet name="header">
+															<h:outputText value="#{emision['asm.modalidad.grupo']}" />
+														</f:facet>
+														<p:cellEditor>
+															<f:facet name="output">
+																<h:outputText value="#{obj.grupo}" />
+															</f:facet>
+															<f:facet name="input">
+																<p:inputText value="#{obj.grupo}" style="width:100%" />
+															</f:facet>
+														</p:cellEditor>
+													</p:column>
+													<p:column>
+														<f:facet name="header">
+															<h:outputText value="#{emision['asm.modalidad.valorGrupo']}" />
+														</f:facet>
+														<p:cellEditor>
+															<f:facet name="output">
+																<h:outputText value="#{obj.valorGrupo}" />
+															</f:facet>
+															<f:facet name="input">
+																<p:inputText value="#{obj.valorGrupo}" style="width:100%" />
+															</f:facet>
+														</p:cellEditor>
+													</p:column>
+													<p:column headerText="Options" style="width:50px">
+														<p:rowEditor />
+													</p:column>
+												</p:dataTable>
+												<p:spacer height="30px;" />
+											</h:form>
+										</div>
+									</p:tab>
+
+									<p:tab title="#{emision['asm.modalidad.tituloTitularDependiente']}">
+										<div align="center">
+											<h:form id="formDependiente">
+												<p:spacer height="30px;" />
+												<h:panelGrid columns="1">
+													<p:growl id="messagesDependiente" showDetail="true" />
+													<p:panelGrid columns="2">
+														<h:outputLabel value="#{emision['asm.modalidad.nombre']}" styleClass="negrita" />
+														<p:inputText value="#{ramoAsistenciaMedicaBean.nombreDependiente}" />
+
+														<h:outputLabel value="#{emision['asm.modalidad.fechaNacimiento']}" styleClass="negrita" />
+														<p:calendar value="#{ramoAsistenciaMedicaBean.fechaNacimientoDependiente}" pattern="dd/MM/yyyy HH:mm" locale="es" navigator="true" />
+
+														<h:outputLabel value="#{emision['asm.modalidad.cedula']}" styleClass="negrita" />
+														<p:inputText value="#{ramoAsistenciaMedicaBean.cedulaDependiente}" />
+
+														<h:outputLabel value="#{emision['asm.modalidad.edad']}" styleClass="negrita" />
+														<p:inputText value="#{ramoAsistenciaMedicaBean.edadDependiente}" />
+													</p:panelGrid>
+													<f:facet name="footer">
+														<div align="center">
+															<p:commandButton id="agregarTitular" update="formDependiente, messagesDependiente" icon="icon-add" value="#{emision['boton.agregar']}"
+																actionListener="#{ramoAsistenciaMedicaBean.addActionTitularDependiente()}" title="Agregar" />
+														</div>
+													</f:facet>
+												</h:panelGrid>
+												<p:spacer height="30px;" />
+												<p:dataTable value="#{ramoAsistenciaMedicaBean.titularDependienteList}" var="obj" widgetVar="50" style="width: 700px;" editable="true">
+													<p:ajax event="rowEdit" listener="#{ramoAsistenciaMedicaBean.onEditTitularDependiente}" />
+													<p:ajax event="rowEditCancel" listener="#{ramoAsistenciaMedicaBean.onCancelTitularDependiente}" />
+													<p:column>
+														<f:facet name="header">
+															<h:outputText value="#{emision['asm.modalidad.nombre']}" />
+														</f:facet>
+														<p:cellEditor>
+															<f:facet name="output">
+																<h:outputText value="#{obj.nombre}" />
+															</f:facet>
+															<f:facet name="input">
+																<p:inputText value="#{obj.nombre}" style="width:100%" />
+															</f:facet>
+														</p:cellEditor>
+													</p:column>
+													<p:column>
+														<f:facet name="header">
+															<h:outputText value="#{emision['asm.modalidad.fechaNacimiento']}" />
+														</f:facet>
+														<p:cellEditor>
+															<f:facet name="output">
+																<h:outputText value="#{obj.fechaNacimiento}" />
+															</f:facet>
+															<f:facet name="input">
+																<p:inputText value="#{obj.fechaNacimiento}" style="width:100%" />
+															</f:facet>
+														</p:cellEditor>
+													</p:column>
+													<p:column>
+														<f:facet name="header">
+															<h:outputText value="#{emision['asm.modalidad.cedula']}" />
+														</f:facet>
+														<p:cellEditor>
+															<f:facet name="output">
+																<h:outputText value="#{obj.cedula}" />
+															</f:facet>
+															<f:facet name="input">
+																<p:inputText value="#{obj.cedula}" style="width:100%" />
+															</f:facet>
+														</p:cellEditor>
+													</p:column>
+													<p:column>
+														<f:facet name="header">
+															<h:outputText value="#{emision['asm.modalidad.edad']}" />
+														</f:facet>
+														<p:cellEditor>
+															<f:facet name="output">
+																<h:outputText value="#{obj.edad}" />
+															</f:facet>
+															<f:facet name="input">
+																<p:inputText value="#{obj.edad}" style="width:100%" />
+															</f:facet>
+														</p:cellEditor>
+													</p:column>
+													<p:column headerText="Options" style="width:50px">
+														<p:rowEditor />
+													</p:column>
+												</p:dataTable>
+												<p:spacer height="30px;" />
+											</h:form>
+										</div>
+									</p:tab>
+									<p:spacer height="30px;" />
+									<p:tab title="#{emision['asm.modalidad.tituloTitularFamilia']}">
+										<div align="center">
+											<h:form id="formFamilia">
+												<p:spacer height="30px;" />
+												<h:panelGrid columns="1">
+													<p:growl id="messagesFamilia" showDetail="true" />
+													<p:panelGrid columns="2">
+														<h:outputLabel value="#{emision['asm.modalidad.nombre']}" styleClass="negrita" />
+														<p:inputText value="#{ramoAsistenciaMedicaBean.nombreFamilia}" />
+
+														<h:outputLabel value="#{emision['asm.modalidad.fechaNacimiento']}" styleClass="negrita" />
+														<p:calendar value="#{ramoAsistenciaMedicaBean.fechaNacimientoFamilia}" pattern="dd/MM/yyyy HH:mm" locale="es" navigator="true" />
+
+														<h:outputLabel value="#{emision['asm.modalidad.cedula']}" styleClass="negrita" />
+														<p:inputText value="#{ramoAsistenciaMedicaBean.cedulaFamilia}" />
+
+														<h:outputLabel value="#{emision['asm.modalidad.edad']}" styleClass="negrita" />
+														<p:inputText value="#{ramoAsistenciaMedicaBean.edadFamilia}" />
+
+														<h:outputLabel value="#{emision['asm.modalidad.parentescoDependiente']}" styleClass="negrita" />
+														<p:inputText value="#{ramoAsistenciaMedicaBean.parentescoFamilia}" />
+
+													</p:panelGrid>
+													<f:facet name="footer">
+														<div align="center">
+															<p:commandButton id="agregarTitular" update="formFamilia, messagesFamilia" icon="icon-add" value="#{emision['boton.agregar']}"
+																actionListener="#{ramoAsistenciaMedicaBean.addActionTitularFamilia()}" title="Agregar" />
+														</div>
+													</f:facet>
+												</h:panelGrid>
+												<p:spacer height="30px;" />
+												<p:dataTable value="#{ramoAsistenciaMedicaBean.titularFamiliaList}" var="obj" widgetVar="50" style="width: 700px;" editable="true">
+													<p:ajax event="rowEdit" listener="#{ramoAsistenciaMedicaBean.onEditTitularFamilia()}" />
+													<p:ajax event="rowEditCancel" listener="#{ramoAsistenciaMedicaBean.onCancelTitularFamilia()}" />
+													<p:column>
+														<f:facet name="header">
+															<h:outputText value="#{emision['asm.modalidad.nombre']}" />
+														</f:facet>
+														<p:cellEditor>
+															<f:facet name="output">
+																<h:outputText value="#{obj.nombre}" />
+															</f:facet>
+															<f:facet name="input">
+																<p:inputText value="#{obj.nombre}" style="width:100%" />
+															</f:facet>
+														</p:cellEditor>
+													</p:column>
+													<p:column>
+														<f:facet name="header">
+															<h:outputText value="#{emision['asm.modalidad.fechaNacimiento']}" />
+														</f:facet>
+														<p:cellEditor>
+															<f:facet name="output">
+																<h:outputText value="#{obj.fechaNacimiento}" />
+															</f:facet>
+															<f:facet name="input">
+																<p:inputText value="#{obj.fechaNacimiento}" style="width:100%" />
+															</f:facet>
+														</p:cellEditor>
+													</p:column>
+													<p:column>
+														<f:facet name="header">
+															<h:outputText value="#{emision['asm.modalidad.cedula']}" />
+														</f:facet>
+														<p:cellEditor>
+															<f:facet name="output">
+																<h:outputText value="#{obj.cedula}" />
+															</f:facet>
+															<f:facet name="input">
+																<p:inputText value="#{obj.cedula}" style="width:100%" />
+															</f:facet>
+														</p:cellEditor>
+													</p:column>
+													<p:column>
+														<f:facet name="header">
+															<h:outputText value="#{emision['asm.modalidad.edad']}" />
+														</f:facet>
+														<p:cellEditor>
+															<f:facet name="output">
+																<h:outputText value="#{obj.edad}" />
+															</f:facet>
+															<f:facet name="input">
+																<p:inputText value="#{obj.edad}" style="width:100%" />
+															</f:facet>
+														</p:cellEditor>
+													</p:column>
+													<p:column>
+														<f:facet name="header">
+															<h:outputText value="#{emision['asm.modalidad.parentescoDependiente']}" />
+														</f:facet>
+														<p:cellEditor>
+															<f:facet name="output">
+																<h:outputText value="#{obj.parentesco}" />
+															</f:facet>
+															<f:facet name="input">
+																<p:inputText value="#{obj.parentesco}" style="width:100%" />
+															</f:facet>
+														</p:cellEditor>
+													</p:column>
+													<p:column headerText="Options" style="width:50px">
+														<p:rowEditor />
+													</p:column>
+												</p:dataTable>
+												<p:spacer height="30px;" />
+											</h:form>
+										</div>
+									</p:tab>
+								</p:accordionPanel>
+							</p:tab>
+						</p:tabView>
+					</ui:define>
+				</ui:decorate>
+			</ui:define>
+		</ui:decorate>
+	</ui:define>
+</ui:composition>
+</html>

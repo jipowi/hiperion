@@ -1,0 +1,124 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui">
+<ui:composition template="/templates/menuPrincipalTemplate.xhtml">
+	<ui:define name="content">
+		<ui:decorate template="/templates/polizaTemplate.xhtml">
+			<ui:define name="content">
+				<ui:decorate template="/templates/ramoTemplate.xhtml">
+					<ui:define name="ramoHeader">
+						<div align="center">
+							<p:outputLabel value="#{emision['cascoMaritimo.tituloPantalla']}" styleClass="negrita" />
+							<p:separator id="customSeparator" style="width:auto;height:1px" />
+							<p:spacer height="5px;" />
+							<h:panelGroup style="display:block; text-align:center">
+								<h:graphicImage name="cascoMaritimo.jpg" library="img/ramos/cascoMaritimo" width="1000px" height="160px" />
+							</h:panelGroup>
+							<p:spacer height="15px;" />
+						</div>
+					</ui:define>
+					<ui:define name="ramoContent">
+						<p:tabView effect="blind" effectDuration="normal">
+							<p:tab title="#{emision['cascoMaritimo.tab.principal']}">
+								<p:outputPanel>
+									<p:messages id="messagesCascoMaritimo" showDetail="true" autoUpdate="true" closable="true" />
+								</p:outputPanel>
+								<h:form id="formPrincipal">
+									<h:panelGrid columns="1" id="ramoCascoMaritimo">
+										<p:panel>
+											<h:panelGrid columns="6" cellpadding="3">
+												<p:outputLabel for="nombreNave" value="#{emision['cascoMaritimo.nombreNave']}" styleClass="negrita" />
+												<p:inputText id="nombreNave" value="#{ramoCascoMaritimoBean.nombreNave}" required="true"
+													requiredMessage="#{emision['cascoMaritimo.nombreNave.msn']}" />
+												<p:outputLabel value="#{emision['cascoMaritimo.registroNumero']}" styleClass="negrita" />
+												<p:inputText value="#{ramoCascoMaritimoBean.numeroRegistro}" />
+												<p:outputLabel value="#{emision['cascoMaritimo.tonelajeBruto']}" styleClass="negrita" />
+												<p:inputText value="#{ramoCascoMaritimoBean.tonelajeBruto}" />
+
+												<p:outputLabel for="claseId" value="#{emision['cascoMaritimo.claseEmbarcacion']}" styleClass="negrita" />
+												<p:selectOneMenu  id="claseId" value="#{ramoCascoMaritimoBean.claseEmbarcacion}" effect="drop" required="true"
+													requiredMessage="#{emision['cascoMaritimo.claseEmbarcacion.msn']}">
+													<f:selectItem itemLabel="Seleccione" noSelectionOption="true" />
+													<f:selectItems value="#{cascoMaritimoBacking.embarcacionItems}" />
+												</p:selectOneMenu>
+												<p:outputLabel  value="#{emision['cascoMaritimo.bandera']}" styleClass="negrita" />
+												<p:selectOneMenu value="#{autoCompleteBean.selectedPais}" converter="pais" height="250" effect="fade" var="p" required="true"
+												requiredMessage="#{emision['cascoMaritimo.bandera.msn']}">
+
+													<f:selectItem itemLabel="Select One" itemValue="" />
+													<f:selectItems value="#{autoCompleteBean.paises}" var="pais" itemLabel="#{pais.nombre}" itemValue="#{pais}" />
+
+													<p:column>
+														<p:graphicImage name="#{p.bandera}" library="img/banderas" />
+													</p:column>
+
+													<p:column>  
+									                #{p.nombre} 
+									            </p:column>
+												</p:selectOneMenu>
+
+												<p:outputLabel for="zonaId" value="#{emision['cascoMaritimo.zonaNavegacion']}" styleClass="negrita" />
+												<p:selectOneMenu id="zonaId" value="#{ramoCascoMaritimoBean.zonaNavegacion}" effect="drop" required="true" 
+												requiredMessage="#{emision['cascoMaritimo.zonaNavegacion.msn']}">
+													<f:selectItem itemLabel="Seleccione" noSelectionOption="true" />
+													<f:selectItems value="#{cascoMaritimoBacking.zonasItems}" />
+												</p:selectOneMenu>
+
+
+												<p:outputLabel value="#{emision['cascoMaritimo.eslora']}" styleClass="negrita" />
+												<p:inputText value="#{ramoCascoMaritimoBean.eslora}" />
+												<p:outputLabel value="#{emision['cascoMaritimo.puntal']}" styleClass="negrita" />
+												<p:inputText value="#{ramoCascoMaritimoBean.puntal}" />
+												<p:outputLabel value="#{emision['cascoMaritimo.anioConstruccion']}" styleClass="negrita" />
+												<p:inputText value="#{ramoCascoMaritimoBean.anioConstruccion}" />
+
+												<p:outputLabel value="#{emision['cascoMaritimo.manga']}" styleClass="negrita" />
+												<p:inputText value="#{ramoCascoMaritimoBean.manga}" />
+												<p:outputLabel value="#{emision['cascoMaritimo.marcaMotor']}" styleClass="negrita" />
+												<p:inputText value="#{ramoCascoMaritimoBean.marcaMotor}" />
+												<p:outputLabel value="#{emision['cascoMaritimo.avaluo']}" styleClass="negrita" />
+												<p:inputText value="#{ramoCascoMaritimoBean.avaluo}" />
+												<p:outputLabel for="valorCasco" value="#{emision['cascoMaritimo.valorCasco']}" styleClass="negrita" />
+												<p:inputText id="valorCasco" value="#{ramoCascoMaritimoBean.valorCasco}" required="true" requiredMessage="#{emision['cascoMaritimo.valorCasco.msn']}"  />
+
+												<p:outputLabel value="#{emision['cascoMaritimo.valorMaquinaria']}" styleClass="negrita" />
+												<p:inputText value="#{ramoCascoMaritimoBean.valorMaquina}" />
+												<p:outputLabel value="#{emision['cascoMaritimo.valorRedes']}" styleClass="negrita" />
+												<p:inputText value="#{ramoCascoMaritimoBean.valorRedes}" />
+												<p:outputLabel value="#{emision['cascoMaritimo.otros']}" styleClass="negrita" />
+												<p:inputText value="#{ramoCascoMaritimoBean.otros}" />
+
+												<p:outputLabel value="#{emision['cascoMaritimo.total']}" styleClass="negrita" />
+												<p:inputText value="#{ramoCascoMaritimoBean.total}" />
+												<p:outputLabel value="#{emision['cascoMaritimo.porcentajeSiniestro']}" styleClass="negrita" />
+												<p:inputText value="#{ramoCascoMaritimoBean.porcentajeSiniestro}" />
+												<p:outputLabel value="#{emision['cascoMaritimo.minimoSiniestro']}" styleClass="negrita" />
+												<p:inputText value="#{ramoCascoMaritimoBean.minimoSiniestro}" />
+
+											</h:panelGrid>
+											<h:panelGrid columns="1" cellpadding="3">
+												<p:outputLabel value="#{emision['cascoMaritimo.filePolizaVigente']}" styleClass="negrita" />
+												<p:fileUpload fileLimit="1" />
+											</h:panelGrid>
+										</p:panel>
+										<!-- Footer del Formulario -->
+										<f:facet name="footer">
+											<div align="center">
+												<p:commandButton id="guardarBtnId" actionListener="#{cascoMaritimoBacking.guardarRamo()}" icon="icon-save"
+													value="#{emision['boton.guardar']}" title="Guardar" update="ramoCascoMaritimo, formPrincipal" />
+												<p:commandButton id="cancelarBtnId" icon="icon-cancel" value="#{emision['boton.cancelar']}" process="@this" title="Cancelar" />
+											</div>
+										</f:facet>
+									</h:panelGrid>
+								</h:form>
+							</p:tab>
+							<p:tab title="#{emision['cascoMaritimo.tab.coberturasAdicionales']}"></p:tab>
+							<p:tab title="#{emision['cascoMaritimo.tab.clausulasAdicionales']}"></p:tab>
+						</p:tabView>
+					</ui:define>
+				</ui:decorate>
+			</ui:define>
+		</ui:decorate>
+	</ui:define>
+</ui:composition>
+</html>

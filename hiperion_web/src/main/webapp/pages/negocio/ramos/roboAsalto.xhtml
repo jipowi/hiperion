@@ -1,0 +1,291 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui">
+<ui:composition template="/templates/menuPrincipalTemplate.xhtml">
+	<ui:define name="content">
+		<ui:decorate template="/templates/polizaTemplate.xhtml">
+			<ui:define name="content">
+				<ui:decorate template="/templates/ramoTemplate.xhtml">
+					<ui:define name="ramoHeader">
+						<div align="center">
+							<p:outputLabel value="#{emision['robo.tituloPantalla']}" styleClass="negrita" />
+							<p:separator id="customSeparator" style="width:auto;height:1px" />
+							<p:spacer height="5px;" />
+							<h:panelGroup style="display:block; text-align:center">
+								<h:graphicImage name="banner_robo.jpg" library="img/ramos/robo_asalto" width="1000px" height="160px" />
+							</h:panelGroup>
+							<p:spacer height="15px;" />
+						</div>
+					</ui:define>
+					<ui:define name="ramoContent">
+						<p:tabView id="tabGeneral">
+							<p:tab id="tabRamo" title="#{emision['robo.tab.principal']}">
+								<p:outputPanel>
+									<p:messages id="messageRoboAsalto" showDetail="true" autoUpdate="true" closable="true" />
+								</p:outputPanel>
+								<h:panelGrid columns="1">
+									<h:form id="formPricipal">
+										<div align="center">
+											<p:panel>
+												<h:panelGrid columns="2">
+													<p:outputLabel value="#{emision['robo.tasaRoboAsalto']}" styleClass="negrita" />
+													<p:inputText value="#{ramoRoboAsaltoBean.tasaRobo}" />
+
+													<p:outputLabel value="#{emision['robo.tasaHurto']}" styleClass="negrita" />
+													<p:inputText value="#{ramoRoboAsaltoBean.tasaHurto}" />
+
+													<p:outputLabel value="#{emision['robo.tasaPropiedadEmpleados']}" styleClass="negrita" />
+													<p:inputText value="#{ramoRoboAsaltoBean.tasaPropiedad}" />
+
+													<p:outputLabel value="#{emision['robo.tasaContenidos']}" styleClass="negrita" />
+													<p:inputText value="#{ramoRoboAsaltoBean.tasaPropiedad}" />
+												</h:panelGrid>
+												<h:panelGrid columns="1" cellpadding="3">
+													<p:outputLabel value="#{emision['robo.polizaVigente']}" styleClass="negrita" />
+													<p:fileUpload fileLimit="1" />
+
+												</h:panelGrid>
+
+												<p:spacer height="30px;" />
+												<p:panelGrid columns="2">
+													<h:outputLabel value="#{emision['emision.deducibles']}" />
+													<h:graphicImage name="deducibles.jpg" library="img" />
+												</p:panelGrid>
+												<p:growl id="messagesDeducible" showDetail="true" />
+												<h:panelGrid columns="3" style="text-align:center">
+													<h:outputLabel value="#{emision['robo.deducible.deducibles']}" styleClass="negrita" />
+													<h:outputLabel value="#{emision['robo.deducible.porcentajeValorSiniestro']}" styleClass="negrita" />
+													<h:outputLabel value="#{emision['robo.deducible.minimo']}" styleClass="negrita" />
+
+													<h:outputLabel value="#{emision['robo.deducible.roboAsalto']}" />
+													<p:inputText value="#{ramoRoboAsaltoBean.porcentajeSiniestroRobo}" />
+													<p:inputText value="#{ramoRoboAsaltoBean.minimoRobo}" />
+
+													<h:outputLabel value="#{emision['robo.deducible.hurto']}" />
+													<p:inputText value="#{ramoRoboAsaltoBean.porcentajeSiniestroHurto}" />
+													<p:inputText value="#{ramoRoboAsaltoBean.minimoHurto}" />
+
+													<h:outputLabel value="#{emision['robo.deducible.propiedadEmpleados']}" />
+													<p:inputText value="#{ramoRoboAsaltoBean.porcentajeSiniestroPropiedad}" />
+													<p:inputText value="#{ramoRoboAsaltoBean.minimoPropiedad}" />
+
+												</h:panelGrid>
+											</p:panel>
+											<p:spacer height="30px;" />
+											<div align="center">
+												<p:commandButton id="guardarRoboBtnId" oncomplete="asmDlg.hide();" actionListener="#{roboAsaltoBacking.setearInfRamo()}" icon="icon-save"
+													value="#{emision['boton.aceptar']}" title="Guardar" />
+												<p:commandButton id="cancelarBtnId" oncomplete="asmDlg.hide();" icon="icon-cancel" value="#{emision['boton.cancelar']}" process="@this"
+													title="Cancelar" />
+											</div>
+
+										</div>
+									</h:form>
+
+
+
+
+									<p:spacer height="30px;" />
+
+								</h:panelGrid>
+
+							</p:tab>
+							<!-- OBJETO ASEGURADO -->
+							<p:tab title="#{emision['robo.tab.objetoAsegurado']}">
+								<div align="center">
+									<h:form id="formObjeto">
+										<h:panelGrid columns="1">
+											<f:facet name="header">
+												<p:outputLabel value="#{emision['robo.objeto.tituloPantalla']}" styleClass="negrita" />
+											</f:facet>
+											<p:separator id="customSeparator" style="width:auto;height:1px" />
+											<p:growl id="messagesObjeto" showDetail="true" />
+											<h:panelGrid columns="2">
+												<h:outputLabel value="#{emision['robo.objeto.item']}" styleClass="negrita" />
+												<p:inputText value="#{ramoRoboAsaltoBean.numeroItem}" />
+
+												<h:outputLabel value="#{emision['robo.objeto.valor']}" styleClass="negrita" />
+												<p:inputText value="#{ramoRoboAsaltoBean.valorDetalleObjeto}" />
+
+												<h:outputLabel value="#{emision['robo.objeto.ubicacion']}" styleClass="negrita" />
+												<p:inputTextarea value="#{ramoRoboAsaltoBean.ubicacionRiesgo}" cols="50" rows="1" />
+
+												<h:outputLabel value="#{emision['robo.objeto.detalle']}" styleClass="negrita" />
+												<p:inputTextarea value="#{ramoRoboAsaltoBean.detalleObjeto}" cols="50" rows="2" />
+											</h:panelGrid>
+											<p:panelGrid columns="2">
+												<h:outputLabel value="#{emision['robo.objeto.mueblesEnseresEquipo']}" styleClass="negrita" />
+												<p:inputText value="#{ramoRoboAsaltoBean.mueblesEnseresEquipos}" />
+												<h:outputLabel value="#{emision['robo.objeto.joyasObrasArte']}" styleClass="negrita" />
+												<p:inputText value="#{ramoRoboAsaltoBean.joyasObrasArte}" />
+
+												<h:outputLabel value="#{emision['robo.objeto.maquinaria']}" styleClass="negrita" />
+												<p:inputText value="#{ramoRoboAsaltoBean.maquinaria}" />
+												<h:outputLabel value="#{emision['robo.objeto.dineroPermanencia']}" styleClass="negrita" />
+												<p:inputText value="#{ramoRoboAsaltoBean.dineroPermanencia}" />
+
+												<h:outputLabel value="#{emision['robo.objeto.mercaderia']}" styleClass="negrita" />
+												<p:inputText value="#{ramoRoboAsaltoBean.mercaderia}" />
+
+											</p:panelGrid>
+											<f:facet name="footer">
+												<div align="center">
+													<p:commandButton id="agregarObjeto" update="formObjeto, messagesObjeto" icon="icon-add" value="#{emision['boton.agregar']}"
+														actionListener="#{ramoRoboAsaltoBean.addActionObjeto()}" title="Agregar" />
+												</div>
+											</f:facet>
+										</h:panelGrid>
+										<p:spacer height="30px;" />
+										<h:panelGrid columns="1">
+											<p:dataTable value="#{ramoRoboAsaltoBean.objetoaseguradolist}" var="obj" widgetVar="50" editable="true">
+												<p:ajax event="rowEdit" listener="#{ramoRoboAsaltoBean.onEditObjeto}" />
+												<p:ajax event="rowEditCancel" listener="#{ramoRoboAsaltoBean.onCancelObjeto}" />
+												<p:column>
+													<f:facet name="header">
+														<h:outputText value="#{emision['robo.objeto.item']}" />
+													</f:facet>
+													<p:cellEditor>
+														<f:facet name="output">
+															<h:outputText value="#{obj.numeroItem}" />
+														</f:facet>
+														<f:facet name="input">
+															<p:inputText value="#{obj.numeroItem}" style="width:100%" />
+														</f:facet>
+													</p:cellEditor>
+												</p:column>
+												<p:column>
+													<f:facet name="header">
+														<h:outputText value="#{emision['robo.objeto.ubicacion']}" />
+													</f:facet>
+													<p:cellEditor>
+														<f:facet name="output">
+															<h:outputText value="#{obj.ubicacionRiesgo}" />
+														</f:facet>
+														<f:facet name="input">
+															<p:inputText value="#{obj.ubicacionRiesgo}" style="width:100%" />
+														</f:facet>
+													</p:cellEditor>
+												</p:column>
+												<p:column>
+													<f:facet name="header">
+														<h:outputText value="#{emision['robo.objeto.valor']}" />
+													</f:facet>
+													<p:cellEditor>
+														<f:facet name="output">
+															<h:outputText value="#{obj.valorDetalleObjeto}" />
+														</f:facet>
+														<f:facet name="input">
+															<p:inputText value="#{obj.valorDetalleObjeto}" style="width:100%" />
+														</f:facet>
+													</p:cellEditor>
+												</p:column>
+												<p:column>
+													<f:facet name="header">
+														<h:outputText value="#{emision['robo.objeto.mueblesEnseresEquipo']}" />
+													</f:facet>
+													<p:cellEditor>
+														<f:facet name="output">
+															<h:outputText value="#{obj.mueblesEnseresEquipos}" />
+														</f:facet>
+														<f:facet name="input">
+															<p:inputText value="#{obj.mueblesEnseresEquipos}" style="width:100%" />
+														</f:facet>
+													</p:cellEditor>
+												</p:column>
+												<p:column>
+													<f:facet name="header">
+														<h:outputText value="#{emision['robo.objeto.joyasObrasArte']}" />
+													</f:facet>
+													<p:cellEditor>
+														<f:facet name="output">
+															<h:outputText value="#{obj.joyasObrasArte}" />
+														</f:facet>
+														<f:facet name="input">
+															<p:inputText value="#{obj.joyasObrasArte}" style="width:100%" />
+														</f:facet>
+													</p:cellEditor>
+												</p:column>
+												<p:column>
+													<f:facet name="header">
+														<h:outputText value="#{emision['robo.objeto.maquinaria']}" />
+													</f:facet>
+													<p:cellEditor>
+														<f:facet name="output">
+															<h:outputText value="#{obj.maquinaria}" />
+														</f:facet>
+														<f:facet name="input">
+															<p:inputText value="#{obj.maquinaria}" style="width:100%" />
+														</f:facet>
+													</p:cellEditor>
+												</p:column>
+												<p:column>
+													<f:facet name="header">
+														<h:outputText value="#{emision['robo.objeto.dineroPermanencia']}" />
+													</f:facet>
+													<p:cellEditor>
+														<f:facet name="output">
+															<h:outputText value="#{obj.dineroPermanencia}" />
+														</f:facet>
+														<f:facet name="input">
+															<p:inputText value="#{obj.dineroPermanencia}" style="width:100%" />
+														</f:facet>
+													</p:cellEditor>
+												</p:column>
+												<p:column>
+													<f:facet name="header">
+														<h:outputText value="#{emision['robo.objeto.mercaderia']}" />
+													</f:facet>
+													<p:cellEditor>
+														<f:facet name="output">
+															<h:outputText value="#{obj.mercaderia}" />
+														</f:facet>
+														<f:facet name="input">
+															<p:inputText value="#{obj.mercaderia}" style="width:100%" />
+														</f:facet>
+													</p:cellEditor>
+												</p:column>
+
+												<p:column>
+													<f:facet name="header">
+														<h:outputText value="#{emision['robo.objeto.detalle']}" />
+													</f:facet>
+													<p:cellEditor>
+														<f:facet name="output">
+															<h:outputText value="#{obj.detalleObjeto}" />
+														</f:facet>
+														<f:facet name="input">
+															<p:inputText value="#{obj.detalleObjeto}" style="width:100%" />
+														</f:facet>
+													</p:cellEditor>
+												</p:column>
+												<p:column headerText="Options" style="width:50px">
+													<p:rowEditor />
+												</p:column>
+											</p:dataTable>
+											<p:spacer height="30px;" />
+											<f:facet name="footer">
+												<div align="center">
+													<p:commandButton id="guardarRoboBtnId" oncomplete="asmDlg.hide();" actionListener="#{roboAsaltoBacking.guardarRamo}" icon="icon-save"
+														value="#{emision['boton.guardar']}" title="Guardar" />
+													<p:commandButton id="cancelarBtnId" oncomplete="asmDlg.hide();" icon="icon-cancel" value="#{emision['boton.cancelar']}" process="@this"
+														title="Cancelar" />
+												</div>
+											</f:facet>
+										</h:panelGrid>
+									</h:form>
+								</div>
+							</p:tab>
+							<!-- COBERTURAS -->
+							<p:tab title="#{emision['robo.tab.coberturas']}"></p:tab>
+							<p:tab title="#{emision['robo.tab.coberturaAdicional']}"></p:tab>
+							<p:tab title="#{emision['robo.tab.clausulasAdicionales']}"></p:tab>
+							<p:tab title="#{emision['robo.tab.condicionesEspeciales']}"></p:tab>
+						</p:tabView>
+					</ui:define>
+				</ui:decorate>
+			</ui:define>
+		</ui:decorate>
+
+	</ui:define>
+</ui:composition>
+</html>

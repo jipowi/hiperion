@@ -1,0 +1,84 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui">
+<ui:composition template="/templates/menuPrincipalTemplate.xhtml">
+	<ui:define name="content">
+		<ui:decorate template="/templates/polizaTemplate.xhtml">
+			<ui:define name="content">
+				<ui:decorate template="/templates/ramoTemplate.xhtml">
+					<ui:define name="ramoHeader">
+						<div align="center">
+							<p:outputLabel value="#{emision['anticipo.tituloPantalla']}" styleClass="negrita" />
+							<p:separator id="customSeparator" style="width:auto;height:1px" />
+							<p:spacer height="5px;" />
+							<h:panelGroup style="display:block; text-align:center">
+								<h:graphicImage name="banner_buenUsoAnticipo.jpg" library="img/ramos/buen_uso_anticipo" width="1000px" height="160px" />
+							</h:panelGroup>
+							<p:spacer height="15px;" />
+						</div>
+					</ui:define>
+					<ui:define name="ramoContent">
+						<p:panel>
+							<p:tabView id="tabGeneral">
+								<p:tab id="tabRamo" title="#{emision['anticipo.tab.principal']}">
+									<p:messages id="messagesAnticipo" showDetail="true" autoUpdate="true" closable="true" />
+									<h:form id="formPrincipal">
+										<div align="center">
+											<h:panelGrid columns="1" id="ramoBuenUsoAnticipo">
+												<p:panel>
+													<h:panelGrid columns="2">
+														<p:outputLabel for="sectorId" value="#{emision['anticipo.sector']}" styleClass="negrita" />
+
+														<p:selectOneMenu id="sectorId" value="#{ramoBuenUsoAnticipoBean.sector}" effect="drop" required="true"  requiredMessage="#{emision['anticipo.sector.msn']}">
+															<f:selectItem itemLabel="Seleccione" noSelectionOption="true"  />
+															<f:selectItems value="#{buenUsoAnticipoBacking.sectorItems}"  />
+														</p:selectOneMenu>
+
+														<p:outputLabel for="valorContrato" value="#{emision['anticipo.valorContrato']}" styleClass="negrita" />
+														<p:inputText id="valorContrato" value="#{ramoBuenUsoAnticipoBean.valorContrato}" required="true"  requiredMessage="#{emision['anticipo.valorContrato.msn']}"/>
+
+														<p:outputLabel for="valorPoliza" value="#{emision['anticipo.valorPoliza']}" styleClass="negrita" />
+														<p:inputText id="valorPoliza" value="#{ramoBuenUsoAnticipoBean.valorPoliza}" required="true"  requiredMessage="#{emision['anticipo.valorPoliza.msn']}"   />
+
+														<p:outputLabel for="objetoAsegurado" value="#{emision['anticipo.objetoAsegurado']}" styleClass="negrita" />
+														<p:inputTextarea id="objetoAsegurado" cols="50" rows="2" value="#{ramoBuenUsoAnticipoBean.objetoAsegurado}" required="true"  requiredMessage="#{emision['anticipo.objetoAsegurado.msn']}" />
+													</h:panelGrid>
+													<h:panelGrid columns="1" cellpadding="3">
+														<p:outputLabel value="#{emision['anticipo.contrato']}" styleClass="negrita" />
+														<p:fileUpload fileLimit="1" />
+														<p:outputLabel value="#{emision['anticipo.polizaVigente']}" styleClass="negrita" />
+														<p:fileUpload fileLimit="1" />
+													</h:panelGrid>
+												</p:panel>
+											</h:panelGrid>
+											<p:spacer height="30px;" />
+
+											<p:commandButton id="guardarRamoId" actionListener="#{buenUsoAnticipoBacking.guardarRamo}" icon="icon-save"
+												value="#{emision['boton.guardar']}" update="formPrincipal, ramoBuenUsoAnticipo" title="Guardar" />
+											<p:commandButton id="cancelarBtnId" icon="icon-cancel" value="#{emision['boton.cancelar']}" title="Cancelar" />
+
+										</div>
+									</h:form>
+								</p:tab>
+								<!-- COBERTURAS -->
+								<p:tab title="#{emision['ap.tab.coberturas']}">
+									<h:form id="cobBUAFormId">
+										<p:dataTable id="cobBUATblId" var="cobertura" value="#{buenUsoAnticipoBacking.obtenerCoberturas()}"
+											selection="#{buenUsoAnticipoBacking.selectCoberturas}">
+											<f:facet name="header">#{emision['anexo.titulo.cob']}</f:facet>
+											<p:column selectionMode="multiple" style="width:2%" />
+											<p:column headerText="#{emision['anexo.ca.nombre']}">#{cobertura.nombreDetalleAnexo}</p:column>
+										</p:dataTable>
+									</h:form>
+								</p:tab>
+							</p:tabView>
+
+
+						</p:panel>
+					</ui:define>
+				</ui:decorate>
+			</ui:define>
+		</ui:decorate>
+	</ui:define>
+</ui:composition>
+</html>

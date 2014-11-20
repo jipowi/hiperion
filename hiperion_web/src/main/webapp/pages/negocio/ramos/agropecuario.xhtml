@@ -1,0 +1,278 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui">
+<ui:composition template="/templates/menuPrincipalTemplate.xhtml">
+	<ui:define name="content">
+		<ui:decorate template="/templates/polizaTemplate.xhtml">
+			<ui:define name="content">
+				<ui:decorate template="/templates/ramoTemplate.xhtml">
+					<ui:define name="ramoHeader">
+						<div align="center">
+							<p:outputLabel value="#{emision['agropecuario.tituloPantalla']}" styleClass="negrita" />
+							<p:separator id="customSeparator" style="width:auto;height:1px" />
+							<p:spacer height="5px;" />
+							<h:panelGroup style="display:block; text-align:center">
+								<h:graphicImage name="agropecuario.jpg" library="img/ramos/agropecuario" width="1000px" height="160px" />
+							</h:panelGroup>
+							<p:spacer height="15px;" />
+						</div>
+					</ui:define>
+					<ui:define name="ramoContent">
+						<p:panel>
+							<p:tabView effect="blind" effectDuration="normal">
+								<!-- RAMO AGROPECUARIO -->
+								<p:tab title="#{emision['agropecuario.tab.principal']}">
+									<p:outputPanel id="messageAgropecuario">
+										<p:messages id="messagesAgropecuario" showDetail="true" autoUpdate="true" closable="true" />
+									</p:outputPanel>
+									<h:form id="formPrincipal">
+										<div align="center">
+											<h:panelGrid columns="1" id="ramo">
+												<p:panel>
+													<h:panelGrid columns="2" cellpadding="3">
+														<p:outputLabel for="tasa" value="#{emision['agropecuario.tasa']}" styleClass="negrita" />
+														<p:inputText id="tasa" value="#{ramoAgropecuarioBean.tasa}" required="true" title="Ejemplo 2.56"  requiredMessage="#{emision['agropecuario.tasa.msn']}"/>
+
+														<p:outputLabel for="deducible" value="#{emision['agropecuario.deducible']}" styleClass="negrita" />
+														<p:inputText id="deducible" value="#{ramoAgropecuarioBean.deducible}" required="true"  requiredMessage="#{emision['agropecuario.deducible.msn']}" />
+													</h:panelGrid>
+													<p:spacer height="15px;" />
+													<h:panelGrid columns="2">
+														<h:outputLabel value="#{emision['agropecuario.plantaciones']}" />
+														<h:graphicImage name="agropecuario.jpg" library="img" />
+													</h:panelGrid>
+													<h:panelGrid columns="2">
+														<p:outputLabel for="valorAsegurado" value="#{emision['agropecuario.valorAsegurado']}" styleClass="negrita" />
+														<p:inputText id="valorAsegurado" value="#{ramoAgropecuarioBean.valorAsegurado}"  required="true"  requiredMessage="#{emision['agropecuario.valorAsegurado.msn']}" />
+
+														<p:outputLabel for="detalle" value="#{emision['agropecuario.detalle']}" styleClass="negrita" />
+														<p:inputTextarea id="detalle" value="#{ramoAgropecuarioBean.detalle}" cols="50" rows="2" required="true"  requiredMessage="#{emision['agropecuario.deducible.msn']}"/>
+
+														<p:outputLabel for="ubicacion" value="#{emision['agropecuario.ubicacion']}" styleClass="negrita" />
+														<p:inputTextarea id="ubicacion" value="#{ramoAgropecuarioBean.ubicacion}" cols="50" rows="2" required="true"  requiredMessage="#{emision['agropecuario.ubicacion.msn']}"/>
+													</h:panelGrid>
+
+													<h:panelGrid columns="1" cellpadding="3">
+														<h:panelGrid columns="2">
+															<p:outputLabel for="polizaVigente" value="#{emision['agropecuario.lbl.polizaVigente']}" />
+															<h:graphicImage name="pdf.png" library="img" />
+														</h:panelGrid>
+														<p:fileUpload id="polizaVigente" fileUploadListener="#{agropecuarioBacking.cargarArchivoPoliza}" mode="advanced" dragDropSupport="false" update="messages"
+															sizeLimit="2000000" fileLimit="3" allowTypes="/(\.|\/)(pdf)$/" required="true"  requiredMessage="#{emision['agropecuario.file.msn']}"/>
+														<p:growl id="messages" showDetail="true" />
+													</h:panelGrid>
+												</p:panel>
+											</h:panelGrid>
+											<p:spacer height="30px;" />
+											<p:commandButton id="guardarAgropecuarioBtnId" actionListener="#{agropecuarioBacking.setearRamo()}" icon="icon-save"
+												value="#{emision['boton.aceptar']}" update="ramo, formPrincipal" title="Guardar" />
+											<p:commandButton id="cancelarBtnId" icon="icon-cancel" value="#{emision['boton.cancelar']}" title="Cancelar" />
+
+										</div>
+									</h:form>
+								</p:tab>
+								<!-- CLAUSULAS ADICIONALES -->
+								<p:tab title="#{emision['ap.tab.clausulasAdicionales']}">
+									<h:form id="caAPFormId">
+										<p:dataTable id="caAPTblId" var="clausula" value="#{agropecuarioBacking.obtenerClausulasAdicionales()}" paginator="true" rows="4"
+											selection="#{agropecuarioBacking.selectClausulasAdicionales}">
+											<f:facet name="header">#{emision['anexo.titulo.cad']}</f:facet>
+											<p:column selectionMode="multiple" style="width:2%" />
+											<p:column headerText="#{emision['anexo.ca.nombre']}">#{clausula.nombreDetalleAnexo}</p:column>
+										</p:dataTable>
+									</h:form>
+								</p:tab>
+								<!-- COBERTURAS -->
+								<p:tab title="#{emision['ap.tab.coberturas']}">
+									<p:accordionPanel dynamic="true" cache="true" activeIndex="null">
+										<!-- Para Transporte -->
+										<p:tab title="Para Transporte">
+											<h:form id="cobTrpAGPFormId">
+												<p:dataTable id="caAPTblId" var="clausula" value="#{agropecuarioBacking.obtenerCoberturasTransporte()}" paginator="true" rows="4"
+													selection="#{agropecuarioBacking.selectCoberturasTransporte}">
+													<f:facet name="header">Transporte</f:facet>
+													<p:column selectionMode="multiple" style="width:2%" />
+													<p:column headerText="#{emision['anexo.ca.nombre']}">#{clausula.nombreDetalleAnexo}</p:column>
+												</p:dataTable>
+											</h:form>
+										</p:tab>
+										<!-- Para Vida -->
+										<p:tab title="Para Vida">
+											<h:form id="cobVidAGPFormId">
+												<p:dataTable id="caAPTblId" var="clausula" value="#{agropecuarioBacking.obtenerCoberturasVida()}" paginator="true" rows="4"
+													selection="#{agropecuarioBacking.selectCoberturasVida}">
+													<f:facet name="header">Vida</f:facet>
+													<p:column selectionMode="multiple" style="width:2%" />
+													<p:column headerText="#{emision['anexo.ca.nombre']}">#{clausula.nombreDetalleAnexo}</p:column>
+												</p:dataTable>
+											</h:form>
+										</p:tab>
+									</p:accordionPanel>
+								</p:tab>
+								<!-- OBJETO ASEGURADO -->
+								<p:tab title="#{emision['agropecuario.tab.objetoAsegurado']}">
+									<h:form id="formObjeto">
+										<p:messages id="messagesObjAgropecuario" showDetail="true" autoUpdate="true" closable="true" />
+										<div align="center">
+											<h:panelGrid columns="1">
+												<f:facet name="header">
+													<p:outputLabel value="#{emision['agropecuario.objeto.tituloPantalla']}" styleClass="negrita" />
+												</f:facet>
+												<p:separator id="customSeparator" style="width:auto;height:1px" />
+												<p:growl id="messages" showDetail="true" />
+												<p:panelGrid columns="2">
+													<h:outputLabel for="idItem" value="#{emision['agropecuario.objeto.item']}" styleClass="negrita" />
+													<p:inputText  id="idItem" value="#{ramoAgropecuarioBean.item}" required="true"  requiredMessage="#{emision['agropecuario.objeto.item.msn']}" />
+
+													<h:outputLabel for="idNombre" value="#{emision['agropecuario.objeto.nombre']}" styleClass="negrita" />
+													<p:inputText id="idNombre" value="#{ramoAgropecuarioBean.nombre}" required="true" requiredMessage="#{emision['agropecuario.objeto.nombre.msn']}" />
+
+													<h:outputLabel for="idSexo" value="#{emision['agropecuario.objeto.sexo']}" styleClass="negrita" />
+													<p:selectOneMenu id="idSexo" value="#{ramoAgropecuarioBean.sexo}" effect="drop" required="true" requiredMessage="#{emision['agropecuario.objeto.sexo.msn']}">
+														<f:selectItem itemLabel="Seleccione" noSelectionOption="true" />
+														<f:selectItems value="#{agropecuarioBacking.sexoItems}" />
+													</p:selectOneMenu>
+
+													<h:outputLabel for="idRaza" value="#{emision['agropecuario.objeto.raza']}" styleClass="negrita" />
+													<p:inputText id="Idraza" value="#{ramoAgropecuarioBean.raza}" required="true" requiredMessage="#{emision['agropecuario.objeto.raza.msn']}" />
+
+													<h:outputLabel for="idColor" value="#{emision['agropecuario.objeto.color']}" styleClass="negrita" />
+													<p:inputText id="idColor" value="#{ramoAgropecuarioBean.color}" required="true" requiredMessage="#{emision['agropecuario.objeto.color.msn']}"/>
+
+													<h:outputLabel for="idEdad" value="#{emision['agropecuario.objeto.edad']}" styleClass="negrita" />
+													<p:inputText id="idEdad" value="#{ramoAgropecuarioBean.edad}" required="true" requiredMessage="#{emision['agropecuario.objeto.edad.msn']}"/>
+
+													<h:outputLabel for="idMontoAsegurado" value="#{emision['agropecuario.objeto.montoAsegurado']}" styleClass="negrita" />
+													<p:inputText id="idMontoAsegurado" value="#{ramoAgropecuarioBean.montoAsegurado}" required="true" requiredMessage="#{emision['agropecuario.objeto.montoAsegurado.msn']}"/>
+												</p:panelGrid>
+												<f:facet name="footer">
+													<div align="center">
+														<p:commandButton id="agregarObjeto" update="formObjeto" icon="icon-add" value="#{emision['boton.agregar']}"
+															actionListener="#{ramoAgropecuarioBean.addAction}" title="Agregar" />
+													</div>
+												</f:facet>
+											</h:panelGrid>
+											<p:spacer height="30px;" />
+											<p:dataTable id="tabla" value="#{ramoAgropecuarioBean.objetoAseguradoList}" var="obj" widgetVar="50" style="width: 60%;" editable="true">
+												<p:ajax event="rowEdit" listener="#{ramoAgropecuarioBean.onEdit}" />
+												<p:ajax event="rowEditCancel" listener="#{ramoAgropecuarioBean.onCancel}" />
+												<p:column>
+													<f:facet name="header">
+														<h:outputText value="#{emision['agropecuario.objeto.item']}" />
+													</f:facet>
+													<p:cellEditor>
+														<f:facet name="output">
+															<h:outputText value="#{obj.item}" />
+														</f:facet>
+														<f:facet name="input">
+															<p:inputText value="#{obj.item}" style="width:100%" />
+														</f:facet>
+													</p:cellEditor>
+												</p:column>
+												<p:column>
+													<f:facet name="header">
+														<h:outputText value="#{emision['agropecuario.objeto.nombre']}" />
+													</f:facet>
+													<p:cellEditor>
+														<f:facet name="output">
+															<h:outputText value="#{obj.nombre}" />
+														</f:facet>
+														<f:facet name="input">
+															<p:inputText value="#{obj.nombre}" style="width:100%" />
+
+														</f:facet>
+													</p:cellEditor>
+												</p:column>
+												<p:column>
+													<f:facet name="header">
+														<h:outputText value="#{emision['agropecuario.objeto.sexo']}" />
+													</f:facet>
+													<p:cellEditor>
+														<f:facet name="output">
+															<p:selectOneMenu value="#{obj.sexo}" effect="drop">
+																<f:selectItem itemLabel="Seleccione" noSelectionOption="true" />
+																<f:selectItems value="#{agropecuarioBacking.sexoItems}" />
+															</p:selectOneMenu>
+														</f:facet>
+														<f:facet name="input">
+															<p:selectOneMenu value="#{obj.sexo}" effect="drop">
+																<f:selectItem itemLabel="Seleccione" noSelectionOption="true" />
+																<f:selectItems value="#{agropecuarioBacking.sexoItems}" />
+															</p:selectOneMenu>
+														</f:facet>
+													</p:cellEditor>
+												</p:column>
+												<p:column>
+													<f:facet name="header">
+														<h:outputText value="#{emision['agropecuario.objeto.raza']}" />
+													</f:facet>
+													<p:cellEditor>
+														<f:facet name="output">
+															<h:outputText value="#{obj.raza}" />
+														</f:facet>
+														<f:facet name="input">
+															<p:inputText value="#{obj.raza}" style="width:100%" />
+														</f:facet>
+													</p:cellEditor>
+												</p:column>
+												<p:column>
+													<f:facet name="header">
+														<h:outputText value="#{emision['agropecuario.objeto.color']}" />
+													</f:facet>
+													<p:cellEditor>
+														<f:facet name="output">
+															<h:outputText value="#{obj.color}" />
+														</f:facet>
+														<f:facet name="input">
+															<p:inputText value="#{obj.color}" style="width:100%" />
+														</f:facet>
+													</p:cellEditor>
+												</p:column>
+												<p:column>
+													<f:facet name="header">
+														<h:outputText value="#{emision['agropecuario.objeto.edad']}" />
+													</f:facet>
+													<p:cellEditor>
+														<f:facet name="output">
+															<h:outputText value="#{obj.edad}" />
+														</f:facet>
+														<f:facet name="input">
+															<p:inputText value="#{obj.edad}" style="width:100%" />
+														</f:facet>
+													</p:cellEditor>
+												</p:column>
+												<p:column>
+													<f:facet name="header">
+														<h:outputText value="#{emision['agropecuario.objeto.montoAsegurado']}" />
+													</f:facet>
+													<p:cellEditor>
+														<f:facet name="output">
+															<h:outputText value="#{obj.montoAsegurado}" />
+														</f:facet>
+														<f:facet name="input">
+															<p:inputText value="#{obj.montoAsegurado}" style="width:100%" />
+														</f:facet>
+													</p:cellEditor>
+												</p:column>
+												<p:column headerText="Options" style="width:50px">
+													<p:rowEditor />
+												</p:column>
+											</p:dataTable>
+
+											<p:spacer height="30px;" />
+
+											<p:commandButton id="guardarObjAseguradoBtnId" actionListener="#{agropecuarioBacking.guardarRamo()}" icon="icon-save"
+												value="#{emision['boton.guardar']}" update="formObjeto" title="Guardar" />
+											<p:commandButton id="cancelarBtnId" icon="icon-cancel" value="#{emision['boton.cancelar']}" title="Cancelar" />
+										</div>
+									</h:form>
+								</p:tab>
+							</p:tabView>
+						</p:panel>
+					</ui:define>
+				</ui:decorate>
+			</ui:define>
+		</ui:decorate>
+	</ui:define>
+</ui:composition>
+</html>

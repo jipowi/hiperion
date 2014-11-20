@@ -1,0 +1,338 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui">
+<ui:composition template="/templates/menuPrincipalTemplate.xhtml">
+	<ui:define name="content">
+		<ui:decorate template="/templates/polizaTemplate.xhtml">
+			<ui:define name="content">
+				<ui:decorate template="/templates/ramoTemplate.xhtml">
+					<ui:define name="ramoHeader">
+						<div align="center">
+							<p:outputLabel value="#{emision['incendioLineasAleadas.tab.principal']}" styleClass="negrita" />
+							<p:separator id="customSeparator" style="width:auto;height:1px" />
+							<p:spacer height="5px;" />
+							<h:panelGroup style="display:block; text-align:center">
+								<h:graphicImage name="banner_incendioLineasAliadas.jpg" library="img/ramos/incendio_lineas_aliadas" width="1000px" height="160px" />
+							</h:panelGroup>
+							<p:spacer height="15px;" />
+						</div>
+					</ui:define>
+					<ui:define name="ramoContent">
+						<p:panel>
+							<!-- RAMO INCENDIO LINEAS ALIADAS -->
+							<p:tabView effect="blind" effectDuration="normal">
+								<p:tab title="#{emision['emision.ramo.ila']}">
+									<p:outputPanel>
+										<p:messages id="messageIncendioLineasAliadas" showDetail="true" autoUpdate="true" closable="true" />
+									</p:outputPanel>
+									<h:form id="formPricipal">
+										<div align="center">
+											<h:panelGrid columns="1" id="ramoIncendioLineasAliadas">
+												<h:panelGrid columns="2">
+													<p:outputLabel for="idValorItems" value="#{emision['emision.ramo.ila.label.valoritems']}" styleClass="negrita" />
+													<p:inputText id="idValorItems" value="#{ramoIncendioLineasAliadaBean.valorItems}" required="true"
+														requiredMessage="#{emision['emision.ramo.ila.label.valoritems.msn']}" />
+												</h:panelGrid>
+
+												<p:outputLabel value="#{emision['emision.ramo.ila.label.consideracionesimp']}" styleClass="negrita" />
+												<p:inputTextarea cols="50" rows="2" value="#{ramoIncendioLineasAliadaBean.consideracionesImp}" />
+												<p:outputLabel value="#{emision['emision.ramo.ila.label.filepolizavigente']}" styleClass="negrita" />
+												<p:fileUpload fileLimit="1" />
+											</h:panelGrid>
+
+											<p:spacer height="15px;" />
+											<h:panelGrid columns="2">
+												<h:outputLabel value="#{emision['emision.deducibles']}" />
+												<h:graphicImage name="deducibles.jpg" library="img" />
+											</h:panelGrid>
+
+											<p:spacer height="15px;" />
+
+											<table bgcolor="#E6E6E6">
+												<tr>
+													<td colspan="2" align="center"><p:outputLabel value="#{emision['emision.ramo.ila.tituloPorcentajeDeducible']}" styleClass="negrita" /></td>
+													<td><p:outputLabel value="#{emision['emision.ramo.ila.tituloMinimoDeducible']}" styleClass="negrita" /></td>
+												</tr>
+												<tr>
+													<td><p:outputLabel for="idPorcentajeTerremoto" value="#{emision['emision.ramo.ila.deducibleTerremoto']}" /></td>
+													<td><p:inputText id="idPorcentajeTerremoto" value="#{ramoIncendioLineasAliadaBean.porcentajeTerremoto}" required="true"
+															requiredMessage="#{emision['emision.ramo.ila.tituloPorcentajeDeducible.msn']}" /></td>
+													<td><p:inputText id="idMinimoTerremoto" value="#{ramoIncendioLineasAliadaBean.minimoTerremoto}" required="true"
+															requiredMessage="#{emision['emision.ramo.ila.tituloMinimoDeducible.msn']}" /></td>
+												</tr>
+												<tr>
+													<td><p:outputLabel for="idPorcentajeLLuvia" value="#{emision['emision.ramo.ila.deducibleLluviaInundacion']}" /></td>
+													<td><p:inputText id="idPorcentajeLLuvia" value="#{ramoIncendioLineasAliadaBean.porcentajeLluvia}" required="true"
+															requiredMessage="#{emision['emision.ramo.ila.tituloMinimoDeducible.msn']}" /></td>
+													<td><p:inputText id="idMinimoLLuvia" value="#{ramoIncendioLineasAliadaBean.minimoLluvia}" required="true"
+															requiredMessage="#{emision['emision.ramo.ila.tituloMinimoDeducible.msn']}" /></td>
+												</tr>
+												<tr>
+													<td><p:outputLabel for="idPorcentajeOtrosEventos" value="#{emision['emision.ramo.ila.deducibleOtros']}" /></td>
+													<td><p:inputText id="idPorcentajeOtrosEventos" value="#{ramoIncendioLineasAliadaBean.porcentajeOtrosEventos}" required="true"
+															requiredMessage="#{emision['emision.ramo.ila.tituloMinimoDeducible.msn']}" /></td>
+													<td><p:inputText id="idMinimoOtrosEventos" value="#{ramoIncendioLineasAliadaBean.minimoOtrosEventos}" required="true"
+															requiredMessage="#{emision['emision.ramo.ila.tituloMinimoDeducible.msn']}" /></td>
+												</tr>
+												<tr>
+													<td><p:outputLabel for="idPorcentajeVidrios" value="#{emision['emision.ramo.ila.deducibleVidrios']}" /></td>
+													<td><p:inputText id="idPorcentajeVidrios" value="#{ramoIncendioLineasAliadaBean.porcentajeVidrios}" required="true"
+															requiredMessage="#{emision['emision.ramo.ila.tituloMinimoDeducible.msn']}" /></td>
+													<td><p:inputText id="idMinimoVidriosCristales" value="#{ramoIncendioLineasAliadaBean.minimoVidriosCristaes}" required="true"
+															requiredMessage="#{emision['emision.ramo.ila.tituloMinimoDeducible.msn']}" /></td>
+												</tr>
+											</table>
+
+											<p:spacer height="15px;" />
+
+											<h:panelGrid columns="2">
+												<h:outputLabel value="#{emision['emision.tasas']}" />
+												<h:graphicImage name="tasa.jpg" library="img" />
+											</h:panelGrid>
+
+											<h:panelGrid columns="2" bgcolor="#E6E6E6">
+												<h:outputLabel for="idTasaComprensiva" value="#{emision['emision.ramo.ila.tasaComprensiva']}" />
+												<p:inputText id="idTasaComprensiva" value="#{ramoIncendioLineasAliadaBean.tasaComprensiva}" required="true"
+													requiredMessage="#{emision['emision.ramo.ila.tasaComprensiva.msn']}" />
+
+												<h:outputLabel for="idTasaEscombros" value="#{emision['emision.ramo.ila.tasaRemocionEscombros']}" />
+												<p:inputText id="idTasaEscombros" value="#{ramoIncendioLineasAliadaBean.tasaRemocionEscombros}" required="true"
+													requiredMessage="#{emision['emision.ramo.ila.tasaRemocionEscombros.msn']}" />
+
+												<h:outputLabel for="idTasaDocumentos" value="#{emision['emision.ramo.ila.tasaDocumentosModelo']}" />
+												<p:inputText id="idTasaDocumentos" value="#{ramoIncendioLineasAliadaBean.tasaDocumentosModelos}" required="true"
+													requiredMessage="#{emision['emision.ramo.ila.tasaDocumentosModelo.msn']}" />
+
+												<h:outputLabel for="idTasaHonorarios" value="#{emision['emision.ramo.ila.tasaHonorarios']}" />
+												<p:inputText id="idTasaHonorarios" value="#{ramoIncendioLineasAliadaBean.tasaHonorarios}" required="true"
+													requiredMessage="#{emision['emision.ramo.ila.tasaHonorarios.msn']}" />
+
+												<h:outputLabel for="idTasaElectrica" value="#{emision['emision.ramo.ila.tasaClausulaElectrica']}" />
+												<p:inputText id="idTasaElectrica" value="#{ramoIncendioLineasAliadaBean.tasaClausulaElectrica}" required="true"
+													requiredMessage="#{emision['emision.ramo.ila.tasaClausulaElectrica.msn']}" />
+
+												<h:outputLabel for="idTasaAutoexplosion" value="#{emision['emision.ramo.ila.tasaAutoexplosion']}" />
+												<p:inputText id="idTasaAutoexplosion" value="#{ramoIncendioLineasAliadaBean.tasaAutoexplosion}" required="true"
+													requiredMessage="#{emision['emision.ramo.ila.tasaAutoexplosion.msn']}" />
+
+												<h:outputLabel for="idTasaVidrios" value="#{emision['emision.ramo.ila.tasaVidriosCristales']}" />
+												<p:inputText id="idTasaVidrios" value="#{ramoIncendioLineasAliadaBean.tasaVidrios}" required="true"
+													requiredMessage="#{emision['emision.ramo.ila.tasaVidriosCristales.msn']}" />
+											</h:panelGrid>
+											<p:spacer height="30px;" />
+											<p:commandButton id="guardarBtnId" actionListener="#{incendioLineasAliadasBacking.setearInfRamo}" icon="icon-save"
+												value="#{emision['boton.aceptar']}" title="Guardar" update="formPricipal, ramoIncendioLineasAliadas" />
+											<p:commandButton id="cancelarBtnId" icon="icon-cancel" value="#{emision['boton.cancelar']}" process="@this" title="Cancelar" />
+										</div>
+									</h:form>
+								</p:tab>
+								<!-- OBJETO ASEGURADO -->
+								<p:tab title="#{emision['emision.ramo.ila.objetoAsegurado']}">
+									<div align="center">
+										<h:form id="formObjeto">
+											<p:messages id="messagesObj" showDetail="true" autoUpdate="true" closable="true" />
+											<h:panelGrid columns="1">
+												<f:facet name="header">
+													<p:outputLabel value="#{emision['emision.ramo.ila.objeto.tituloPantalla']}" styleClass="negrita" />
+												</f:facet>
+												<p:separator id="customSeparator" style="width:auto;height:1px" />
+												<p:growl id="messages" showDetail="true" />
+												<p:panelGrid columns="2">
+													<h:outputLabel value="#{emision['emision.ramo.ila.objeto.item']}" styleClass="negrita" />
+													<p:inputText value="#{ramoIncendioLineasAliadaBean.numeroItem}" />
+
+													<h:outputLabel value="#{emision['emision.ramo.ila.objeto.ubicacion']}" styleClass="negrita" />
+													<p:inputText value="#{ramoIncendioLineasAliadaBean.ubicacionRiesgo}" />
+
+
+													<h:outputLabel value="#{emision['emision.ramo.ila.objeto.detalle']}" styleClass="negrita" />
+													<p:inputText value="#{ramoIncendioLineasAliadaBean.detalle}" />
+
+													<h:outputLabel value="#{emision['emision.ramo.ila.objeto.valor']}" styleClass="negrita" />
+													<p:inputText value="#{ramoIncendioLineasAliadaBean.valor}" />
+												</p:panelGrid>
+												<f:facet name="footer">
+													<div align="center">
+														<p:commandButton id="agregarObjeto" update="formObjeto, messages" icon="icon-add" value="#{emision['boton.agregar']}"
+															actionListener="#{ramoIncendioLineasAliadaBean.addActionObjeto}" title="Agregar" />
+													</div>
+												</f:facet>
+											</h:panelGrid>
+											<p:spacer height="30px;" />
+											<p:dataTable value="#{ramoIncendioLineasAliadaBean.objetolist}" var="obj" widgetVar="50" style="width: 50%" editable="true">
+												<p:ajax event="rowEdit" listener="#{ramoIncendioLineasAliadaBean.onEditObjeto}" />
+												<p:ajax event="rowEditCancel" listener="#{ramoIncendioLineasAliadaBean.onCancelObjeto}" />
+												<p:column>
+													<f:facet name="header">
+														<h:outputText value="#{emision['emision.ramo.ila.objeto.item']}" />
+													</f:facet>
+													<p:cellEditor>
+														<f:facet name="output">
+															<h:outputText value="#{obj.numeroItem}" />
+														</f:facet>
+														<f:facet name="input">
+															<p:inputText value="#{obj.numeroItem}" style="width:100%" />
+														</f:facet>
+													</p:cellEditor>
+												</p:column>
+												<p:column>
+													<f:facet name="header">
+														<h:outputText value="#{emision['emision.ramo.ila.objeto.ubicacion']}" />
+													</f:facet>
+													<p:cellEditor>
+														<f:facet name="output">
+															<h:outputText value="#{obj.ubicacionRiesgo}" />
+														</f:facet>
+														<f:facet name="input">
+															<p:inputText value="#{obj.ubicacionRiesgo}" style="width:100%" />
+														</f:facet>
+													</p:cellEditor>
+												</p:column>
+												<p:column>
+													<f:facet name="header">
+														<h:outputText value="#{emision['emision.ramo.ila.objeto.detalle']}" />
+													</f:facet>
+													<p:cellEditor>
+														<f:facet name="output">
+															<h:outputText value="#{obj.detalle}" />
+														</f:facet>
+														<f:facet name="input">
+															<p:inputText value="#{obj.detalle}" style="width:100%" />
+														</f:facet>
+													</p:cellEditor>
+												</p:column>
+												<p:column>
+													<f:facet name="header">
+														<h:outputText value="#{emision['emision.ramo.ila.objeto.valor']}" />
+													</f:facet>
+													<p:cellEditor>
+														<f:facet name="output">
+															<h:outputText value="#{obj.valor}" />
+														</f:facet>
+														<f:facet name="input">
+															<p:inputText value="#{obj.valor}" style="width:100%" />
+														</f:facet>
+													</p:cellEditor>
+												</p:column>
+												<p:column headerText="Options" style="width:50px">
+													<p:rowEditor />
+												</p:column>
+											</p:dataTable>
+											<p:spacer height="30px;" />
+
+											<p:commandButton id="guardarObjAseguradoBtnId" actionListener="#{incendioLineasAliadasBacking.guardarRamo()}" icon="icon-save"
+												value="#{emision['boton.guardar']}" update="formObjeto, messagesObj" title="Guardar" />
+											<p:commandButton id="cancelarBtnId" icon="icon-cancel" value="#{emision['boton.cancelar']}" title="Cancelar" />
+										</h:form>
+									</div>
+								</p:tab>
+								<!-- CLAUSULAS ADICIONALES -->
+								<p:tab title="#{emision['anexo.titulo.tab.cad']}">
+									<h:form id="caILAFormId">
+										<p:dataTable id="caILATblId" var="clausula" value="#{incendioLineasAliadasBacking.obtenerClausulasAdicionales()}" paginator="true" rows="6"
+											selection="#{fidelidadBacking.selectClausulasAdicionales}">
+											<f:facet name="header">#{emision['anexo.titulo.cad']}</f:facet>
+											<p:column selectionMode="multiple" style="width:2%" />
+											<p:column headerText="#{emision['anexo.ca.nombre']}">#{clausula.nombreDetalleAnexo}</p:column>
+										</p:dataTable>
+									</h:form>
+								</p:tab>
+								<!-- COBERTURAS -->
+								<p:tab title="#{emision['anexo.titulo.tab.cob']}">
+									<p:accordionPanel dynamic="true" cache="true" activeIndex="null">
+										<!-- Para Todo Riesgo -->
+										<p:tab title="#{emision['titulo.cob.cobTodoRiesgoLimitado']}">
+											<h:form id="cobILAFormId">
+												<p:dataTable id="cobILATblId" var="cobertura" value="#{incendioLineasAliadasBacking.obtenerCoberturas()}" paginator="true" rows="4"
+													selection="#{incendioLineasAliadasBacking.selectCoberturas}">
+													<f:facet name="header">#{emision['anexo.titulo.cob']}</f:facet>
+													<p:column selectionMode="multiple" style="width:2%" />
+													<p:column headerText="#{emision['anexo.ca.nombre']}">#{cobertura.nombreDetalleAnexo}</p:column>
+												</p:dataTable>
+											</h:form>
+										</p:tab>
+									</p:accordionPanel>
+								</p:tab>
+								<!-- COBERTURAS ADICIONALES -->
+								<p:tab title="#{emision['anexo.titulo.tab.cobad']}">
+									<h:form id="cobILAFormId">
+										<p:dataTable id="cobILATblId" var="cobAdicional" value="#{incendioLineasAliadasBacking.obtenerCoberturasAdicionales()}" paginator="true"
+											rows="4" selection="#{incendioLineasAliadasBacking.selectCoberturasAdicionales}">
+											<f:facet name="header">#{emision['anexo.titulo.cobad']}</f:facet>
+											<p:column selectionMode="multiple" style="width:2%" />
+											<p:column headerText="#{emision['anexo.ca.nombre']}">#{cobAdicional.nombreDetalleAnexo}</p:column>
+										</p:dataTable>
+									</h:form>
+								</p:tab>
+								<!-- CONDICIONES ESPECIALES -->
+								<p:tab title="#{emision['anexo.titulo.tab.cep']}">
+									<h:form id="ceILAFormId">
+										<p:accordionPanel dynamic="true" cache="true" activeIndex="null">
+											<!-- Dinero y Valores -->
+											<p:tab title="#{emision['titulo.dineroValores']}">
+												<h:form id="ceDVFormId">
+													<p:dataTable id="ceDVTblId" var="condiciones" value="#{incendioLineasAliadasBacking.obtenerCondicionesEspecialesDineroValores()}"
+														paginator="true" rows="4" selection="#{incendioLineasAliadasBacking.selectCondicionesEspecialesDineroValor}">
+														<f:facet name="header">#{emision['anexo.titulo.cob']}</f:facet>
+														<p:column selectionMode="multiple" style="width:2%" />
+														<p:column headerText="#{emision['anexo.ca.nombre']}">#{condiciones.nombreDetalleAnexo}</p:column>
+													</p:dataTable>
+												</h:form>
+											</p:tab>
+											<!-- Edificio e Instalaciones -->
+											<p:tab title="#{emision['titulo.edificioInstalaciones']}">
+												<h:form id="ceEIFormId">
+													<p:dataTable id="ceEITblId" var="condiciones" value="#{incendioLineasAliadasBacking.obtenerCondicionesEspecialesEdificioInstalaciones()}"
+														paginator="true" rows="4" selection="#{incendioLineasAliadasBacking.selectCondicionesEspecialesEdificioInstalaciones}">
+														<f:facet name="header">#{emision['anexo.titulo.cob']}</f:facet>
+														<p:column selectionMode="multiple" style="width:2%" />
+														<p:column headerText="#{emision['anexo.ca.nombre']}">#{condiciones.nombreDetalleAnexo}</p:column>
+													</p:dataTable>
+												</h:form>
+											</p:tab>
+											<!-- Maquinaria y Equipos -->
+											<p:tab title="#{emision['titulo.maquinariaEquipos']}">
+												<h:form id="ceMEFormId">
+													<p:dataTable id="ceMETblId" var="condiciones" value="#{incendioLineasAliadasBacking.obtenerCondicionesMaquinariaEquipos()}"
+														paginator="true" rows="4" selection="#{incendioLineasAliadasBacking.selectCondicionesMaquinariaEquipos}">
+														<f:facet name="header">#{emision['anexo.titulo.cob']}</f:facet>
+														<p:column selectionMode="multiple" style="width:2%" />
+														<p:column headerText="#{emision['anexo.ca.nombre']}">#{condiciones.nombreDetalleAnexo}</p:column>
+													</p:dataTable>
+												</h:form>
+											</p:tab>
+											<!-- Mercaderias y/o Activos Flotantes -->
+											<p:tab title="#{emision['titulo.mercaderiaActivos']}">
+												<h:form id="ceAFFormId">
+													<p:dataTable id="ceAFTblId" var="condiciones" value="#{incendioLineasAliadasBacking.obtenerCondicionesActivosFlotantes()}"
+														paginator="true" rows="4" selection="#{incendioLineasAliadasBacking.selectCondicionesActivosFlotantes}">
+														<f:facet name="header">#{emision['anexo.titulo.cob']}</f:facet>
+														<p:column selectionMode="multiple" style="width:2%" />
+														<p:column headerText="#{emision['anexo.ca.nombre']}">#{condiciones.nombreDetalleAnexo}</p:column>
+													</p:dataTable>
+												</h:form>
+											</p:tab>
+											<!-- Muebles, Enseres y Equipos de Oficina -->
+											<p:tab title="#{emision['titulo.mueblesEnseres']}">
+												<h:form id="ceEOFormId">
+													<p:dataTable id="ceEOTblId" var="condiciones" value="#{incendioLineasAliadasBacking.obtenerCondicionesMueblesEnseres()}" paginator="true"
+														rows="4" selection="#{incendioLineasAliadasBacking.selectCondicionesMueblesEnseres}">
+														<f:facet name="header">#{emision['anexo.titulo.cob']}</f:facet>
+														<p:column selectionMode="multiple" style="width:2%" />
+														<p:column headerText="#{emision['anexo.ca.nombre']}">#{condiciones.nombreDetalleAnexo}</p:column>
+													</p:dataTable>
+												</h:form>
+											</p:tab>
+										</p:accordionPanel>
+									</h:form>
+								</p:tab>
+							</p:tabView>
+
+						</p:panel>
+					</ui:define>
+				</ui:decorate>
+			</ui:define>
+		</ui:decorate>
+	</ui:define>
+</ui:composition>
+</html>

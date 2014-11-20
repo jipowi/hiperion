@@ -1,0 +1,144 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui">
+<ui:composition template="/templates/menuPrincipalTemplate.xhtml">
+	<ui:define name="content">
+		<ui:decorate template="/templates/polizaTemplate.xhtml">
+			<ui:define name="content">
+				<ui:decorate template="/templates/ramoTemplate.xhtml">
+					<ui:define name="ramoHeader">
+						<div align="center">
+							<p:outputLabel value="#{emision['contratista.tituloPantalla']}" styleClass="negrita" />
+							<p:separator id="customSeparator" style="width:auto;height:1px" />
+							<p:spacer height="5px;" />
+							<h:panelGroup style="display:block; text-align:center">
+								<h:graphicImage name="banner_contratista.jpg" library="img/ramos/riesgoContratista" width="1000px" height="160px" />
+							</h:panelGroup>
+							<p:spacer height="15px;" />
+						</div>
+					</ui:define>
+					<ui:define name="ramoContent">
+						<p:tabView effect="blind" effectDuration="normal">
+							<p:tab title="#{emision['contratista.tab.principal']}">
+								<p:outputPanel>
+									<p:messages id="messageTodoRiesgoContratista" showDetail="true" autoUpdate="true" closable="true" />
+								</p:outputPanel>
+								<h:form id="formPrincipal">
+									<div align="center">
+										<h:panelGrid columns="1" id="todoRiesgoContratista">
+											<p:spacer height="15px;" />
+											<p:panel>
+												<h:panelGrid columns="2" cellpadding="3">
+													<p:outputLabel for="idTasa" value="#{emision['contratista.tasaPeriodo']}" styleClass="negrita"/>
+													<p:inputText id="idTasa" value="#{ramoRiesgoContratistaBean.tasa}" required="true" requiredMessage="#{emision['contratista.tasaPeriodo.msn']}"/>
+													
+													<p:outputLabel  for="idPerdiodoContruccion" value="#{emision['contratista.periodoConstruccion']}" styleClass="negrita" />
+													<p:inputText id="idPerdiodoContruccion" value="#{ramoRiesgoContratistaBean.periodoConstruccion}" required="true" requiredMessage="#{emision['contratista.periodoConstruccion.msn']}"/>
+
+													<p:outputLabel for="idPeriodoMantenimiento" value="#{emision['contratista.periodoMantenimiento']}" styleClass="negrita" />
+													<p:inputText id="idPeriodoMantenimiento" value="#{ramoRiesgoContratistaBean.periodoMantenimiento}" required="true" requiredMessage="#{emision['contratista.periodoMantenimiento.msn']}"/>
+
+													<p:outputLabel value="#{emision['contratista.objeto.detalleObjetoAsegurado']}" styleClass="negrita" />
+													<p:inputTextarea value="#{ramoRiesgoContratistaBean.detalleObjeto}" cols="50" rows="2" />
+												</h:panelGrid>
+												<p:spacer height="15px;" />
+												<h:panelGrid columns="2">
+													<h:outputLabel value="#{emision['emision.deducibles']}" />
+													<h:graphicImage name="deducibles.jpg" library="img" />
+												</h:panelGrid>
+
+												<h:panelGrid columns="1">
+													<p:outputLabel value="#{emision['contratista.deducible.amparoA']}" styleClass="negrita" />
+													<h:panelGrid columns="4">
+														<p:outputLabel value="#{emision['contratista.deducible.porcentajeConstruccion']}" />
+														<p:inputText value="#{ramoRiesgoContratistaBean.porcentajeConstruccionA}" />
+														<p:outputLabel value="#{emision['contratista.deducible.minimo']}" />
+														<p:inputText value="#{ramoRiesgoContratistaBean.minimoA}" />
+													</h:panelGrid>
+												</h:panelGrid>
+												<p:spacer height="30px;" />
+
+												<h:panelGrid columns="1">
+													<p:outputLabel value="#{emision['contratista.deducible.amparoB']}" styleClass="negrita" />
+													<h:panelGrid columns="4">
+														<p:outputLabel value="#{emision['contratista.deducible.porcentajeConstruccion']}" />
+														<p:inputText value="#{ramoRiesgoContratistaBean.porcentajeB}" />
+														<p:outputLabel value="#{emision['contratista.deducible.minimo']}" />
+														<p:inputText value="#{ramoRiesgoContratistaBean.minimoB}" />
+													</h:panelGrid>
+												</h:panelGrid>
+												<p:spacer height="30px;" />
+
+												<h:panelGrid columns="1">
+													<p:outputLabel value="#{emision['contratista.deducible.amparoC']}" styleClass="negrita" />
+													<h:panelGrid columns="4">
+														<p:outputLabel value="#{emision['contratista.deducible.porcentajeConstruccion']}" />
+														<p:inputText value="#{ramoRiesgoContratistaBean.porcentajeConstruccionC}" />
+														<p:outputLabel value="#{emision['contratista.deducible.minimo']}" />
+														<p:inputText value="#{ramoRiesgoContratistaBean.minimoC}" />
+													</h:panelGrid>
+												</h:panelGrid>
+												<p:spacer height="30px;" />
+
+												<h:panelGrid columns="1">
+													<p:outputLabel value="#{emision['contratista.deducible.amparoD']}" styleClass="negrita" />
+													<h:panelGrid columns="4">
+														<p:outputLabel value="#{emision['contratista.deducible.porcentajeConstruccion']}" />
+														<p:inputText value="#{ramoRiesgoContratistaBean.porcentajeConstruccionD}" />
+														<p:outputLabel value="#{emision['contratista.deducible.minimo']}" />
+														<p:inputText value="#{ramoRiesgoContratistaBean.minimoD}" />
+													</h:panelGrid>
+												</h:panelGrid>
+												<p:spacer height="30px;" />
+
+												<h:panelGrid columns="1">
+													<p:outputLabel value="#{emision['contratista.deducible.amparoG']}" styleClass="negrita" />
+													<h:panelGrid columns="4">
+														<p:outputLabel value="#{emision['contratista.deducible.porcentajeConstruccion']}" />
+														<p:inputText value="#{ramoRiesgoContratistaBean.porcentajeG}" />
+														<p:outputLabel value="#{emision['contratista.deducible.minimo']}" />
+														<p:inputText value="#{ramoRiesgoContratistaBean.minimoG}" />
+													</h:panelGrid>
+												</h:panelGrid>
+												<p:spacer height="30px;" />
+
+
+												<h:panelGrid columns="2">
+													<h:outputLabel value="#{emision['emision.checkDocumentos']}" />
+													<h:graphicImage name="checkbox.png" library="img" />
+												</h:panelGrid>
+
+												<h:panelGrid columns="1" cellpadding="3">
+													<p:selectBooleanCheckbox value="#{ramoRiesgoContratistaBean.cronograma}" itemLabel="#{emision['contratista.cronograma']}" />
+
+													<p:selectBooleanCheckbox value="#{ramoRiesgoContratistaBean.estudioSuelo}" itemLabel="#{emision['contratista.estudioSuelos']}" />
+
+													<p:selectBooleanCheckbox value="#{ramoRiesgoContratistaBean.formularioSeguro}" itemLabel="#{emision['contratista.formularioSeguro']}" />
+												</h:panelGrid>
+												<p:spacer height="20px;" />
+												<h:panelGrid columns="1" cellpadding="3">
+													<p:outputLabel value="#{emision['contratista.filePolizaVigente']}" styleClass="negrita" />
+													<p:fileUpload fileLimit="1" />
+												</h:panelGrid>
+											</p:panel>
+											<p:spacer heigth="30px;" />
+											<p:commandButton id="guardarBtnId" actionListener="#{riesgosContratistaBacking.guardarRamo}" icon="icon-save"
+												value="#{emision['boton.guardar']}" title="Guardar" update="todoRiesgoContratista, formPrincipal" />
+											<p:commandButton id="cancelarBtnId" icon="icon-cancel" value="#{emision['boton.cancelar']}" process="@this" title="Cancelar" />
+										</h:panelGrid>
+									</div>
+								</h:form>
+							</p:tab>
+
+							<!-- COBERTURAS -->
+							<p:tab title="#{emision['contratista.tab.coberturas']}"></p:tab>
+							<p:tab title="#{emision['contratista.tab.clausulasAdicionales']}"></p:tab>
+						</p:tabView>
+					</ui:define>
+				</ui:decorate>
+			</ui:define>
+		</ui:decorate>
+	</ui:define>
+</ui:composition>
+</html>

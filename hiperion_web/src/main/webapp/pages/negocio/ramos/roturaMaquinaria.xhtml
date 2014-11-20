@@ -1,0 +1,191 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui">
+<ui:composition template="/templates/menuPrincipalTemplate.xhtml">
+	<ui:define name="content">
+		<ui:decorate template="/templates/polizaTemplate.xhtml">
+			<ui:define name="content">
+				<ui:decorate template="/templates/ramoTemplate.xhtml">
+					<ui:define name="ramoHeader">
+						<div align="center">
+							<p:outputLabel value="#{emision['rotura.tituloPantalla']}" styleClass="negrita" />
+							<p:separator id="customSeparator" style="width:auto;height:1px" />
+							<p:spacer height="5px;" />
+							<h:panelGroup style="display:block; text-align:center">
+								<h:graphicImage name="roturaMaquinaria.jpg" library="img/ramos/roturaMaquinaria" width="1000px" height="160px" />
+							</h:panelGroup>
+							<p:spacer height="15px;" />
+						</div>
+					</ui:define>
+					<ui:define name="ramoContent">
+						<p:tabView id="tabGeneral">
+							<p:tab id="tabRamo" title="#{emision['rotura.tab.principal']}">
+								<p:outputPanel id="messageRoturaMaquinaria">
+									<p:messages id="messagesRoturaMaquinaria" showDetail="true" autoUpdate="true" closable="true" />
+								</p:outputPanel>
+								<h:form id="formPrincipal">
+									<div align="center">
+
+										<h:panelGrid columns="1" id="ramoRoturaMaquinaria">
+
+											<p:spacer height="15px;" />
+											<p:panel>
+												<h:panelGrid columns="4">
+													<p:outputLabel for="idTasa" value="#{emision['rotura.tasa']}" styleClass="negrita" />
+													<p:inputText id="idTasa" value="#{ramoRoturaMaquinariaBean.tasa}" required="true" requiredMessage="#{emision['rotura.tasa.msn']}" />
+												</h:panelGrid>
+												<p:spacer height="15px;" />
+												<h:panelGrid columns="2">
+													<h:outputLabel value="#{emision['emision.deducibles']}" />
+													<h:graphicImage name="deducibles.jpg" library="img" />
+												</h:panelGrid>
+												<p:spacer height="15px;" />
+												<h:panelGrid columns="2">
+													<p:outputLabel for="idPorcentajeValorSiniestro" value="#{emision['rotura.deducible.porcentajeValorSiniestro']}" styleClass="negrita" />
+													<p:inputText id="idPorcentajeValorSiniestro" value="#{ramoRoturaMaquinariaBean.porcentajeValorSiniestro}" required="true"
+														requiredMessage="#{emision['rotura.deducible.porcentajeValorSiniestro.msn']}" />
+
+													<p:outputLabel for="idMinimoPorcentajeValorAsegurado" value="#{emision['rotura.deducible.minimoPorcentajeValorAsegurado']}"
+														styleClass="negrita" />
+													<p:inputText id="idMinimoPorcentajeValorAsegurado" value="#{ramoRoturaMaquinariaBean.minimoPorcentajeValorAsegurado}" required="true"
+														requiredMessage="#{emision['rotura.deducible.minimoPorcentajeValorAsegurado.msn']}" />
+
+													<p:outputLabel for="idMinimo" value="#{emision['rotura.deducible.minimo']}" styleClass="negrita" />
+													<p:inputText id="idMinimo" value="#{ramoRoturaMaquinariaBean.minimo}" required="true"
+														requiredMessage="#{emision['rotura.deducible.minimo.msn']}" />
+												</h:panelGrid>
+												<p:spacer height="15px;" />
+												<h:panelGrid columns="1" cellpadding="3">
+													<p:outputLabel value="#{emision['rotura.filePolizaVigente']}" styleClass="negrita" />
+													<p:fileUpload fileLimit="1" />
+												</h:panelGrid>
+											</p:panel>
+
+											<!-- Footer del Formulario -->
+											<f:facet name="footer">
+												<div align="center">
+													<p:commandButton id="guardarBtnId" actionListener="#{roturaMaquinariaBacking.setearInfRamo()}" icon="icon-save"
+														value="#{emision['boton.aceptar']}" title="Guardar" update="formPrincipal, ramoRoturaMaquinaria" />
+													<p:commandButton id="cancelarBtnId" icon="icon-cancel" value="#{emision['boton.cancelar']}" process="@this" title="Cancelar" />
+												</div>
+											</f:facet>
+										</h:panelGrid>
+									</div>
+								</h:form>
+
+								<!-- OBJETO ASEGURADO -->
+							</p:tab>
+							<p:tab title="#{emision['rotura.tab.objetoAsegurado']}">
+
+								<h:form id="form1">
+								<p:messages id="messagesObjRoturaMaquinaria" showDetail="true" autoUpdate="true" closable="true" />
+									<div align="center">
+										<h:panelGrid columns="1">
+											<f:facet name="header">
+												<p:outputLabel value="#{emision['rotura.objeto.tituloPantalla']}" styleClass="negrita" />
+											</f:facet>
+											<p:separator id="customSeparator" style="width:auto;height:1px" />
+											<p:growl id="messages" showDetail="true" />
+											<p:panelGrid columns="2">
+												<h:outputLabel value="#{emision['rotura.objeto.item']}" styleClass="negrita" />
+												<p:inputText value="#{ramoRoturaMaquinariaBean.numeroItem}" />
+
+												<h:outputLabel value="#{emision['rotura.objeto.ubicacion']}" styleClass="negrita" />
+												<p:inputText value="#{ramoRoturaMaquinariaBean.ubicacionRiesgo}" />
+
+												<h:outputLabel value="#{emision['rotura.objeto.descripcion']}" styleClass="negrita" />
+												<p:inputText value="#{ramoRoturaMaquinariaBean.descripcionObjeto}" />
+
+												<h:outputLabel value="#{emision['rotura.objeto.total']}" styleClass="negrita" />
+												<p:inputText value="#{ramoRoturaMaquinariaBean.total}" />
+
+											</p:panelGrid>
+											<f:facet name="footer">
+												<div align="center">
+													<p:commandButton id="agregarObjeto" update="form1, messages" icon="icon-add" value="#{emision['boton.agregar']}"
+														actionListener="#{ramoRoturaMaquinariaBean.addAction}" title="Agregar" />
+												</div>
+											</f:facet>
+										</h:panelGrid>
+										<p:spacer height="30px;" />
+										<p:dataTable value="#{ramoRoturaMaquinariaBean.orderlist}" var="obj" widgetVar="50" style="width: 60%;" editable="true">
+											<p:ajax event="rowEdit" listener="#{ramoRoturaMaquinariaBean.onEdit}" />
+											<p:ajax event="rowEditCancel" listener="#{ramoRoturaMaquinariaBean.onCancel}" />
+											<p:column>
+												<f:facet name="header">
+													<h:outputText value="#{emision['rotura.objeto.item']}" />
+												</f:facet>
+												<p:cellEditor>
+													<f:facet name="output">
+														<h:outputText value="#{obj.numeroItem}" />
+													</f:facet>
+													<f:facet name="input">
+														<p:inputText value="#{obj.numeroItem}" style="width:100%" />
+													</f:facet>
+												</p:cellEditor>
+											</p:column>
+											<p:column>
+												<f:facet name="header">
+													<h:outputText value="#{emision['rotura.objeto.ubicacion']}" />
+												</f:facet>
+												<p:cellEditor>
+													<f:facet name="output">
+														<h:outputText value="#{obj.ubicacionRiesgo}" />
+													</f:facet>
+													<f:facet name="input">
+														<p:inputText value="#{obj.ubicacionRiesgo}" style="width:100%" />
+													</f:facet>
+												</p:cellEditor>
+											</p:column>
+											<p:column>
+												<f:facet name="header">
+													<h:outputText value="#{emision['rotura.objeto.descripcion']}" />
+												</f:facet>
+												<p:cellEditor>
+													<f:facet name="output">
+														<h:outputText value="#{obj.descripcionObjeto}" />
+													</f:facet>
+													<f:facet name="input">
+														<p:inputText value="#{obj.descripcionObjeto}" style="width:100%" />
+													</f:facet>
+												</p:cellEditor>
+											</p:column>
+											<p:column>
+												<f:facet name="header">
+													<h:outputText value="#{emision['rotura.objeto.total']}" />
+												</f:facet>
+												<p:cellEditor>
+													<f:facet name="output">
+														<h:outputText value="#{obj.total}" />
+													</f:facet>
+													<f:facet name="input">
+														<p:inputText value="#{obj.total}" style="width:100%" />
+													</f:facet>
+												</p:cellEditor>
+											</p:column>
+											<p:column headerText="Options" style="width:50px">
+												<p:rowEditor />
+											</p:column>
+										</p:dataTable>
+
+										<p:spacer height="30px;" />
+										<p:commandButton id="guardarObjAseguradoBtnId" actionListener="#{ramoRoturaMaquinariaBean.guardarRamo()}" icon="icon-save"
+											value="#{emision['boton.guardar']}" update="form1" title="Guardar" />
+										<p:commandButton id="cancelarBtnId" icon="icon-cancel" value="#{emision['boton.cancelar']}" title="Cancelar" />
+										</div>
+								</h:form>
+								
+							</p:tab>
+							<!-- COBERTURAS -->
+							<p:tab title="#{emision['rotura.tab.coberturas']}"></p:tab>
+							<p:tab title="#{emision['rotura.tab.coberturasAdicionales']}"></p:tab>
+							<p:tab title="#{emision['rotura.tab.clausulasAdicionales']}"></p:tab>
+						</p:tabView>
+					</ui:define>
+				</ui:decorate>
+			</ui:define>
+		</ui:decorate>
+	</ui:define>
+</ui:composition>
+</html>

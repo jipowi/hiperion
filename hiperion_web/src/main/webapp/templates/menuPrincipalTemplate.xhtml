@@ -1,0 +1,64 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>#{utilitario['hiperion.titulo.pages.menuPrincipal']}</title>
+	<h:outputStylesheet name="layout.css" library="css" />
+	<h:outputStylesheet name="default.css" library="css" />
+</h:head>
+<h:body>
+	<h:panelGrid columns="1">
+		<h:graphicImage name="banner.jpg" library="img" />
+		<object type="application/x-shockwave-flash" width="150" height="150" data="img/banner_avila.swf">
+			<param name="movie" value="banner_avila.swf" />
+			<param name="menu" value="false" />
+			<param name="quality" value="high" />
+		</object>
+
+	</h:panelGrid>
+	<!-- Todo el Temmplate -->
+	<div id="container">
+		<div>
+			<!-- Menu del Template ubicado en la parte derecha -->
+			<div id="left">
+				<h:form>
+					<p:panelMenu>
+						<p:submenu label="#{emision['panel.menu.emision']}">
+							<p:menuitem value="#{emision['panel.submenu.cliente']}" action="/pages/negocio/emision/cliente.xhtml" />
+							<p:menuitem value="#{emision['panel.submenu.poliza']}" action="/pages/negocio/emision/poliza.xhtml" />
+						</p:submenu>
+						<p:submenu label="#{administrador['panel.menu.admin']}">
+							<p:menuitem value="#{administrador['admin.catalogos']}" action="/pages/admin/seguridad.xhtml" icon="ui-icon-key" />
+							<p:menuitem value="#{administrador['admin.seguridad']}" action="/pages/negocio/emision/permisos.xhtml" icon="ui-icon-key" />
+						</p:submenu>
+						<p:submenu label="#{emision['panel.menu.aseguradoras']}">
+							<p:menuitem value="#{emision['panel.submenu.ingresarAseguradoras']}" action="/pages/negocio/emision/aseguradoras.xhtml" />
+						</p:submenu>
+						<p:submenu label="#{emision['panel.menu.correspondencia']}">
+							<p:menuitem value="#{emision['panel.submenu.enviarCorreos']}" action="/pages/negocio/emision/correspondencia.xhtml" />
+							<p:menuitem value="#{emision['panel.submenu.generarCarta']}" action="/pages/negocio/emision/aseguradoras.xhtml" />
+						</p:submenu>
+						<p:submenu label="#{emision['panel.menu.gestorDocumental']}">
+							<p:menuitem value="#{emision['panel.submenu.enviarCorreos']}" action="/pages/negocio/emision/correspondencia.xhtml" />
+							<p:menuitem value="#{emision['panel.submenu.generarCarta']}" action="/pages/negocio/emision/aseguradoras.xhtml" />
+						</p:submenu>
+						<p:submenu label="#{emision['panel.menu.siniestros']}">
+							<p:menuitem value="#{emision['panel.submenu.enviarCorreos']}" action="/pages/negocio/emision/correspondencia.xhtml" />
+							<p:menuitem value="#{emision['panel.submenu.generarCarta']}" action="/pages/negocio/emision/aseguradoras.xhtml" />
+						</p:submenu>
+					</p:panelMenu>
+				</h:form>
+			</div>
+			<!-- Contenido del Template unicado en la parte izquierda -->
+			<div id="content" class="left_content">
+				<ui:insert name="content">Content</ui:insert>
+			</div>
+		</div>
+		<!-- Pie de Pagina del Template -->
+		<div id="bottom">
+			<ui:insert name="bottom">Bottom</ui:insert>
+		</div>
+	</div>
+</h:body>
+</html>

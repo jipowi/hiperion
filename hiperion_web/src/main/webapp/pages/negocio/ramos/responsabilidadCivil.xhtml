@@ -1,0 +1,170 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui">
+<ui:composition template="/templates/menuPrincipalTemplate.xhtml">
+	<ui:define name="content">
+		<ui:decorate template="/templates/polizaTemplate.xhtml">
+			<ui:define name="content">
+				<ui:decorate template="/templates/ramoTemplate.xhtml">
+					<ui:define name="ramoHeader">
+						<div align="center">
+							<p:outputLabel value="#{emision['responsabilidad.tituloPantalla']}" styleClass="negrita" />
+							<p:separator id="customSeparator" style="width:auto;height:1px" />
+							<p:spacer height="5px;" />
+							<h:panelGroup style="display:block; text-align:center">
+								<h:graphicImage name="banner_responsabilidad.jpg" library="img/ramos/responsabilidadCivil" width="1000px" height="160px" />
+							</h:panelGroup>
+							<p:spacer height="15px;" />
+						</div>
+					</ui:define>
+					<ui:define name="ramoContent">
+						<p:tabView id="tabGeneral">
+							<p:tab id="tabRamo" title="#{emision['responsabilidad.tab.principal']}">
+								<p:outputPanel>
+									<p:messages id="messageResponsabilidadCivil" showDetail="true" autoUpdate="true" closable="true" />
+								</p:outputPanel>
+								<h:form id="formPrincipal">
+									<div align="center">
+
+										<h:panelGrid columns="1" id="ramoResponsabilidadCivil">
+											<p:spacer height="15px;" />
+											<p:panel>
+												<h:panelGrid columns="2">
+													<p:outputLabel for="idLimiteUnico" value="#{emision['responsabilidad.limiteUnico']}" styleClass="negrita" />
+													<p:inputText id="idLimiteUnico" value="#{ramoResponsabilidadCivilBean.limiteUnico}" required="true"
+														requiredMessage="#{emision['responsabilidad.limiteUnico.msn']}" />
+													<p:outputLabel for="idTasa" value="#{emision['responsabilidad.tasa']}" styleClass="negrita" />
+													<p:inputText id="idTasa" value="#{ramoResponsabilidadCivilBean.tasa}" required="true"
+														requiredMessage="#{emision['responsabilidad.tasa.msn']}" />
+												</h:panelGrid>
+												<h:panelGrid columns="1" cellpadding="3">
+													<p:outputLabel value="#{emision['responsabilidad.polizaVigente']}" styleClass="negrita" />
+													<p:fileUpload fileLimit="1" />
+												</h:panelGrid>
+
+												<p:spacer height="15px;" />
+
+												<h:panelGrid columns="2">
+													<h:outputLabel value="#{emision['emision.deducibles']}" />
+													<h:graphicImage name="deducibles.jpg" library="img" />
+												</h:panelGrid>
+
+												<p:spacer height="15px;" />
+
+												<h:panelGrid columns="2">
+													<h:outputLabel for="idValorSiniestro" value="#{emision['responsabilidad.deducible.porcentajeValorSiniestro']}" styleClass="negrita" />
+													<p:inputText id="idValorSiniestro" value="#{ramoResponsabilidadCivilBean.porcentajeValorSiniestro}" required="true"
+														requiredMessage="#{emision['responsabilidad.deducible.porcentajeValorSiniestro.msn']}" />
+
+													<h:outputLabel for="idMinimo" value="#{emision['responsabilidad.deducible.minimo']}" styleClass="negrita" />
+													<p:inputText id="idMinimo" value="#{ramoResponsabilidadCivilBean.minimo}" required="true"
+														requiredMessage="#{emision['responsabilidad.deducible.minimo.msn']}" />
+												</h:panelGrid>
+											</p:panel>
+
+											<!-- Footer del Formulario -->
+											<f:facet name="footer">
+												<div align="center">
+													<p:commandButton id="guardarBtnId" actionListener="#{responsabilidadCivilBacking.setearInfRamo}" icon="icon-save"
+														value="#{emision['boton.aceptar']}" title="Guardar" update="formPrincipal, ramoResponsabilidadCivil" />
+													<p:commandButton id="cancelarBtnId" icon="icon-cancel" value="#{emision['boton.cancelar']}" process="@this" title="Cancelar" />
+												</div>
+											</f:facet>
+										</h:panelGrid>
+									</div>
+								</h:form>
+							</p:tab>
+							<!-- OBJETO ASEGURADO -->
+							<p:tab title="#{emision['responsabilidad.tab.objetoAsegurado']}">
+								<h:form id="form1">
+									<p:messages id="messagesObjResponsabilidad" showDetail="true" autoUpdate="true" closable="true" />
+									<div align="center">
+										<h:panelGrid columns="1">
+											<f:facet name="header">
+												<p:outputLabel value="#{emision['responsabilidad.objeto.tituloPantalla']}" styleClass="negrita" />
+											</f:facet>
+											<p:separator id="customSeparator" style="width:auto;height:1px" />
+											<p:growl id="messages" showDetail="true" />
+											<p:panelGrid columns="2">
+												<h:outputLabel value="#{emision['responsabilidad.objeto.item']}" styleClass="negrita" />
+												<p:inputText value="#{ramoResponsabilidadCivilBean.numeroItem}" />
+
+												<h:outputLabel value="#{emision['responsabilidad.objeto.ubicacion']}" styleClass="negrita" />
+												<p:inputText value="#{ramoResponsabilidadCivilBean.ubicacionRiesgo}" />
+
+
+												<h:outputLabel value="#{emision['responsabilidad.objeto.descripcion']}" styleClass="negrita" />
+												<p:inputText value="#{ramoResponsabilidadCivilBean.descripcionObjeto}" />
+											</p:panelGrid>
+											<f:facet name="footer">
+												<div align="center">
+													<p:commandButton id="agregarObjeto" update="form1, messages" icon="icon-add" value="#{emision['boton.agregar']}"
+														actionListener="#{ramoResponsabilidadCivilBean.addAction}" title="Agregar" />
+												</div>
+											</f:facet>
+										</h:panelGrid>
+										<p:spacer height="30px;" />
+										<p:dataTable value="#{ramoResponsabilidadCivilBean.objetolist}" var="obj" widgetVar="50" style="width: 50%;" editable="true">
+											<p:ajax event="rowEdit" listener="#{ramoResponsabilidadCivilBean.onEdit}" />
+											<p:ajax event="rowEditCancel" listener="#{ramoResponsabilidadCivilBean.onCancel}" />
+											<p:column>
+												<f:facet name="header">
+													<h:outputText value="#{emision['responsabilidad.objeto.item']}" />
+												</f:facet>
+												<p:cellEditor>
+													<f:facet name="output">
+														<h:outputText value="#{obj.numeroItem}" />
+													</f:facet>
+													<f:facet name="input">
+														<p:inputText value="#{obj.numeroItem}" style="width:100%" />
+													</f:facet>
+												</p:cellEditor>
+											</p:column>
+											<p:column>
+												<f:facet name="header">
+													<h:outputText value="#{emision['responsabilidad.objeto.ubicacion']}" />
+												</f:facet>
+												<p:cellEditor>
+													<f:facet name="output">
+														<h:outputText value="#{obj.ubicacionRiesgo}" />
+													</f:facet>
+													<f:facet name="input">
+														<p:inputText value="#{obj.ubicacionRiesgo}" style="width:100%" />
+													</f:facet>
+												</p:cellEditor>
+											</p:column>
+											<p:column>
+												<f:facet name="header">
+													<h:outputText value="#{emision['responsabilidad.objeto.descripcion']}" />
+												</f:facet>
+												<p:cellEditor>
+													<f:facet name="output">
+														<h:outputText value="#{obj.descripcionObjeto}" />
+													</f:facet>
+													<f:facet name="input">
+														<p:inputText value="#{obj.descripcionObjeto}" style="width:100%" />
+													</f:facet>
+												</p:cellEditor>
+											</p:column>
+											<p:column headerText="Options" style="width:50px">
+												<p:rowEditor />
+											</p:column>
+										</p:dataTable>
+										<p:spacer height="30px;" />
+
+										<p:commandButton id="guardarObjAseguradoBtnId" actionListener="#{responsabilidadCivilBacking.guardarRamo()}" icon="icon-save"
+											value="#{emision['boton.guardar']}" update="form1" title="Guardar" />
+										<p:commandButton id="cancelarBtnId" icon="icon-cancel" value="#{emision['boton.cancelar']}" title="Cancelar" />
+									</div>
+								</h:form>
+							</p:tab>
+							<p:tab title="#{emision['responsabilidad.tab.clausulasAdicionales']}"></p:tab>
+						</p:tabView>
+					</ui:define>
+				</ui:decorate>
+			</ui:define>
+		</ui:decorate>
+	</ui:define>
+</ui:composition>
+</html>

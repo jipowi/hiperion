@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui">
+<ui:composition template="/templates/menuPrincipalTemplate.xhtml">
+	<ui:define name="content">
+		<ui:decorate template="/templates/polizaTemplate.xhtml">
+			<ui:define name="content">
+				<ui:decorate template="/templates/ramoTemplate.xhtml">
+					<ui:define name="ramoHeader">
+						<div align="center">
+							<p:outputLabel value="#{emision['cumpCont.tituloPantalla']}" styleClass="negrita" />
+							<p:separator id="customSeparator" style="width:auto;height:1px" />
+							<p:spacer height="5px;" />
+							<h:panelGroup style="display:block; text-align:center">
+								<h:graphicImage name="banner_cumplimientoContrato.jpg" library="img/ramos/cumplimiento_contrato" width="1000px" height="160px" />
+							</h:panelGroup>
+							<p:spacer height="15px;" />
+						</div>
+					</ui:define>
+					<ui:define name="ramoContent">
+						<p:panel>
+							<p:tabView effect="blind" effectDuration="normal">
+								<p:tab title="#{emision['cumpCont.tab.principal']}">
+									<p:outputPanel>
+										<p:messages id="messageCumpContrato" showDetail="true" autoUpdate="true" closable="true" />
+									</p:outputPanel>
+									<h:form id="formPrincipal">
+										<div align="center">
+											<h:panelGrid columns="1" id="ramoCumpContrato">
+												<p:panel>
+													<h:panelGrid columns="2" cellpadding="3">
+														<p:outputLabel for="idObjetoAsegurado" value="#{emision['cumpCont.objetoAsegurado']}" styleClass="negrita" />
+														<p:inputText id="idObjetoAsegurado" value="#{ramoCumplimientoContratoBean.objetoAsegurado}" required="true" requiredMessage="#{emision['cumpCont.objetoAsegurado.msn']}"/>
+
+														<p:outputLabel value="#{emision['cumpCont.valorContrato']}" styleClass="negrita" />
+														<p:inputText value="#{ramoCumplimientoContratoBean.valorContrato}" />
+
+														<p:outputLabel for="valorAsegurado" value="#{emision['cumpCont.valorAsegurado']}" styleClass="negrita" />
+														<p:inputText id="valorAsegurado" value="#{ramoCumplimientoContratoBean.valorAsegurado}" required="true" requiredMessage="#{emision['cumpCont.valorAsegurado.msn']}" />
+
+														<p:outputLabel for="tipoContragarantia" value="#{emision['cumpCont.tipoContragarantia']}" styleClass="negrita" />
+														<p:inputText id="tipoContragarantia" value="#{ramoCumplimientoContratoBean.tipoContragarantia}" required="true" requiredMessage="#{emision['cumpCont.tipoContragarantia.msn']}"/>
+													</h:panelGrid>
+													<h:panelGrid columns="1" cellpadding="3">
+														<p:outputLabel value="#{emision['cumpCont.fileContrato']}" styleClass="negrita" />
+														<p:fileUpload fileLimit="1" />
+														<p:outputLabel value="#{emision['cumpCont.filePolizaVigente']}" styleClass="negrita" />
+														<p:fileUpload fileLimit="1" />
+													</h:panelGrid>
+												</p:panel>
+											</h:panelGrid>
+											<p:spacer height="30px;" />
+											<p:commandButton id="guardarBtnId"  actionListener="#{cumplimientoContratoBacking.guardarRamo}"
+												icon="icon-save" value="#{emision['boton.guardar']}" title="Guardar" udate="ramoCumpContrato, formPrincipal" />
+											<p:commandButton id="cancelarBtnId" oncomplete="cumplimientoDlg.hide();" icon="icon-cancel" value="#{emision['boton.cancelar']}"
+												process="@this" title="Cancelar" />
+										</div>
+									</h:form>
+								</p:tab>
+								<!-- COBERTURAS -->
+								<p:tab title="#{emision['ap.tab.coberturas']}">
+									<h:form id="cobCCFormId">
+										<p:dataTable id="cobCCTblId" var="cobertura" value="#{cumplimientoContratoBacking.obtenerCoberturas()}"
+											selection="#{cumplimientoContratoBacking.selectCoberturas}">
+											<f:facet name="header">#{emision['anexo.titulo.cob']}</f:facet>
+											<p:column selectionMode="multiple" style="width:2%" />
+											<p:column headerText="#{emision['anexo.ca.nombre']}">#{cobertura.nombreDetalleAnexo}</p:column>
+										</p:dataTable>
+									</h:form>
+								</p:tab>
+							</p:tabView>
+
+						</p:panel>
+					</ui:define>
+				</ui:decorate>
+			</ui:define>
+		</ui:decorate>
+	</ui:define>
+</ui:composition>
+</html>
