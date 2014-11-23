@@ -5,6 +5,7 @@ package ec.com.avila.emision.web.backings;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -61,13 +62,13 @@ public class ResponsabilidadCivilBacking implements Serializable {
 
 	public void setearInfRamo() {
 		Usuario usuario = usuarioBean.getSessionUser();
-		usuario.getPersona().getApellidoPaterno();
+
 		responsabilidadCivil.setLimiteUnicoAnualResp(Integer.parseInt(ramoResponsabilidadCivilBean.getLimiteUnico().toString()));
 		responsabilidadCivil.setTasaResp(ramoResponsabilidadCivilBean.getTasa());
 		responsabilidadCivil.setDeducSiniestroResp(ramoResponsabilidadCivilBean.getPorcentajeValorSiniestro());
 		responsabilidadCivil.setDeducMinimoResp(ramoResponsabilidadCivilBean.getMinimo());
-		
-
+		responsabilidadCivil.setIdUsuarioCreacion(usuario.getIdUsuario());
+		responsabilidadCivil.setFechaCreacion(new Date());
 		MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.setearInformacion"));
 	}
 
@@ -77,7 +78,7 @@ public class ResponsabilidadCivilBacking implements Serializable {
 	 * <p>
 	 * [Author: Paul Jimenez, Date: Nov 1, 2014]
 	 * </p>
-	 *
+	 * 
 	 * @throws HiperionException
 	 */
 	public void guardarRamo() throws HiperionException {
@@ -91,6 +92,10 @@ public class ResponsabilidadCivilBacking implements Serializable {
 					ObjAsegResponsabilidad objAsegResponsabilidad = new ObjAsegResponsabilidad();
 					objAsegResponsabilidad.setItemResp(objeto.getNumeroItem());
 					objAsegResponsabilidad.setDescripcionResp(objeto.getDescripcionObjeto());
+
+					Usuario usuario = usuarioBean.getSessionUser();
+					objAsegResponsabilidad.setIdUsuarioCreacion(usuario.getIdUsuario());
+					objAsegResponsabilidad.setFechaCreacion(usuario.getFechaCreacion());
 					listObjetos.add(objAsegResponsabilidad);
 				}
 				responsabilidadCivil.setObjAsegResponsabilidads(listObjetos);

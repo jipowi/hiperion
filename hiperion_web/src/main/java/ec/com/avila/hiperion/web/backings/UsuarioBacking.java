@@ -57,11 +57,14 @@ public class UsuarioBacking implements Serializable {
 		context.addCallbackParam("loggedIn", loggedIn);
 		
 		Usuario usuario = new Usuario();
+		usuario.setIdUsuario(12);
 		Persona persona = new Persona();
 		persona.setApellidoPaterno("JIMENEZ");
 		persona.setApellidoMaterno("SILVA");
 		persona.setNombrePersona("PAUL");
+		persona.setIdentificacionPersona("1719186262");
 		usuario.setPersona(persona);
+		
 		usuarioBean.setSessionUser(usuario);
 	}
 }
