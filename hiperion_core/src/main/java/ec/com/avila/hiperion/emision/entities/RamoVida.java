@@ -1,68 +1,61 @@
 package ec.com.avila.hiperion.emision.entities;
 
 import java.io.Serializable;
-import javax.persistence.*;
 import java.math.BigDecimal;
-import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 /**
  * The persistent class for the ramo_vida database table.
  * 
  */
 @Entity
-@Table(name="ramo_vida")
-@NamedQuery(name="RamoVida.findAll", query="SELECT r FROM RamoVida r")
-public class RamoVida implements Serializable {
+@Table(name = "ramo_vida")
+@NamedQuery(name = "RamoVida.findAll", query = "SELECT r FROM RamoVida r")
+public class RamoVida extends Auditoria implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="id_vida")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id_vida")
 	private Integer idVida;
 
-	private String estado;
-
-	@Temporal(TemporalType.DATE)
-	@Column(name="fecha_actualizacion")
-	private Date fechaActualizacion;
-
-	@Temporal(TemporalType.DATE)
-	@Column(name="fecha_creacion")
-	private Date fechaCreacion;
-
-	@Column(name="id_usuario_actualizacion")
-	private Integer idUsuarioActualizacion;
-
-	@Column(name="id_usuario_creacion")
-	private Integer idUsuarioCreacion;
-
-	@Column(name="prima_neta_persona_vida")
+	@Column(name = "prima_neta_persona_vida")
 	private BigDecimal primaNetaPersonaVida;
 
-	@Column(name="prima_total_persona_vida")
+	@Column(name = "prima_total_persona_vida")
 	private BigDecimal primaTotalPersonaVida;
 
-	@Column(name="tasa_incapicidad")
+	@Column(name = "tasa_incapicidad")
 	private BigDecimal tasaIncapicidad;
 
-	@Column(name="tasa_muerte")
+	@Column(name = "tasa_muerte")
 	private BigDecimal tasaMuerte;
 
-	@Column(name="tasa_vida")
+	@Column(name = "tasa_vida")
 	private BigDecimal tasaVida;
 
-	@Column(name="total_asegurados")
+	@Column(name = "total_asegurados")
 	private Integer totalAsegurados;
 
-	//bi-directional many-to-one association to Poliza
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="id_poliza")
+	// bi-directional many-to-one association to Poliza
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id_poliza")
 	private Poliza poliza;
 
-	//bi-directional many-to-one association to GrupoVida
-	@OneToMany(mappedBy="ramoVida")
+	// bi-directional many-to-one association to GrupoVida
+	@OneToMany(mappedBy = "ramoVida")
 	private List<GrupoVida> grupoVidas;
 
 	public RamoVida() {
@@ -74,46 +67,6 @@ public class RamoVida implements Serializable {
 
 	public void setIdVida(Integer idVida) {
 		this.idVida = idVida;
-	}
-
-	public String getEstado() {
-		return this.estado;
-	}
-
-	public void setEstado(String estado) {
-		this.estado = estado;
-	}
-
-	public Date getFechaActualizacion() {
-		return this.fechaActualizacion;
-	}
-
-	public void setFechaActualizacion(Date fechaActualizacion) {
-		this.fechaActualizacion = fechaActualizacion;
-	}
-
-	public Date getFechaCreacion() {
-		return this.fechaCreacion;
-	}
-
-	public void setFechaCreacion(Date fechaCreacion) {
-		this.fechaCreacion = fechaCreacion;
-	}
-
-	public Integer getIdUsuarioActualizacion() {
-		return this.idUsuarioActualizacion;
-	}
-
-	public void setIdUsuarioActualizacion(Integer idUsuarioActualizacion) {
-		this.idUsuarioActualizacion = idUsuarioActualizacion;
-	}
-
-	public Integer getIdUsuarioCreacion() {
-		return this.idUsuarioCreacion;
-	}
-
-	public void setIdUsuarioCreacion(Integer idUsuarioCreacion) {
-		this.idUsuarioCreacion = idUsuarioCreacion;
 	}
 
 	public BigDecimal getPrimaNetaPersonaVida() {

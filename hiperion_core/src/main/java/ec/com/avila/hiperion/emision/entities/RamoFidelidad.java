@@ -1,76 +1,69 @@
 package ec.com.avila.hiperion.emision.entities;
 
 import java.io.Serializable;
-import javax.persistence.*;
 import java.math.BigDecimal;
-import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 /**
  * The persistent class for the ramo_fidelidad database table.
  * 
  */
 @Entity
-@Table(name="ramo_fidelidad")
-@NamedQuery(name="RamoFidelidad.findAll", query="SELECT r FROM RamoFidelidad r")
-public class RamoFidelidad implements Serializable {
+@Table(name = "ramo_fidelidad")
+@NamedQuery(name = "RamoFidelidad.findAll", query = "SELECT r FROM RamoFidelidad r")
+public class RamoFidelidad extends Auditoria implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="id_fidelidad")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id_fidelidad")
 	private Integer idFidelidad;
 
-	@Column(name="deduc_minimo_fidelidad")
+	@Column(name = "deduc_minimo_fidelidad")
 	private BigDecimal deducMinimoFidelidad;
 
-	@Column(name="deduc_siniestro_fidelidad")
+	@Column(name = "deduc_siniestro_fidelidad")
 	private BigDecimal deducSiniestroFidelidad;
 
-	private String estado;
-
-	@Temporal(TemporalType.DATE)
-	@Column(name="fecha_actualizacion")
-	private Date fechaActualizacion;
-
-	@Temporal(TemporalType.DATE)
-	@Column(name="fecha_creacion")
-	private Date fechaCreacion;
-
-	@Column(name="id_usuario_actualizacion")
-	private Integer idUsuarioActualizacion;
-
-	@Column(name="id_usuario_creacion")
-	private Integer idUsuarioCreacion;
-
-	@Column(name="sector_fidelidad")
+	@Column(name = "sector_fidelidad")
 	private String sectorFidelidad;
 
-	@Column(name="tasa_fidelidad")
+	@Column(name = "tasa_fidelidad")
 	private BigDecimal tasaFidelidad;
 
-	@Column(name="valor_colusorio")
+	@Column(name = "valor_colusorio")
 	private BigDecimal valorColusorio;
 
-	@Column(name="valor_individual")
+	@Column(name = "valor_individual")
 	private BigDecimal valorIndividual;
 
-	//bi-directional many-to-one association to ClausulasAddFidelidad
-	@OneToMany(mappedBy="ramoFidelidad")
+	// bi-directional many-to-one association to ClausulasAddFidelidad
+	@OneToMany(mappedBy = "ramoFidelidad")
 	private List<ClausulasAddFidelidad> clausulasAddFidelidads;
 
-	//bi-directional many-to-one association to Poliza
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="id_poliza")
+	// bi-directional many-to-one association to Poliza
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id_poliza")
 	private Poliza poliza;
 
-	//bi-directional many-to-one association to CobertFidelidad
-	@OneToMany(mappedBy="ramoFidelidad")
+	// bi-directional many-to-one association to CobertFidelidad
+	@OneToMany(mappedBy = "ramoFidelidad")
 	private List<CobertFidelidad> cobertFidelidads;
 
-	//bi-directional many-to-one association to ObjAsegFidelidad
-	@OneToMany(mappedBy="ramoFidelidad")
+	// bi-directional many-to-one association to ObjAsegFidelidad
+	@OneToMany(mappedBy = "ramoFidelidad")
 	private List<ObjAsegFidelidad> objAsegFidelidads;
 
 	public RamoFidelidad() {
@@ -100,45 +93,6 @@ public class RamoFidelidad implements Serializable {
 		this.deducSiniestroFidelidad = deducSiniestroFidelidad;
 	}
 
-	public String getEstado() {
-		return this.estado;
-	}
-
-	public void setEstado(String estado) {
-		this.estado = estado;
-	}
-
-	public Date getFechaActualizacion() {
-		return this.fechaActualizacion;
-	}
-
-	public void setFechaActualizacion(Date fechaActualizacion) {
-		this.fechaActualizacion = fechaActualizacion;
-	}
-
-	public Date getFechaCreacion() {
-		return this.fechaCreacion;
-	}
-
-	public void setFechaCreacion(Date fechaCreacion) {
-		this.fechaCreacion = fechaCreacion;
-	}
-
-	public Integer getIdUsuarioActualizacion() {
-		return this.idUsuarioActualizacion;
-	}
-
-	public void setIdUsuarioActualizacion(Integer idUsuarioActualizacion) {
-		this.idUsuarioActualizacion = idUsuarioActualizacion;
-	}
-
-	public Integer getIdUsuarioCreacion() {
-		return this.idUsuarioCreacion;
-	}
-
-	public void setIdUsuarioCreacion(Integer idUsuarioCreacion) {
-		this.idUsuarioCreacion = idUsuarioCreacion;
-	}
 
 	public String getSectorFidelidad() {
 		return this.sectorFidelidad;

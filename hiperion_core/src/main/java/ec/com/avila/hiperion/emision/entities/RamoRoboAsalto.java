@@ -1,61 +1,71 @@
 package ec.com.avila.hiperion.emision.entities;
 
 import java.io.Serializable;
-import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.List;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 /**
  * The persistent class for the ramo_robo_asalto database table.
  * 
  */
 @Entity
-@Table(name="ramo_robo_asalto")
-@NamedQuery(name="RamoRoboAsalto.findAll", query="SELECT r FROM RamoRoboAsalto r")
-public class RamoRoboAsalto implements Serializable {
+@Table(name = "ramo_robo_asalto")
+@NamedQuery(name = "RamoRoboAsalto.findAll", query = "SELECT r FROM RamoRoboAsalto r")
+public class RamoRoboAsalto extends Auditoria implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="id_robo")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id_robo")
 	private Integer idRobo;
 
-	@Column(name="tasa_contenidos")
+	@Column(name = "tasa_contenidos")
 	private BigDecimal tasaContenidos;
 
-	@Column(name="tasa_hurto_robo")
+	@Column(name = "tasa_hurto_robo")
 	private BigDecimal tasaHurtoRobo;
 
-	@Column(name="tasa_propiedad")
+	@Column(name = "tasa_propiedad")
 	private BigDecimal tasaPropiedad;
 
-	@Column(name="tasa_robo_asalto")
+	@Column(name = "tasa_robo_asalto")
 	private BigDecimal tasaRoboAsalto;
 
-	//bi-directional many-to-one association to ClausulasAddRobo
-	@OneToMany(mappedBy="ramoRoboAsalto")
+	// bi-directional many-to-one association to ClausulasAddRobo
+	@OneToMany(mappedBy = "ramoRoboAsalto")
 	private List<ClausulasAddRobo> clausulasAddRobos;
 
-	//bi-directional many-to-one association to CobertAddRobo
-	@OneToMany(mappedBy="ramoRoboAsalto")
+	// bi-directional many-to-one association to CobertAddRobo
+	@OneToMany(mappedBy = "ramoRoboAsalto")
 	private List<CobertAddRobo> cobertAddRobos;
 
-	//bi-directional many-to-one association to CondEspRobo
-	@OneToMany(mappedBy="ramoRoboAsalto")
+	// bi-directional many-to-one association to CondEspRobo
+	@OneToMany(mappedBy = "ramoRoboAsalto")
 	private List<CondEspRobo> condEspRobos;
 
-	//bi-directional many-to-one association to ObjAsegRobo
-	@OneToMany(mappedBy="ramoRoboAsalto")
+	// bi-directional many-to-one association to ObjAsegRobo
+	@OneToMany(mappedBy = "ramoRoboAsalto")
 	private List<ObjAsegRobo> objAsegRobos;
 
-	//bi-directional many-to-one association to Poliza
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="id_poliza")
+	// bi-directional many-to-one association to Poliza
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id_poliza")
 	private Poliza poliza;
 
-	//bi-directional many-to-one association to CoberturaRobo
-	@OneToMany(mappedBy="ramoRoboAsalto")
+	// bi-directional many-to-one association to CoberturaRobo
+	@OneToMany(mappedBy = "ramoRoboAsalto")
 	private List<CoberturaRobo> coberturaRobos;
 
 	public RamoRoboAsalto() {

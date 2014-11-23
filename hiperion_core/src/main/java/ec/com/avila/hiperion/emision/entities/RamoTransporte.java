@@ -1,80 +1,73 @@
 package ec.com.avila.hiperion.emision.entities;
 
 import java.io.Serializable;
-import javax.persistence.*;
 import java.math.BigDecimal;
-import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 /**
  * The persistent class for the ramo_transporte database table.
  * 
  */
 @Entity
-@Table(name="ramo_transporte")
-@NamedQuery(name="RamoTransporte.findAll", query="SELECT r FROM RamoTransporte r")
-public class RamoTransporte implements Serializable {
+@Table(name = "ramo_transporte")
+@NamedQuery(name = "RamoTransporte.findAll", query = "SELECT r FROM RamoTransporte r")
+public class RamoTransporte extends Auditoria implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="id_transporte")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id_transporte")
 	private Integer idTransporte;
 
-	@Column(name="cond_importantes_transporte")
+	@Column(name = "cond_importantes_transporte")
 	private String condImportantesTransporte;
 
-	@Column(name="embarque_trans")
+	@Column(name = "embarque_trans")
 	private BigDecimal embarqueTrans;
 
-	private String estado;
-
-	@Temporal(TemporalType.DATE)
-	@Column(name="fecha_actualizacion")
-	private Date fechaActualizacion;
-
-	@Temporal(TemporalType.DATE)
-	@Column(name="fecha_creacion")
-	private Date fechaCreacion;
-
-	@Column(name="id_usuario_actualizacion")
-	private Integer idUsuarioActualizacion;
-
-	@Column(name="id_usuario_creacion")
-	private Integer idUsuarioCreacion;
-
-	@Column(name="minimo_embarque_trans")
+	@Column(name = "minimo_embarque_trans")
 	private BigDecimal minimoEmbarqueTrans;
 
-	@Column(name="minimo_siniestro_trans")
+	@Column(name = "minimo_siniestro_trans")
 	private BigDecimal minimoSiniestroTrans;
 
-	@Column(name="siniestro_trans")
+	@Column(name = "siniestro_trans")
 	private BigDecimal siniestroTrans;
 
-	@Column(name="tasa_transporte")
+	@Column(name = "tasa_transporte")
 	private BigDecimal tasaTransporte;
 
-	//bi-directional many-to-one association to ClausulasAddTran
-	@OneToMany(mappedBy="ramoTransporte")
+	// bi-directional many-to-one association to ClausulasAddTran
+	@OneToMany(mappedBy = "ramoTransporte")
 	private List<ClausulasAddTran> clausulasAddTrans;
 
-	//bi-directional many-to-one association to CondEspTran
-	@OneToMany(mappedBy="ramoTransporte")
+	// bi-directional many-to-one association to CondEspTran
+	@OneToMany(mappedBy = "ramoTransporte")
 	private List<CondEspTran> condEspTrans;
 
-	//bi-directional many-to-one association to Poliza
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="id_poliza")
+	// bi-directional many-to-one association to Poliza
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id_poliza")
 	private Poliza poliza;
 
-	//bi-directional many-to-one association to CobertTran
-	@OneToMany(mappedBy="ramoTransporte")
+	// bi-directional many-to-one association to CobertTran
+	@OneToMany(mappedBy = "ramoTransporte")
 	private List<CobertTran> cobertTrans;
 
-	//bi-directional many-to-one association to ObjAsegTransporte
-	@OneToMany(mappedBy="ramoTransporte")
+	// bi-directional many-to-one association to ObjAsegTransporte
+	@OneToMany(mappedBy = "ramoTransporte")
 	private List<ObjAsegTransporte> objAsegTransportes;
 
 	public RamoTransporte() {
@@ -102,46 +95,6 @@ public class RamoTransporte implements Serializable {
 
 	public void setEmbarqueTrans(BigDecimal embarqueTrans) {
 		this.embarqueTrans = embarqueTrans;
-	}
-
-	public String getEstado() {
-		return this.estado;
-	}
-
-	public void setEstado(String estado) {
-		this.estado = estado;
-	}
-
-	public Date getFechaActualizacion() {
-		return this.fechaActualizacion;
-	}
-
-	public void setFechaActualizacion(Date fechaActualizacion) {
-		this.fechaActualizacion = fechaActualizacion;
-	}
-
-	public Date getFechaCreacion() {
-		return this.fechaCreacion;
-	}
-
-	public void setFechaCreacion(Date fechaCreacion) {
-		this.fechaCreacion = fechaCreacion;
-	}
-
-	public Integer getIdUsuarioActualizacion() {
-		return this.idUsuarioActualizacion;
-	}
-
-	public void setIdUsuarioActualizacion(Integer idUsuarioActualizacion) {
-		this.idUsuarioActualizacion = idUsuarioActualizacion;
-	}
-
-	public Integer getIdUsuarioCreacion() {
-		return this.idUsuarioCreacion;
-	}
-
-	public void setIdUsuarioCreacion(Integer idUsuarioCreacion) {
-		this.idUsuarioCreacion = idUsuarioCreacion;
 	}
 
 	public BigDecimal getMinimoEmbarqueTrans() {

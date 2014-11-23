@@ -1,68 +1,60 @@
 package ec.com.avila.hiperion.emision.entities;
 
 import java.io.Serializable;
-import javax.persistence.*;
 import java.math.BigDecimal;
-import java.util.Date;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 
 /**
  * The persistent class for the obj_aseg_transporte database table.
  * 
  */
 @Entity
-@Table(name="obj_aseg_transporte")
-@NamedQuery(name="ObjAsegTransporte.findAll", query="SELECT o FROM ObjAsegTransporte o")
-public class ObjAsegTransporte implements Serializable {
+@Table(name = "obj_aseg_transporte")
+@NamedQuery(name = "ObjAsegTransporte.findAll", query = "SELECT o FROM ObjAsegTransporte o")
+public class ObjAsegTransporte extends Auditoria implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="id_obj_asg_transporte")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id_obj_asg_transporte")
 	private Integer idObjAsgTransporte;
 
-	private String estado;
-
-	@Temporal(TemporalType.DATE)
-	@Column(name="fecha_actualizacion")
-	private Date fechaActualizacion;
-
-	@Temporal(TemporalType.DATE)
-	@Column(name="fecha_creacion")
-	private Date fechaCreacion;
-
-	@Column(name="id_usuario_actualizacion")
-	private Integer idUsuarioActualizacion;
-
-	@Column(name="id_usuario_creacion")
-	private Integer idUsuarioCreacion;
-
-	@Column(name="item_transporte")
+	@Column(name = "item_transporte")
 	private Integer itemTransporte;
 
-	@Column(name="limite_embarque_transporte")
+	@Column(name = "limite_embarque_transporte")
 	private BigDecimal limiteEmbarqueTransporte;
 
-	@Column(name="limite_movilizacion_anual")
+	@Column(name = "limite_movilizacion_anual")
 	private BigDecimal limiteMovilizacionAnual;
 
-	@Column(name="medio_transporte")
+	@Column(name = "medio_transporte")
 	private String medioTransporte;
 
-	@Column(name="tipo_embalaje")
+	@Column(name = "tipo_embalaje")
 	private String tipoEmbalaje;
 
-	@Column(name="trayecto_desde")
+	@Column(name = "trayecto_desde")
 	private String trayectoDesde;
 
-	@Column(name="trayecto_hasta")
+	@Column(name = "trayecto_hasta")
 	private String trayectoHasta;
 
 	private String valuacion;
 
-	//bi-directional many-to-one association to RamoTransporte
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="id_transporte")
+	// bi-directional many-to-one association to RamoTransporte
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id_transporte")
 	private RamoTransporte ramoTransporte;
 
 	public ObjAsegTransporte() {
@@ -74,46 +66,6 @@ public class ObjAsegTransporte implements Serializable {
 
 	public void setIdObjAsgTransporte(Integer idObjAsgTransporte) {
 		this.idObjAsgTransporte = idObjAsgTransporte;
-	}
-
-	public String getEstado() {
-		return this.estado;
-	}
-
-	public void setEstado(String estado) {
-		this.estado = estado;
-	}
-
-	public Date getFechaActualizacion() {
-		return this.fechaActualizacion;
-	}
-
-	public void setFechaActualizacion(Date fechaActualizacion) {
-		this.fechaActualizacion = fechaActualizacion;
-	}
-
-	public Date getFechaCreacion() {
-		return this.fechaCreacion;
-	}
-
-	public void setFechaCreacion(Date fechaCreacion) {
-		this.fechaCreacion = fechaCreacion;
-	}
-
-	public Integer getIdUsuarioActualizacion() {
-		return this.idUsuarioActualizacion;
-	}
-
-	public void setIdUsuarioActualizacion(Integer idUsuarioActualizacion) {
-		this.idUsuarioActualizacion = idUsuarioActualizacion;
-	}
-
-	public Integer getIdUsuarioCreacion() {
-		return this.idUsuarioCreacion;
-	}
-
-	public void setIdUsuarioCreacion(Integer idUsuarioCreacion) {
-		this.idUsuarioCreacion = idUsuarioCreacion;
 	}
 
 	public Integer getItemTransporte() {
