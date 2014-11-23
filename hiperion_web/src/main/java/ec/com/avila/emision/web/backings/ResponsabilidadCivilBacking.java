@@ -66,6 +66,7 @@ public class ResponsabilidadCivilBacking implements Serializable {
 		responsabilidadCivil.setTasaResp(ramoResponsabilidadCivilBean.getTasa());
 		responsabilidadCivil.setDeducSiniestroResp(ramoResponsabilidadCivilBean.getPorcentajeValorSiniestro());
 		responsabilidadCivil.setDeducMinimoResp(ramoResponsabilidadCivilBean.getMinimo());
+		
 
 		MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.setearInformacion"));
 	}
