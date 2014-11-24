@@ -8,6 +8,8 @@ import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -27,25 +29,27 @@ public class Auditoria implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 
+	@Enumerated(EnumType.STRING)
 	private String estado;
 
 	@Temporal(TemporalType.DATE)
-	@Column(name = "fecha_actualizacion")
+	@Column(name = "fecha_actualizacion", insertable = false)
 	private Date fechaActualizacion;
 
 	@Temporal(TemporalType.DATE)
-	@Column(name = "fecha_creacion")
+	@Column(name = "fecha_creacion", updatable = false)
 	private Date fechaCreacion;
 
-	@Column(name = "id_usuario_actualizacion")
+	@Column(name = "id_usuario_actualizacion", insertable = false)
 	private Integer idUsuarioActualizacion;
 
-	@Column(name = "id_usuario_creacion")
+	@Column(name = "id_usuario_creacion", updatable = false)
 	private Integer idUsuarioCreacion;
 
 	/**
 	 * @return the estado
 	 */
+	
 	public String getEstado() {
 		return estado;
 	}
