@@ -21,6 +21,7 @@ import ec.com.avila.hiperion.dto.ObjetoAseguradoResponsabilidadDTO;
 import ec.com.avila.hiperion.emision.entities.ObjAsegResponsabilidad;
 import ec.com.avila.hiperion.emision.entities.RamoResponsabilidadCivil;
 import ec.com.avila.hiperion.emision.entities.Usuario;
+import ec.com.avila.hiperion.enumeration.EstadoEnum;
 import ec.com.avila.hiperion.servicio.RamoResponsabilidadCivilService;
 import ec.com.avila.hiperion.servicio.RamoService;
 import ec.com.avila.hiperion.web.beans.RamoBean;
@@ -69,6 +70,7 @@ public class ResponsabilidadCivilBacking implements Serializable {
 		responsabilidadCivil.setDeducMinimoResp(ramoResponsabilidadCivilBean.getMinimo());
 		responsabilidadCivil.setIdUsuarioCreacion(usuario.getIdUsuario());
 		responsabilidadCivil.setFechaCreacion(new Date());
+		responsabilidadCivil.setEstado(EstadoEnum.A);
 		MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.setearInformacion"));
 	}
 
@@ -95,7 +97,8 @@ public class ResponsabilidadCivilBacking implements Serializable {
 
 					Usuario usuario = usuarioBean.getSessionUser();
 					objAsegResponsabilidad.setIdUsuarioCreacion(usuario.getIdUsuario());
-					objAsegResponsabilidad.setFechaCreacion(usuario.getFechaCreacion());
+					objAsegResponsabilidad.setFechaCreacion(new Date());
+					objAsegResponsabilidad.setEstado(EstadoEnum.A);
 					listObjetos.add(objAsegResponsabilidad);
 				}
 				responsabilidadCivil.setObjAsegResponsabilidads(listObjetos);
