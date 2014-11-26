@@ -4,6 +4,7 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
 	<persistence-unit name="sgs_pu" transaction-type="JTA">
 		<jta-data-source>java:/AvilaSgsDS</jta-data-source>
+		<class>ec.com.avila.hiperion.emision.entities.Auditoria</class>
 		<class>ec.com.avila.hiperion.comun.Consultas</class>
 		<class>ec.com.avila.hiperion.emision.entities.Anexo</class>
 		<class>ec.com.avila.hiperion.emision.entities.ArchivoBase</class>
