@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      PostgreSQL 8                                 */
-/* Created on:     11/25/2014 2:43:18 PM                        */
+/* Created on:     11/25/2014 10:00:33 PM                       */
 /*==============================================================*/
 
 
@@ -3229,9 +3229,9 @@ create table RAMO_CASCO_MARITIMO (
    NOMBRE_NAVE          TEXT                 null,
    NUMERO_REGISTRO      TEXT                 null,
    TONELAJE_BRUTO       DECIMAL              null,
-   CLASE_EMBARCACION    INT4                 null,
-   BANDERA              INT4                 null,
-   ZONA_NAVEGACION      INT4                 null,
+   CLASE_EMBARCACION    TEXT                 null,
+   BANDERA              TEXT                 null,
+   ZONA_NAVEGACION      TEXT                 null,
    ESLORA               TEXT                 null,
    PUNTAL               TEXT                 null,
    ANIO_CONSTR_MARITIMO INT4                 null,
