@@ -8,8 +8,8 @@ import javax.naming.NamingException;
 import org.junit.Before;
 
 import ec.com.avila.hiperion.comun.HiperionException;
-import ec.com.avila.hiperion.entities.Catalogo;
-import ec.com.avila.hiperion.entities.DetalleCatalogo;
+import ec.com.avila.hiperion.emision.entities.Catalogo;
+import ec.com.avila.hiperion.emision.entities.DetalleCatalogo;
 import ec.com.avila.hiperion.servicio.CatalogoServiceRemote;
 import ec.com.avila.hiperion.servicio.test.utilitario.ClientUtility;
 

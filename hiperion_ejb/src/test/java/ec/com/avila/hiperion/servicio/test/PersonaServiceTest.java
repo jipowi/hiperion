@@ -8,7 +8,7 @@ import javax.naming.NamingException;
 import org.junit.Before;
 
 import ec.com.avila.hiperion.comun.HiperionException;
-import ec.com.avila.hiperion.entities.Persona;
+import ec.com.avila.hiperion.emision.entities.Persona;
 import ec.com.avila.hiperion.servicio.PersonaServiceRemote;
 import ec.com.avila.hiperion.servicio.test.utilitario.ClientUtility;
 
