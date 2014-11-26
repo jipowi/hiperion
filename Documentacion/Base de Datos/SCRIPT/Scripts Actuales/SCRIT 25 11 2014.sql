@@ -86,11 +86,7 @@ create table CANTON (
    ID_CANTON            SERIAL               not null,
    ID_PROVINCIA         INT4                 null,
    NOMBRE_CANTON        TEXT                 null,
-   ID_USUARIO_CREACION  INT4                 not null,
-   ID_USUARIO_ACTUALIZACION INT4                 null,
-   FECHA_CREACION       DATE                 not null,
-   FECHA_ACTUALIZACION  DATE                 null,
-   ESTADO               TEXT                 not null,
+   
    constraint PK_CANTON primary key (ID_CANTON)
 );
 
