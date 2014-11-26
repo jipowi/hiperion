@@ -12,8 +12,8 @@ import javax.faces.event.ActionEvent;
 
 import org.primefaces.context.RequestContext;
 
-import ec.com.avila.hiperion.entities.Persona;
-import ec.com.avila.hiperion.entities.Usuario;
+import ec.com.avila.hiperion.emision.entities.Persona;
+import ec.com.avila.hiperion.emision.entities.Usuario;
 import ec.com.avila.hiperion.servicio.UsuarioService;
 import ec.com.avila.hiperion.web.beans.UsuarioBean;
 

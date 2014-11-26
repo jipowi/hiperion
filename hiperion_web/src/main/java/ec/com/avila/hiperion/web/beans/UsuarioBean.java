@@ -5,7 +5,7 @@ import java.io.Serializable;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
-import ec.com.avila.hiperion.entities.Usuario;
+import ec.com.avila.hiperion.emision.entities.Usuario;
 
 @ManagedBean
 @SessionScoped

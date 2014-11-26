@@ -5,7 +5,7 @@ import java.io.Serializable;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 
-import ec.com.avila.hiperion.entities.Catalogo;
+import ec.com.avila.hiperion.emision.entities.Catalogo;
 
 @ManagedBean
 @RequestScoped

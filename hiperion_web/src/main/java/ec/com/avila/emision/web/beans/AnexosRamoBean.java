@@ -13,7 +13,7 @@ import javax.faces.bean.ManagedBean;
 import ec.com.avila.emision.web.domain.ClausulaAdicional;
 import ec.com.avila.emision.web.domain.Cobertura;
 import ec.com.avila.emision.web.domain.CondicionEspecial;
-import ec.com.avila.hiperion.entities.DetalleAnexo;
+import ec.com.avila.hiperion.emision.entities.DetalleAnexo;
 
 /**
  * <b> Incluir aqui la descripcion de la clase. </b>

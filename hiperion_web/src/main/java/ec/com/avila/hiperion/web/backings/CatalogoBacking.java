@@ -15,7 +15,7 @@ import javax.faces.event.ActionEvent;
 import org.primefaces.event.RowEditEvent;
 
 import ec.com.avila.hiperion.comun.HiperionException;
-import ec.com.avila.hiperion.entities.Catalogo;
+import ec.com.avila.hiperion.emision.entities.Catalogo;
 import ec.com.avila.hiperion.servicio.CatalogoService;
 import ec.com.avila.hiperion.web.beans.CatalogoBean;
 
