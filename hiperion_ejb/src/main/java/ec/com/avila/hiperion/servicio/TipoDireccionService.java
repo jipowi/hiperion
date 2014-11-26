@@ -8,7 +8,7 @@ import java.util.List;
 import javax.ejb.Local;
 
 import ec.com.avila.hiperion.comun.HiperionException;
-import ec.com.avila.hiperion.entities.TipoDireccion;
+import ec.com.avila.hiperion.emision.entities.TipoDireccion;
 
 /**
  * <b> Servicio de interface local para realizar las operaciones sobre la tabla TipoDireccion. </b>

@@ -10,7 +10,7 @@ import javax.ejb.Stateless;
 
 import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.dao.TipoDireccionDao;
-import ec.com.avila.hiperion.entities.TipoDireccion;
+import ec.com.avila.hiperion.emision.entities.TipoDireccion;
 import ec.com.avila.hiperion.servicio.TipoDireccionService;
 import ec.com.avila.hiperion.servicio.TipoDireccionServiceRemote;
 

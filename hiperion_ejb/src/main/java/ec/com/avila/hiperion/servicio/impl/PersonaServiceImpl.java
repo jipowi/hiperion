@@ -11,7 +11,7 @@ import javax.ejb.Stateless;
 
 import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.dao.PersonaDao;
-import ec.com.avila.hiperion.entities.Persona;
+import ec.com.avila.hiperion.emision.entities.Persona;
 import ec.com.avila.hiperion.servicio.PersonaService;
 import ec.com.avila.hiperion.servicio.PersonaServiceRemote;
 

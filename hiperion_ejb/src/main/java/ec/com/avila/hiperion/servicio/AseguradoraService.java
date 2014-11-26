@@ -9,8 +9,8 @@ import java.util.List;
 import javax.ejb.Local;
 
 import ec.com.avila.hiperion.comun.HiperionException;
-import ec.com.avila.hiperion.entities.Aseguradora;
-import ec.com.avila.hiperion.entities.Persona;
+import ec.com.avila.hiperion.emision.entities.Aseguradora;
+import ec.com.avila.hiperion.emision.entities.Persona;
 
 /**
  * <b> Servicio de interface local para realizar las operaciones sobre la tabla Aseguradora</b>

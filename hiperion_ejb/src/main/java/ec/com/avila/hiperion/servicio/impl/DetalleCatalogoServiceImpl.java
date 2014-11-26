@@ -11,7 +11,7 @@ import javax.ejb.Stateless;
 
 import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.dao.DetalleCatalogoDao;
-import ec.com.avila.hiperion.entities.DetalleCatalogo;
+import ec.com.avila.hiperion.emision.entities.DetalleCatalogo;
 import ec.com.avila.hiperion.servicio.DetalleCatalogoService;
 import ec.com.avila.hiperion.servicio.DetalleCatalogoServiceRemote;
 

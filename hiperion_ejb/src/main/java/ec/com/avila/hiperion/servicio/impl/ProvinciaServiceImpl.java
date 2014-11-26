@@ -11,7 +11,7 @@ import javax.ejb.Stateless;
 
 import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.dao.ProvinciaDao;
-import ec.com.avila.hiperion.entities.Provincia;
+import ec.com.avila.hiperion.emision.entities.Provincia;
 import ec.com.avila.hiperion.servicio.ProvinciaService;
 import ec.com.avila.hiperion.servicio.ProvinciaServiceRemote;
 

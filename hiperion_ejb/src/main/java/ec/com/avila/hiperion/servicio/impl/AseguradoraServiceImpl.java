@@ -11,8 +11,8 @@ import javax.ejb.Stateless;
 
 import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.dao.AseguradoraDao;
-import ec.com.avila.hiperion.entities.Aseguradora;
-import ec.com.avila.hiperion.entities.Persona;
+import ec.com.avila.hiperion.emision.entities.Aseguradora;
+import ec.com.avila.hiperion.emision.entities.Persona;
 import ec.com.avila.hiperion.servicio.AseguradoraService;
 import ec.com.avila.hiperion.servicio.AseguradoraServiceRemote;
 

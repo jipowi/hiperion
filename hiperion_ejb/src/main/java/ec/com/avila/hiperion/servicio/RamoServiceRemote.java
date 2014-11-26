@@ -9,7 +9,7 @@ import java.util.List;
 import javax.ejb.Remote;
 
 import ec.com.avila.hiperion.comun.HiperionException;
-import ec.com.avila.hiperion.entities.Ramo;
+import ec.com.avila.hiperion.emision.entities.Ramo;
 
 /**
  * <b> Servicio de interface remota para realizar las oepraciones sobre la tabla poliza </b>

@@ -7,7 +7,7 @@ import javax.ejb.Stateless;
 
 import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.dao.UsuarioDao;
-import ec.com.avila.hiperion.entities.Usuario;
+import ec.com.avila.hiperion.emision.entities.Usuario;
 import ec.com.avila.hiperion.servicio.UsuarioService;
 import ec.com.avila.hiperion.servicio.UsuarioServiceRemote;
 

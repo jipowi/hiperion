@@ -7,8 +7,9 @@ package ec.com.avila.hiperion.servicio;
 import java.util.List;
 
 import javax.ejb.Remote;
+
 import ec.com.avila.hiperion.comun.HiperionException;
-import ec.com.avila.hiperion.entities.Catalogo;
+import ec.com.avila.hiperion.emision.entities.Catalogo;
 
 /**
  * 

@@ -9,7 +9,7 @@ import java.util.List;
 import javax.ejb.Local;
 
 import ec.com.avila.hiperion.comun.HiperionException;
-import ec.com.avila.hiperion.entities.Ramo;
+import ec.com.avila.hiperion.emision.entities.Ramo;
 
 /**
  * <b> Servicio de interface local para realizar las operaciones sobre la tabla Ramo</b>

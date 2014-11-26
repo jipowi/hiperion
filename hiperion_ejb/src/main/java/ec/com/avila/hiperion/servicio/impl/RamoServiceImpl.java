@@ -11,7 +11,7 @@ import javax.ejb.Stateless;
 
 import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.dao.RamoDao;
-import ec.com.avila.hiperion.entities.Ramo;
+import ec.com.avila.hiperion.emision.entities.Ramo;
 import ec.com.avila.hiperion.servicio.RamoService;
 import ec.com.avila.hiperion.servicio.RamoServiceRemote;
 

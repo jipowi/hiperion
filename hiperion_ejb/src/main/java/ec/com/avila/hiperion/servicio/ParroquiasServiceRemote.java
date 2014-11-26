@@ -9,7 +9,7 @@ import java.util.List;
 import javax.ejb.Remote;
 
 import ec.com.avila.hiperion.comun.HiperionException;
-import ec.com.avila.hiperion.entities.Parroquia;
+import ec.com.avila.hiperion.emision.entities.Parroquia;
 
 /**
  * 
