@@ -83,7 +83,7 @@ public class CascoAereoBacking implements Serializable {
 		} catch (HiperionException e) {
 
 			log.error("Error al guardar el Ramo Casco Aereo", e);
-			MessagesController.addError(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.error.cascoAereo"));
+			MessagesController.addError(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.error.save"));
 		}
 
 	}

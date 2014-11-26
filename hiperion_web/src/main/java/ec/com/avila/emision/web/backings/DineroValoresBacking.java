@@ -146,15 +146,15 @@ public class DineroValoresBacking implements Serializable {
 				List<ObjAsegDineroVal> listObjetos = new ArrayList<>();
 				for (ObjetoAseguradoDineroValoresDTO objeto : ramoDineroValoresBean.getObjetoaseguradolist()) {
 					ObjAsegDineroVal objAsegDineroVal = new ObjAsegDineroVal();
-					//TODO revisar campos 
+					// TODO revisar campos
 					objAsegDineroVal.setItemObjDinero(objeto.getItem());
-					// objAsegDineroVal.setDineroValores(objeto.getDineroValores());
+					//objAsegDineroVal.setDineroValores(objeto.getDineroValores());
 					objAsegDineroVal.setDesde(objeto.getTrayectoDesde());
 					objAsegDineroVal.setLimiteEstimado(objeto.getLimiteEstimadoAnual());
 					objAsegDineroVal.setLimiteEmbarqueObjDinero(objeto.getLimiteEmbarque());
 					objAsegDineroVal.setDesde(objAsegDineroVal.getDesde());
 					objAsegDineroVal.setHasta(objeto.getTrayectoHasta());
-					// objAsegDineroVal.setMedioTransporteDinero(objeto.getMedioTransporte());
+					objAsegDineroVal.setMedioTransporteDinero(objeto.getMedioTransporte());
 
 					listObjetos.add(objAsegDineroVal);
 				}

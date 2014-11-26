@@ -79,9 +79,9 @@ public class CascoMaritimoBacking implements Serializable {
 		cascoMaritimo.setNumeroRegistro(ramoCascoMaritimoBean.getNumeroRegistro());
 		cascoMaritimo.setTonelajeBruto(ramoCascoMaritimoBean.getTonelajeBruto());
 		//TODO Revisar en la base 
-//		cascoMaritimo.setClaseEmbarcacion(ramoCascoMaritimoBean.getClaseEmbarcacion());
-//		cascoMaritimo.setBandera(ramoCascoMaritimoBean.getBandera());
-//		cascoMaritimo.setZonaNavegacion(ramoCascoMaritimoBean.getZonaNavegacion());
+		//cascoMaritimo.setClaseEmbarcacion(ramoCascoMaritimoBean.getClaseEmbarcacion());
+		//cascoMaritimo.setBandera(ramoCascoMaritimoBean.getBandera());
+		//cascoMaritimo.setZonaNavegacion(ramoCascoMaritimoBean.getZonaNavegacion());
 		cascoMaritimo.setEslora(ramoCascoMaritimoBean.getEslora());
 		cascoMaritimo.setPuntal(ramoCascoMaritimoBean.getPuntal());
 		cascoMaritimo.setAnioConstrMaritimo(ramoCascoMaritimoBean.getAnioConstruccion());

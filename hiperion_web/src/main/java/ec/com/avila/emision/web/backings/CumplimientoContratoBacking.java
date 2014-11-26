@@ -105,9 +105,11 @@ public class CumplimientoContratoBacking implements Serializable {
 	 */
 	public void guardarRamo() throws HiperionException {
 		RamoCumplimientoContrato cumplimientoContrato = new RamoCumplimientoContrato();
-//TODO revisar estos campos en el modelo
+
 		cumplimientoContrato.setObjetoAsegContrato(ramoCumplimientoContratoBean.getObjetoAsegurado());
+		cumplimientoContrato.setValorContrato(ramoCumplimientoContratoBean.getValorContrato());
 		cumplimientoContrato.setValorAseguradoContrato(ramoCumplimientoContratoBean.getValorAsegurado());
+		cumplimientoContrato.setTipoContragarantiaContrato(ramoCumplimientoContratoBean.getTipoContragarantia());
 
 		try {
 			ramoCumplimientoContratoService.guardarRamoCumplimientoContrato(cumplimientoContrato);
