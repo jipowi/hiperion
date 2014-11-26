@@ -20,7 +20,7 @@ import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.dto.ObjetoAseguradoResponsabilidadDTO;
 import ec.com.avila.hiperion.emision.entities.ObjAsegResponsabilidad;
 import ec.com.avila.hiperion.emision.entities.RamoResponsabilidadCivil;
-import ec.com.avila.hiperion.entities.Usuario;
+import ec.com.avila.hiperion.emision.entities.Usuario;
 import ec.com.avila.hiperion.servicio.RamoResponsabilidadCivilService;
 import ec.com.avila.hiperion.servicio.RamoService;
 import ec.com.avila.hiperion.web.beans.RamoBean;

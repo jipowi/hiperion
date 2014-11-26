@@ -14,8 +14,8 @@ import javax.faces.bean.RequestScoped;
 
 import ec.com.avila.emision.web.beans.DetalleAnexoBean;
 import ec.com.avila.hiperion.comun.HiperionException;
-import ec.com.avila.hiperion.entities.DetalleAnexo;
-import ec.com.avila.hiperion.entities.Ramo;
+import ec.com.avila.hiperion.emision.entities.DetalleAnexo;
+import ec.com.avila.hiperion.emision.entities.Ramo;
 import ec.com.avila.hiperion.servicio.RamoService;
 import ec.com.avila.hiperion.web.model.AnexosDataModel;
 

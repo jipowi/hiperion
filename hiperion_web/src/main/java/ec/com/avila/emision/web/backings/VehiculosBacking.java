@@ -17,9 +17,9 @@ import org.apache.log4j.Logger;
 
 import ec.com.avila.emision.web.beans.RamoVehiculoBean;
 import ec.com.avila.hiperion.comun.HiperionException;
+import ec.com.avila.hiperion.emision.entities.Catalogo;
+import ec.com.avila.hiperion.emision.entities.DetalleCatalogo;
 import ec.com.avila.hiperion.emision.entities.RamoVehiculo;
-import ec.com.avila.hiperion.entities.Catalogo;
-import ec.com.avila.hiperion.entities.DetalleCatalogo;
 import ec.com.avila.hiperion.servicio.CatalogoService;
 import ec.com.avila.hiperion.servicio.DetalleCatalogoService;
 import ec.com.avila.hiperion.servicio.RamoService;

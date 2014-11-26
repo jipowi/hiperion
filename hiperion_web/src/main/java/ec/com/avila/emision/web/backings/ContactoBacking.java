@@ -20,7 +20,7 @@ import org.primefaces.context.RequestContext;
 import ec.com.avila.emision.web.beans.ContactoBean;
 import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.dto.ContactoDTO;
-import ec.com.avila.hiperion.entities.DetalleCatalogo;
+import ec.com.avila.hiperion.emision.entities.DetalleCatalogo;
 import ec.com.avila.hiperion.servicio.DetalleCatalogoService;
 
 /**

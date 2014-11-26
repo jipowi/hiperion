@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.log4j.Logger;
 
 import ec.com.avila.emision.web.beans.CorrespondenciaBean;
-import ec.com.avila.hiperion.entities.Persona;
+import ec.com.avila.hiperion.emision.entities.Persona;
 import ec.com.avila.hiperion.html.UtilsHtml;
 import ec.com.avila.hiperion.mail.MailUtil;
 import ec.com.avila.hiperion.web.resources.Utils;

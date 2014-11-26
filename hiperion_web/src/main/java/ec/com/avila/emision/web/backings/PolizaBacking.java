@@ -15,8 +15,8 @@ import javax.faces.model.SelectItem;
 
 import ec.com.avila.emision.web.beans.PolizaBean;
 import ec.com.avila.hiperion.comun.HiperionException;
-import ec.com.avila.hiperion.entities.Catalogo;
-import ec.com.avila.hiperion.entities.DetalleCatalogo;
+import ec.com.avila.hiperion.emision.entities.Catalogo;
+import ec.com.avila.hiperion.emision.entities.DetalleCatalogo;
 import ec.com.avila.hiperion.servicio.CatalogoService;
 import ec.com.avila.hiperion.servicio.PolizaService;
 import ec.com.avila.hiperion.servicio.UsuarioService;
