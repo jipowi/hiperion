@@ -1,59 +1,66 @@
 package ec.com.avila.hiperion.emision.entities;
 
 import java.io.Serializable;
+import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
 
 /**
  * The persistent class for the ramo_garantia_aduanera database table.
  * 
  */
 @Entity
-@Table(name = "ramo_garantia_aduanera")
-@NamedQuery(name = "RamoGarantiaAduanera.findAll", query = "SELECT r FROM RamoGarantiaAduanera r")
-public class RamoGarantiaAduanera extends Auditoria implements Serializable {
+@Table(name="ramo_garantia_aduanera")
+@NamedQuery(name="RamoGarantiaAduanera.findAll", query="SELECT r FROM RamoGarantiaAduanera r")
+public class RamoGarantiaAduanera implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_aduanera")
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name="id_aduanera")
 	private Integer idAduanera;
 
-	@Column(name = "obj_asg_aduanera")
+	private String estado;
+
+	@Temporal(TemporalType.DATE)
+	@Column(name="fecha_actualizacion")
+	private Date fechaActualizacion;
+
+	@Temporal(TemporalType.DATE)
+	@Column(name="fecha_creacion")
+	private Date fechaCreacion;
+
+	@Column(name="id_usuario_actualizacion")
+	private Integer idUsuarioActualizacion;
+
+	@Column(name="id_usuario_creacion")
+	private Integer idUsuarioCreacion;
+
+	@Column(name="obj_asg_aduanera")
 	private String objAsgAduanera;
 
-	@Column(name = "sector_aduanera")
+	@Column(name="sector_aduanera")
 	private String sectorAduanera;
 
-	@Column(name = "tipo_contragarantia_aduanera")
+	@Column(name="tipo_contragarantia_aduanera")
 	private String tipoContragarantiaAduanera;
 
-	@Column(name = "valor_contrato_aduanera")
+	@Column(name="valor_contrato_aduanera")
 	private BigDecimal valorContratoAduanera;
 
-	@Column(name = "valor_poliza_aduanera")
+	@Column(name="valor_poliza_aduanera")
 	private BigDecimal valorPolizaAduanera;
 
-	// bi-directional many-to-one association to Poliza
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "id_poliza")
-	private Poliza poliza;
-
-	// bi-directional many-to-one association to CobertAduanera
-	@OneToMany(mappedBy = "ramoGarantiaAduanera")
+	//bi-directional many-to-one association to CobertAduanera
+	@OneToMany(mappedBy="ramoGarantiaAduanera")
 	private List<CobertAduanera> cobertAduaneras;
+
+	//bi-directional many-to-one association to Poliza
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="id_poliza")
+	private Poliza poliza;
 
 	public RamoGarantiaAduanera() {
 	}
@@ -64,6 +71,46 @@ public class RamoGarantiaAduanera extends Auditoria implements Serializable {
 
 	public void setIdAduanera(Integer idAduanera) {
 		this.idAduanera = idAduanera;
+	}
+
+	public String getEstado() {
+		return this.estado;
+	}
+
+	public void setEstado(String estado) {
+		this.estado = estado;
+	}
+
+	public Date getFechaActualizacion() {
+		return this.fechaActualizacion;
+	}
+
+	public void setFechaActualizacion(Date fechaActualizacion) {
+		this.fechaActualizacion = fechaActualizacion;
+	}
+
+	public Date getFechaCreacion() {
+		return this.fechaCreacion;
+	}
+
+	public void setFechaCreacion(Date fechaCreacion) {
+		this.fechaCreacion = fechaCreacion;
+	}
+
+	public Integer getIdUsuarioActualizacion() {
+		return this.idUsuarioActualizacion;
+	}
+
+	public void setIdUsuarioActualizacion(Integer idUsuarioActualizacion) {
+		this.idUsuarioActualizacion = idUsuarioActualizacion;
+	}
+
+	public Integer getIdUsuarioCreacion() {
+		return this.idUsuarioCreacion;
+	}
+
+	public void setIdUsuarioCreacion(Integer idUsuarioCreacion) {
+		this.idUsuarioCreacion = idUsuarioCreacion;
 	}
 
 	public String getObjAsgAduanera() {
@@ -106,14 +153,6 @@ public class RamoGarantiaAduanera extends Auditoria implements Serializable {
 		this.valorPolizaAduanera = valorPolizaAduanera;
 	}
 
-	public Poliza getPoliza() {
-		return this.poliza;
-	}
-
-	public void setPoliza(Poliza poliza) {
-		this.poliza = poliza;
-	}
-
 	public List<CobertAduanera> getCobertAduaneras() {
 		return this.cobertAduaneras;
 	}
@@ -134,6 +173,14 @@ public class RamoGarantiaAduanera extends Auditoria implements Serializable {
 		cobertAduanera.setRamoGarantiaAduanera(null);
 
 		return cobertAduanera;
+	}
+
+	public Poliza getPoliza() {
+		return this.poliza;
+	}
+
+	public void setPoliza(Poliza poliza) {
+		this.poliza = poliza;
 	}
 
 }

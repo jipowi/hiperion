@@ -1,4 +1,4 @@
-package ec.com.avila.hiperion.entities;
+package ec.com.avila.hiperion.emision.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;
@@ -11,6 +11,7 @@ import java.util.List;
  * 
  */
 @Entity
+@NamedQuery(name="Persona.findAll", query="SELECT p FROM Persona p")
 public class Persona implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -48,16 +49,8 @@ public class Persona implements Serializable {
 	private String tipoPersona;
 
 	//bi-directional many-to-one association to Cliente
-	@OneToMany(mappedBy="persona", cascade={CascadeType.ALL})
+	@OneToMany(mappedBy="persona")
 	private List<Cliente> clientes;
-
-	//bi-directional many-to-one association to Direccion
-	@OneToMany(mappedBy="persona")
-	private List<Direccion> direccions;
-
-	//bi-directional many-to-one association to Encargado
-	@OneToMany(mappedBy="persona")
-	private List<Encargado> encargados;
 
 	//bi-directional many-to-many association to Aseguradora
 	@ManyToMany
@@ -84,6 +77,14 @@ public class Persona implements Serializable {
 	//bi-directional many-to-one association to Contacto
 	@OneToMany(mappedBy="persona")
 	private List<Contacto> contactos;
+
+	//bi-directional many-to-one association to Direccion
+	@OneToMany(mappedBy="persona")
+	private List<Direccion> direccions;
+
+	//bi-directional many-to-one association to Encargado
+	@OneToMany(mappedBy="persona")
+	private List<Encargado> encargados;
 
 	public Persona() {
 	}
@@ -190,50 +191,6 @@ public class Persona implements Serializable {
 		return cliente;
 	}
 
-	public List<Direccion> getDireccions() {
-		return this.direccions;
-	}
-
-	public void setDireccions(List<Direccion> direccions) {
-		this.direccions = direccions;
-	}
-
-	public Direccion addDireccion(Direccion direccion) {
-		getDireccions().add(direccion);
-		direccion.setPersona(this);
-
-		return direccion;
-	}
-
-	public Direccion removeDireccion(Direccion direccion) {
-		getDireccions().remove(direccion);
-		direccion.setPersona(null);
-
-		return direccion;
-	}
-
-	public List<Encargado> getEncargados() {
-		return this.encargados;
-	}
-
-	public void setEncargados(List<Encargado> encargados) {
-		this.encargados = encargados;
-	}
-
-	public Encargado addEncargado(Encargado encargado) {
-		getEncargados().add(encargado);
-		encargado.setPersona(this);
-
-		return encargado;
-	}
-
-	public Encargado removeEncargado(Encargado encargado) {
-		getEncargados().remove(encargado);
-		encargado.setPersona(null);
-
-		return encargado;
-	}
-
 	public List<Aseguradora> getAseguradoras() {
 		return this.aseguradoras;
 	}
@@ -292,6 +249,50 @@ public class Persona implements Serializable {
 		contacto.setPersona(null);
 
 		return contacto;
+	}
+
+	public List<Direccion> getDireccions() {
+		return this.direccions;
+	}
+
+	public void setDireccions(List<Direccion> direccions) {
+		this.direccions = direccions;
+	}
+
+	public Direccion addDireccion(Direccion direccion) {
+		getDireccions().add(direccion);
+		direccion.setPersona(this);
+
+		return direccion;
+	}
+
+	public Direccion removeDireccion(Direccion direccion) {
+		getDireccions().remove(direccion);
+		direccion.setPersona(null);
+
+		return direccion;
+	}
+
+	public List<Encargado> getEncargados() {
+		return this.encargados;
+	}
+
+	public void setEncargados(List<Encargado> encargados) {
+		this.encargados = encargados;
+	}
+
+	public Encargado addEncargado(Encargado encargado) {
+		getEncargados().add(encargado);
+		encargado.setPersona(this);
+
+		return encargado;
+	}
+
+	public Encargado removeEncargado(Encargado encargado) {
+		getEncargados().remove(encargado);
+		encargado.setPersona(null);
+
+		return encargado;
 	}
 
 }

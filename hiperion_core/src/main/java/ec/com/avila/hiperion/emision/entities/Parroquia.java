@@ -1,4 +1,4 @@
-package ec.com.avila.hiperion.entities;
+package ec.com.avila.hiperion.emision.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;
@@ -10,6 +10,7 @@ import java.util.List;
  * 
  */
 @Entity
+@NamedQuery(name="Parroquia.findAll", query="SELECT p FROM Parroquia p")
 public class Parroquia implements Serializable {
 	private static final long serialVersionUID = 1L;
 

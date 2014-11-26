@@ -1,4 +1,4 @@
-package ec.com.avila.hiperion.entities;
+package ec.com.avila.hiperion.emision.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;
@@ -10,6 +10,7 @@ import java.util.Date;
  * 
  */
 @Entity
+@NamedQuery(name="Usuario.findAll", query="SELECT u FROM Usuario u")
 public class Usuario implements Serializable {
 	private static final long serialVersionUID = 1L;
 

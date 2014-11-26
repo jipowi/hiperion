@@ -2,6 +2,7 @@ package ec.com.avila.hiperion.emision.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;
+import java.util.Date;
 
 
 /**
@@ -21,6 +22,22 @@ public class ArchivoBase implements Serializable {
 
 	@Column(name="documento_byte")
 	private byte[] documentoByte;
+
+	private String estado;
+
+	@Temporal(TemporalType.DATE)
+	@Column(name="fecha_actualizacion")
+	private Date fechaActualizacion;
+
+	@Temporal(TemporalType.DATE)
+	@Column(name="fecha_creacion")
+	private Date fechaCreacion;
+
+	@Column(name="id_usuario_actualizacion")
+	private Integer idUsuarioActualizacion;
+
+	@Column(name="id_usuario_creacion")
+	private Integer idUsuarioCreacion;
 
 	@Column(name="mime_type")
 	private String mimeType;
@@ -56,6 +73,46 @@ public class ArchivoBase implements Serializable {
 
 	public void setDocumentoByte(byte[] documentoByte) {
 		this.documentoByte = documentoByte;
+	}
+
+	public String getEstado() {
+		return this.estado;
+	}
+
+	public void setEstado(String estado) {
+		this.estado = estado;
+	}
+
+	public Date getFechaActualizacion() {
+		return this.fechaActualizacion;
+	}
+
+	public void setFechaActualizacion(Date fechaActualizacion) {
+		this.fechaActualizacion = fechaActualizacion;
+	}
+
+	public Date getFechaCreacion() {
+		return this.fechaCreacion;
+	}
+
+	public void setFechaCreacion(Date fechaCreacion) {
+		this.fechaCreacion = fechaCreacion;
+	}
+
+	public Integer getIdUsuarioActualizacion() {
+		return this.idUsuarioActualizacion;
+	}
+
+	public void setIdUsuarioActualizacion(Integer idUsuarioActualizacion) {
+		this.idUsuarioActualizacion = idUsuarioActualizacion;
+	}
+
+	public Integer getIdUsuarioCreacion() {
+		return this.idUsuarioCreacion;
+	}
+
+	public void setIdUsuarioCreacion(Integer idUsuarioCreacion) {
+		this.idUsuarioCreacion = idUsuarioCreacion;
 	}
 
 	public String getMimeType() {

@@ -3,25 +3,22 @@ package ec.com.avila.hiperion.emision.entities;
 import java.io.Serializable;
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 
 /**
- * The persistent class for the cobert_soat database table.
+ * The persistent class for the anexo database table.
  * 
  */
 @Entity
-@Table(name="cobert_soat")
-@NamedQuery(name="CobertSoat.findAll", query="SELECT c FROM CobertSoat c")
-public class CobertSoat implements Serializable {
+@NamedQuery(name="Anexo.findAll", query="SELECT a FROM Anexo a")
+public class Anexo implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="id_cobert_soat")
-	private Integer idCobertSoat;
-
-	@Column(name="cobertura_soat")
-	private String coberturaSoat;
+	@Column(name="id_anexo")
+	private Integer idAnexo;
 
 	private String estado;
 
@@ -39,28 +36,22 @@ public class CobertSoat implements Serializable {
 	@Column(name="id_usuario_creacion")
 	private Integer idUsuarioCreacion;
 
-	//bi-directional many-to-one association to RamoSoat
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="id_soat")
-	private RamoSoat ramoSoat;
+	@Column(name="nombre_anexo")
+	private String nombreAnexo;
 
-	public CobertSoat() {
+	//bi-directional many-to-one association to DetalleAnexo
+	@OneToMany(mappedBy="anexo")
+	private List<DetalleAnexo> detalleAnexos;
+
+	public Anexo() {
 	}
 
-	public Integer getIdCobertSoat() {
-		return this.idCobertSoat;
+	public Integer getIdAnexo() {
+		return this.idAnexo;
 	}
 
-	public void setIdCobertSoat(Integer idCobertSoat) {
-		this.idCobertSoat = idCobertSoat;
-	}
-
-	public String getCoberturaSoat() {
-		return this.coberturaSoat;
-	}
-
-	public void setCoberturaSoat(String coberturaSoat) {
-		this.coberturaSoat = coberturaSoat;
+	public void setIdAnexo(Integer idAnexo) {
+		this.idAnexo = idAnexo;
 	}
 
 	public String getEstado() {
@@ -103,12 +94,34 @@ public class CobertSoat implements Serializable {
 		this.idUsuarioCreacion = idUsuarioCreacion;
 	}
 
-	public RamoSoat getRamoSoat() {
-		return this.ramoSoat;
+	public String getNombreAnexo() {
+		return this.nombreAnexo;
 	}
 
-	public void setRamoSoat(RamoSoat ramoSoat) {
-		this.ramoSoat = ramoSoat;
+	public void setNombreAnexo(String nombreAnexo) {
+		this.nombreAnexo = nombreAnexo;
+	}
+
+	public List<DetalleAnexo> getDetalleAnexos() {
+		return this.detalleAnexos;
+	}
+
+	public void setDetalleAnexos(List<DetalleAnexo> detalleAnexos) {
+		this.detalleAnexos = detalleAnexos;
+	}
+
+	public DetalleAnexo addDetalleAnexo(DetalleAnexo detalleAnexo) {
+		getDetalleAnexos().add(detalleAnexo);
+		detalleAnexo.setAnexo(this);
+
+		return detalleAnexo;
+	}
+
+	public DetalleAnexo removeDetalleAnexo(DetalleAnexo detalleAnexo) {
+		getDetalleAnexos().remove(detalleAnexo);
+		detalleAnexo.setAnexo(null);
+
+		return detalleAnexo;
 	}
 
 }

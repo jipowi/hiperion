@@ -1,20 +1,10 @@
 package ec.com.avila.hiperion.emision.entities;
 
 import java.io.Serializable;
+import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
 
 
 /**
@@ -24,7 +14,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name="ramo_incendio_lineas_aliadas")
 @NamedQuery(name="RamoIncendioLineasAliada.findAll", query="SELECT r FROM RamoIncendioLineasAliada r")
-public class RamoIncendioLineasAliada extends Auditoria implements Serializable {
+public class RamoIncendioLineasAliada implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -59,6 +49,22 @@ public class RamoIncendioLineasAliada extends Auditoria implements Serializable 
 	@Column(name="deduc_vidrios")
 	private BigDecimal deducVidrios;
 
+	private String estado;
+
+	@Temporal(TemporalType.DATE)
+	@Column(name="fecha_actualizacion")
+	private Date fechaActualizacion;
+
+	@Temporal(TemporalType.DATE)
+	@Column(name="fecha_creacion")
+	private Date fechaCreacion;
+
+	@Column(name="id_usuario_actualizacion")
+	private Integer idUsuarioActualizacion;
+
+	@Column(name="id_usuario_creacion")
+	private Integer idUsuarioCreacion;
+
 	@Column(name="tasa_autoexplosion")
 	private BigDecimal tasaAutoexplosion;
 
@@ -87,6 +93,14 @@ public class RamoIncendioLineasAliada extends Auditoria implements Serializable 
 	@OneToMany(mappedBy="ramoIncendioLineasAliada")
 	private List<ClausulasAddIncendio> clausulasAddIncendios;
 
+	//bi-directional many-to-one association to CobertAddIncendio
+	@OneToMany(mappedBy="ramoIncendioLineasAliada")
+	private List<CobertAddIncendio> cobertAddIncendios;
+
+	//bi-directional many-to-one association to CobertIncendio
+	@OneToMany(mappedBy="ramoIncendioLineasAliada")
+	private List<CobertIncendio> cobertIncendios;
+
 	//bi-directional many-to-one association to CondEspIncendio
 	@OneToMany(mappedBy="ramoIncendioLineasAliada")
 	private List<CondEspIncendio> condEspIncendios;
@@ -99,14 +113,6 @@ public class RamoIncendioLineasAliada extends Auditoria implements Serializable 
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="id_poliza")
 	private Poliza poliza;
-
-	//bi-directional many-to-one association to CobertAddIncendio
-	@OneToMany(mappedBy="ramoIncendioLineasAliada")
-	private List<CobertAddIncendio> cobertAddIncendios;
-
-	//bi-directional many-to-one association to CobertIncendio
-	@OneToMany(mappedBy="ramoIncendioLineasAliada")
-	private List<CobertIncendio> cobertIncendios;
 
 	public RamoIncendioLineasAliada() {
 	}
@@ -191,6 +197,45 @@ public class RamoIncendioLineasAliada extends Auditoria implements Serializable 
 		this.deducVidrios = deducVidrios;
 	}
 
+	public String getEstado() {
+		return this.estado;
+	}
+
+	public void setEstado(String estado) {
+		this.estado = estado;
+	}
+
+	public Date getFechaActualizacion() {
+		return this.fechaActualizacion;
+	}
+
+	public void setFechaActualizacion(Date fechaActualizacion) {
+		this.fechaActualizacion = fechaActualizacion;
+	}
+
+	public Date getFechaCreacion() {
+		return this.fechaCreacion;
+	}
+
+	public void setFechaCreacion(Date fechaCreacion) {
+		this.fechaCreacion = fechaCreacion;
+	}
+
+	public Integer getIdUsuarioActualizacion() {
+		return this.idUsuarioActualizacion;
+	}
+
+	public void setIdUsuarioActualizacion(Integer idUsuarioActualizacion) {
+		this.idUsuarioActualizacion = idUsuarioActualizacion;
+	}
+
+	public Integer getIdUsuarioCreacion() {
+		return this.idUsuarioCreacion;
+	}
+
+	public void setIdUsuarioCreacion(Integer idUsuarioCreacion) {
+		this.idUsuarioCreacion = idUsuarioCreacion;
+	}
 
 	public BigDecimal getTasaAutoexplosion() {
 		return this.tasaAutoexplosion;
@@ -278,6 +323,50 @@ public class RamoIncendioLineasAliada extends Auditoria implements Serializable 
 		return clausulasAddIncendio;
 	}
 
+	public List<CobertAddIncendio> getCobertAddIncendios() {
+		return this.cobertAddIncendios;
+	}
+
+	public void setCobertAddIncendios(List<CobertAddIncendio> cobertAddIncendios) {
+		this.cobertAddIncendios = cobertAddIncendios;
+	}
+
+	public CobertAddIncendio addCobertAddIncendio(CobertAddIncendio cobertAddIncendio) {
+		getCobertAddIncendios().add(cobertAddIncendio);
+		cobertAddIncendio.setRamoIncendioLineasAliada(this);
+
+		return cobertAddIncendio;
+	}
+
+	public CobertAddIncendio removeCobertAddIncendio(CobertAddIncendio cobertAddIncendio) {
+		getCobertAddIncendios().remove(cobertAddIncendio);
+		cobertAddIncendio.setRamoIncendioLineasAliada(null);
+
+		return cobertAddIncendio;
+	}
+
+	public List<CobertIncendio> getCobertIncendios() {
+		return this.cobertIncendios;
+	}
+
+	public void setCobertIncendios(List<CobertIncendio> cobertIncendios) {
+		this.cobertIncendios = cobertIncendios;
+	}
+
+	public CobertIncendio addCobertIncendio(CobertIncendio cobertIncendio) {
+		getCobertIncendios().add(cobertIncendio);
+		cobertIncendio.setRamoIncendioLineasAliada(this);
+
+		return cobertIncendio;
+	}
+
+	public CobertIncendio removeCobertIncendio(CobertIncendio cobertIncendio) {
+		getCobertIncendios().remove(cobertIncendio);
+		cobertIncendio.setRamoIncendioLineasAliada(null);
+
+		return cobertIncendio;
+	}
+
 	public List<CondEspIncendio> getCondEspIncendios() {
 		return this.condEspIncendios;
 	}
@@ -328,50 +417,6 @@ public class RamoIncendioLineasAliada extends Auditoria implements Serializable 
 
 	public void setPoliza(Poliza poliza) {
 		this.poliza = poliza;
-	}
-
-	public List<CobertAddIncendio> getCobertAddIncendios() {
-		return this.cobertAddIncendios;
-	}
-
-	public void setCobertAddIncendios(List<CobertAddIncendio> cobertAddIncendios) {
-		this.cobertAddIncendios = cobertAddIncendios;
-	}
-
-	public CobertAddIncendio addCobertAddIncendio(CobertAddIncendio cobertAddIncendio) {
-		getCobertAddIncendios().add(cobertAddIncendio);
-		cobertAddIncendio.setRamoIncendioLineasAliada(this);
-
-		return cobertAddIncendio;
-	}
-
-	public CobertAddIncendio removeCobertAddIncendio(CobertAddIncendio cobertAddIncendio) {
-		getCobertAddIncendios().remove(cobertAddIncendio);
-		cobertAddIncendio.setRamoIncendioLineasAliada(null);
-
-		return cobertAddIncendio;
-	}
-
-	public List<CobertIncendio> getCobertIncendios() {
-		return this.cobertIncendios;
-	}
-
-	public void setCobertIncendios(List<CobertIncendio> cobertIncendios) {
-		this.cobertIncendios = cobertIncendios;
-	}
-
-	public CobertIncendio addCobertIncendio(CobertIncendio cobertIncendio) {
-		getCobertIncendios().add(cobertIncendio);
-		cobertIncendio.setRamoIncendioLineasAliada(this);
-
-		return cobertIncendio;
-	}
-
-	public CobertIncendio removeCobertIncendio(CobertIncendio cobertIncendio) {
-		getCobertIncendios().remove(cobertIncendio);
-		cobertIncendio.setRamoIncendioLineasAliada(null);
-
-		return cobertIncendio;
 	}
 
 }

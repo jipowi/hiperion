@@ -15,7 +15,7 @@ import org.apache.log4j.Logger;
 
 import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.dao.ProvinciaDao;
-import ec.com.avila.hiperion.entities.Provincia;
+import ec.com.avila.hiperion.emision.entities.Provincia;
 
 /**
  * 

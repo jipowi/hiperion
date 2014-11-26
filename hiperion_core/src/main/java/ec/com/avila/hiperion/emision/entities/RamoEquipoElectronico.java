@@ -1,20 +1,10 @@
 package ec.com.avila.hiperion.emision.entities;
 
 import java.io.Serializable;
+import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
 
 
 /**
@@ -24,7 +14,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name="ramo_equipo_electronico")
 @NamedQuery(name="RamoEquipoElectronico.findAll", query="SELECT r FROM RamoEquipoElectronico r")
-public class RamoEquipoElectronico extends Auditoria implements Serializable {
+public class RamoEquipoElectronico implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -64,6 +54,22 @@ public class RamoEquipoElectronico extends Auditoria implements Serializable {
 
 	@Column(name="deduc_operacion_num_dias")
 	private Integer deducOperacionNumDias;
+
+	private String estado;
+
+	@Temporal(TemporalType.DATE)
+	@Column(name="fecha_actualizacion")
+	private Date fechaActualizacion;
+
+	@Temporal(TemporalType.DATE)
+	@Column(name="fecha_creacion")
+	private Date fechaCreacion;
+
+	@Column(name="id_usuario_actualizacion")
+	private Integer idUsuarioActualizacion;
+
+	@Column(name="id_usuario_creacion")
+	private Integer idUsuarioCreacion;
 
 	@Column(name="suma_asegurada_celulares")
 	private BigDecimal sumaAseguradaCelulares;
@@ -109,6 +115,14 @@ public class RamoEquipoElectronico extends Auditoria implements Serializable {
 	@OneToMany(mappedBy="ramoEquipoElectronico")
 	private List<CobertAddEquipo> cobertAddEquipos;
 
+	//bi-directional many-to-one association to CobertEquipo
+	@OneToMany(mappedBy="ramoEquipoElectronico")
+	private List<CobertEquipo> cobertEquipos;
+
+	//bi-directional many-to-one association to GarantiaPoliza
+	@OneToMany(mappedBy="ramoEquipoElectronico")
+	private List<GarantiaPoliza> garantiaPolizas;
+
 	//bi-directional many-to-one association to ObjAsegEquipo
 	@OneToMany(mappedBy="ramoEquipoElectronico")
 	private List<ObjAsegEquipo> objAsegEquipos;
@@ -117,14 +131,6 @@ public class RamoEquipoElectronico extends Auditoria implements Serializable {
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="id_poliza")
 	private Poliza poliza;
-
-	//bi-directional many-to-one association to CobertEquipo
-	@OneToMany(mappedBy="ramoEquipoElectronico")
-	private List<CobertEquipo> cobertEquipos;
-
-	//bi-directional many-to-one association to GarantiaPoliza
-	@OneToMany(mappedBy="ramoEquipoElectronico")
-	private List<GarantiaPoliza> garantiaPolizas;
 
 	public RamoEquipoElectronico() {
 	}
@@ -225,6 +231,45 @@ public class RamoEquipoElectronico extends Auditoria implements Serializable {
 		this.deducOperacionNumDias = deducOperacionNumDias;
 	}
 
+	public String getEstado() {
+		return this.estado;
+	}
+
+	public void setEstado(String estado) {
+		this.estado = estado;
+	}
+
+	public Date getFechaActualizacion() {
+		return this.fechaActualizacion;
+	}
+
+	public void setFechaActualizacion(Date fechaActualizacion) {
+		this.fechaActualizacion = fechaActualizacion;
+	}
+
+	public Date getFechaCreacion() {
+		return this.fechaCreacion;
+	}
+
+	public void setFechaCreacion(Date fechaCreacion) {
+		this.fechaCreacion = fechaCreacion;
+	}
+
+	public Integer getIdUsuarioActualizacion() {
+		return this.idUsuarioActualizacion;
+	}
+
+	public void setIdUsuarioActualizacion(Integer idUsuarioActualizacion) {
+		this.idUsuarioActualizacion = idUsuarioActualizacion;
+	}
+
+	public Integer getIdUsuarioCreacion() {
+		return this.idUsuarioCreacion;
+	}
+
+	public void setIdUsuarioCreacion(Integer idUsuarioCreacion) {
+		this.idUsuarioCreacion = idUsuarioCreacion;
+	}
 
 	public BigDecimal getSumaAseguradaCelulares() {
 		return this.sumaAseguradaCelulares;
@@ -366,36 +411,6 @@ public class RamoEquipoElectronico extends Auditoria implements Serializable {
 		return cobertAddEquipo;
 	}
 
-	public List<ObjAsegEquipo> getObjAsegEquipos() {
-		return this.objAsegEquipos;
-	}
-
-	public void setObjAsegEquipos(List<ObjAsegEquipo> objAsegEquipos) {
-		this.objAsegEquipos = objAsegEquipos;
-	}
-
-	public ObjAsegEquipo addObjAsegEquipo(ObjAsegEquipo objAsegEquipo) {
-		getObjAsegEquipos().add(objAsegEquipo);
-		objAsegEquipo.setRamoEquipoElectronico(this);
-
-		return objAsegEquipo;
-	}
-
-	public ObjAsegEquipo removeObjAsegEquipo(ObjAsegEquipo objAsegEquipo) {
-		getObjAsegEquipos().remove(objAsegEquipo);
-		objAsegEquipo.setRamoEquipoElectronico(null);
-
-		return objAsegEquipo;
-	}
-
-	public Poliza getPoliza() {
-		return this.poliza;
-	}
-
-	public void setPoliza(Poliza poliza) {
-		this.poliza = poliza;
-	}
-
 	public List<CobertEquipo> getCobertEquipos() {
 		return this.cobertEquipos;
 	}
@@ -438,6 +453,36 @@ public class RamoEquipoElectronico extends Auditoria implements Serializable {
 		garantiaPoliza.setRamoEquipoElectronico(null);
 
 		return garantiaPoliza;
+	}
+
+	public List<ObjAsegEquipo> getObjAsegEquipos() {
+		return this.objAsegEquipos;
+	}
+
+	public void setObjAsegEquipos(List<ObjAsegEquipo> objAsegEquipos) {
+		this.objAsegEquipos = objAsegEquipos;
+	}
+
+	public ObjAsegEquipo addObjAsegEquipo(ObjAsegEquipo objAsegEquipo) {
+		getObjAsegEquipos().add(objAsegEquipo);
+		objAsegEquipo.setRamoEquipoElectronico(this);
+
+		return objAsegEquipo;
+	}
+
+	public ObjAsegEquipo removeObjAsegEquipo(ObjAsegEquipo objAsegEquipo) {
+		getObjAsegEquipos().remove(objAsegEquipo);
+		objAsegEquipo.setRamoEquipoElectronico(null);
+
+		return objAsegEquipo;
+	}
+
+	public Poliza getPoliza() {
+		return this.poliza;
+	}
+
+	public void setPoliza(Poliza poliza) {
+		this.poliza = poliza;
 	}
 
 }

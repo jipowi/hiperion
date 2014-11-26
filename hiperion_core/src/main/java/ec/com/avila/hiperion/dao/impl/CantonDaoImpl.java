@@ -15,7 +15,7 @@ import org.apache.log4j.Logger;
 
 import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.dao.CantonDao;
-import ec.com.avila.hiperion.entities.Canton;
+import ec.com.avila.hiperion.emision.entities.Canton;
 
 /**
  * 

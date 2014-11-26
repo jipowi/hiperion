@@ -5,7 +5,7 @@ import java.util.List;
 import javax.ejb.Local;
 
 import ec.com.avila.hiperion.comun.HiperionException;
-import ec.com.avila.hiperion.entities.Persona;
+import ec.com.avila.hiperion.emision.entities.Persona;
 
 /**
  * <b> Interfaz local de la tabla Persona para realizar las operaciones

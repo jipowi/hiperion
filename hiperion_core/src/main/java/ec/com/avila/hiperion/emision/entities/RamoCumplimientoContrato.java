@@ -1,56 +1,63 @@
 package ec.com.avila.hiperion.emision.entities;
 
 import java.io.Serializable;
+import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
 
 /**
  * The persistent class for the ramo_cumplimiento_contrato database table.
  * 
  */
 @Entity
-@Table(name = "ramo_cumplimiento_contrato")
-@NamedQuery(name = "RamoCumplimientoContrato.findAll", query = "SELECT r FROM RamoCumplimientoContrato r")
-public class RamoCumplimientoContrato extends Auditoria implements Serializable {
+@Table(name="ramo_cumplimiento_contrato")
+@NamedQuery(name="RamoCumplimientoContrato.findAll", query="SELECT r FROM RamoCumplimientoContrato r")
+public class RamoCumplimientoContrato implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_contrato")
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name="id_contrato")
 	private Integer idContrato;
 
-	@Column(name = "objeto_aseg_contrato")
+	private String estado;
+
+	@Temporal(TemporalType.DATE)
+	@Column(name="fecha_actualizacion")
+	private Date fechaActualizacion;
+
+	@Temporal(TemporalType.DATE)
+	@Column(name="fecha_creacion")
+	private Date fechaCreacion;
+
+	@Column(name="id_usuario_actualizacion")
+	private Integer idUsuarioActualizacion;
+
+	@Column(name="id_usuario_creacion")
+	private Integer idUsuarioCreacion;
+
+	@Column(name="objeto_aseg_contrato")
 	private String objetoAsegContrato;
 
-	@Column(name = "tipo_contragarantia_contrato")
+	@Column(name="tipo_contragarantia_contrato")
 	private String tipoContragarantiaContrato;
 
-	@Column(name = "valor_asegurado_contrato")
+	@Column(name="valor_asegurado_contrato")
 	private BigDecimal valorAseguradoContrato;
 
-	@Column(name = "valor_contrato")
+	@Column(name="valor_contrato")
 	private BigDecimal valorContrato;
 
-	// bi-directional many-to-one association to Poliza
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "id_poliza")
-	private Poliza poliza;
-
-	// bi-directional many-to-one association to CobertContrato
-	@OneToMany(mappedBy = "ramoCumplimientoContrato")
+	//bi-directional many-to-one association to CobertContrato
+	@OneToMany(mappedBy="ramoCumplimientoContrato")
 	private List<CobertContrato> cobertContratos;
+
+	//bi-directional many-to-one association to Poliza
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="id_poliza")
+	private Poliza poliza;
 
 	public RamoCumplimientoContrato() {
 	}
@@ -61,6 +68,46 @@ public class RamoCumplimientoContrato extends Auditoria implements Serializable 
 
 	public void setIdContrato(Integer idContrato) {
 		this.idContrato = idContrato;
+	}
+
+	public String getEstado() {
+		return this.estado;
+	}
+
+	public void setEstado(String estado) {
+		this.estado = estado;
+	}
+
+	public Date getFechaActualizacion() {
+		return this.fechaActualizacion;
+	}
+
+	public void setFechaActualizacion(Date fechaActualizacion) {
+		this.fechaActualizacion = fechaActualizacion;
+	}
+
+	public Date getFechaCreacion() {
+		return this.fechaCreacion;
+	}
+
+	public void setFechaCreacion(Date fechaCreacion) {
+		this.fechaCreacion = fechaCreacion;
+	}
+
+	public Integer getIdUsuarioActualizacion() {
+		return this.idUsuarioActualizacion;
+	}
+
+	public void setIdUsuarioActualizacion(Integer idUsuarioActualizacion) {
+		this.idUsuarioActualizacion = idUsuarioActualizacion;
+	}
+
+	public Integer getIdUsuarioCreacion() {
+		return this.idUsuarioCreacion;
+	}
+
+	public void setIdUsuarioCreacion(Integer idUsuarioCreacion) {
+		this.idUsuarioCreacion = idUsuarioCreacion;
 	}
 
 	public String getObjetoAsegContrato() {
@@ -95,14 +142,6 @@ public class RamoCumplimientoContrato extends Auditoria implements Serializable 
 		this.valorContrato = valorContrato;
 	}
 
-	public Poliza getPoliza() {
-		return this.poliza;
-	}
-
-	public void setPoliza(Poliza poliza) {
-		this.poliza = poliza;
-	}
-
 	public List<CobertContrato> getCobertContratos() {
 		return this.cobertContratos;
 	}
@@ -123,6 +162,14 @@ public class RamoCumplimientoContrato extends Auditoria implements Serializable 
 		cobertContrato.setRamoCumplimientoContrato(null);
 
 		return cobertContrato;
+	}
+
+	public Poliza getPoliza() {
+		return this.poliza;
+	}
+
+	public void setPoliza(Poliza poliza) {
+		this.poliza = poliza;
 	}
 
 }

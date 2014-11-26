@@ -1,38 +1,40 @@
-package ec.com.avila.hiperion.entities;
+package ec.com.avila.hiperion.emision.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
 
 /**
  * The persistent class for the detalle_anexo database table.
  * 
  */
 @Entity
-@Table(name = "detalle_anexo")
+@Table(name="detalle_anexo")
+@NamedQuery(name="DetalleAnexo.findAll", query="SELECT d FROM DetalleAnexo d")
 public class DetalleAnexo implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_detalle_anexo")
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name="id_detalle_anexo")
 	private Integer idDetalleAnexo;
 
-	@Column(name = "nombre_detalle_anexo")
+	@Column(name="nombre_detalle_anexo")
 	private String nombreDetalleAnexo;
 
-	// bi-directional many-to-one association to Anexo
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "id_anexo")
+	//bi-directional many-to-one association to Anexo
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="id_anexo")
 	private Anexo anexo;
 
-	// bi-directional many-to-one association to Ramo
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "id_ramo")
+	//bi-directional many-to-one association to Ramo
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="id_ramo")
 	private Ramo ramo;
 
-	// bi-directional many-to-one association to Titulo
-	@ManyToOne(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
-	@JoinColumn(name = "id_titulo")
+	//bi-directional many-to-one association to Titulo
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="id_titulo")
 	private Titulo titulo;
 
 	public DetalleAnexo() {

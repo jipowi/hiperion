@@ -1,67 +1,74 @@
 package ec.com.avila.hiperion.emision.entities;
 
 import java.io.Serializable;
+import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
 
 /**
  * The persistent class for the ramo_responsabilidad_civil database table.
  * 
  */
 @Entity
-@Table(name = "ramo_responsabilidad_civil")
-@NamedQuery(name = "RamoResponsabilidadCivil.findAll", query = "SELECT r FROM RamoResponsabilidadCivil r")
-public class RamoResponsabilidadCivil extends Auditoria implements Serializable {
+@Table(name="ramo_responsabilidad_civil")
+@NamedQuery(name="RamoResponsabilidadCivil.findAll", query="SELECT r FROM RamoResponsabilidadCivil r")
+public class RamoResponsabilidadCivil implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_responsabilidad")
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name="id_responsabilidad")
 	private Integer idResponsabilidad;
 
-	@Column(name = "deduc_minimo_resp")
+	@Column(name="deduc_minimo_resp")
 	private BigDecimal deducMinimoResp;
 
-	@Column(name = "deduc_siniestro_resp")
+	@Column(name="deduc_siniestro_resp")
 	private BigDecimal deducSiniestroResp;
 
-	@Column(name = "limite_unico_anual_resp")
+	private String estado;
+
+	@Temporal(TemporalType.DATE)
+	@Column(name="fecha_actualizacion")
+	private Date fechaActualizacion;
+
+	@Temporal(TemporalType.DATE)
+	@Column(name="fecha_creacion")
+	private Date fechaCreacion;
+
+	@Column(name="id_usuario_actualizacion")
+	private Integer idUsuarioActualizacion;
+
+	@Column(name="id_usuario_creacion")
+	private Integer idUsuarioCreacion;
+
+	@Column(name="limite_unico_anual_resp")
 	private Integer limiteUnicoAnualResp;
 
-	@Column(name = "tasa_resp")
+	@Column(name="tasa_resp")
 	private BigDecimal tasaResp;
 
-	@Column(name = "tipo_contragarantia_resp")
+	@Column(name="tipo_contragarantia_resp")
 	private String tipoContragarantiaResp;
 
-	// bi-directional many-to-one association to ClausulasAddResp
-	@OneToMany(mappedBy = "ramoResponsabilidadCivil")
+	//bi-directional many-to-one association to ClausulasAddResp
+	@OneToMany(mappedBy="ramoResponsabilidadCivil")
 	private List<ClausulasAddResp> clausulasAddResps;
 
-	// bi-directional many-to-one association to ObjAsegResponsabilidad
-	@OneToMany(mappedBy = "ramoResponsabilidadCivil")
+	//bi-directional many-to-one association to CobertResp
+	@OneToMany(mappedBy="ramoResponsabilidadCivil")
+	private List<CobertResp> cobertResps;
+
+	//bi-directional many-to-one association to ObjAsegResponsabilidad
+	@OneToMany(mappedBy="ramoResponsabilidadCivil")
 	private List<ObjAsegResponsabilidad> objAsegResponsabilidads;
 
-	// bi-directional many-to-one association to Poliza
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "id_poliza")
+	//bi-directional many-to-one association to Poliza
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="id_poliza")
 	private Poliza poliza;
-
-	// bi-directional many-to-one association to CobertResp
-	@OneToMany(mappedBy = "ramoResponsabilidadCivil")
-	private List<CobertResp> cobertResps;
 
 	public RamoResponsabilidadCivil() {
 	}
@@ -88,6 +95,46 @@ public class RamoResponsabilidadCivil extends Auditoria implements Serializable 
 
 	public void setDeducSiniestroResp(BigDecimal deducSiniestroResp) {
 		this.deducSiniestroResp = deducSiniestroResp;
+	}
+
+	public String getEstado() {
+		return this.estado;
+	}
+
+	public void setEstado(String estado) {
+		this.estado = estado;
+	}
+
+	public Date getFechaActualizacion() {
+		return this.fechaActualizacion;
+	}
+
+	public void setFechaActualizacion(Date fechaActualizacion) {
+		this.fechaActualizacion = fechaActualizacion;
+	}
+
+	public Date getFechaCreacion() {
+		return this.fechaCreacion;
+	}
+
+	public void setFechaCreacion(Date fechaCreacion) {
+		this.fechaCreacion = fechaCreacion;
+	}
+
+	public Integer getIdUsuarioActualizacion() {
+		return this.idUsuarioActualizacion;
+	}
+
+	public void setIdUsuarioActualizacion(Integer idUsuarioActualizacion) {
+		this.idUsuarioActualizacion = idUsuarioActualizacion;
+	}
+
+	public Integer getIdUsuarioCreacion() {
+		return this.idUsuarioCreacion;
+	}
+
+	public void setIdUsuarioCreacion(Integer idUsuarioCreacion) {
+		this.idUsuarioCreacion = idUsuarioCreacion;
 	}
 
 	public Integer getLimiteUnicoAnualResp() {
@@ -136,6 +183,28 @@ public class RamoResponsabilidadCivil extends Auditoria implements Serializable 
 		return clausulasAddResp;
 	}
 
+	public List<CobertResp> getCobertResps() {
+		return this.cobertResps;
+	}
+
+	public void setCobertResps(List<CobertResp> cobertResps) {
+		this.cobertResps = cobertResps;
+	}
+
+	public CobertResp addCobertResp(CobertResp cobertResp) {
+		getCobertResps().add(cobertResp);
+		cobertResp.setRamoResponsabilidadCivil(this);
+
+		return cobertResp;
+	}
+
+	public CobertResp removeCobertResp(CobertResp cobertResp) {
+		getCobertResps().remove(cobertResp);
+		cobertResp.setRamoResponsabilidadCivil(null);
+
+		return cobertResp;
+	}
+
 	public List<ObjAsegResponsabilidad> getObjAsegResponsabilidads() {
 		return this.objAsegResponsabilidads;
 	}
@@ -164,28 +233,6 @@ public class RamoResponsabilidadCivil extends Auditoria implements Serializable 
 
 	public void setPoliza(Poliza poliza) {
 		this.poliza = poliza;
-	}
-
-	public List<CobertResp> getCobertResps() {
-		return this.cobertResps;
-	}
-
-	public void setCobertResps(List<CobertResp> cobertResps) {
-		this.cobertResps = cobertResps;
-	}
-
-	public CobertResp addCobertResp(CobertResp cobertResp) {
-		getCobertResps().add(cobertResp);
-		cobertResp.setRamoResponsabilidadCivil(this);
-
-		return cobertResp;
-	}
-
-	public CobertResp removeCobertResp(CobertResp cobertResp) {
-		getCobertResps().remove(cobertResp);
-		cobertResp.setRamoResponsabilidadCivil(null);
-
-		return cobertResp;
 	}
 
 }

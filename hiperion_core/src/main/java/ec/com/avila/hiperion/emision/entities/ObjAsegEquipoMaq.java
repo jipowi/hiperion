@@ -1,64 +1,72 @@
 package ec.com.avila.hiperion.emision.entities;
 
 import java.io.Serializable;
+import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
 
 /**
  * The persistent class for the obj_aseg_equipo_maq database table.
  * 
  */
 @Entity
-@Table(name = "obj_aseg_equipo_maq")
-@NamedQuery(name = "ObjAsegEquipoMaq.findAll", query = "SELECT o FROM ObjAsegEquipoMaq o")
-public class ObjAsegEquipoMaq extends Auditoria implements Serializable {
+@Table(name="obj_aseg_equipo_maq")
+@NamedQuery(name="ObjAsegEquipoMaq.findAll", query="SELECT o FROM ObjAsegEquipoMaq o")
+public class ObjAsegEquipoMaq implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_objeto_equipo_maq")
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name="id_objeto_equipo_maq")
 	private Integer idObjetoEquipoMaq;
 
-	@Column(name = "anio_obj_maq")
+	@Column(name="anio_obj_maq")
 	private Integer anioObjMaq;
 
-	@Column(name = "chasis_obj_eq_maq")
+	@Column(name="chasis_obj_eq_maq")
 	private String chasisObjEqMaq;
 
-	@Column(name = "color_obj_eq_maq")
+	@Column(name="color_obj_eq_maq")
 	private String colorObjEqMaq;
 
-	@Column(name = "item_obj_eq_maq")
+	private String estado;
+
+	@Temporal(TemporalType.DATE)
+	@Column(name="fecha_actualizacion")
+	private Date fechaActualizacion;
+
+	@Temporal(TemporalType.DATE)
+	@Column(name="fecha_creacion")
+	private Date fechaCreacion;
+
+	@Column(name="id_usuario_actualizacion")
+	private Integer idUsuarioActualizacion;
+
+	@Column(name="id_usuario_creacion")
+	private Integer idUsuarioCreacion;
+
+	@Column(name="item_obj_eq_maq")
 	private Integer itemObjEqMaq;
 
-	@Column(name = "marca_obj_eq_maq")
+	@Column(name="marca_obj_eq_maq")
 	private String marcaObjEqMaq;
 
-	@Column(name = "modelo_obj_eq_maq")
+	@Column(name="modelo_obj_eq_maq")
 	private String modeloObjEqMaq;
 
-	@Column(name = "motor_objj_eq_maq")
+	@Column(name="motor_objj_eq_maq")
 	private String motorObjjEqMaq;
 
-	@Column(name = "numero_serie_obj_maq")
+	@Column(name="numero_serie_obj_maq")
 	private String numeroSerieObjMaq;
 
-	@Column(name = "valor_aseg_obj_eq_maq")
+	@Column(name="valor_aseg_obj_eq_maq")
 	private BigDecimal valorAsegObjEqMaq;
 
-	// bi-directional many-to-one association to RamoEquipoMaquinaria
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "id_equipo_maquinaria")
+	//bi-directional many-to-one association to RamoEquipoMaquinaria
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="id_equipo_maquinaria")
 	private RamoEquipoMaquinaria ramoEquipoMaquinaria;
 
 	public ObjAsegEquipoMaq() {
@@ -94,6 +102,46 @@ public class ObjAsegEquipoMaq extends Auditoria implements Serializable {
 
 	public void setColorObjEqMaq(String colorObjEqMaq) {
 		this.colorObjEqMaq = colorObjEqMaq;
+	}
+
+	public String getEstado() {
+		return this.estado;
+	}
+
+	public void setEstado(String estado) {
+		this.estado = estado;
+	}
+
+	public Date getFechaActualizacion() {
+		return this.fechaActualizacion;
+	}
+
+	public void setFechaActualizacion(Date fechaActualizacion) {
+		this.fechaActualizacion = fechaActualizacion;
+	}
+
+	public Date getFechaCreacion() {
+		return this.fechaCreacion;
+	}
+
+	public void setFechaCreacion(Date fechaCreacion) {
+		this.fechaCreacion = fechaCreacion;
+	}
+
+	public Integer getIdUsuarioActualizacion() {
+		return this.idUsuarioActualizacion;
+	}
+
+	public void setIdUsuarioActualizacion(Integer idUsuarioActualizacion) {
+		this.idUsuarioActualizacion = idUsuarioActualizacion;
+	}
+
+	public Integer getIdUsuarioCreacion() {
+		return this.idUsuarioCreacion;
+	}
+
+	public void setIdUsuarioCreacion(Integer idUsuarioCreacion) {
+		this.idUsuarioCreacion = idUsuarioCreacion;
 	}
 
 	public Integer getItemObjEqMaq() {

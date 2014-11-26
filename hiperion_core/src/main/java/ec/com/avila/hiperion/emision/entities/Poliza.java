@@ -83,6 +83,10 @@ public class Poliza implements Serializable {
 	@OneToMany(mappedBy="poliza")
 	private List<RamoAsistenciaMedica> ramoAsistenciaMedicas;
 
+	//bi-directional many-to-one association to RamoBuenUsoAnt
+	@OneToMany(mappedBy="poliza")
+	private List<RamoBuenUsoAnt> ramoBuenUsoAnts;
+
 	//bi-directional many-to-one association to RamoBuenaCalMat
 	@OneToMany(mappedBy="poliza")
 	private List<RamoBuenaCalMat> ramoBuenaCalMats;
@@ -123,6 +127,14 @@ public class Poliza implements Serializable {
 	@OneToMany(mappedBy="poliza")
 	private List<RamoIncendioLineasAliada> ramoIncendioLineasAliadas;
 
+	//bi-directional many-to-one association to RamoLcIncendio
+	@OneToMany(mappedBy="poliza")
+	private List<RamoLcIncendio> ramoLcIncendios;
+
+	//bi-directional many-to-one association to RamoLcRotMaq
+	@OneToMany(mappedBy="poliza")
+	private List<RamoLcRotMaq> ramoLcRotMaqs;
+
 	//bi-directional many-to-one association to RamoResponsabilidadCivil
 	@OneToMany(mappedBy="poliza")
 	private List<RamoResponsabilidadCivil> ramoResponsabilidadCivils;
@@ -162,18 +174,6 @@ public class Poliza implements Serializable {
 	//bi-directional many-to-one association to RamoVida
 	@OneToMany(mappedBy="poliza")
 	private List<RamoVida> ramoVidas;
-
-	//bi-directional many-to-one association to RamoBuenUsoAnt
-	@OneToMany(mappedBy="poliza")
-	private List<RamoBuenUsoAnt> ramoBuenUsoAnts;
-
-	//bi-directional many-to-one association to RamoLcIncendio
-	@OneToMany(mappedBy="poliza")
-	private List<RamoLcIncendio> ramoLcIncendios;
-
-	//bi-directional many-to-one association to RamoLcRotMaq
-	@OneToMany(mappedBy="poliza")
-	private List<RamoLcRotMaq> ramoLcRotMaqs;
 
 	public Poliza() {
 	}
@@ -378,6 +378,28 @@ public class Poliza implements Serializable {
 		ramoAsistenciaMedica.setPoliza(null);
 
 		return ramoAsistenciaMedica;
+	}
+
+	public List<RamoBuenUsoAnt> getRamoBuenUsoAnts() {
+		return this.ramoBuenUsoAnts;
+	}
+
+	public void setRamoBuenUsoAnts(List<RamoBuenUsoAnt> ramoBuenUsoAnts) {
+		this.ramoBuenUsoAnts = ramoBuenUsoAnts;
+	}
+
+	public RamoBuenUsoAnt addRamoBuenUsoAnt(RamoBuenUsoAnt ramoBuenUsoAnt) {
+		getRamoBuenUsoAnts().add(ramoBuenUsoAnt);
+		ramoBuenUsoAnt.setPoliza(this);
+
+		return ramoBuenUsoAnt;
+	}
+
+	public RamoBuenUsoAnt removeRamoBuenUsoAnt(RamoBuenUsoAnt ramoBuenUsoAnt) {
+		getRamoBuenUsoAnts().remove(ramoBuenUsoAnt);
+		ramoBuenUsoAnt.setPoliza(null);
+
+		return ramoBuenUsoAnt;
 	}
 
 	public List<RamoBuenaCalMat> getRamoBuenaCalMats() {
@@ -600,6 +622,50 @@ public class Poliza implements Serializable {
 		return ramoIncendioLineasAliada;
 	}
 
+	public List<RamoLcIncendio> getRamoLcIncendios() {
+		return this.ramoLcIncendios;
+	}
+
+	public void setRamoLcIncendios(List<RamoLcIncendio> ramoLcIncendios) {
+		this.ramoLcIncendios = ramoLcIncendios;
+	}
+
+	public RamoLcIncendio addRamoLcIncendio(RamoLcIncendio ramoLcIncendio) {
+		getRamoLcIncendios().add(ramoLcIncendio);
+		ramoLcIncendio.setPoliza(this);
+
+		return ramoLcIncendio;
+	}
+
+	public RamoLcIncendio removeRamoLcIncendio(RamoLcIncendio ramoLcIncendio) {
+		getRamoLcIncendios().remove(ramoLcIncendio);
+		ramoLcIncendio.setPoliza(null);
+
+		return ramoLcIncendio;
+	}
+
+	public List<RamoLcRotMaq> getRamoLcRotMaqs() {
+		return this.ramoLcRotMaqs;
+	}
+
+	public void setRamoLcRotMaqs(List<RamoLcRotMaq> ramoLcRotMaqs) {
+		this.ramoLcRotMaqs = ramoLcRotMaqs;
+	}
+
+	public RamoLcRotMaq addRamoLcRotMaq(RamoLcRotMaq ramoLcRotMaq) {
+		getRamoLcRotMaqs().add(ramoLcRotMaq);
+		ramoLcRotMaq.setPoliza(this);
+
+		return ramoLcRotMaq;
+	}
+
+	public RamoLcRotMaq removeRamoLcRotMaq(RamoLcRotMaq ramoLcRotMaq) {
+		getRamoLcRotMaqs().remove(ramoLcRotMaq);
+		ramoLcRotMaq.setPoliza(null);
+
+		return ramoLcRotMaq;
+	}
+
 	public List<RamoResponsabilidadCivil> getRamoResponsabilidadCivils() {
 		return this.ramoResponsabilidadCivils;
 	}
@@ -818,72 +884,6 @@ public class Poliza implements Serializable {
 		ramoVida.setPoliza(null);
 
 		return ramoVida;
-	}
-
-	public List<RamoBuenUsoAnt> getRamoBuenUsoAnts() {
-		return this.ramoBuenUsoAnts;
-	}
-
-	public void setRamoBuenUsoAnts(List<RamoBuenUsoAnt> ramoBuenUsoAnts) {
-		this.ramoBuenUsoAnts = ramoBuenUsoAnts;
-	}
-
-	public RamoBuenUsoAnt addRamoBuenUsoAnt(RamoBuenUsoAnt ramoBuenUsoAnt) {
-		getRamoBuenUsoAnts().add(ramoBuenUsoAnt);
-		ramoBuenUsoAnt.setPoliza(this);
-
-		return ramoBuenUsoAnt;
-	}
-
-	public RamoBuenUsoAnt removeRamoBuenUsoAnt(RamoBuenUsoAnt ramoBuenUsoAnt) {
-		getRamoBuenUsoAnts().remove(ramoBuenUsoAnt);
-		ramoBuenUsoAnt.setPoliza(null);
-
-		return ramoBuenUsoAnt;
-	}
-
-	public List<RamoLcIncendio> getRamoLcIncendios() {
-		return this.ramoLcIncendios;
-	}
-
-	public void setRamoLcIncendios(List<RamoLcIncendio> ramoLcIncendios) {
-		this.ramoLcIncendios = ramoLcIncendios;
-	}
-
-	public RamoLcIncendio addRamoLcIncendio(RamoLcIncendio ramoLcIncendio) {
-		getRamoLcIncendios().add(ramoLcIncendio);
-		ramoLcIncendio.setPoliza(this);
-
-		return ramoLcIncendio;
-	}
-
-	public RamoLcIncendio removeRamoLcIncendio(RamoLcIncendio ramoLcIncendio) {
-		getRamoLcIncendios().remove(ramoLcIncendio);
-		ramoLcIncendio.setPoliza(null);
-
-		return ramoLcIncendio;
-	}
-
-	public List<RamoLcRotMaq> getRamoLcRotMaqs() {
-		return this.ramoLcRotMaqs;
-	}
-
-	public void setRamoLcRotMaqs(List<RamoLcRotMaq> ramoLcRotMaqs) {
-		this.ramoLcRotMaqs = ramoLcRotMaqs;
-	}
-
-	public RamoLcRotMaq addRamoLcRotMaq(RamoLcRotMaq ramoLcRotMaq) {
-		getRamoLcRotMaqs().add(ramoLcRotMaq);
-		ramoLcRotMaq.setPoliza(this);
-
-		return ramoLcRotMaq;
-	}
-
-	public RamoLcRotMaq removeRamoLcRotMaq(RamoLcRotMaq ramoLcRotMaq) {
-		getRamoLcRotMaqs().remove(ramoLcRotMaq);
-		ramoLcRotMaq.setPoliza(null);
-
-		return ramoLcRotMaq;
 	}
 
 }

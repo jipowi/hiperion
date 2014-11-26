@@ -8,7 +8,7 @@ package ec.com.avila.hiperion.dao;
 import javax.ejb.Local;
 
 import ec.com.avila.hiperion.comun.HiperionException;
-import ec.com.avila.hiperion.entities.Ramo;
+import ec.com.avila.hiperion.emision.entities.Ramo;
 
 /**
  * <b> Interfaz local de la tabla RAMO para realizar las operaciones necesarias</b>

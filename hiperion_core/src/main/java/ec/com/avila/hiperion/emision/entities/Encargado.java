@@ -1,4 +1,4 @@
-package ec.com.avila.hiperion.entities;
+package ec.com.avila.hiperion.emision.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;
@@ -10,6 +10,7 @@ import java.util.List;
  * 
  */
 @Entity
+@NamedQuery(name="Encargado.findAll", query="SELECT e FROM Encargado e")
 public class Encargado implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -32,14 +33,14 @@ public class Encargado implements Serializable {
 	@Column(name="tipo_titulo")
 	private String tipoTitulo;
 
+	//bi-directional many-to-one association to Contacto
+	@OneToMany(mappedBy="encargado")
+	private List<Contacto> contactos;
+
 	//bi-directional many-to-one association to Persona
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="id_persona")
 	private Persona persona;
-
-	//bi-directional many-to-one association to Contacto
-	@OneToMany(mappedBy="encargado")
-	private List<Contacto> contactos;
 
 	public Encargado() {
 	}
@@ -92,14 +93,6 @@ public class Encargado implements Serializable {
 		this.tipoTitulo = tipoTitulo;
 	}
 
-	public Persona getPersona() {
-		return this.persona;
-	}
-
-	public void setPersona(Persona persona) {
-		this.persona = persona;
-	}
-
 	public List<Contacto> getContactos() {
 		return this.contactos;
 	}
@@ -120,6 +113,14 @@ public class Encargado implements Serializable {
 		contacto.setEncargado(null);
 
 		return contacto;
+	}
+
+	public Persona getPersona() {
+		return this.persona;
+	}
+
+	public void setPersona(Persona persona) {
+		this.persona = persona;
 	}
 
 }

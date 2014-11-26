@@ -1,58 +1,65 @@
 package ec.com.avila.hiperion.emision.entities;
 
 import java.io.Serializable;
+import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
 
 /**
  * The persistent class for the ramo_buen_uso_ant database table.
  * 
  */
 @Entity
-@Table(name = "ramo_buen_uso_ant")
-@NamedQuery(name = "RamoBuenUsoAnt.findAll", query = "SELECT r FROM RamoBuenUsoAnt r")
-public class RamoBuenUsoAnt extends Auditoria implements Serializable {
+@Table(name="ramo_buen_uso_ant")
+@NamedQuery(name="RamoBuenUsoAnt.findAll", query="SELECT r FROM RamoBuenUsoAnt r")
+public class RamoBuenUsoAnt implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "ind_buen_uso_ant")
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name="ind_buen_uso_ant")
 	private Integer indBuenUsoAnt;
 
-	@Column(name = "obj_aseg_anticipo")
+	private String estado;
+
+	@Temporal(TemporalType.DATE)
+	@Column(name="fecha_actualizacion")
+	private Date fechaActualizacion;
+
+	@Temporal(TemporalType.DATE)
+	@Column(name="fecha_creacion")
+	private Date fechaCreacion;
+
+	@Column(name="id_usuario_actualizacion")
+	private Integer idUsuarioActualizacion;
+
+	@Column(name="id_usuario_creacion")
+	private Integer idUsuarioCreacion;
+
+	@Column(name="obj_aseg_anticipo")
 	private String objAsegAnticipo;
 
-	@Column(name = "sector_anticipo")
+	@Column(name="sector_anticipo")
 	private String sectorAnticipo;
 
-	@Column(name = "tipo_contragarantia_buen_ant")
+	@Column(name="tipo_contragarantia_buen_ant")
 	private String tipoContragarantiaBuenAnt;
 
-	@Column(name = "valor_contrato_anticipo")
+	@Column(name="valor_contrato_anticipo")
 	private BigDecimal valorContratoAnticipo;
 
-	@Column(name = "valor_poliza_anticipo")
+	@Column(name="valor_poliza_anticipo")
 	private BigDecimal valorPolizaAnticipo;
 
-	// bi-directional many-to-one association to CobertBuenUsoAnt
-	@OneToMany(mappedBy = "ramoBuenUsoAnt")
+	//bi-directional many-to-one association to CobertBuenUsoAnt
+	@OneToMany(mappedBy="ramoBuenUsoAnt")
 	private List<CobertBuenUsoAnt> cobertBuenUsoAnts;
 
-	// bi-directional many-to-one association to Poliza
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "id_poliza")
+	//bi-directional many-to-one association to Poliza
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="id_poliza")
 	private Poliza poliza;
 
 	public RamoBuenUsoAnt() {
@@ -64,6 +71,46 @@ public class RamoBuenUsoAnt extends Auditoria implements Serializable {
 
 	public void setIndBuenUsoAnt(Integer indBuenUsoAnt) {
 		this.indBuenUsoAnt = indBuenUsoAnt;
+	}
+
+	public String getEstado() {
+		return this.estado;
+	}
+
+	public void setEstado(String estado) {
+		this.estado = estado;
+	}
+
+	public Date getFechaActualizacion() {
+		return this.fechaActualizacion;
+	}
+
+	public void setFechaActualizacion(Date fechaActualizacion) {
+		this.fechaActualizacion = fechaActualizacion;
+	}
+
+	public Date getFechaCreacion() {
+		return this.fechaCreacion;
+	}
+
+	public void setFechaCreacion(Date fechaCreacion) {
+		this.fechaCreacion = fechaCreacion;
+	}
+
+	public Integer getIdUsuarioActualizacion() {
+		return this.idUsuarioActualizacion;
+	}
+
+	public void setIdUsuarioActualizacion(Integer idUsuarioActualizacion) {
+		this.idUsuarioActualizacion = idUsuarioActualizacion;
+	}
+
+	public Integer getIdUsuarioCreacion() {
+		return this.idUsuarioCreacion;
+	}
+
+	public void setIdUsuarioCreacion(Integer idUsuarioCreacion) {
+		this.idUsuarioCreacion = idUsuarioCreacion;
 	}
 
 	public String getObjAsegAnticipo() {

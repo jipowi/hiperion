@@ -1,67 +1,74 @@
 package ec.com.avila.hiperion.emision.entities;
 
 import java.io.Serializable;
+import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
 
 /**
  * The persistent class for the ramo_equipo_maquinaria database table.
  * 
  */
 @Entity
-@Table(name = "ramo_equipo_maquinaria")
-@NamedQuery(name = "RamoEquipoMaquinaria.findAll", query = "SELECT r FROM RamoEquipoMaquinaria r")
-public class RamoEquipoMaquinaria extends Auditoria implements Serializable {
+@Table(name="ramo_equipo_maquinaria")
+@NamedQuery(name="RamoEquipoMaquinaria.findAll", query="SELECT r FROM RamoEquipoMaquinaria r")
+public class RamoEquipoMaquinaria implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_equipo_maquinaria")
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name="id_equipo_maquinaria")
 	private Integer idEquipoMaquinaria;
 
-	@Column(name = "deduc_min_aseg_maq")
+	@Column(name="deduc_min_aseg_maq")
 	private BigDecimal deducMinAsegMaq;
 
-	@Column(name = "deduc_minimo_siniestro_maq")
+	@Column(name="deduc_minimo_siniestro_maq")
 	private BigDecimal deducMinimoSiniestroMaq;
 
-	@Column(name = "deduc_porc_siniestro_maq")
+	@Column(name="deduc_porc_siniestro_maq")
 	private BigDecimal deducPorcSiniestroMaq;
 
-	@Column(name = "tasa_equipo_maq")
+	private String estado;
+
+	@Temporal(TemporalType.DATE)
+	@Column(name="fecha_actualizacion")
+	private Date fechaActualizacion;
+
+	@Temporal(TemporalType.DATE)
+	@Column(name="fecha_creacion")
+	private Date fechaCreacion;
+
+	@Column(name="id_usuario_actualizacion")
+	private Integer idUsuarioActualizacion;
+
+	@Column(name="id_usuario_creacion")
+	private Integer idUsuarioCreacion;
+
+	@Column(name="tasa_equipo_maq")
 	private BigDecimal tasaEquipoMaq;
 
-	// bi-directional many-to-one association to ClausulasAddEqMaq
-	@OneToMany(mappedBy = "ramoEquipoMaquinaria")
+	//bi-directional many-to-one association to ClausulasAddEqMaq
+	@OneToMany(mappedBy="ramoEquipoMaquinaria")
 	private List<ClausulasAddEqMaq> clausulasAddEqMaqs;
 
-	// bi-directional many-to-one association to CobertAddEqMaq
-	@OneToMany(mappedBy = "ramoEquipoMaquinaria")
+	//bi-directional many-to-one association to CobertAddEqMaq
+	@OneToMany(mappedBy="ramoEquipoMaquinaria")
 	private List<CobertAddEqMaq> cobertAddEqMaqs;
 
-	// bi-directional many-to-one association to CobertEqMaq
-	@OneToMany(mappedBy = "ramoEquipoMaquinaria")
+	//bi-directional many-to-one association to CobertEqMaq
+	@OneToMany(mappedBy="ramoEquipoMaquinaria")
 	private List<CobertEqMaq> cobertEqMaqs;
 
-	// bi-directional many-to-one association to ObjAsegEquipoMaq
-	@OneToMany(mappedBy = "ramoEquipoMaquinaria")
+	//bi-directional many-to-one association to ObjAsegEquipoMaq
+	@OneToMany(mappedBy="ramoEquipoMaquinaria")
 	private List<ObjAsegEquipoMaq> objAsegEquipoMaqs;
 
-	// bi-directional many-to-one association to Poliza
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "id_poliza")
+	//bi-directional many-to-one association to Poliza
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="id_poliza")
 	private Poliza poliza;
 
 	public RamoEquipoMaquinaria() {
@@ -97,6 +104,46 @@ public class RamoEquipoMaquinaria extends Auditoria implements Serializable {
 
 	public void setDeducPorcSiniestroMaq(BigDecimal deducPorcSiniestroMaq) {
 		this.deducPorcSiniestroMaq = deducPorcSiniestroMaq;
+	}
+
+	public String getEstado() {
+		return this.estado;
+	}
+
+	public void setEstado(String estado) {
+		this.estado = estado;
+	}
+
+	public Date getFechaActualizacion() {
+		return this.fechaActualizacion;
+	}
+
+	public void setFechaActualizacion(Date fechaActualizacion) {
+		this.fechaActualizacion = fechaActualizacion;
+	}
+
+	public Date getFechaCreacion() {
+		return this.fechaCreacion;
+	}
+
+	public void setFechaCreacion(Date fechaCreacion) {
+		this.fechaCreacion = fechaCreacion;
+	}
+
+	public Integer getIdUsuarioActualizacion() {
+		return this.idUsuarioActualizacion;
+	}
+
+	public void setIdUsuarioActualizacion(Integer idUsuarioActualizacion) {
+		this.idUsuarioActualizacion = idUsuarioActualizacion;
+	}
+
+	public Integer getIdUsuarioCreacion() {
+		return this.idUsuarioCreacion;
+	}
+
+	public void setIdUsuarioCreacion(Integer idUsuarioCreacion) {
+		this.idUsuarioCreacion = idUsuarioCreacion;
 	}
 
 	public BigDecimal getTasaEquipoMaq() {

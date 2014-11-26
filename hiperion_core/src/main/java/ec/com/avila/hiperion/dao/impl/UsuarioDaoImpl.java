@@ -8,7 +8,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import ec.com.avila.hiperion.dao.UsuarioDao;
-import ec.com.avila.hiperion.entities.Usuario;
+import ec.com.avila.hiperion.emision.entities.Usuario;
 
 /**
  * 

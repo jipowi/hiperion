@@ -1,4 +1,4 @@
-package ec.com.avila.hiperion.entities;
+package ec.com.avila.hiperion.emision.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;
@@ -9,6 +9,7 @@ import javax.persistence.*;
  * 
  */
 @Entity
+@NamedQuery(name="Direccion.findAll", query="SELECT d FROM Direccion d")
 public class Direccion implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -33,7 +34,7 @@ public class Direccion implements Serializable {
 	private Canton canton;
 
 	//bi-directional many-to-one association to Cliente
-	@ManyToOne(cascade={CascadeType.ALL}, fetch=FetchType.LAZY)
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="id_cliente")
 	private Cliente cliente;
 

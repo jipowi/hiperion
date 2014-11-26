@@ -1,4 +1,4 @@
-package ec.com.avila.hiperion.entities;
+package ec.com.avila.hiperion.emision.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;
@@ -11,6 +11,7 @@ import java.util.List;
  */
 @Entity
 @Table(name="tipo_direccion")
+@NamedQuery(name="TipoDireccion.findAll", query="SELECT t FROM TipoDireccion t")
 public class TipoDireccion implements Serializable {
 	private static final long serialVersionUID = 1L;
 

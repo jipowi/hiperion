@@ -15,10 +15,8 @@ import org.apache.log4j.Logger;
 
 import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.dao.AseguradoraDao;
-import ec.com.avila.hiperion.entities.Aseguradora;
-import ec.com.avila.hiperion.entities.Persona;
-import ec.com.avila.hiperion.entities.PersonaAseguradora;
-import ec.com.avila.hiperion.entities.PersonaAseguradoraPK;
+import ec.com.avila.hiperion.emision.entities.Aseguradora;
+import ec.com.avila.hiperion.emision.entities.Persona;
 
 /**
  * 
@@ -43,17 +41,17 @@ public class AseguradoraDaoImpl extends GenericDAOImpl<Aseguradora, Long> implem
 
 			for (Persona persona : personas) {
 
-				PersonaAseguradoraPK aseguradoraPK = new PersonaAseguradoraPK();
-				aseguradoraPK.setIdAseguradora(aseguradora.getIdAseguradora());
+//				PersonaAseguradoraPK aseguradoraPK = new PersonaAseguradoraPK();
+//				aseguradoraPK.setIdAseguradora(aseguradora.getIdAseguradora());
 
 				em.persist(persona);
-				aseguradoraPK.setIdPersona(persona.getIdPersona());
+//				aseguradoraPK.setIdPersona(persona.getIdPersona());
+//
+//				PersonaAseguradora personaAseguradora = new PersonaAseguradora();
+//
+//				personaAseguradora.setId(aseguradoraPK);
 
-				PersonaAseguradora personaAseguradora = new PersonaAseguradora();
-
-				personaAseguradora.setId(aseguradoraPK);
-
-				em.persist(personaAseguradora);
+//				em.persist(personaAseguradora);
 			}
 		} catch (Exception e) {
 			log.error("Error no se pudo guardar la aseguradora ", e);

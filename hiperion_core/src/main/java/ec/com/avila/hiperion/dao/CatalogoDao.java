@@ -7,8 +7,9 @@ package ec.com.avila.hiperion.dao;
 import java.util.List;
 
 import javax.ejb.Local;
+
 import ec.com.avila.hiperion.comun.HiperionException;
-import ec.com.avila.hiperion.entities.Catalogo;
+import ec.com.avila.hiperion.emision.entities.Catalogo;
 
 /**
  * 

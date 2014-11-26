@@ -1,4 +1,4 @@
-package ec.com.avila.hiperion.entities;
+package ec.com.avila.hiperion.emision.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;
@@ -10,6 +10,7 @@ import java.util.List;
  * 
  */
 @Entity
+@NamedQuery(name="Provincia.findAll", query="SELECT p FROM Provincia p")
 public class Provincia implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -24,7 +25,7 @@ public class Provincia implements Serializable {
 	private String nombreProvincia;
 
 	//bi-directional many-to-one association to Canton
-	@OneToMany(mappedBy="provincia", cascade={CascadeType.ALL})
+	@OneToMany(mappedBy="provincia")
 	private List<Canton> cantons;
 
 	//bi-directional many-to-one association to Direccion

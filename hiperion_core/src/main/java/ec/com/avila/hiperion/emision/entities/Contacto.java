@@ -6,22 +6,21 @@ import java.util.Date;
 
 
 /**
- * The persistent class for the obj_aseg_fidelidad database table.
+ * The persistent class for the contacto database table.
  * 
  */
 @Entity
-@Table(name="obj_aseg_fidelidad")
-@NamedQuery(name="ObjAsegFidelidad.findAll", query="SELECT o FROM ObjAsegFidelidad o")
-public class ObjAsegFidelidad implements Serializable {
+@NamedQuery(name="Contacto.findAll", query="SELECT c FROM Contacto c")
+public class Contacto implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="id_mod_obj_asegurado")
-	private Integer idModObjAsegurado;
+	@Column(name="id_contacto")
+	private Integer idContacto;
 
-	@Column(name="cargo_fidelidad")
-	private String cargoFidelidad;
+	@Column(name="descripcion_contacto")
+	private String descripcionContacto;
 
 	private String estado;
 
@@ -39,34 +38,36 @@ public class ObjAsegFidelidad implements Serializable {
 	@Column(name="id_usuario_creacion")
 	private Integer idUsuarioCreacion;
 
-	@Column(name="nombre_fidelidad")
-	private String nombreFidelidad;
+	@Column(name="tipo_contacto")
+	private String tipoContacto;
 
-	@Column(name="tipo_modalidad_fidelidad")
-	private Integer tipoModalidadFidelidad;
-
-	//bi-directional many-to-one association to RamoFidelidad
+	//bi-directional many-to-one association to Encargado
 	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="id_fidelidad")
-	private RamoFidelidad ramoFidelidad;
+	@JoinColumn(name="id_encargado")
+	private Encargado encargado;
 
-	public ObjAsegFidelidad() {
+	//bi-directional many-to-one association to Persona
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="id_persona")
+	private Persona persona;
+
+	public Contacto() {
 	}
 
-	public Integer getIdModObjAsegurado() {
-		return this.idModObjAsegurado;
+	public Integer getIdContacto() {
+		return this.idContacto;
 	}
 
-	public void setIdModObjAsegurado(Integer idModObjAsegurado) {
-		this.idModObjAsegurado = idModObjAsegurado;
+	public void setIdContacto(Integer idContacto) {
+		this.idContacto = idContacto;
 	}
 
-	public String getCargoFidelidad() {
-		return this.cargoFidelidad;
+	public String getDescripcionContacto() {
+		return this.descripcionContacto;
 	}
 
-	public void setCargoFidelidad(String cargoFidelidad) {
-		this.cargoFidelidad = cargoFidelidad;
+	public void setDescripcionContacto(String descripcionContacto) {
+		this.descripcionContacto = descripcionContacto;
 	}
 
 	public String getEstado() {
@@ -109,28 +110,28 @@ public class ObjAsegFidelidad implements Serializable {
 		this.idUsuarioCreacion = idUsuarioCreacion;
 	}
 
-	public String getNombreFidelidad() {
-		return this.nombreFidelidad;
+	public String getTipoContacto() {
+		return this.tipoContacto;
 	}
 
-	public void setNombreFidelidad(String nombreFidelidad) {
-		this.nombreFidelidad = nombreFidelidad;
+	public void setTipoContacto(String tipoContacto) {
+		this.tipoContacto = tipoContacto;
 	}
 
-	public Integer getTipoModalidadFidelidad() {
-		return this.tipoModalidadFidelidad;
+	public Encargado getEncargado() {
+		return this.encargado;
 	}
 
-	public void setTipoModalidadFidelidad(Integer tipoModalidadFidelidad) {
-		this.tipoModalidadFidelidad = tipoModalidadFidelidad;
+	public void setEncargado(Encargado encargado) {
+		this.encargado = encargado;
 	}
 
-	public RamoFidelidad getRamoFidelidad() {
-		return this.ramoFidelidad;
+	public Persona getPersona() {
+		return this.persona;
 	}
 
-	public void setRamoFidelidad(RamoFidelidad ramoFidelidad) {
-		this.ramoFidelidad = ramoFidelidad;
+	public void setPersona(Persona persona) {
+		this.persona = persona;
 	}
 
 }

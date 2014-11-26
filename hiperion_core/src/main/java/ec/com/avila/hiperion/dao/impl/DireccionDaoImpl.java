@@ -12,7 +12,7 @@ import org.apache.log4j.Logger;
 
 import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.dao.DireccionDao;
-import ec.com.avila.hiperion.entities.Direccion;
+import ec.com.avila.hiperion.emision.entities.Direccion;
 
 /**
  * <b> Incluir aqui la descripcion de la clase. </b>

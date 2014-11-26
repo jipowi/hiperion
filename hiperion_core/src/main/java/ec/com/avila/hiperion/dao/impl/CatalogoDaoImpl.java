@@ -12,7 +12,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import ec.com.avila.hiperion.dao.CatalogoDao;
-import ec.com.avila.hiperion.entities.Catalogo;
+import ec.com.avila.hiperion.emision.entities.Catalogo;
 
 /**
  * 

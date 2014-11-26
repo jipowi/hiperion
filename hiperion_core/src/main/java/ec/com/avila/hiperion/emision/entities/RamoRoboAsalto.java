@@ -1,72 +1,79 @@
 package ec.com.avila.hiperion.emision.entities;
 
 import java.io.Serializable;
+import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
 
 /**
  * The persistent class for the ramo_robo_asalto database table.
  * 
  */
 @Entity
-@Table(name = "ramo_robo_asalto")
-@NamedQuery(name = "RamoRoboAsalto.findAll", query = "SELECT r FROM RamoRoboAsalto r")
-public class RamoRoboAsalto extends Auditoria implements Serializable {
+@Table(name="ramo_robo_asalto")
+@NamedQuery(name="RamoRoboAsalto.findAll", query="SELECT r FROM RamoRoboAsalto r")
+public class RamoRoboAsalto implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_robo")
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name="id_robo")
 	private Integer idRobo;
 
-	@Column(name = "tasa_contenidos")
+	private String estado;
+
+	@Temporal(TemporalType.DATE)
+	@Column(name="fecha_actualizacion")
+	private Date fechaActualizacion;
+
+	@Temporal(TemporalType.DATE)
+	@Column(name="fecha_creacion")
+	private Date fechaCreacion;
+
+	@Column(name="id_usuario_actualizacion")
+	private Integer idUsuarioActualizacion;
+
+	@Column(name="id_usuario_creacion")
+	private Integer idUsuarioCreacion;
+
+	@Column(name="tasa_contenidos")
 	private BigDecimal tasaContenidos;
 
-	@Column(name = "tasa_hurto_robo")
+	@Column(name="tasa_hurto_robo")
 	private BigDecimal tasaHurtoRobo;
 
-	@Column(name = "tasa_propiedad")
+	@Column(name="tasa_propiedad")
 	private BigDecimal tasaPropiedad;
 
-	@Column(name = "tasa_robo_asalto")
+	@Column(name="tasa_robo_asalto")
 	private BigDecimal tasaRoboAsalto;
 
-	// bi-directional many-to-one association to ClausulasAddRobo
-	@OneToMany(mappedBy = "ramoRoboAsalto")
+	//bi-directional many-to-one association to ClausulasAddRobo
+	@OneToMany(mappedBy="ramoRoboAsalto")
 	private List<ClausulasAddRobo> clausulasAddRobos;
 
-	// bi-directional many-to-one association to CobertAddRobo
-	@OneToMany(mappedBy = "ramoRoboAsalto")
+	//bi-directional many-to-one association to CobertAddRobo
+	@OneToMany(mappedBy="ramoRoboAsalto")
 	private List<CobertAddRobo> cobertAddRobos;
 
-	// bi-directional many-to-one association to CondEspRobo
-	@OneToMany(mappedBy = "ramoRoboAsalto")
+	//bi-directional many-to-one association to CoberturaRobo
+	@OneToMany(mappedBy="ramoRoboAsalto")
+	private List<CoberturaRobo> coberturaRobos;
+
+	//bi-directional many-to-one association to CondEspRobo
+	@OneToMany(mappedBy="ramoRoboAsalto")
 	private List<CondEspRobo> condEspRobos;
 
-	// bi-directional many-to-one association to ObjAsegRobo
-	@OneToMany(mappedBy = "ramoRoboAsalto")
+	//bi-directional many-to-one association to ObjAsegRobo
+	@OneToMany(mappedBy="ramoRoboAsalto")
 	private List<ObjAsegRobo> objAsegRobos;
 
-	// bi-directional many-to-one association to Poliza
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "id_poliza")
+	//bi-directional many-to-one association to Poliza
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="id_poliza")
 	private Poliza poliza;
-
-	// bi-directional many-to-one association to CoberturaRobo
-	@OneToMany(mappedBy = "ramoRoboAsalto")
-	private List<CoberturaRobo> coberturaRobos;
 
 	public RamoRoboAsalto() {
 	}
@@ -77,6 +84,46 @@ public class RamoRoboAsalto extends Auditoria implements Serializable {
 
 	public void setIdRobo(Integer idRobo) {
 		this.idRobo = idRobo;
+	}
+
+	public String getEstado() {
+		return this.estado;
+	}
+
+	public void setEstado(String estado) {
+		this.estado = estado;
+	}
+
+	public Date getFechaActualizacion() {
+		return this.fechaActualizacion;
+	}
+
+	public void setFechaActualizacion(Date fechaActualizacion) {
+		this.fechaActualizacion = fechaActualizacion;
+	}
+
+	public Date getFechaCreacion() {
+		return this.fechaCreacion;
+	}
+
+	public void setFechaCreacion(Date fechaCreacion) {
+		this.fechaCreacion = fechaCreacion;
+	}
+
+	public Integer getIdUsuarioActualizacion() {
+		return this.idUsuarioActualizacion;
+	}
+
+	public void setIdUsuarioActualizacion(Integer idUsuarioActualizacion) {
+		this.idUsuarioActualizacion = idUsuarioActualizacion;
+	}
+
+	public Integer getIdUsuarioCreacion() {
+		return this.idUsuarioCreacion;
+	}
+
+	public void setIdUsuarioCreacion(Integer idUsuarioCreacion) {
+		this.idUsuarioCreacion = idUsuarioCreacion;
 	}
 
 	public BigDecimal getTasaContenidos() {
@@ -155,6 +202,28 @@ public class RamoRoboAsalto extends Auditoria implements Serializable {
 		return cobertAddRobo;
 	}
 
+	public List<CoberturaRobo> getCoberturaRobos() {
+		return this.coberturaRobos;
+	}
+
+	public void setCoberturaRobos(List<CoberturaRobo> coberturaRobos) {
+		this.coberturaRobos = coberturaRobos;
+	}
+
+	public CoberturaRobo addCoberturaRobo(CoberturaRobo coberturaRobo) {
+		getCoberturaRobos().add(coberturaRobo);
+		coberturaRobo.setRamoRoboAsalto(this);
+
+		return coberturaRobo;
+	}
+
+	public CoberturaRobo removeCoberturaRobo(CoberturaRobo coberturaRobo) {
+		getCoberturaRobos().remove(coberturaRobo);
+		coberturaRobo.setRamoRoboAsalto(null);
+
+		return coberturaRobo;
+	}
+
 	public List<CondEspRobo> getCondEspRobos() {
 		return this.condEspRobos;
 	}
@@ -205,28 +274,6 @@ public class RamoRoboAsalto extends Auditoria implements Serializable {
 
 	public void setPoliza(Poliza poliza) {
 		this.poliza = poliza;
-	}
-
-	public List<CoberturaRobo> getCoberturaRobos() {
-		return this.coberturaRobos;
-	}
-
-	public void setCoberturaRobos(List<CoberturaRobo> coberturaRobos) {
-		this.coberturaRobos = coberturaRobos;
-	}
-
-	public CoberturaRobo addCoberturaRobo(CoberturaRobo coberturaRobo) {
-		getCoberturaRobos().add(coberturaRobo);
-		coberturaRobo.setRamoRoboAsalto(this);
-
-		return coberturaRobo;
-	}
-
-	public CoberturaRobo removeCoberturaRobo(CoberturaRobo coberturaRobo) {
-		getCoberturaRobos().remove(coberturaRobo);
-		coberturaRobo.setRamoRoboAsalto(null);
-
-		return coberturaRobo;
 	}
 
 }

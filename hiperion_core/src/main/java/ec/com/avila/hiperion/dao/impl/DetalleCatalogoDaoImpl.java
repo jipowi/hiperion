@@ -9,7 +9,7 @@ import javax.persistence.Query;
 
 import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.dao.DetalleCatalogoDao;
-import ec.com.avila.hiperion.entities.DetalleCatalogo;
+import ec.com.avila.hiperion.emision.entities.DetalleCatalogo;
 
 /**
  * 

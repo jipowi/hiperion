@@ -1,4 +1,4 @@
-package ec.com.avila.hiperion.entities;
+package ec.com.avila.hiperion.emision.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;
@@ -10,6 +10,7 @@ import java.util.List;
  * 
  */
 @Entity
+@NamedQuery(name="Rol.findAll", query="SELECT r FROM Rol r")
 public class Rol implements Serializable {
 	private static final long serialVersionUID = 1L;
 

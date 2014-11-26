@@ -2,26 +2,26 @@ package ec.com.avila.hiperion.emision.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.Date;
 
 
 /**
- * The persistent class for the obj_aseg_fidelidad database table.
+ * The persistent class for the ramo_aseguradora database table.
  * 
  */
 @Entity
-@Table(name="obj_aseg_fidelidad")
-@NamedQuery(name="ObjAsegFidelidad.findAll", query="SELECT o FROM ObjAsegFidelidad o")
-public class ObjAsegFidelidad implements Serializable {
+@Table(name="ramo_aseguradora")
+@NamedQuery(name="RamoAseguradora.findAll", query="SELECT r FROM RamoAseguradora r")
+public class RamoAseguradora implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="id_mod_obj_asegurado")
-	private Integer idModObjAsegurado;
+	@Column(name="id_ramo_aseguradora")
+	private Integer idRamoAseguradora;
 
-	@Column(name="cargo_fidelidad")
-	private String cargoFidelidad;
+	private BigDecimal comision;
 
 	private String estado;
 
@@ -39,34 +39,33 @@ public class ObjAsegFidelidad implements Serializable {
 	@Column(name="id_usuario_creacion")
 	private Integer idUsuarioCreacion;
 
-	@Column(name="nombre_fidelidad")
-	private String nombreFidelidad;
-
-	@Column(name="tipo_modalidad_fidelidad")
-	private Integer tipoModalidadFidelidad;
-
-	//bi-directional many-to-one association to RamoFidelidad
+	//bi-directional many-to-one association to Aseguradora
 	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="id_fidelidad")
-	private RamoFidelidad ramoFidelidad;
+	@JoinColumn(name="id_aseguradora")
+	private Aseguradora aseguradora;
 
-	public ObjAsegFidelidad() {
+	//bi-directional many-to-one association to Ramo
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="id_ramo")
+	private Ramo ramo;
+
+	public RamoAseguradora() {
 	}
 
-	public Integer getIdModObjAsegurado() {
-		return this.idModObjAsegurado;
+	public Integer getIdRamoAseguradora() {
+		return this.idRamoAseguradora;
 	}
 
-	public void setIdModObjAsegurado(Integer idModObjAsegurado) {
-		this.idModObjAsegurado = idModObjAsegurado;
+	public void setIdRamoAseguradora(Integer idRamoAseguradora) {
+		this.idRamoAseguradora = idRamoAseguradora;
 	}
 
-	public String getCargoFidelidad() {
-		return this.cargoFidelidad;
+	public BigDecimal getComision() {
+		return this.comision;
 	}
 
-	public void setCargoFidelidad(String cargoFidelidad) {
-		this.cargoFidelidad = cargoFidelidad;
+	public void setComision(BigDecimal comision) {
+		this.comision = comision;
 	}
 
 	public String getEstado() {
@@ -109,28 +108,20 @@ public class ObjAsegFidelidad implements Serializable {
 		this.idUsuarioCreacion = idUsuarioCreacion;
 	}
 
-	public String getNombreFidelidad() {
-		return this.nombreFidelidad;
+	public Aseguradora getAseguradora() {
+		return this.aseguradora;
 	}
 
-	public void setNombreFidelidad(String nombreFidelidad) {
-		this.nombreFidelidad = nombreFidelidad;
+	public void setAseguradora(Aseguradora aseguradora) {
+		this.aseguradora = aseguradora;
 	}
 
-	public Integer getTipoModalidadFidelidad() {
-		return this.tipoModalidadFidelidad;
+	public Ramo getRamo() {
+		return this.ramo;
 	}
 
-	public void setTipoModalidadFidelidad(Integer tipoModalidadFidelidad) {
-		this.tipoModalidadFidelidad = tipoModalidadFidelidad;
-	}
-
-	public RamoFidelidad getRamoFidelidad() {
-		return this.ramoFidelidad;
-	}
-
-	public void setRamoFidelidad(RamoFidelidad ramoFidelidad) {
-		this.ramoFidelidad = ramoFidelidad;
+	public void setRamo(Ramo ramo) {
+		this.ramo = ramo;
 	}
 
 }

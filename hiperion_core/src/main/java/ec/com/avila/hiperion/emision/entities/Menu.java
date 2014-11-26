@@ -1,4 +1,4 @@
-package ec.com.avila.hiperion.entities;
+package ec.com.avila.hiperion.emision.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;
@@ -10,6 +10,7 @@ import java.util.List;
  * 
  */
 @Entity
+@NamedQuery(name="Menu.findAll", query="SELECT m FROM Menu m")
 public class Menu implements Serializable {
 	private static final long serialVersionUID = 1L;
 

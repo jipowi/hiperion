@@ -1,20 +1,10 @@
 package ec.com.avila.hiperion.emision.entities;
 
 import java.io.Serializable;
+import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
 
 
 /**
@@ -24,7 +14,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name="ramo_riesgo_montaje")
 @NamedQuery(name="RamoRiesgoMontaje.findAll", query="SELECT r FROM RamoRiesgoMontaje r")
-public class RamoRiesgoMontaje extends Auditoria implements Serializable {
+public class RamoRiesgoMontaje implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -56,6 +46,22 @@ public class RamoRiesgoMontaje extends Auditoria implements Serializable {
 	@Column(name="doc_formulario_montje")
 	private String docFormularioMontje;
 
+	private String estado;
+
+	@Temporal(TemporalType.DATE)
+	@Column(name="fecha_actualizacion")
+	private Date fechaActualizacion;
+
+	@Temporal(TemporalType.DATE)
+	@Column(name="fecha_creacion")
+	private Date fechaCreacion;
+
+	@Column(name="id_usuario_actualizacion")
+	private Integer idUsuarioActualizacion;
+
+	@Column(name="id_usuario_creacion")
+	private Integer idUsuarioCreacion;
+
 	@Column(name="minimo_amparo_a_montaje")
 	private BigDecimal minimoAmparoAMontaje;
 
@@ -84,6 +90,10 @@ public class RamoRiesgoMontaje extends Auditoria implements Serializable {
 	@OneToMany(mappedBy="ramoRiesgoMontaje")
 	private List<ClausulasAddMontaje> clausulasAddMontajes;
 
+	//bi-directional many-to-one association to CobertMontaje
+	@OneToMany(mappedBy="ramoRiesgoMontaje")
+	private List<CobertMontaje> cobertMontajes;
+
 	//bi-directional many-to-one association to ObjAsegMontaje
 	@OneToMany(mappedBy="ramoRiesgoMontaje")
 	private List<ObjAsegMontaje> objAsegMontajes;
@@ -92,10 +102,6 @@ public class RamoRiesgoMontaje extends Auditoria implements Serializable {
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="id_poliza")
 	private Poliza poliza;
-
-	//bi-directional many-to-one association to CobertMontaje
-	@OneToMany(mappedBy="ramoRiesgoMontaje")
-	private List<CobertMontaje> cobertMontajes;
 
 	public RamoRiesgoMontaje() {
 	}
@@ -172,6 +178,45 @@ public class RamoRiesgoMontaje extends Auditoria implements Serializable {
 		this.docFormularioMontje = docFormularioMontje;
 	}
 
+	public String getEstado() {
+		return this.estado;
+	}
+
+	public void setEstado(String estado) {
+		this.estado = estado;
+	}
+
+	public Date getFechaActualizacion() {
+		return this.fechaActualizacion;
+	}
+
+	public void setFechaActualizacion(Date fechaActualizacion) {
+		this.fechaActualizacion = fechaActualizacion;
+	}
+
+	public Date getFechaCreacion() {
+		return this.fechaCreacion;
+	}
+
+	public void setFechaCreacion(Date fechaCreacion) {
+		this.fechaCreacion = fechaCreacion;
+	}
+
+	public Integer getIdUsuarioActualizacion() {
+		return this.idUsuarioActualizacion;
+	}
+
+	public void setIdUsuarioActualizacion(Integer idUsuarioActualizacion) {
+		this.idUsuarioActualizacion = idUsuarioActualizacion;
+	}
+
+	public Integer getIdUsuarioCreacion() {
+		return this.idUsuarioCreacion;
+	}
+
+	public void setIdUsuarioCreacion(Integer idUsuarioCreacion) {
+		this.idUsuarioCreacion = idUsuarioCreacion;
+	}
 
 	public BigDecimal getMinimoAmparoAMontaje() {
 		return this.minimoAmparoAMontaje;
@@ -259,6 +304,28 @@ public class RamoRiesgoMontaje extends Auditoria implements Serializable {
 		return clausulasAddMontaje;
 	}
 
+	public List<CobertMontaje> getCobertMontajes() {
+		return this.cobertMontajes;
+	}
+
+	public void setCobertMontajes(List<CobertMontaje> cobertMontajes) {
+		this.cobertMontajes = cobertMontajes;
+	}
+
+	public CobertMontaje addCobertMontaje(CobertMontaje cobertMontaje) {
+		getCobertMontajes().add(cobertMontaje);
+		cobertMontaje.setRamoRiesgoMontaje(this);
+
+		return cobertMontaje;
+	}
+
+	public CobertMontaje removeCobertMontaje(CobertMontaje cobertMontaje) {
+		getCobertMontajes().remove(cobertMontaje);
+		cobertMontaje.setRamoRiesgoMontaje(null);
+
+		return cobertMontaje;
+	}
+
 	public List<ObjAsegMontaje> getObjAsegMontajes() {
 		return this.objAsegMontajes;
 	}
@@ -287,28 +354,6 @@ public class RamoRiesgoMontaje extends Auditoria implements Serializable {
 
 	public void setPoliza(Poliza poliza) {
 		this.poliza = poliza;
-	}
-
-	public List<CobertMontaje> getCobertMontajes() {
-		return this.cobertMontajes;
-	}
-
-	public void setCobertMontajes(List<CobertMontaje> cobertMontajes) {
-		this.cobertMontajes = cobertMontajes;
-	}
-
-	public CobertMontaje addCobertMontaje(CobertMontaje cobertMontaje) {
-		getCobertMontajes().add(cobertMontaje);
-		cobertMontaje.setRamoRiesgoMontaje(this);
-
-		return cobertMontaje;
-	}
-
-	public CobertMontaje removeCobertMontaje(CobertMontaje cobertMontaje) {
-		getCobertMontajes().remove(cobertMontaje);
-		cobertMontaje.setRamoRiesgoMontaje(null);
-
-		return cobertMontaje;
 	}
 
 }

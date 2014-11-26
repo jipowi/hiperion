@@ -1,95 +1,102 @@
 package ec.com.avila.hiperion.emision.entities;
 
 import java.io.Serializable;
+import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
 
 /**
  * The persistent class for the ramo_casco_aereo database table.
  * 
  */
 @Entity
-@Table(name = "ramo_casco_aereo")
-@NamedQuery(name = "RamoCascoAereo.findAll", query = "SELECT r FROM RamoCascoAereo r")
-public class RamoCascoAereo extends Auditoria implements Serializable {
+@Table(name="ramo_casco_aereo")
+@NamedQuery(name="RamoCascoAereo.findAll", query="SELECT r FROM RamoCascoAereo r")
+public class RamoCascoAereo implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_casco_aereo")
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name="id_casco_aereo")
 	private Integer idCascoAereo;
 
-	@Column(name = "anio_construccion_aereo")
+	@Column(name="anio_construccion_aereo")
 	private Integer anioConstruccionAereo;
 
-	@Column(name = "deduc_minimo_siniestro_aereo")
+	@Column(name="deduc_minimo_siniestro_aereo")
 	private BigDecimal deducMinimoSiniestroAereo;
 
-	@Column(name = "deduc_siniestro_aereo")
+	@Column(name="deduc_siniestro_aereo")
 	private BigDecimal deducSiniestroAereo;
 
-	@Column(name = "horas_voladas")
+	private String estado;
+
+	@Temporal(TemporalType.DATE)
+	@Column(name="fecha_actualizacion")
+	private Date fechaActualizacion;
+
+	@Temporal(TemporalType.DATE)
+	@Column(name="fecha_creacion")
+	private Date fechaCreacion;
+
+	@Column(name="horas_voladas")
 	private Integer horasVoladas;
 
-	@Column(name = "item_aereo")
+	@Column(name="id_usuario_actualizacion")
+	private Integer idUsuarioActualizacion;
+
+	@Column(name="id_usuario_creacion")
+	private Integer idUsuarioCreacion;
+
+	@Column(name="item_aereo")
 	private Integer itemAereo;
 
-	@Column(name = "marca_aereo")
+	@Column(name="marca_aereo")
 	private String marcaAereo;
 
-	@Column(name = "marca_motor_aereo")
+	@Column(name="marca_motor_aereo")
 	private String marcaMotorAereo;
 
 	private String matricula;
 
-	@Column(name = "maxima_carga_aereo")
+	@Column(name="maxima_carga_aereo")
 	private BigDecimal maximaCargaAereo;
 
-	@Column(name = "peso_maximo_aereo")
+	@Column(name="peso_maximo_aereo")
 	private BigDecimal pesoMaximoAereo;
 
-	@Column(name = "tasa_casco_aereo")
+	@Column(name="tasa_casco_aereo")
 	private BigDecimal tasaCascoAereo;
 
-	@Column(name = "tipo_modelo_aereo")
+	@Column(name="tipo_modelo_aereo")
 	private String tipoModeloAereo;
 
-	@Column(name = "tipo_motor_aereo")
+	@Column(name="tipo_motor_aereo")
 	private String tipoMotorAereo;
 
-	@Column(name = "total_asegurado_aereo")
+	@Column(name="total_asegurado_aereo")
 	private BigDecimal totalAseguradoAereo;
 
-	@Column(name = "valor_casco_aereo")
+	@Column(name="valor_casco_aereo")
 	private BigDecimal valorCascoAereo;
 
-	// bi-directional many-to-one association to ClausulasAddCascoAereo
-	@OneToMany(mappedBy = "ramoCascoAereo")
+	//bi-directional many-to-one association to ClausulasAddCascoAereo
+	@OneToMany(mappedBy="ramoCascoAereo")
 	private List<ClausulasAddCascoAereo> clausulasAddCascoAereos;
 
-	// bi-directional many-to-one association to CobertAddCascoAereo
-	@OneToMany(mappedBy = "ramoCascoAereo")
+	//bi-directional many-to-one association to CobertAddCascoAereo
+	@OneToMany(mappedBy="ramoCascoAereo")
 	private List<CobertAddCascoAereo> cobertAddCascoAereos;
 
-	// bi-directional many-to-one association to ExtrasCascoAereo
-	@OneToMany(mappedBy = "ramoCascoAereo")
+	//bi-directional many-to-one association to ExtrasCascoAereo
+	@OneToMany(mappedBy="ramoCascoAereo")
 	private List<ExtrasCascoAereo> extrasCascoAereos;
 
-	// bi-directional many-to-one association to Poliza
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "id_poliza")
+	//bi-directional many-to-one association to Poliza
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="id_poliza")
 	private Poliza poliza;
 
 	public RamoCascoAereo() {
@@ -127,12 +134,52 @@ public class RamoCascoAereo extends Auditoria implements Serializable {
 		this.deducSiniestroAereo = deducSiniestroAereo;
 	}
 
+	public String getEstado() {
+		return this.estado;
+	}
+
+	public void setEstado(String estado) {
+		this.estado = estado;
+	}
+
+	public Date getFechaActualizacion() {
+		return this.fechaActualizacion;
+	}
+
+	public void setFechaActualizacion(Date fechaActualizacion) {
+		this.fechaActualizacion = fechaActualizacion;
+	}
+
+	public Date getFechaCreacion() {
+		return this.fechaCreacion;
+	}
+
+	public void setFechaCreacion(Date fechaCreacion) {
+		this.fechaCreacion = fechaCreacion;
+	}
+
 	public Integer getHorasVoladas() {
 		return this.horasVoladas;
 	}
 
 	public void setHorasVoladas(Integer horasVoladas) {
 		this.horasVoladas = horasVoladas;
+	}
+
+	public Integer getIdUsuarioActualizacion() {
+		return this.idUsuarioActualizacion;
+	}
+
+	public void setIdUsuarioActualizacion(Integer idUsuarioActualizacion) {
+		this.idUsuarioActualizacion = idUsuarioActualizacion;
+	}
+
+	public Integer getIdUsuarioCreacion() {
+		return this.idUsuarioCreacion;
+	}
+
+	public void setIdUsuarioCreacion(Integer idUsuarioCreacion) {
+		this.idUsuarioCreacion = idUsuarioCreacion;
 	}
 
 	public Integer getItemAereo() {

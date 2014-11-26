@@ -1,19 +1,9 @@
 package ec.com.avila.hiperion.emision.entities;
 
 import java.io.Serializable;
+import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
 
 
 /**
@@ -23,7 +13,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name="ramo_soat")
 @NamedQuery(name="RamoSoat.findAll", query="SELECT r FROM RamoSoat r")
-public class RamoSoat extends Auditoria implements Serializable {
+public class RamoSoat implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -45,6 +35,22 @@ public class RamoSoat extends Auditoria implements Serializable {
 	@Column(name="color_soat")
 	private String colorSoat;
 
+	private String estado;
+
+	@Temporal(TemporalType.DATE)
+	@Column(name="fecha_actualizacion")
+	private Date fechaActualizacion;
+
+	@Temporal(TemporalType.DATE)
+	@Column(name="fecha_creacion")
+	private Date fechaCreacion;
+
+	@Column(name="id_usuario_actualizacion")
+	private Integer idUsuarioActualizacion;
+
+	@Column(name="id_usuario_creacion")
+	private Integer idUsuarioCreacion;
+
 	@Column(name="marca_soat")
 	private String marcaSoat;
 
@@ -60,14 +66,14 @@ public class RamoSoat extends Auditoria implements Serializable {
 	@Column(name="tipo_vehiculo_soat")
 	private String tipoVehiculoSoat;
 
+	//bi-directional many-to-one association to CobertSoat
+	@OneToMany(mappedBy="ramoSoat")
+	private List<CobertSoat> cobertSoats;
+
 	//bi-directional many-to-one association to Poliza
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="id_poliza")
 	private Poliza poliza;
-
-	//bi-directional many-to-one association to CobertSoat
-	@OneToMany(mappedBy="ramoSoat")
-	private List<CobertSoat> cobertSoats;
 
 	public RamoSoat() {
 	}
@@ -120,6 +126,46 @@ public class RamoSoat extends Auditoria implements Serializable {
 		this.colorSoat = colorSoat;
 	}
 
+	public String getEstado() {
+		return this.estado;
+	}
+
+	public void setEstado(String estado) {
+		this.estado = estado;
+	}
+
+	public Date getFechaActualizacion() {
+		return this.fechaActualizacion;
+	}
+
+	public void setFechaActualizacion(Date fechaActualizacion) {
+		this.fechaActualizacion = fechaActualizacion;
+	}
+
+	public Date getFechaCreacion() {
+		return this.fechaCreacion;
+	}
+
+	public void setFechaCreacion(Date fechaCreacion) {
+		this.fechaCreacion = fechaCreacion;
+	}
+
+	public Integer getIdUsuarioActualizacion() {
+		return this.idUsuarioActualizacion;
+	}
+
+	public void setIdUsuarioActualizacion(Integer idUsuarioActualizacion) {
+		this.idUsuarioActualizacion = idUsuarioActualizacion;
+	}
+
+	public Integer getIdUsuarioCreacion() {
+		return this.idUsuarioCreacion;
+	}
+
+	public void setIdUsuarioCreacion(Integer idUsuarioCreacion) {
+		this.idUsuarioCreacion = idUsuarioCreacion;
+	}
+
 	public String getMarcaSoat() {
 		return this.marcaSoat;
 	}
@@ -160,14 +206,6 @@ public class RamoSoat extends Auditoria implements Serializable {
 		this.tipoVehiculoSoat = tipoVehiculoSoat;
 	}
 
-	public Poliza getPoliza() {
-		return this.poliza;
-	}
-
-	public void setPoliza(Poliza poliza) {
-		this.poliza = poliza;
-	}
-
 	public List<CobertSoat> getCobertSoats() {
 		return this.cobertSoats;
 	}
@@ -188,6 +226,14 @@ public class RamoSoat extends Auditoria implements Serializable {
 		cobertSoat.setRamoSoat(null);
 
 		return cobertSoat;
+	}
+
+	public Poliza getPoliza() {
+		return this.poliza;
+	}
+
+	public void setPoliza(Poliza poliza) {
+		this.poliza = poliza;
 	}
 
 }

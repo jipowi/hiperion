@@ -13,7 +13,7 @@ import javax.persistence.Query;
 
 import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.dao.TipoDireccionDao;
-import ec.com.avila.hiperion.entities.TipoDireccion;
+import ec.com.avila.hiperion.emision.entities.TipoDireccion;
 
 /**
  * <b> Permite implementar las operaciones de la tabla TipoDireccion. </b>

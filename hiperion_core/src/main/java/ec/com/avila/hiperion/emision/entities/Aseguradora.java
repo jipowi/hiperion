@@ -1,7 +1,8 @@
-package ec.com.avila.hiperion.entities;
+package ec.com.avila.hiperion.emision.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 
 
@@ -10,6 +11,7 @@ import java.util.List;
  * 
  */
 @Entity
+@NamedQuery(name="Aseguradora.findAll", query="SELECT a FROM Aseguradora a")
 public class Aseguradora implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -26,6 +28,22 @@ public class Aseguradora implements Serializable {
 	@Column(name="email_aseguradora")
 	private String emailAseguradora;
 
+	private String estado;
+
+	@Temporal(TemporalType.DATE)
+	@Column(name="fecha_actualizacion")
+	private Date fechaActualizacion;
+
+	@Temporal(TemporalType.DATE)
+	@Column(name="fecha_creacion")
+	private Date fechaCreacion;
+
+	@Column(name="id_usuario_actualizacion")
+	private Integer idUsuarioActualizacion;
+
+	@Column(name="id_usuario_creacion")
+	private Integer idUsuarioCreacion;
+
 	private String ruc;
 
 	@Column(name="telf_convencional_aseg")
@@ -34,10 +52,6 @@ public class Aseguradora implements Serializable {
 	//bi-directional many-to-many association to Persona
 	@ManyToMany(mappedBy="aseguradoras")
 	private List<Persona> personas;
-
-	//bi-directional many-to-many association to Ramo
-	@ManyToMany(mappedBy="aseguradoras")
-	private List<Ramo> ramos;
 
 	//bi-directional many-to-one association to RamoAseguradora
 	@OneToMany(mappedBy="aseguradora")
@@ -78,6 +92,46 @@ public class Aseguradora implements Serializable {
 		this.emailAseguradora = emailAseguradora;
 	}
 
+	public String getEstado() {
+		return this.estado;
+	}
+
+	public void setEstado(String estado) {
+		this.estado = estado;
+	}
+
+	public Date getFechaActualizacion() {
+		return this.fechaActualizacion;
+	}
+
+	public void setFechaActualizacion(Date fechaActualizacion) {
+		this.fechaActualizacion = fechaActualizacion;
+	}
+
+	public Date getFechaCreacion() {
+		return this.fechaCreacion;
+	}
+
+	public void setFechaCreacion(Date fechaCreacion) {
+		this.fechaCreacion = fechaCreacion;
+	}
+
+	public Integer getIdUsuarioActualizacion() {
+		return this.idUsuarioActualizacion;
+	}
+
+	public void setIdUsuarioActualizacion(Integer idUsuarioActualizacion) {
+		this.idUsuarioActualizacion = idUsuarioActualizacion;
+	}
+
+	public Integer getIdUsuarioCreacion() {
+		return this.idUsuarioCreacion;
+	}
+
+	public void setIdUsuarioCreacion(Integer idUsuarioCreacion) {
+		this.idUsuarioCreacion = idUsuarioCreacion;
+	}
+
 	public String getRuc() {
 		return this.ruc;
 	}
@@ -100,14 +154,6 @@ public class Aseguradora implements Serializable {
 
 	public void setPersonas(List<Persona> personas) {
 		this.personas = personas;
-	}
-
-	public List<Ramo> getRamos() {
-		return this.ramos;
-	}
-
-	public void setRamos(List<Ramo> ramos) {
-		this.ramos = ramos;
 	}
 
 	public List<RamoAseguradora> getRamoAseguradoras() {

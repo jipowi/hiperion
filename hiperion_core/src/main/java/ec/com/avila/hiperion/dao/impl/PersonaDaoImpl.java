@@ -5,10 +5,12 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+
 import org.apache.log4j.Logger;
+
 import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.dao.PersonaDao;
-import ec.com.avila.hiperion.entities.Persona;
+import ec.com.avila.hiperion.emision.entities.Persona;
 
 /**
  * <b> Permite implementar las operaciones de la tabla Persona </b>

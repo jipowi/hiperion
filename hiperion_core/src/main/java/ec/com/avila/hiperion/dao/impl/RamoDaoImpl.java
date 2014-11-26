@@ -15,7 +15,7 @@ import org.apache.log4j.Logger;
 
 import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.dao.RamoDao;
-import ec.com.avila.hiperion.entities.Ramo;
+import ec.com.avila.hiperion.emision.entities.Ramo;
 
 /**
  * <b> Permite implementar las operaciones de la taba Ramo </b>
