@@ -4,25 +4,24 @@ import java.io.Serializable;
 import javax.persistence.*;
 import java.util.List;
 
-
 /**
  * The persistent class for the catalogo database table.
  * 
  */
 @Entity
-@NamedQuery(name="Catalogo.findAll", query="SELECT c FROM Catalogo c")
-public class Catalogo extends Auditoria implements Serializable {
+@NamedQuery(name = "Catalogo.findAll", query = "SELECT c FROM Catalogo c")
+public class Catalogo implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="id_catalogo")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id_catalogo")
 	private Long idCatalogo;
 
-	@Column(name="descripcion_catalogo")
+	@Column(name = "descripcion_catalogo")
 	private String descripcionCatalogo;
 
-	//bi-directional many-to-one association to DetalleCatalogo
+	// bi-directional many-to-one association to DetalleCatalogo
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "catalogo")
 	private List<DetalleCatalogo> detalleCatalogos;
 

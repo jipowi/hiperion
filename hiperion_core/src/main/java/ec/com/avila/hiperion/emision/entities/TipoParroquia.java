@@ -4,27 +4,26 @@ import java.io.Serializable;
 import javax.persistence.*;
 import java.util.List;
 
-
 /**
  * The persistent class for the tipo_parroquia database table.
  * 
  */
 @Entity
-@Table(name="tipo_parroquia")
-@NamedQuery(name="TipoParroquia.findAll", query="SELECT t FROM TipoParroquia t")
-public class TipoParroquia extends Auditoria implements Serializable {
+@Table(name = "tipo_parroquia")
+@NamedQuery(name = "TipoParroquia.findAll", query = "SELECT t FROM TipoParroquia t")
+public class TipoParroquia implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="id_tipo_parroquia")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id_tipo_parroquia")
 	private Integer idTipoParroquia;
 
-	@Column(name="desc_tipo_parroquia")
+	@Column(name = "desc_tipo_parroquia")
 	private String descTipoParroquia;
 
-	//bi-directional many-to-one association to Parroquia
-	@OneToMany(mappedBy="tipoParroquia")
+	// bi-directional many-to-one association to Parroquia
+	@OneToMany(mappedBy = "tipoParroquia")
 	private List<Parroquia> parroquias;
 
 	public TipoParroquia() {

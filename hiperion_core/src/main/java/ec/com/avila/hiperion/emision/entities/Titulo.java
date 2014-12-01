@@ -11,7 +11,7 @@ import java.util.List;
  */
 @Entity
 @NamedQuery(name="Titulo.findAll", query="SELECT t FROM Titulo t")
-public class Titulo extends Auditoria implements Serializable {
+public class Titulo implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id

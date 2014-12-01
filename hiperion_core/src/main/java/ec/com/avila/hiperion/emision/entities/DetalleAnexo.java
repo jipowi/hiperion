@@ -11,7 +11,7 @@ import javax.persistence.*;
 @Entity
 @Table(name="detalle_anexo")
 @NamedQuery(name="DetalleAnexo.findAll", query="SELECT d FROM DetalleAnexo d")
-public class DetalleAnexo extends Auditoria implements Serializable {
+public class DetalleAnexo implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id

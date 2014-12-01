@@ -6,173 +6,172 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
-
 /**
  * The persistent class for the poliza database table.
  * 
  */
 @Entity
-@NamedQuery(name="Poliza.findAll", query="SELECT p FROM Poliza p")
-public class Poliza extends Auditoria implements Serializable {
+@NamedQuery(name = "Poliza.findAll", query = "SELECT p FROM Poliza p")
+public class Poliza implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="id_poliza")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id_poliza")
 	private Integer idPoliza;
 
-	@Column(name="derecho_emision")
+	@Column(name = "derecho_emision")
 	private BigDecimal derechoEmision;
 
-	@Column(name="dias_cobertura")
+	@Column(name = "dias_cobertura")
 	private BigDecimal diasCobertura;
 
 	private String ejecutivo;
 
-	@Column(name="estado_poliza")
+	@Column(name = "estado_poliza")
 	private String estadoPoliza;
 
-	@Column(name="hora_desde")
+	@Column(name = "hora_desde")
 	private String horaDesde;
 
-	@Column(name="hora_hasta")
+	@Column(name = "hora_hasta")
 	private String horaHasta;
 
-	@Column(name="numero_anexo")
+	@Column(name = "numero_anexo")
 	private String numeroAnexo;
 
-	@Column(name="numero_poliza")
+	@Column(name = "numero_poliza")
 	private BigDecimal numeroPoliza;
 
-	@Column(name="prima_neta")
+	@Column(name = "prima_neta")
 	private BigDecimal primaNeta;
 
 	private Integer ramo;
 
-	@Column(name="seguro_campesino")
+	@Column(name = "seguro_campesino")
 	private BigDecimal seguroCampesino;
 
-	@Column(name="suma_asegurada")
+	@Column(name = "suma_asegurada")
 	private BigDecimal sumaAsegurada;
 
-	@Column(name="super_ban_seguros")
+	@Column(name = "super_ban_seguros")
 	private BigDecimal superBanSeguros;
 
 	@Temporal(TemporalType.DATE)
-	@Column(name="vigencia_desde")
+	@Column(name = "vigencia_desde")
 	private Date vigenciaDesde;
 
 	@Temporal(TemporalType.DATE)
-	@Column(name="vigencia_hasta")
+	@Column(name = "vigencia_hasta")
 	private Date vigenciaHasta;
 
-	//bi-directional many-to-one association to PagoPoliza
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="id_pago_poliza")
+	// bi-directional many-to-one association to PagoPoliza
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id_pago_poliza")
 	private PagoPoliza pagoPoliza;
 
-	//bi-directional many-to-one association to RamoAccidentesPersonale
-	@OneToMany(mappedBy="poliza")
+	// bi-directional many-to-one association to RamoAccidentesPersonale
+	@OneToMany(mappedBy = "poliza")
 	private List<RamoAccidentesPersonale> ramoAccidentesPersonales;
 
-	//bi-directional many-to-one association to RamoAgropecuario
-	@OneToMany(mappedBy="poliza")
+	// bi-directional many-to-one association to RamoAgropecuario
+	@OneToMany(mappedBy = "poliza")
 	private List<RamoAgropecuario> ramoAgropecuarios;
 
-	//bi-directional many-to-one association to RamoAsistenciaMedica
-	@OneToMany(mappedBy="poliza")
+	// bi-directional many-to-one association to RamoAsistenciaMedica
+	@OneToMany(mappedBy = "poliza")
 	private List<RamoAsistenciaMedica> ramoAsistenciaMedicas;
 
-	//bi-directional many-to-one association to RamoBuenUsoAnt
-	@OneToMany(mappedBy="poliza")
+	// bi-directional many-to-one association to RamoBuenUsoAnt
+	@OneToMany(mappedBy = "poliza")
 	private List<RamoBuenUsoAnt> ramoBuenUsoAnts;
 
-	//bi-directional many-to-one association to RamoBuenaCalMat
-	@OneToMany(mappedBy="poliza")
+	// bi-directional many-to-one association to RamoBuenaCalMat
+	@OneToMany(mappedBy = "poliza")
 	private List<RamoBuenaCalMat> ramoBuenaCalMats;
 
-	//bi-directional many-to-one association to RamoCascoAereo
-	@OneToMany(mappedBy="poliza")
+	// bi-directional many-to-one association to RamoCascoAereo
+	@OneToMany(mappedBy = "poliza")
 	private List<RamoCascoAereo> ramoCascoAereos;
 
-	//bi-directional many-to-one association to RamoCascoMaritimo
-	@OneToMany(mappedBy="poliza")
+	// bi-directional many-to-one association to RamoCascoMaritimo
+	@OneToMany(mappedBy = "poliza")
 	private List<RamoCascoMaritimo> ramoCascoMaritimos;
 
-	//bi-directional many-to-one association to RamoCumplimientoContrato
-	@OneToMany(mappedBy="poliza")
+	// bi-directional many-to-one association to RamoCumplimientoContrato
+	@OneToMany(mappedBy = "poliza")
 	private List<RamoCumplimientoContrato> ramoCumplimientoContratos;
 
-	//bi-directional many-to-one association to RamoDineroValore
-	@OneToMany(mappedBy="poliza")
+	// bi-directional many-to-one association to RamoDineroValore
+	@OneToMany(mappedBy = "poliza")
 	private List<RamoDineroValore> ramoDineroValores;
 
-	//bi-directional many-to-one association to RamoEquipoElectronico
-	@OneToMany(mappedBy="poliza")
+	// bi-directional many-to-one association to RamoEquipoElectronico
+	@OneToMany(mappedBy = "poliza")
 	private List<RamoEquipoElectronico> ramoEquipoElectronicos;
 
-	//bi-directional many-to-one association to RamoEquipoMaquinaria
-	@OneToMany(mappedBy="poliza")
+	// bi-directional many-to-one association to RamoEquipoMaquinaria
+	@OneToMany(mappedBy = "poliza")
 	private List<RamoEquipoMaquinaria> ramoEquipoMaquinarias;
 
-	//bi-directional many-to-one association to RamoFidelidad
-	@OneToMany(mappedBy="poliza")
+	// bi-directional many-to-one association to RamoFidelidad
+	@OneToMany(mappedBy = "poliza")
 	private List<RamoFidelidad> ramoFidelidads;
 
-	//bi-directional many-to-one association to RamoGarantiaAduanera
-	@OneToMany(mappedBy="poliza")
+	// bi-directional many-to-one association to RamoGarantiaAduanera
+	@OneToMany(mappedBy = "poliza")
 	private List<RamoGarantiaAduanera> ramoGarantiaAduaneras;
 
-	//bi-directional many-to-one association to RamoIncendioLineasAliada
-	@OneToMany(mappedBy="poliza")
+	// bi-directional many-to-one association to RamoIncendioLineasAliada
+	@OneToMany(mappedBy = "poliza")
 	private List<RamoIncendioLineasAliada> ramoIncendioLineasAliadas;
 
-	//bi-directional many-to-one association to RamoLcIncendio
-	@OneToMany(mappedBy="poliza")
+	// bi-directional many-to-one association to RamoLcIncendio
+	@OneToMany(mappedBy = "poliza")
 	private List<RamoLcIncendio> ramoLcIncendios;
 
-	//bi-directional many-to-one association to RamoLcRotMaq
-	@OneToMany(mappedBy="poliza")
+	// bi-directional many-to-one association to RamoLcRotMaq
+	@OneToMany(mappedBy = "poliza")
 	private List<RamoLcRotMaq> ramoLcRotMaqs;
 
-	//bi-directional many-to-one association to RamoResponsabilidadCivil
-	@OneToMany(mappedBy="poliza")
+	// bi-directional many-to-one association to RamoResponsabilidadCivil
+	@OneToMany(mappedBy = "poliza")
 	private List<RamoResponsabilidadCivil> ramoResponsabilidadCivils;
 
-	//bi-directional many-to-one association to RamoRiesgoContratista
-	@OneToMany(mappedBy="poliza")
+	// bi-directional many-to-one association to RamoRiesgoContratista
+	@OneToMany(mappedBy = "poliza")
 	private List<RamoRiesgoContratista> ramoRiesgoContratistas;
 
-	//bi-directional many-to-one association to RamoRiesgoMontaje
-	@OneToMany(mappedBy="poliza")
+	// bi-directional many-to-one association to RamoRiesgoMontaje
+	@OneToMany(mappedBy = "poliza")
 	private List<RamoRiesgoMontaje> ramoRiesgoMontajes;
 
-	//bi-directional many-to-one association to RamoRiesgosEsp
-	@OneToMany(mappedBy="poliza")
+	// bi-directional many-to-one association to RamoRiesgosEsp
+	@OneToMany(mappedBy = "poliza")
 	private List<RamoRiesgosEsp> ramoRiesgosEsps;
 
-	//bi-directional many-to-one association to RamoRoboAsalto
-	@OneToMany(mappedBy="poliza")
+	// bi-directional many-to-one association to RamoRoboAsalto
+	@OneToMany(mappedBy = "poliza")
 	private List<RamoRoboAsalto> ramoRoboAsaltos;
 
-	//bi-directional many-to-one association to RamoRoturaMaquinaria
-	@OneToMany(mappedBy="poliza")
+	// bi-directional many-to-one association to RamoRoturaMaquinaria
+	@OneToMany(mappedBy = "poliza")
 	private List<RamoRoturaMaquinaria> ramoRoturaMaquinarias;
 
-	//bi-directional many-to-one association to RamoSoat
-	@OneToMany(mappedBy="poliza")
+	// bi-directional many-to-one association to RamoSoat
+	@OneToMany(mappedBy = "poliza")
 	private List<RamoSoat> ramoSoats;
 
-	//bi-directional many-to-one association to RamoTransporte
-	@OneToMany(mappedBy="poliza")
+	// bi-directional many-to-one association to RamoTransporte
+	@OneToMany(mappedBy = "poliza")
 	private List<RamoTransporte> ramoTransportes;
 
-	//bi-directional many-to-one association to RamoVehiculo
-	@OneToMany(mappedBy="poliza")
+	// bi-directional many-to-one association to RamoVehiculo
+	@OneToMany(mappedBy = "poliza")
 	private List<RamoVehiculo> ramoVehiculos;
 
-	//bi-directional many-to-one association to RamoVida
-	@OneToMany(mappedBy="poliza")
+	// bi-directional many-to-one association to RamoVida
+	@OneToMany(mappedBy = "poliza")
 	private List<RamoVida> ramoVidas;
 
 	public Poliza() {

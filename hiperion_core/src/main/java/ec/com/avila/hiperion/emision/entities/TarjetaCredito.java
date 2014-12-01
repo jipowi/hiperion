@@ -13,32 +13,31 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-
 /**
  * The persistent class for the tarjeta_credito database table.
  * 
  */
 @Entity
-@Table(name="tarjeta_credito")
-@NamedQuery(name="TarjetaCredito.findAll", query="SELECT t FROM TarjetaCredito t")
-public class TarjetaCredito extends Auditoria implements Serializable {
+@Table(name = "tarjeta_credito")
+@NamedQuery(name = "TarjetaCredito.findAll", query = "SELECT t FROM TarjetaCredito t")
+public class TarjetaCredito implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="id_tarjeta")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id_tarjeta")
 	private Integer idTarjeta;
 
-	@Column(name="numero_meses")
+	@Column(name = "numero_meses")
 	private BigDecimal numeroMeses;
 
 	private String tarjeta;
 
-	@Column(name="tipo_pago")
+	@Column(name = "tipo_pago")
 	private String tipoPago;
 
-	//bi-directional many-to-one association to PagoPoliza
-	@OneToMany(mappedBy="tarjetaCredito")
+	// bi-directional many-to-one association to PagoPoliza
+	@OneToMany(mappedBy = "tarjetaCredito")
 	private List<PagoPoliza> pagoPolizas;
 
 	public TarjetaCredito() {

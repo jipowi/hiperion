@@ -5,85 +5,76 @@ import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 
-
 /**
  * The persistent class for the persona database table.
  * 
  */
 @Entity
-@NamedQuery(name="Persona.findAll", query="SELECT p FROM Persona p")
-public class Persona extends Auditoria implements Serializable {
+@NamedQuery(name = "Persona.findAll", query = "SELECT p FROM Persona p")
+public class Persona implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="id_persona")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id_persona")
 	private Integer idPersona;
 
-	@Column(name="actividad_profesion")
+	@Column(name = "actividad_profesion")
 	private String actividadProfesion;
 
-	@Column(name="apellido_materno")
+	@Column(name = "apellido_materno")
 	private String apellidoMaterno;
 
-	@Column(name="apellido_paterno")
+	@Column(name = "apellido_paterno")
 	private String apellidoPaterno;
 
 	@Temporal(TemporalType.DATE)
-	@Column(name="fecha_nacimiento")
+	@Column(name = "fecha_nacimiento")
 	private Date fechaNacimiento;
 
-	@Column(name="identificacion_persona")
+	@Column(name = "identificacion_persona")
 	private String identificacionPersona;
 
-	@Column(name="nombre_persona")
+	@Column(name = "nombre_persona")
 	private String nombrePersona;
 
-	@Column(name="razon_social")
+	@Column(name = "razon_social")
 	private String razonSocial;
 
-	@Column(name="tipo_identificacion")
+	@Column(name = "tipo_identificacion")
 	private String tipoIdentificacion;
 
-	@Column(name="tipo_persona")
+	@Column(name = "tipo_persona")
 	private String tipoPersona;
 
-	//bi-directional many-to-one association to Cliente
-	@OneToMany(mappedBy="persona")
+	// bi-directional many-to-one association to Cliente
+	@OneToMany(mappedBy = "persona")
 	private List<Cliente> clientes;
 
-	//bi-directional many-to-many association to Aseguradora
+	// bi-directional many-to-many association to Aseguradora
 	@ManyToMany
-	@JoinTable(
-		name="persona_aseguradora"
-		, joinColumns={
-			@JoinColumn(name="id_persona")
-			}
-		, inverseJoinColumns={
-			@JoinColumn(name="id_aseguradora")
-			}
-		)
+	@JoinTable(name = "persona_aseguradora", joinColumns = { @JoinColumn(name = "id_persona") }, inverseJoinColumns = { @JoinColumn(name = "id_aseguradora") })
 	private List<Aseguradora> aseguradoras;
 
-	//bi-directional many-to-one association to Cliente
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="id_cliente")
+	// bi-directional many-to-one association to Cliente
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id_cliente")
 	private Cliente cliente;
 
-	//bi-directional many-to-one association to Usuario
-	@OneToMany(mappedBy="persona")
+	// bi-directional many-to-one association to Usuario
+	@OneToMany(mappedBy = "persona")
 	private List<Usuario> usuarios;
 
-	//bi-directional many-to-one association to Contacto
-	@OneToMany(mappedBy="persona")
+	// bi-directional many-to-one association to Contacto
+	@OneToMany(mappedBy = "persona")
 	private List<Contacto> contactos;
 
-	//bi-directional many-to-one association to Direccion
-	@OneToMany(mappedBy="persona")
+	// bi-directional many-to-one association to Direccion
+	@OneToMany(mappedBy = "persona")
 	private List<Direccion> direccions;
 
-	//bi-directional many-to-one association to Encargado
-	@OneToMany(mappedBy="persona")
+	// bi-directional many-to-one association to Encargado
+	@OneToMany(mappedBy = "persona")
 	private List<Encargado> encargados;
 
 	public Persona() {

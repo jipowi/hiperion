@@ -4,34 +4,32 @@ import java.io.Serializable;
 import javax.persistence.*;
 import java.util.List;
 
-
 /**
  * The persistent class for the ramo database table.
  * 
  */
 @Entity
-@NamedQuery(name="Ramo.findAll", query="SELECT r FROM Ramo r")
-public class Ramo extends Auditoria implements Serializable {
+@NamedQuery(name = "Ramo.findAll", query = "SELECT r FROM Ramo r")
+public class Ramo implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="id_ramo")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id_ramo")
 	private Integer idRamo;
 
-	@Column(name="codigo_ramo")
+	@Column(name = "codigo_ramo")
 	private String codigoRamo;
 
-	@Column(name="nombre_ramo")
+	@Column(name = "nombre_ramo")
 	private String nombreRamo;
 
-	//bi-directional many-to-one association to DetalleAnexo
+	// bi-directional many-to-one association to DetalleAnexo
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "ramo")
 	private List<DetalleAnexo> detalleAnexos;
-	
 
-	//bi-directional many-to-one association to RamoAseguradora
-	@OneToMany(mappedBy="ramo")
+	// bi-directional many-to-one association to RamoAseguradora
+	@OneToMany(mappedBy = "ramo")
 	private List<RamoAseguradora> ramoAseguradoras;
 
 	public Ramo() {

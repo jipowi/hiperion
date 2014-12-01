@@ -4,37 +4,36 @@ import java.io.Serializable;
 import javax.persistence.*;
 import java.util.List;
 
-
 /**
  * The persistent class for the menu database table.
  * 
  */
 @Entity
-@NamedQuery(name="Menu.findAll", query="SELECT m FROM Menu m")
-public class Menu  extends Auditoria implements Serializable {
+@NamedQuery(name = "Menu.findAll", query = "SELECT m FROM Menu m")
+public class Menu implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="menu_id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "menu_id")
 	private Integer menuId;
 
-	@Column(name="estado_menu")
+	@Column(name = "estado_menu")
 	private String estadoMenu;
 
 	private String icono;
 
 	private Integer nivel;
 
-	@Column(name="nombre_menu")
+	@Column(name = "nombre_menu")
 	private String nombreMenu;
 
 	private Integer orden;
 
 	private String url;
 
-	//bi-directional many-to-many association to Rol
-	@ManyToMany(mappedBy="menus")
+	// bi-directional many-to-many association to Rol
+	@ManyToMany(mappedBy = "menus")
 	private List<Rol> rols;
 
 	public Menu() {

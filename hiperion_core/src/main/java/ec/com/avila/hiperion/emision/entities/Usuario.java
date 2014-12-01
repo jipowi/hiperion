@@ -18,7 +18,7 @@ import javax.persistence.NamedQuery;
  */
 @Entity
 @NamedQuery(name = "Usuario.findAll", query = "SELECT u FROM Usuario u")
-public class Usuario extends Auditoria implements Serializable {
+public class Usuario implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
