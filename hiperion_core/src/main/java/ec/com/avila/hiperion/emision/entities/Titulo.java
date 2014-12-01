@@ -11,7 +11,7 @@ import java.util.List;
  */
 @Entity
 @NamedQuery(name="Titulo.findAll", query="SELECT t FROM Titulo t")
-public class Titulo implements Serializable {
+public class Titulo extends Auditoria implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -23,7 +23,7 @@ public class Titulo implements Serializable {
 	private String tipoTitulo;
 
 	//bi-directional many-to-one association to DetalleAnexo
-	@OneToMany(mappedBy="titulo")
+	@OneToMany(mappedBy="titulo", cascade={CascadeType.ALL})
 	private List<DetalleAnexo> detalleAnexos;
 
 	public Titulo() {

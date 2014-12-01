@@ -1,102 +1,95 @@
 package ec.com.avila.hiperion.emision.entities;
 
 import java.io.Serializable;
-import javax.persistence.*;
 import java.math.BigDecimal;
-import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 /**
  * The persistent class for the ramo_riesgo_contratista database table.
  * 
  */
 @Entity
-@Table(name="ramo_riesgo_contratista")
-@NamedQuery(name="RamoRiesgoContratista.findAll", query="SELECT r FROM RamoRiesgoContratista r")
-public class RamoRiesgoContratista implements Serializable {
+@Table(name = "ramo_riesgo_contratista")
+@NamedQuery(name = "RamoRiesgoContratista.findAll", query = "SELECT r FROM RamoRiesgoContratista r")
+public class RamoRiesgoContratista extends Auditoria implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="id_contratista")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id_contratista")
 	private Integer idContratista;
 
-	@Column(name="amparo_a_contratista")
+	@Column(name = "amparo_a_contratista")
 	private BigDecimal amparoAContratista;
 
-	@Column(name="amparo_b_contratista")
+	@Column(name = "amparo_b_contratista")
 	private BigDecimal amparoBContratista;
 
-	@Column(name="amparo_c_contratista")
+	@Column(name = "amparo_c_contratista")
 	private BigDecimal amparoCContratista;
 
-	@Column(name="amparo_d_contratista")
+	@Column(name = "amparo_d_contratista")
 	private BigDecimal amparoDContratista;
 
-	@Column(name="amparo_g_contratista")
+	@Column(name = "amparo_g_contratista")
 	private BigDecimal amparoGContratista;
 
-	@Column(name="doc_cronograma_contratista")
+	@Column(name = "doc_cronograma_contratista")
 	private String docCronogramaContratista;
 
-	@Column(name="doc_estudio_contratista")
+	@Column(name = "doc_estudio_contratista")
 	private String docEstudioContratista;
 
-	@Column(name="doc_formulario_contratista")
+	@Column(name = "doc_formulario_contratista")
 	private String docFormularioContratista;
 
-	private String estado;
-
-	@Temporal(TemporalType.DATE)
-	@Column(name="fecha_actualizacion")
-	private Date fechaActualizacion;
-
-	@Temporal(TemporalType.DATE)
-	@Column(name="fecha_creacion")
-	private Date fechaCreacion;
-
-	@Column(name="id_usuario_actualizacion")
-	private Integer idUsuarioActualizacion;
-
-	@Column(name="id_usuario_creacion")
-	private Integer idUsuarioCreacion;
-
-	@Column(name="minimo_amparo_a")
+	@Column(name = "minimo_amparo_a")
 	private BigDecimal minimoAmparoA;
 
-	@Column(name="minimo_amparo_b")
+	@Column(name = "minimo_amparo_b")
 	private BigDecimal minimoAmparoB;
 
-	@Column(name="minimo_amparo_c")
+	@Column(name = "minimo_amparo_c")
 	private BigDecimal minimoAmparoC;
 
-	@Column(name="minimo_amparo_d")
+	@Column(name = "minimo_amparo_d")
 	private BigDecimal minimoAmparoD;
 
-	@Column(name="minimo_amparo_g")
+	@Column(name = "minimo_amparo_g")
 	private BigDecimal minimoAmparoG;
 
-	@Column(name="period_construccion_contratista")
+	@Column(name = "period_construccion_contratista")
 	private Integer periodConstruccionContratista;
 
-	@Column(name="period_mant_contratista")
+	@Column(name = "period_mant_contratista")
 	private Integer periodMantContratista;
 
-	@Column(name="tasa_perid_const")
+	@Column(name = "tasa_perid_const")
 	private BigDecimal tasaPeridConst;
 
-	//bi-directional many-to-one association to ClausulasAddContratista
-	@OneToMany(mappedBy="ramoRiesgoContratista")
+	// bi-directional many-to-one association to ClausulasAddContratista
+	@OneToMany(mappedBy = "ramoRiesgoContratista")
 	private List<ClausulasAddContratista> clausulasAddContratistas;
 
-	//bi-directional many-to-one association to CobertContratista
-	@OneToMany(mappedBy="ramoRiesgoContratista")
+	// bi-directional many-to-one association to CobertContratista
+	@OneToMany(mappedBy = "ramoRiesgoContratista")
 	private List<CobertContratista> cobertContratistas;
 
-	//bi-directional many-to-one association to Poliza
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="id_poliza")
+	// bi-directional many-to-one association to Poliza
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id_poliza")
 	private Poliza poliza;
 
 	public RamoRiesgoContratista() {
@@ -172,46 +165,6 @@ public class RamoRiesgoContratista implements Serializable {
 
 	public void setDocFormularioContratista(String docFormularioContratista) {
 		this.docFormularioContratista = docFormularioContratista;
-	}
-
-	public String getEstado() {
-		return this.estado;
-	}
-
-	public void setEstado(String estado) {
-		this.estado = estado;
-	}
-
-	public Date getFechaActualizacion() {
-		return this.fechaActualizacion;
-	}
-
-	public void setFechaActualizacion(Date fechaActualizacion) {
-		this.fechaActualizacion = fechaActualizacion;
-	}
-
-	public Date getFechaCreacion() {
-		return this.fechaCreacion;
-	}
-
-	public void setFechaCreacion(Date fechaCreacion) {
-		this.fechaCreacion = fechaCreacion;
-	}
-
-	public Integer getIdUsuarioActualizacion() {
-		return this.idUsuarioActualizacion;
-	}
-
-	public void setIdUsuarioActualizacion(Integer idUsuarioActualizacion) {
-		this.idUsuarioActualizacion = idUsuarioActualizacion;
-	}
-
-	public Integer getIdUsuarioCreacion() {
-		return this.idUsuarioCreacion;
-	}
-
-	public void setIdUsuarioCreacion(Integer idUsuarioCreacion) {
-		this.idUsuarioCreacion = idUsuarioCreacion;
 	}
 
 	public BigDecimal getMinimoAmparoA() {

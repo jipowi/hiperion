@@ -1,78 +1,71 @@
 package ec.com.avila.hiperion.emision.entities;
 
 import java.io.Serializable;
-import javax.persistence.*;
-import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 /**
  * The persistent class for the ramo_soat database table.
  * 
  */
 @Entity
-@Table(name="ramo_soat")
-@NamedQuery(name="RamoSoat.findAll", query="SELECT r FROM RamoSoat r")
-public class RamoSoat implements Serializable {
+@Table(name = "ramo_soat")
+@NamedQuery(name = "RamoSoat.findAll", query = "SELECT r FROM RamoSoat r")
+public class RamoSoat extends Auditoria implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="id_soat")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id_soat")
 	private Integer idSoat;
 
-	@Column(name="anio_soat")
+	@Column(name = "anio_soat")
 	private Integer anioSoat;
 
 	private String asegurado;
 
-	@Column(name="chasis_soat")
+	@Column(name = "chasis_soat")
 	private String chasisSoat;
 
-	@Column(name="cilindraje_soat")
+	@Column(name = "cilindraje_soat")
 	private Integer cilindrajeSoat;
 
-	@Column(name="color_soat")
+	@Column(name = "color_soat")
 	private String colorSoat;
 
-	private String estado;
-
-	@Temporal(TemporalType.DATE)
-	@Column(name="fecha_actualizacion")
-	private Date fechaActualizacion;
-
-	@Temporal(TemporalType.DATE)
-	@Column(name="fecha_creacion")
-	private Date fechaCreacion;
-
-	@Column(name="id_usuario_actualizacion")
-	private Integer idUsuarioActualizacion;
-
-	@Column(name="id_usuario_creacion")
-	private Integer idUsuarioCreacion;
-
-	@Column(name="marca_soat")
+	@Column(name = "marca_soat")
 	private String marcaSoat;
 
-	@Column(name="modelo_soat")
+	@Column(name = "modelo_soat")
 	private String modeloSoat;
 
-	@Column(name="motor_soat")
+	@Column(name = "motor_soat")
 	private String motorSoat;
 
-	@Column(name="placa_soat")
+	@Column(name = "placa_soat")
 	private String placaSoat;
 
-	@Column(name="tipo_vehiculo_soat")
+	@Column(name = "tipo_vehiculo_soat")
 	private String tipoVehiculoSoat;
 
-	//bi-directional many-to-one association to CobertSoat
-	@OneToMany(mappedBy="ramoSoat")
+	// bi-directional many-to-one association to CobertSoat
+	@OneToMany(mappedBy = "ramoSoat")
 	private List<CobertSoat> cobertSoats;
 
-	//bi-directional many-to-one association to Poliza
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="id_poliza")
+	// bi-directional many-to-one association to Poliza
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id_poliza")
 	private Poliza poliza;
 
 	public RamoSoat() {
@@ -124,46 +117,6 @@ public class RamoSoat implements Serializable {
 
 	public void setColorSoat(String colorSoat) {
 		this.colorSoat = colorSoat;
-	}
-
-	public String getEstado() {
-		return this.estado;
-	}
-
-	public void setEstado(String estado) {
-		this.estado = estado;
-	}
-
-	public Date getFechaActualizacion() {
-		return this.fechaActualizacion;
-	}
-
-	public void setFechaActualizacion(Date fechaActualizacion) {
-		this.fechaActualizacion = fechaActualizacion;
-	}
-
-	public Date getFechaCreacion() {
-		return this.fechaCreacion;
-	}
-
-	public void setFechaCreacion(Date fechaCreacion) {
-		this.fechaCreacion = fechaCreacion;
-	}
-
-	public Integer getIdUsuarioActualizacion() {
-		return this.idUsuarioActualizacion;
-	}
-
-	public void setIdUsuarioActualizacion(Integer idUsuarioActualizacion) {
-		this.idUsuarioActualizacion = idUsuarioActualizacion;
-	}
-
-	public Integer getIdUsuarioCreacion() {
-		return this.idUsuarioCreacion;
-	}
-
-	public void setIdUsuarioCreacion(Integer idUsuarioCreacion) {
-		this.idUsuarioCreacion = idUsuarioCreacion;
 	}
 
 	public String getMarcaSoat() {

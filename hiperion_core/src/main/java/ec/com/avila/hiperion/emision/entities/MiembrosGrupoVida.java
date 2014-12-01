@@ -4,64 +4,43 @@ import java.io.Serializable;
 import javax.persistence.*;
 import java.util.Date;
 
-
 /**
  * The persistent class for the miembros_grupo_vida database table.
  * 
  */
 @Entity
-@Table(name="miembros_grupo_vida")
-@NamedQuery(name="MiembrosGrupoVida.findAll", query="SELECT m FROM MiembrosGrupoVida m")
-public class MiembrosGrupoVida implements Serializable {
+@Table(name = "miembros_grupo_vida")
+@NamedQuery(name = "MiembrosGrupoVida.findAll", query = "SELECT m FROM MiembrosGrupoVida m")
+public class MiembrosGrupoVida extends Auditoria implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="id_miembrro_vida")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id_miembrro_vida")
 	private Integer idMiembrroVida;
 
-	@Column(name="cedula_miembro_vida")
+	@Column(name = "cedula_miembro_vida")
 	private String cedulaMiembroVida;
 
 	@Temporal(TemporalType.DATE)
-	@Column(name="edad_miembro_vida")
+	@Column(name = "edad_miembro_vida")
 	private Date edadMiembroVida;
 
-	private String estado;
-
-	@Temporal(TemporalType.DATE)
-	@Column(name="fecha_actualizacion")
-	private Date fechaActualizacion;
-
-	@Temporal(TemporalType.DATE)
-	@Column(name="fecha_creacion")
-	private Date fechaCreacion;
-
-	@Temporal(TemporalType.DATE)
-	@Column(name="fecha_nac_miembro_vida")
-	private Date fechaNacMiembroVida;
-
-	@Column(name="id_usuario_actualizacion")
-	private Integer idUsuarioActualizacion;
-
-	@Column(name="id_usuario_creacion")
-	private Integer idUsuarioCreacion;
-
-	@Column(name="modalidad_miembro_vida")
+	@Column(name = "modalidad_miembro_vida")
 	private String modalidadMiembroVida;
 
-	@Column(name="nombre_miembro_vida")
+	@Column(name = "nombre_miembro_vida")
 	private String nombreMiembroVida;
 
-	@Column(name="parentezco_miembro_vida")
+	@Column(name = "parentezco_miembro_vida")
 	private String parentezcoMiembroVida;
 
-	@Column(name="sexo_miembro_vida")
+	@Column(name = "sexo_miembro_vida")
 	private String sexoMiembroVida;
 
-	//bi-directional many-to-one association to GrupoVida
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="id_grupo_vida")
+	// bi-directional many-to-one association to GrupoVida
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id_grupo_vida")
 	private GrupoVida grupoVida;
 
 	public MiembrosGrupoVida() {
@@ -89,54 +68,6 @@ public class MiembrosGrupoVida implements Serializable {
 
 	public void setEdadMiembroVida(Date edadMiembroVida) {
 		this.edadMiembroVida = edadMiembroVida;
-	}
-
-	public String getEstado() {
-		return this.estado;
-	}
-
-	public void setEstado(String estado) {
-		this.estado = estado;
-	}
-
-	public Date getFechaActualizacion() {
-		return this.fechaActualizacion;
-	}
-
-	public void setFechaActualizacion(Date fechaActualizacion) {
-		this.fechaActualizacion = fechaActualizacion;
-	}
-
-	public Date getFechaCreacion() {
-		return this.fechaCreacion;
-	}
-
-	public void setFechaCreacion(Date fechaCreacion) {
-		this.fechaCreacion = fechaCreacion;
-	}
-
-	public Date getFechaNacMiembroVida() {
-		return this.fechaNacMiembroVida;
-	}
-
-	public void setFechaNacMiembroVida(Date fechaNacMiembroVida) {
-		this.fechaNacMiembroVida = fechaNacMiembroVida;
-	}
-
-	public Integer getIdUsuarioActualizacion() {
-		return this.idUsuarioActualizacion;
-	}
-
-	public void setIdUsuarioActualizacion(Integer idUsuarioActualizacion) {
-		this.idUsuarioActualizacion = idUsuarioActualizacion;
-	}
-
-	public Integer getIdUsuarioCreacion() {
-		return this.idUsuarioCreacion;
-	}
-
-	public void setIdUsuarioCreacion(Integer idUsuarioCreacion) {
-		this.idUsuarioCreacion = idUsuarioCreacion;
 	}
 
 	public String getModalidadMiembroVida() {

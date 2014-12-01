@@ -11,7 +11,7 @@ import java.util.List;
  */
 @Entity
 @NamedQuery(name="Menu.findAll", query="SELECT m FROM Menu m")
-public class Menu implements Serializable {
+public class Menu  extends Auditoria implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id

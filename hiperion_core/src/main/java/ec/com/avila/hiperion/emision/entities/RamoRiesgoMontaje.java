@@ -1,106 +1,99 @@
 package ec.com.avila.hiperion.emision.entities;
 
 import java.io.Serializable;
-import javax.persistence.*;
 import java.math.BigDecimal;
-import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 /**
  * The persistent class for the ramo_riesgo_montaje database table.
  * 
  */
 @Entity
-@Table(name="ramo_riesgo_montaje")
-@NamedQuery(name="RamoRiesgoMontaje.findAll", query="SELECT r FROM RamoRiesgoMontaje r")
-public class RamoRiesgoMontaje implements Serializable {
+@Table(name = "ramo_riesgo_montaje")
+@NamedQuery(name = "RamoRiesgoMontaje.findAll", query = "SELECT r FROM RamoRiesgoMontaje r")
+public class RamoRiesgoMontaje extends Auditoria implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="id_riesgo_montaje")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id_riesgo_montaje")
 	private Integer idRiesgoMontaje;
 
-	@Column(name="amparo_a_montaje")
+	@Column(name = "amparo_a_montaje")
 	private BigDecimal amparoAMontaje;
 
-	@Column(name="amparo_b_montaje")
+	@Column(name = "amparo_b_montaje")
 	private BigDecimal amparoBMontaje;
 
-	@Column(name="amparo_c_montaje")
+	@Column(name = "amparo_c_montaje")
 	private BigDecimal amparoCMontaje;
 
-	@Column(name="amparo_d_montaje")
+	@Column(name = "amparo_d_montaje")
 	private BigDecimal amparoDMontaje;
 
-	@Column(name="amparo_g_montaje")
+	@Column(name = "amparo_g_montaje")
 	private BigDecimal amparoGMontaje;
 
-	@Column(name="doc_cronograma_montaje")
+	@Column(name = "doc_cronograma_montaje")
 	private String docCronogramaMontaje;
 
-	@Column(name="doc_estudio_montaje")
+	@Column(name = "doc_estudio_montaje")
 	private String docEstudioMontaje;
 
-	@Column(name="doc_formulario_montje")
+	@Column(name = "doc_formulario_montje")
 	private String docFormularioMontje;
 
-	private String estado;
-
-	@Temporal(TemporalType.DATE)
-	@Column(name="fecha_actualizacion")
-	private Date fechaActualizacion;
-
-	@Temporal(TemporalType.DATE)
-	@Column(name="fecha_creacion")
-	private Date fechaCreacion;
-
-	@Column(name="id_usuario_actualizacion")
-	private Integer idUsuarioActualizacion;
-
-	@Column(name="id_usuario_creacion")
-	private Integer idUsuarioCreacion;
-
-	@Column(name="minimo_amparo_a_montaje")
+	@Column(name = "minimo_amparo_a_montaje")
 	private BigDecimal minimoAmparoAMontaje;
 
-	@Column(name="minimo_amparo_b_montaje")
+	@Column(name = "minimo_amparo_b_montaje")
 	private BigDecimal minimoAmparoBMontaje;
 
-	@Column(name="minimo_amparo_c_montaje")
+	@Column(name = "minimo_amparo_c_montaje")
 	private BigDecimal minimoAmparoCMontaje;
 
-	@Column(name="minimo_amparo_d_montaje")
+	@Column(name = "minimo_amparo_d_montaje")
 	private BigDecimal minimoAmparoDMontaje;
 
-	@Column(name="minimo_amparo_g_montaje")
+	@Column(name = "minimo_amparo_g_montaje")
 	private BigDecimal minimoAmparoGMontaje;
 
-	@Column(name="periodo_construc_montaje")
+	@Column(name = "periodo_construc_montaje")
 	private Integer periodoConstrucMontaje;
 
-	@Column(name="periodo_mant_montaje")
+	@Column(name = "periodo_mant_montaje")
 	private Integer periodoMantMontaje;
 
-	@Column(name="tasa_montaje")
+	@Column(name = "tasa_montaje")
 	private BigDecimal tasaMontaje;
 
-	//bi-directional many-to-one association to ClausulasAddMontaje
-	@OneToMany(mappedBy="ramoRiesgoMontaje")
+	// bi-directional many-to-one association to ClausulasAddMontaje
+	@OneToMany(mappedBy = "ramoRiesgoMontaje")
 	private List<ClausulasAddMontaje> clausulasAddMontajes;
 
-	//bi-directional many-to-one association to CobertMontaje
-	@OneToMany(mappedBy="ramoRiesgoMontaje")
+	// bi-directional many-to-one association to CobertMontaje
+	@OneToMany(mappedBy = "ramoRiesgoMontaje")
 	private List<CobertMontaje> cobertMontajes;
 
-	//bi-directional many-to-one association to ObjAsegMontaje
-	@OneToMany(mappedBy="ramoRiesgoMontaje")
+	// bi-directional many-to-one association to ObjAsegMontaje
+	@OneToMany(mappedBy = "ramoRiesgoMontaje")
 	private List<ObjAsegMontaje> objAsegMontajes;
 
-	//bi-directional many-to-one association to Poliza
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="id_poliza")
+	// bi-directional many-to-one association to Poliza
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id_poliza")
 	private Poliza poliza;
 
 	public RamoRiesgoMontaje() {
@@ -176,46 +169,6 @@ public class RamoRiesgoMontaje implements Serializable {
 
 	public void setDocFormularioMontje(String docFormularioMontje) {
 		this.docFormularioMontje = docFormularioMontje;
-	}
-
-	public String getEstado() {
-		return this.estado;
-	}
-
-	public void setEstado(String estado) {
-		this.estado = estado;
-	}
-
-	public Date getFechaActualizacion() {
-		return this.fechaActualizacion;
-	}
-
-	public void setFechaActualizacion(Date fechaActualizacion) {
-		this.fechaActualizacion = fechaActualizacion;
-	}
-
-	public Date getFechaCreacion() {
-		return this.fechaCreacion;
-	}
-
-	public void setFechaCreacion(Date fechaCreacion) {
-		this.fechaCreacion = fechaCreacion;
-	}
-
-	public Integer getIdUsuarioActualizacion() {
-		return this.idUsuarioActualizacion;
-	}
-
-	public void setIdUsuarioActualizacion(Integer idUsuarioActualizacion) {
-		this.idUsuarioActualizacion = idUsuarioActualizacion;
-	}
-
-	public Integer getIdUsuarioCreacion() {
-		return this.idUsuarioCreacion;
-	}
-
-	public void setIdUsuarioCreacion(Integer idUsuarioCreacion) {
-		this.idUsuarioCreacion = idUsuarioCreacion;
 	}
 
 	public BigDecimal getMinimoAmparoAMontaje() {

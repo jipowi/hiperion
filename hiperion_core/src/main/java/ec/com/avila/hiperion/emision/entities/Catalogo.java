@@ -11,7 +11,7 @@ import java.util.List;
  */
 @Entity
 @NamedQuery(name="Catalogo.findAll", query="SELECT c FROM Catalogo c")
-public class Catalogo implements Serializable {
+public class Catalogo extends Auditoria implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -23,7 +23,7 @@ public class Catalogo implements Serializable {
 	private String descripcionCatalogo;
 
 	//bi-directional many-to-one association to DetalleCatalogo
-	@OneToMany(mappedBy="catalogo")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "catalogo")
 	private List<DetalleCatalogo> detalleCatalogos;
 
 	public Catalogo() {

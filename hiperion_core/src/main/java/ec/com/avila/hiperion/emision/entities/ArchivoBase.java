@@ -1,59 +1,51 @@
 package ec.com.avila.hiperion.emision.entities;
 
 import java.io.Serializable;
-import javax.persistence.*;
-import java.util.Date;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 
 /**
  * The persistent class for the archivo_base database table.
  * 
  */
 @Entity
-@Table(name="archivo_base")
-@NamedQuery(name="ArchivoBase.findAll", query="SELECT a FROM ArchivoBase a")
-public class ArchivoBase implements Serializable {
+@Table(name = "archivo_base")
+@NamedQuery(name = "ArchivoBase.findAll", query = "SELECT a FROM ArchivoBase a")
+public class ArchivoBase extends Auditoria implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="id_archivo")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id_archivo")
 	private Integer idArchivo;
 
-	@Column(name="documento_byte")
+	@Column(name = "documento_byte")
 	private byte[] documentoByte;
 
-	private String estado;
-
-	@Temporal(TemporalType.DATE)
-	@Column(name="fecha_actualizacion")
-	private Date fechaActualizacion;
-
-	@Temporal(TemporalType.DATE)
-	@Column(name="fecha_creacion")
-	private Date fechaCreacion;
-
-	@Column(name="id_usuario_actualizacion")
-	private Integer idUsuarioActualizacion;
-
-	@Column(name="id_usuario_creacion")
-	private Integer idUsuarioCreacion;
-
-	@Column(name="mime_type")
+	@Column(name = "mime_type")
 	private String mimeType;
 
-	@Column(name="nombre_archivo")
+	@Column(name = "nombre_archivo")
 	private String nombreArchivo;
 
-	@Column(name="tipo_archivo")
+	@Column(name = "tipo_archivo")
 	private String tipoArchivo;
 
-	@Column(name="tipo_documento")
+	@Column(name = "tipo_documento")
 	private String tipoDocumento;
 
-	//bi-directional many-to-one association to RamoAgropecuario
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="id_agropecuario")
+	// bi-directional many-to-one association to RamoAgropecuario
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id_agropecuario")
 	private RamoAgropecuario ramoAgropecuario;
 
 	public ArchivoBase() {
@@ -73,46 +65,6 @@ public class ArchivoBase implements Serializable {
 
 	public void setDocumentoByte(byte[] documentoByte) {
 		this.documentoByte = documentoByte;
-	}
-
-	public String getEstado() {
-		return this.estado;
-	}
-
-	public void setEstado(String estado) {
-		this.estado = estado;
-	}
-
-	public Date getFechaActualizacion() {
-		return this.fechaActualizacion;
-	}
-
-	public void setFechaActualizacion(Date fechaActualizacion) {
-		this.fechaActualizacion = fechaActualizacion;
-	}
-
-	public Date getFechaCreacion() {
-		return this.fechaCreacion;
-	}
-
-	public void setFechaCreacion(Date fechaCreacion) {
-		this.fechaCreacion = fechaCreacion;
-	}
-
-	public Integer getIdUsuarioActualizacion() {
-		return this.idUsuarioActualizacion;
-	}
-
-	public void setIdUsuarioActualizacion(Integer idUsuarioActualizacion) {
-		this.idUsuarioActualizacion = idUsuarioActualizacion;
-	}
-
-	public Integer getIdUsuarioCreacion() {
-		return this.idUsuarioCreacion;
-	}
-
-	public void setIdUsuarioCreacion(Integer idUsuarioCreacion) {
-		this.idUsuarioCreacion = idUsuarioCreacion;
 	}
 
 	public String getMimeType() {

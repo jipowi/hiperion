@@ -21,7 +21,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name="detalle_catalogo")
 @NamedQuery(name="DetalleCatalogo.findAll", query="SELECT d FROM DetalleCatalogo d")
-public class DetalleCatalogo implements Serializable {
+public class DetalleCatalogo extends Auditoria implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id

@@ -12,7 +12,7 @@ import java.util.List;
 @Entity
 @Table(name="tipo_parroquia")
 @NamedQuery(name="TipoParroquia.findAll", query="SELECT t FROM TipoParroquia t")
-public class TipoParroquia implements Serializable {
+public class TipoParroquia extends Auditoria implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id

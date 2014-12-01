@@ -11,7 +11,7 @@ import javax.persistence.*;
 @Entity
 @Table(name="detalle_anexo")
 @NamedQuery(name="DetalleAnexo.findAll", query="SELECT d FROM DetalleAnexo d")
-public class DetalleAnexo implements Serializable {
+public class DetalleAnexo extends Auditoria implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -23,7 +23,7 @@ public class DetalleAnexo implements Serializable {
 	private String nombreDetalleAnexo;
 
 	//bi-directional many-to-one association to Anexo
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name="id_anexo")
 	private Anexo anexo;
 
@@ -33,7 +33,7 @@ public class DetalleAnexo implements Serializable {
 	private Ramo ramo;
 
 	//bi-directional many-to-one association to Titulo
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
 	@JoinColumn(name="id_titulo")
 	private Titulo titulo;
 

@@ -1,70 +1,63 @@
 package ec.com.avila.hiperion.emision.entities;
 
 import java.io.Serializable;
-import javax.persistence.*;
 import java.math.BigDecimal;
-import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 /**
  * The persistent class for the ramo_dinero_valores database table.
  * 
  */
 @Entity
-@Table(name="ramo_dinero_valores")
-@NamedQuery(name="RamoDineroValore.findAll", query="SELECT r FROM RamoDineroValore r")
-public class RamoDineroValore implements Serializable {
+@Table(name = "ramo_dinero_valores")
+@NamedQuery(name = "RamoDineroValore.findAll", query = "SELECT r FROM RamoDineroValore r")
+public class RamoDineroValore extends Auditoria implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="id_dinero")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id_dinero")
 	private Integer idDinero;
 
-	@Column(name="deduc_minimo_dinero")
+	@Column(name = "deduc_minimo_dinero")
 	private BigDecimal deducMinimoDinero;
 
-	@Column(name="deduc_por_siniestro_dinero")
+	@Column(name = "deduc_por_siniestro_dinero")
 	private BigDecimal deducPorSiniestroDinero;
 
-	private String estado;
-
-	@Temporal(TemporalType.DATE)
-	@Column(name="fecha_actualizacion")
-	private Date fechaActualizacion;
-
-	@Temporal(TemporalType.DATE)
-	@Column(name="fecha_creacion")
-	private Date fechaCreacion;
-
-	@Column(name="id_usuario_actualizacion")
-	private Integer idUsuarioActualizacion;
-
-	@Column(name="id_usuario_creacion")
-	private Integer idUsuarioCreacion;
-
-	@Column(name="porcentaje_embarque_dinero")
+	@Column(name = "porcentaje_embarque_dinero")
 	private BigDecimal porcentajeEmbarqueDinero;
 
-	@Column(name="tasa_dinero")
+	@Column(name = "tasa_dinero")
 	private BigDecimal tasaDinero;
 
-	//bi-directional many-to-one association to ClausulasAddDinero
-	@OneToMany(mappedBy="ramoDineroValore")
+	// bi-directional many-to-one association to ClausulasAddDinero
+	@OneToMany(mappedBy = "ramoDineroValore")
 	private List<ClausulasAddDinero> clausulasAddDineros;
 
-	//bi-directional many-to-one association to CobertDineroVal
-	@OneToMany(mappedBy="ramoDineroValore")
+	// bi-directional many-to-one association to CobertDineroVal
+	@OneToMany(mappedBy = "ramoDineroValore")
 	private List<CobertDineroVal> cobertDineroVals;
 
-	//bi-directional many-to-one association to ObjAsegDineroVal
-	@OneToMany(mappedBy="ramoDineroValore")
+	// bi-directional many-to-one association to ObjAsegDineroVal
+	@OneToMany(mappedBy = "ramoDineroValore")
 	private List<ObjAsegDineroVal> objAsegDineroVals;
 
-	//bi-directional many-to-one association to Poliza
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="id_poliza")
+	// bi-directional many-to-one association to Poliza
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id_poliza")
 	private Poliza poliza;
 
 	public RamoDineroValore() {
@@ -92,46 +85,6 @@ public class RamoDineroValore implements Serializable {
 
 	public void setDeducPorSiniestroDinero(BigDecimal deducPorSiniestroDinero) {
 		this.deducPorSiniestroDinero = deducPorSiniestroDinero;
-	}
-
-	public String getEstado() {
-		return this.estado;
-	}
-
-	public void setEstado(String estado) {
-		this.estado = estado;
-	}
-
-	public Date getFechaActualizacion() {
-		return this.fechaActualizacion;
-	}
-
-	public void setFechaActualizacion(Date fechaActualizacion) {
-		this.fechaActualizacion = fechaActualizacion;
-	}
-
-	public Date getFechaCreacion() {
-		return this.fechaCreacion;
-	}
-
-	public void setFechaCreacion(Date fechaCreacion) {
-		this.fechaCreacion = fechaCreacion;
-	}
-
-	public Integer getIdUsuarioActualizacion() {
-		return this.idUsuarioActualizacion;
-	}
-
-	public void setIdUsuarioActualizacion(Integer idUsuarioActualizacion) {
-		this.idUsuarioActualizacion = idUsuarioActualizacion;
-	}
-
-	public Integer getIdUsuarioCreacion() {
-		return this.idUsuarioCreacion;
-	}
-
-	public void setIdUsuarioCreacion(Integer idUsuarioCreacion) {
-		this.idUsuarioCreacion = idUsuarioCreacion;
 	}
 
 	public BigDecimal getPorcentajeEmbarqueDinero() {

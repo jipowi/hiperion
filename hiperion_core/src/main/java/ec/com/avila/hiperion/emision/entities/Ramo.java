@@ -11,7 +11,7 @@ import java.util.List;
  */
 @Entity
 @NamedQuery(name="Ramo.findAll", query="SELECT r FROM Ramo r")
-public class Ramo implements Serializable {
+public class Ramo extends Auditoria implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -26,8 +26,9 @@ public class Ramo implements Serializable {
 	private String nombreRamo;
 
 	//bi-directional many-to-one association to DetalleAnexo
-	@OneToMany(mappedBy="ramo")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "ramo")
 	private List<DetalleAnexo> detalleAnexos;
+	
 
 	//bi-directional many-to-one association to RamoAseguradora
 	@OneToMany(mappedBy="ramo")

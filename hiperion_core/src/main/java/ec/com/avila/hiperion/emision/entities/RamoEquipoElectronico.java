@@ -1,135 +1,128 @@
 package ec.com.avila.hiperion.emision.entities;
 
 import java.io.Serializable;
-import javax.persistence.*;
 import java.math.BigDecimal;
-import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 /**
  * The persistent class for the ramo_equipo_electronico database table.
  * 
  */
 @Entity
-@Table(name="ramo_equipo_electronico")
-@NamedQuery(name="RamoEquipoElectronico.findAll", query="SELECT r FROM RamoEquipoElectronico r")
-public class RamoEquipoElectronico implements Serializable {
+@Table(name = "ramo_equipo_electronico")
+@NamedQuery(name = "RamoEquipoElectronico.findAll", query = "SELECT r FROM RamoEquipoElectronico r")
+public class RamoEquipoElectronico extends Auditoria implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="id_equipo")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id_equipo")
 	private Integer idEquipo;
 
-	@Column(name="decuc_celular_siniestro")
+	@Column(name = "decuc_celular_siniestro")
 	private BigDecimal decucCelularSiniestro;
 
-	@Column(name="deduc_celular_minimo")
+	@Column(name = "deduc_celular_minimo")
 	private BigDecimal deducCelularMinimo;
 
-	@Column(name="deduc_equipo_fijo_minimo")
+	@Column(name = "deduc_equipo_fijo_minimo")
 	private BigDecimal deducEquipoFijoMinimo;
 
-	@Column(name="deduc_equipo_fijo_siniestro")
+	@Column(name = "deduc_equipo_fijo_siniestro")
 	private BigDecimal deducEquipoFijoSiniestro;
 
-	@Column(name="deduc_equipo_portatil_minimo")
+	@Column(name = "deduc_equipo_portatil_minimo")
 	private BigDecimal deducEquipoPortatilMinimo;
 
-	@Column(name="deduc_equipo_portatil_siniestro")
+	@Column(name = "deduc_equipo_portatil_siniestro")
 	private BigDecimal deducEquipoPortatilSiniestro;
 
-	@Column(name="deduc_ext_datos_minimo")
+	@Column(name = "deduc_ext_datos_minimo")
 	private BigDecimal deducExtDatosMinimo;
 
-	@Column(name="deduc_ext_datos_siniestro")
+	@Column(name = "deduc_ext_datos_siniestro")
 	private BigDecimal deducExtDatosSiniestro;
 
-	@Column(name="deduc_hurto_minimo")
+	@Column(name = "deduc_hurto_minimo")
 	private BigDecimal deducHurtoMinimo;
 
-	@Column(name="deduc_hurto_siniestro")
+	@Column(name = "deduc_hurto_siniestro")
 	private BigDecimal deducHurtoSiniestro;
 
-	@Column(name="deduc_operacion_num_dias")
+	@Column(name = "deduc_operacion_num_dias")
 	private Integer deducOperacionNumDias;
 
-	private String estado;
-
-	@Temporal(TemporalType.DATE)
-	@Column(name="fecha_actualizacion")
-	private Date fechaActualizacion;
-
-	@Temporal(TemporalType.DATE)
-	@Column(name="fecha_creacion")
-	private Date fechaCreacion;
-
-	@Column(name="id_usuario_actualizacion")
-	private Integer idUsuarioActualizacion;
-
-	@Column(name="id_usuario_creacion")
-	private Integer idUsuarioCreacion;
-
-	@Column(name="suma_asegurada_celulares")
+	@Column(name = "suma_asegurada_celulares")
 	private BigDecimal sumaAseguradaCelulares;
 
-	@Column(name="suma_asegurada_fijos")
+	@Column(name = "suma_asegurada_fijos")
 	private BigDecimal sumaAseguradaFijos;
 
-	@Column(name="suma_asegurada_otros")
+	@Column(name = "suma_asegurada_otros")
 	private BigDecimal sumaAseguradaOtros;
 
-	@Column(name="suma_asegurada_portatil")
+	@Column(name = "suma_asegurada_portatil")
 	private BigDecimal sumaAseguradaPortatil;
 
-	@Column(name="suma_asegurada_total")
+	@Column(name = "suma_asegurada_total")
 	private BigDecimal sumaAseguradaTotal;
 
-	@Column(name="tasa_celulares")
+	@Column(name = "tasa_celulares")
 	private BigDecimal tasaCelulares;
 
-	@Column(name="tasa_equipos_fijos")
+	@Column(name = "tasa_equipos_fijos")
 	private BigDecimal tasaEquiposFijos;
 
-	@Column(name="tasa_equipos_portatiles")
+	@Column(name = "tasa_equipos_portatiles")
 	private BigDecimal tasaEquiposPortatiles;
 
-	@Column(name="tasa_ext_datos")
+	@Column(name = "tasa_ext_datos")
 	private BigDecimal tasaExtDatos;
 
-	@Column(name="tasa_hurto_eq_elec")
+	@Column(name = "tasa_hurto_eq_elec")
 	private BigDecimal tasaHurtoEqElec;
 
-	@Column(name="tasa_operacion")
+	@Column(name = "tasa_operacion")
 	private BigDecimal tasaOperacion;
 
-	@Column(name="tasa_otros_eq_elec")
+	@Column(name = "tasa_otros_eq_elec")
 	private BigDecimal tasaOtrosEqElec;
 
-	//bi-directional many-to-one association to ClausulasAddEquipo
-	@OneToMany(mappedBy="ramoEquipoElectronico")
+	// bi-directional many-to-one association to ClausulasAddEquipo
+	@OneToMany(mappedBy = "ramoEquipoElectronico")
 	private List<ClausulasAddEquipo> clausulasAddEquipos;
 
-	//bi-directional many-to-one association to CobertAddEquipo
-	@OneToMany(mappedBy="ramoEquipoElectronico")
+	// bi-directional many-to-one association to CobertAddEquipo
+	@OneToMany(mappedBy = "ramoEquipoElectronico")
 	private List<CobertAddEquipo> cobertAddEquipos;
 
-	//bi-directional many-to-one association to CobertEquipo
-	@OneToMany(mappedBy="ramoEquipoElectronico")
+	// bi-directional many-to-one association to CobertEquipo
+	@OneToMany(mappedBy = "ramoEquipoElectronico")
 	private List<CobertEquipo> cobertEquipos;
 
-	//bi-directional many-to-one association to GarantiaPoliza
-	@OneToMany(mappedBy="ramoEquipoElectronico")
+	// bi-directional many-to-one association to GarantiaPoliza
+	@OneToMany(mappedBy = "ramoEquipoElectronico")
 	private List<GarantiaPoliza> garantiaPolizas;
 
-	//bi-directional many-to-one association to ObjAsegEquipo
-	@OneToMany(mappedBy="ramoEquipoElectronico")
+	// bi-directional many-to-one association to ObjAsegEquipo
+	@OneToMany(mappedBy = "ramoEquipoElectronico")
 	private List<ObjAsegEquipo> objAsegEquipos;
 
-	//bi-directional many-to-one association to Poliza
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="id_poliza")
+	// bi-directional many-to-one association to Poliza
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id_poliza")
 	private Poliza poliza;
 
 	public RamoEquipoElectronico() {
@@ -229,46 +222,6 @@ public class RamoEquipoElectronico implements Serializable {
 
 	public void setDeducOperacionNumDias(Integer deducOperacionNumDias) {
 		this.deducOperacionNumDias = deducOperacionNumDias;
-	}
-
-	public String getEstado() {
-		return this.estado;
-	}
-
-	public void setEstado(String estado) {
-		this.estado = estado;
-	}
-
-	public Date getFechaActualizacion() {
-		return this.fechaActualizacion;
-	}
-
-	public void setFechaActualizacion(Date fechaActualizacion) {
-		this.fechaActualizacion = fechaActualizacion;
-	}
-
-	public Date getFechaCreacion() {
-		return this.fechaCreacion;
-	}
-
-	public void setFechaCreacion(Date fechaCreacion) {
-		this.fechaCreacion = fechaCreacion;
-	}
-
-	public Integer getIdUsuarioActualizacion() {
-		return this.idUsuarioActualizacion;
-	}
-
-	public void setIdUsuarioActualizacion(Integer idUsuarioActualizacion) {
-		this.idUsuarioActualizacion = idUsuarioActualizacion;
-	}
-
-	public Integer getIdUsuarioCreacion() {
-		return this.idUsuarioCreacion;
-	}
-
-	public void setIdUsuarioCreacion(Integer idUsuarioCreacion) {
-		this.idUsuarioCreacion = idUsuarioCreacion;
 	}
 
 	public BigDecimal getSumaAseguradaCelulares() {

@@ -1,73 +1,66 @@
 package ec.com.avila.hiperion.emision.entities;
 
 import java.io.Serializable;
-import javax.persistence.*;
 import java.math.BigDecimal;
-import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 /**
  * The persistent class for the ramo_lc_incendio database table.
  * 
  */
 @Entity
-@Table(name="ramo_lc_incendio")
-@NamedQuery(name="RamoLcIncendio.findAll", query="SELECT r FROM RamoLcIncendio r")
-public class RamoLcIncendio implements Serializable {
+@Table(name = "ramo_lc_incendio")
+@NamedQuery(name = "RamoLcIncendio.findAll", query = "SELECT r FROM RamoLcIncendio r")
+public class RamoLcIncendio extends Auditoria implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="id_lucro")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id_lucro")
 	private Integer idLucro;
 
-	@Column(name="deduc_catastrofico_lc")
+	@Column(name = "deduc_catastrofico_lc")
 	private BigDecimal deducCatastroficoLc;
 
-	@Column(name="deduc_otros_lc")
+	@Column(name = "deduc_otros_lc")
 	private BigDecimal deducOtrosLc;
 
-	private String estado;
-
-	@Temporal(TemporalType.DATE)
-	@Column(name="fecha_actualizacion")
-	private Date fechaActualizacion;
-
-	@Temporal(TemporalType.DATE)
-	@Column(name="fecha_creacion")
-	private Date fechaCreacion;
-
-	@Column(name="id_usuario_actualizacion")
-	private Integer idUsuarioActualizacion;
-
-	@Column(name="id_usuario_creacion")
-	private Integer idUsuarioCreacion;
-
-	@Column(name="periodo_indemnizacion")
+	@Column(name = "periodo_indemnizacion")
 	private Integer periodoIndemnizacion;
 
-	@Column(name="tasa_comprensiva_lc")
+	@Column(name = "tasa_comprensiva_lc")
 	private BigDecimal tasaComprensivaLc;
 
-	@Column(name="valor_items_lc")
+	@Column(name = "valor_items_lc")
 	private BigDecimal valorItemsLc;
 
-	//bi-directional many-to-one association to ClausulasAddLcIn
-	@OneToMany(mappedBy="ramoLcIncendio")
+	// bi-directional many-to-one association to ClausulasAddLcIn
+	@OneToMany(mappedBy = "ramoLcIncendio")
 	private List<ClausulasAddLcIn> clausulasAddLcIns;
 
-	//bi-directional many-to-one association to CobertLcIn
-	@OneToMany(mappedBy="ramoLcIncendio")
+	// bi-directional many-to-one association to CobertLcIn
+	@OneToMany(mappedBy = "ramoLcIncendio")
 	private List<CobertLcIn> cobertLcIns;
 
-	//bi-directional many-to-one association to ObjAsegLcIn
-	@OneToMany(mappedBy="ramoLcIncendio")
+	// bi-directional many-to-one association to ObjAsegLcIn
+	@OneToMany(mappedBy = "ramoLcIncendio")
 	private List<ObjAsegLcIn> objAsegLcIns;
 
-	//bi-directional many-to-one association to Poliza
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="id_poliza")
+	// bi-directional many-to-one association to Poliza
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id_poliza")
 	private Poliza poliza;
 
 	public RamoLcIncendio() {
@@ -95,46 +88,6 @@ public class RamoLcIncendio implements Serializable {
 
 	public void setDeducOtrosLc(BigDecimal deducOtrosLc) {
 		this.deducOtrosLc = deducOtrosLc;
-	}
-
-	public String getEstado() {
-		return this.estado;
-	}
-
-	public void setEstado(String estado) {
-		this.estado = estado;
-	}
-
-	public Date getFechaActualizacion() {
-		return this.fechaActualizacion;
-	}
-
-	public void setFechaActualizacion(Date fechaActualizacion) {
-		this.fechaActualizacion = fechaActualizacion;
-	}
-
-	public Date getFechaCreacion() {
-		return this.fechaCreacion;
-	}
-
-	public void setFechaCreacion(Date fechaCreacion) {
-		this.fechaCreacion = fechaCreacion;
-	}
-
-	public Integer getIdUsuarioActualizacion() {
-		return this.idUsuarioActualizacion;
-	}
-
-	public void setIdUsuarioActualizacion(Integer idUsuarioActualizacion) {
-		this.idUsuarioActualizacion = idUsuarioActualizacion;
-	}
-
-	public Integer getIdUsuarioCreacion() {
-		return this.idUsuarioCreacion;
-	}
-
-	public void setIdUsuarioCreacion(Integer idUsuarioCreacion) {
-		this.idUsuarioCreacion = idUsuarioCreacion;
 	}
 
 	public Integer getPeriodoIndemnizacion() {

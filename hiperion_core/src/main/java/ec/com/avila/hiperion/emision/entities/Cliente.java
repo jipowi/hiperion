@@ -1,9 +1,9 @@
 package ec.com.avila.hiperion.emision.entities;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -14,54 +14,35 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-
 
 /**
  * The persistent class for the cliente database table.
  * 
  */
 @Entity
-@NamedQuery(name="Cliente.findAll", query="SELECT c FROM Cliente c")
-public class Cliente implements Serializable {
+@NamedQuery(name = "Cliente.findAll", query = "SELECT c FROM Cliente c")
+public class Cliente extends Auditoria implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="id_cliente")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id_cliente")
 	private Integer idCliente;
 
-	@Column(name="codigo_cliente")
+	@Column(name = "codigo_cliente")
 	private String codigoCliente;
 
-	private String estado;
-
-	@Temporal(TemporalType.DATE)
-	@Column(name="fecha_actualizacion")
-	private Date fechaActualizacion;
-
-	@Temporal(TemporalType.DATE)
-	@Column(name="fecha_creacion")
-	private Date fechaCreacion;
-
-	@Column(name="id_usuario_actualizacion")
-	private Integer idUsuarioActualizacion;
-
-	@Column(name="id_usuario_creacion")
-	private Integer idUsuarioCreacion;
-
-	//bi-directional many-to-one association to Persona
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="id_persona")
+	// bi-directional many-to-one association to Persona
+	@ManyToOne(cascade={CascadeType.ALL}, fetch=FetchType.LAZY)
+	@JoinColumn(name = "id_persona")
 	private Persona persona;
 
-	//bi-directional many-to-one association to Persona
-	@OneToMany(mappedBy="cliente")
+	// bi-directional many-to-one association to Persona
+	@OneToMany(mappedBy = "cliente")
 	private List<Persona> personas;
 
-	//bi-directional many-to-one association to Direccion
-	@OneToMany(mappedBy="cliente")
+	// bi-directional many-to-one association to Direccion
+	@OneToMany(mappedBy="cliente", cascade={CascadeType.ALL})
 	private List<Direccion> direccions;
 
 	public Cliente() {
@@ -81,46 +62,6 @@ public class Cliente implements Serializable {
 
 	public void setCodigoCliente(String codigoCliente) {
 		this.codigoCliente = codigoCliente;
-	}
-
-	public String getEstado() {
-		return this.estado;
-	}
-
-	public void setEstado(String estado) {
-		this.estado = estado;
-	}
-
-	public Date getFechaActualizacion() {
-		return this.fechaActualizacion;
-	}
-
-	public void setFechaActualizacion(Date fechaActualizacion) {
-		this.fechaActualizacion = fechaActualizacion;
-	}
-
-	public Date getFechaCreacion() {
-		return this.fechaCreacion;
-	}
-
-	public void setFechaCreacion(Date fechaCreacion) {
-		this.fechaCreacion = fechaCreacion;
-	}
-
-	public Integer getIdUsuarioActualizacion() {
-		return this.idUsuarioActualizacion;
-	}
-
-	public void setIdUsuarioActualizacion(Integer idUsuarioActualizacion) {
-		this.idUsuarioActualizacion = idUsuarioActualizacion;
-	}
-
-	public Integer getIdUsuarioCreacion() {
-		return this.idUsuarioCreacion;
-	}
-
-	public void setIdUsuarioCreacion(Integer idUsuarioCreacion) {
-		this.idUsuarioCreacion = idUsuarioCreacion;
 	}
 
 	public Persona getPersona() {

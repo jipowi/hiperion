@@ -13,7 +13,7 @@ import java.util.List;
  */
 @Entity
 @NamedQuery(name="Poliza.findAll", query="SELECT p FROM Poliza p")
-public class Poliza implements Serializable {
+public class Poliza extends Auditoria implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id

@@ -10,7 +10,7 @@ import javax.persistence.*;
  */
 @Entity
 @NamedQuery(name="Direccion.findAll", query="SELECT d FROM Direccion d")
-public class Direccion implements Serializable {
+public class Direccion extends Auditoria implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id

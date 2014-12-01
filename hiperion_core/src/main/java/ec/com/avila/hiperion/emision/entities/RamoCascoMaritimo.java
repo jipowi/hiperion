@@ -1,116 +1,109 @@
 package ec.com.avila.hiperion.emision.entities;
 
 import java.io.Serializable;
-import javax.persistence.*;
 import java.math.BigDecimal;
-import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 /**
  * The persistent class for the ramo_casco_maritimo database table.
  * 
  */
 @Entity
-@Table(name="ramo_casco_maritimo")
-@NamedQuery(name="RamoCascoMaritimo.findAll", query="SELECT r FROM RamoCascoMaritimo r")
-public class RamoCascoMaritimo implements Serializable {
+@Table(name = "ramo_casco_maritimo")
+@NamedQuery(name = "RamoCascoMaritimo.findAll", query = "SELECT r FROM RamoCascoMaritimo r")
+public class RamoCascoMaritimo extends Auditoria implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="id_casco")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id_casco")
 	private Integer idCasco;
 
-	@Column(name="anio_constr_maritimo")
+	@Column(name = "anio_constr_maritimo")
 	private Integer anioConstrMaritimo;
 
 	private BigDecimal avaluo;
 
 	private String bandera;
 
-	@Column(name="clase_embarcacion")
+	@Column(name = "clase_embarcacion")
 	private String claseEmbarcacion;
 
-	@Column(name="deduc_minimo_maritimo")
+	@Column(name = "deduc_minimo_maritimo")
 	private BigDecimal deducMinimoMaritimo;
 
-	@Column(name="deduc_siniestro_maritimo")
+	@Column(name = "deduc_siniestro_maritimo")
 	private BigDecimal deducSiniestroMaritimo;
 
 	private String eslora;
 
-	private String estado;
-
-	@Temporal(TemporalType.DATE)
-	@Column(name="fecha_actualizacion")
-	private Date fechaActualizacion;
-
-	@Temporal(TemporalType.DATE)
-	@Column(name="fecha_creacion")
-	private Date fechaCreacion;
-
-	@Column(name="id_usuario_actualizacion")
-	private Integer idUsuarioActualizacion;
-
-	@Column(name="id_usuario_creacion")
-	private Integer idUsuarioCreacion;
-
-	@Column(name="item_maritimo")
+	@Column(name = "item_maritimo")
 	private Integer itemMaritimo;
 
 	private String localidad;
 
 	private String manga;
 
-	@Column(name="marca_motor_maritimo")
+	@Column(name = "marca_motor_maritimo")
 	private String marcaMotorMaritimo;
 
-	@Column(name="nombre_nave")
+	@Column(name = "nombre_nave")
 	private String nombreNave;
 
-	@Column(name="numero_registro")
+	@Column(name = "numero_registro")
 	private String numeroRegistro;
 
-	@Column(name="otros_maritimo")
+	@Column(name = "otros_maritimo")
 	private BigDecimal otrosMaritimo;
 
 	private String puntal;
 
 	private String superestructura;
 
-	@Column(name="tasa_maritimo")
+	@Column(name = "tasa_maritimo")
 	private BigDecimal tasaMaritimo;
 
-	@Column(name="tonelaje_bruto")
+	@Column(name = "tonelaje_bruto")
 	private BigDecimal tonelajeBruto;
 
-	@Column(name="total_maritimo")
+	@Column(name = "total_maritimo")
 	private BigDecimal totalMaritimo;
 
-	@Column(name="valor_casco_maritimo")
+	@Column(name = "valor_casco_maritimo")
 	private BigDecimal valorCascoMaritimo;
 
-	@Column(name="valor_maquinaria_maritimo")
+	@Column(name = "valor_maquinaria_maritimo")
 	private BigDecimal valorMaquinariaMaritimo;
 
-	@Column(name="valor_redes")
+	@Column(name = "valor_redes")
 	private BigDecimal valorRedes;
 
-	@Column(name="zona_navegacion")
+	@Column(name = "zona_navegacion")
 	private String zonaNavegacion;
 
-	//bi-directional many-to-one association to ClausulasAddCasco
-	@OneToMany(mappedBy="ramoCascoMaritimo")
+	// bi-directional many-to-one association to ClausulasAddCasco
+	@OneToMany(mappedBy = "ramoCascoMaritimo")
 	private List<ClausulasAddCasco> clausulasAddCascos;
 
-	//bi-directional many-to-one association to CobertAddCasco
-	@OneToMany(mappedBy="ramoCascoMaritimo")
+	// bi-directional many-to-one association to CobertAddCasco
+	@OneToMany(mappedBy = "ramoCascoMaritimo")
 	private List<CobertAddCasco> cobertAddCascos;
 
-	//bi-directional many-to-one association to Poliza
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="id_poliza")
+	// bi-directional many-to-one association to Poliza
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id_poliza")
 	private Poliza poliza;
 
 	public RamoCascoMaritimo() {
@@ -178,46 +171,6 @@ public class RamoCascoMaritimo implements Serializable {
 
 	public void setEslora(String eslora) {
 		this.eslora = eslora;
-	}
-
-	public String getEstado() {
-		return this.estado;
-	}
-
-	public void setEstado(String estado) {
-		this.estado = estado;
-	}
-
-	public Date getFechaActualizacion() {
-		return this.fechaActualizacion;
-	}
-
-	public void setFechaActualizacion(Date fechaActualizacion) {
-		this.fechaActualizacion = fechaActualizacion;
-	}
-
-	public Date getFechaCreacion() {
-		return this.fechaCreacion;
-	}
-
-	public void setFechaCreacion(Date fechaCreacion) {
-		this.fechaCreacion = fechaCreacion;
-	}
-
-	public Integer getIdUsuarioActualizacion() {
-		return this.idUsuarioActualizacion;
-	}
-
-	public void setIdUsuarioActualizacion(Integer idUsuarioActualizacion) {
-		this.idUsuarioActualizacion = idUsuarioActualizacion;
-	}
-
-	public Integer getIdUsuarioCreacion() {
-		return this.idUsuarioCreacion;
-	}
-
-	public void setIdUsuarioCreacion(Integer idUsuarioCreacion) {
-		this.idUsuarioCreacion = idUsuarioCreacion;
 	}
 
 	public Integer getItemMaritimo() {

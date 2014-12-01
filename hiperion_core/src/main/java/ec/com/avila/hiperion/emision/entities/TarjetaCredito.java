@@ -1,9 +1,17 @@
 package ec.com.avila.hiperion.emision.entities;
 
 import java.io.Serializable;
-import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 
 /**
@@ -13,7 +21,7 @@ import java.util.List;
 @Entity
 @Table(name="tarjeta_credito")
 @NamedQuery(name="TarjetaCredito.findAll", query="SELECT t FROM TarjetaCredito t")
-public class TarjetaCredito implements Serializable {
+public class TarjetaCredito extends Auditoria implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id

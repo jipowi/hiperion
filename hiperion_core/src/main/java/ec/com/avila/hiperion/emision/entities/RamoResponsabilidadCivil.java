@@ -2,7 +2,6 @@ package ec.com.avila.hiperion.emision.entities;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -16,8 +15,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 /**
  * The persistent class for the ramo_responsabilidad_civil database table.

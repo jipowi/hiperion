@@ -11,7 +11,7 @@ import java.util.List;
  */
 @Entity
 @NamedQuery(name="Parroquia.findAll", query="SELECT p FROM Parroquia p")
-public class Parroquia implements Serializable {
+public class Parroquia extends Auditoria implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id

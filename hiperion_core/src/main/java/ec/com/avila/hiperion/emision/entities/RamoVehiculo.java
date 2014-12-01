@@ -1,130 +1,123 @@
 package ec.com.avila.hiperion.emision.entities;
 
 import java.io.Serializable;
-import javax.persistence.*;
 import java.math.BigDecimal;
-import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 /**
  * The persistent class for the ramo_vehiculos database table.
  * 
  */
 @Entity
-@Table(name="ramo_vehiculos")
-@NamedQuery(name="RamoVehiculo.findAll", query="SELECT r FROM RamoVehiculo r")
-public class RamoVehiculo implements Serializable {
+@Table(name = "ramo_vehiculos")
+@NamedQuery(name = "RamoVehiculo.findAll", query = "SELECT r FROM RamoVehiculo r")
+public class RamoVehiculo extends Auditoria implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="id_ramo_vehiculos")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id_ramo_vehiculos")
 	private Integer idRamoVehiculos;
 
-	@Column(name="amparo_patrimonial_vh")
+	@Column(name = "amparo_patrimonial_vh")
 	private BigDecimal amparoPatrimonialVh;
 
-	@Column(name="anio_fabricaccion_vh")
+	@Column(name = "anio_fabricaccion_vh")
 	private Integer anioFabricaccionVh;
 
-	@Column(name="asistencia_vehicular")
+	@Column(name = "asistencia_vehicular")
 	private String asistenciaVehicular;
 
-	@Column(name="auto_sustituto")
+	@Column(name = "auto_sustituto")
 	private String autoSustituto;
 
-	@Column(name="chasis_vh")
+	@Column(name = "chasis_vh")
 	private String chasisVh;
 
-	@Column(name="clase_vh")
+	@Column(name = "clase_vh")
 	private String claseVh;
 
-	@Column(name="cobertura_pacto_andino")
+	@Column(name = "cobertura_pacto_andino")
 	private BigDecimal coberturaPactoAndino;
 
-	@Column(name="color_vh")
+	@Column(name = "color_vh")
 	private String colorVh;
 
-	@Column(name="consideraciones_imp_vh")
+	@Column(name = "consideraciones_imp_vh")
 	private String consideracionesImpVh;
 
-	@Column(name="deduc_minimo_siniestro_vh")
+	@Column(name = "deduc_minimo_siniestro_vh")
 	private BigDecimal deducMinimoSiniestroVh;
 
-	@Column(name="deduc_porcentaje_vh")
+	@Column(name = "deduc_porcentaje_vh")
 	private BigDecimal deducPorcentajeVh;
 
-	@Column(name="deduc_siniestro_vh")
+	@Column(name = "deduc_siniestro_vh")
 	private BigDecimal deducSiniestroVh;
 
-	@Column(name="deduc_valor_aseg_vh")
+	@Column(name = "deduc_valor_aseg_vh")
 	private BigDecimal deducValorAsegVh;
 
-	@Column(name="detalle_modelo_vh")
+	@Column(name = "detalle_modelo_vh")
 	private String detalleModeloVh;
 
-	private String estado;
-
-	@Temporal(TemporalType.DATE)
-	@Column(name="fecha_actualizacion")
-	private Date fechaActualizacion;
-
-	@Temporal(TemporalType.DATE)
-	@Column(name="fecha_creacion")
-	private Date fechaCreacion;
-
-	@Column(name="id_usuario_actualizacion")
-	private Integer idUsuarioActualizacion;
-
-	@Column(name="id_usuario_creacion")
-	private Integer idUsuarioCreacion;
-
-	@Column(name="item_vh")
+	@Column(name = "item_vh")
 	private Integer itemVh;
 
-	@Column(name="modelo_vh")
+	@Column(name = "modelo_vh")
 	private String modeloVh;
 
-	@Column(name="motor_vh")
+	@Column(name = "motor_vh")
 	private String motorVh;
 
-	@Column(name="placa_vh")
+	@Column(name = "placa_vh")
 	private String placaVh;
 
-	@Column(name="propietario_vh")
+	@Column(name = "propietario_vh")
 	private String propietarioVh;
 
-	@Column(name="tasa_vh")
+	@Column(name = "tasa_vh")
 	private BigDecimal tasaVh;
 
-	@Column(name="tipo_vh")
+	@Column(name = "tipo_vh")
 	private String tipoVh;
 
-	@Column(name="uso_vh")
+	@Column(name = "uso_vh")
 	private String usoVh;
 
-	@Column(name="valor_aseg_vh")
+	@Column(name = "valor_aseg_vh")
 	private BigDecimal valorAsegVh;
 
-	@Column(name="valor_total_items_vh")
+	@Column(name = "valor_total_items_vh")
 	private BigDecimal valorTotalItemsVh;
 
-	//bi-directional many-to-one association to ClausulasAddVh
-	@OneToMany(mappedBy="ramoVehiculo")
+	// bi-directional many-to-one association to ClausulasAddVh
+	@OneToMany(mappedBy = "ramoVehiculo")
 	private List<ClausulasAddVh> clausulasAddVhs;
 
-	//bi-directional many-to-one association to CondEspVh
-	@OneToMany(mappedBy="ramoVehiculo")
+	// bi-directional many-to-one association to CondEspVh
+	@OneToMany(mappedBy = "ramoVehiculo")
 	private List<CondEspVh> condEspVhs;
 
-	//bi-directional many-to-one association to ExtrasVh
-	@OneToMany(mappedBy="ramoVehiculo")
+	// bi-directional many-to-one association to ExtrasVh
+	@OneToMany(mappedBy = "ramoVehiculo")
 	private List<ExtrasVh> extrasVhs;
 
-	//bi-directional many-to-one association to Poliza
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="id_poliza")
+	// bi-directional many-to-one association to Poliza
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id_poliza")
 	private Poliza poliza;
 
 	public RamoVehiculo() {
@@ -248,46 +241,6 @@ public class RamoVehiculo implements Serializable {
 
 	public void setDetalleModeloVh(String detalleModeloVh) {
 		this.detalleModeloVh = detalleModeloVh;
-	}
-
-	public String getEstado() {
-		return this.estado;
-	}
-
-	public void setEstado(String estado) {
-		this.estado = estado;
-	}
-
-	public Date getFechaActualizacion() {
-		return this.fechaActualizacion;
-	}
-
-	public void setFechaActualizacion(Date fechaActualizacion) {
-		this.fechaActualizacion = fechaActualizacion;
-	}
-
-	public Date getFechaCreacion() {
-		return this.fechaCreacion;
-	}
-
-	public void setFechaCreacion(Date fechaCreacion) {
-		this.fechaCreacion = fechaCreacion;
-	}
-
-	public Integer getIdUsuarioActualizacion() {
-		return this.idUsuarioActualizacion;
-	}
-
-	public void setIdUsuarioActualizacion(Integer idUsuarioActualizacion) {
-		this.idUsuarioActualizacion = idUsuarioActualizacion;
-	}
-
-	public Integer getIdUsuarioCreacion() {
-		return this.idUsuarioCreacion;
-	}
-
-	public void setIdUsuarioCreacion(Integer idUsuarioCreacion) {
-		this.idUsuarioCreacion = idUsuarioCreacion;
 	}
 
 	public Integer getItemVh() {

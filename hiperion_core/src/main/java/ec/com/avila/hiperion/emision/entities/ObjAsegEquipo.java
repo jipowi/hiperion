@@ -1,60 +1,52 @@
 package ec.com.avila.hiperion.emision.entities;
 
 import java.io.Serializable;
-import javax.persistence.*;
 import java.math.BigDecimal;
-import java.util.Date;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 
 /**
  * The persistent class for the obj_aseg_equipo database table.
  * 
  */
 @Entity
-@Table(name="obj_aseg_equipo")
-@NamedQuery(name="ObjAsegEquipo.findAll", query="SELECT o FROM ObjAsegEquipo o")
-public class ObjAsegEquipo implements Serializable {
+@Table(name = "obj_aseg_equipo")
+@NamedQuery(name = "ObjAsegEquipo.findAll", query = "SELECT o FROM ObjAsegEquipo o")
+public class ObjAsegEquipo extends Auditoria implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="id_objeto_aseg_equipo")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id_objeto_aseg_equipo")
 	private Integer idObjetoAsegEquipo;
 
-	@Column(name="desc_obj_eq_elec")
+	@Column(name = "desc_obj_eq_elec")
 	private String descObjEqElec;
 
-	@Column(name="detalle_objeto_eq_elec")
+	@Column(name = "detalle_objeto_eq_elec")
 	private String detalleObjetoEqElec;
 
-	private String estado;
-
-	@Temporal(TemporalType.DATE)
-	@Column(name="fecha_actualizacion")
-	private Date fechaActualizacion;
-
-	@Temporal(TemporalType.DATE)
-	@Column(name="fecha_creacion")
-	private Date fechaCreacion;
-
-	@Column(name="id_usuario_actualizacion")
-	private Integer idUsuarioActualizacion;
-
-	@Column(name="id_usuario_creacion")
-	private Integer idUsuarioCreacion;
-
-	@Column(name="item_obj_eq_elec")
+	@Column(name = "item_obj_eq_elec")
 	private Integer itemObjEqElec;
 
-	@Column(name="ubicacion_obj_eq_elec")
+	@Column(name = "ubicacion_obj_eq_elec")
 	private String ubicacionObjEqElec;
 
-	@Column(name="valor_obj_eq_elec")
+	@Column(name = "valor_obj_eq_elec")
 	private BigDecimal valorObjEqElec;
 
-	//bi-directional many-to-one association to RamoEquipoElectronico
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="id_equipo")
+	// bi-directional many-to-one association to RamoEquipoElectronico
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id_equipo")
 	private RamoEquipoElectronico ramoEquipoElectronico;
 
 	public ObjAsegEquipo() {
@@ -82,46 +74,6 @@ public class ObjAsegEquipo implements Serializable {
 
 	public void setDetalleObjetoEqElec(String detalleObjetoEqElec) {
 		this.detalleObjetoEqElec = detalleObjetoEqElec;
-	}
-
-	public String getEstado() {
-		return this.estado;
-	}
-
-	public void setEstado(String estado) {
-		this.estado = estado;
-	}
-
-	public Date getFechaActualizacion() {
-		return this.fechaActualizacion;
-	}
-
-	public void setFechaActualizacion(Date fechaActualizacion) {
-		this.fechaActualizacion = fechaActualizacion;
-	}
-
-	public Date getFechaCreacion() {
-		return this.fechaCreacion;
-	}
-
-	public void setFechaCreacion(Date fechaCreacion) {
-		this.fechaCreacion = fechaCreacion;
-	}
-
-	public Integer getIdUsuarioActualizacion() {
-		return this.idUsuarioActualizacion;
-	}
-
-	public void setIdUsuarioActualizacion(Integer idUsuarioActualizacion) {
-		this.idUsuarioActualizacion = idUsuarioActualizacion;
-	}
-
-	public Integer getIdUsuarioCreacion() {
-		return this.idUsuarioCreacion;
-	}
-
-	public void setIdUsuarioCreacion(Integer idUsuarioCreacion) {
-		this.idUsuarioCreacion = idUsuarioCreacion;
 	}
 
 	public Integer getItemObjEqElec() {

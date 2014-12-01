@@ -12,7 +12,7 @@ import java.util.Date;
  */
 @Entity
 @NamedQuery(name="Financiamiento.findAll", query="SELECT f FROM Financiamiento f")
-public class Financiamiento implements Serializable {
+public class Financiamiento extends Auditoria implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id

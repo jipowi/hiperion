@@ -1,54 +1,45 @@
 package ec.com.avila.hiperion.emision.entities;
 
 import java.io.Serializable;
-import javax.persistence.*;
-import java.util.Date;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
 
 /**
  * The persistent class for the contacto database table.
  * 
  */
 @Entity
-@NamedQuery(name="Contacto.findAll", query="SELECT c FROM Contacto c")
-public class Contacto implements Serializable {
+@NamedQuery(name = "Contacto.findAll", query = "SELECT c FROM Contacto c")
+public class Contacto extends Auditoria implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="id_contacto")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id_contacto")
 	private Integer idContacto;
 
-	@Column(name="descripcion_contacto")
+	@Column(name = "descripcion_contacto")
 	private String descripcionContacto;
 
-	private String estado;
-
-	@Temporal(TemporalType.DATE)
-	@Column(name="fecha_actualizacion")
-	private Date fechaActualizacion;
-
-	@Temporal(TemporalType.DATE)
-	@Column(name="fecha_creacion")
-	private Date fechaCreacion;
-
-	@Column(name="id_usuario_actualizacion")
-	private Integer idUsuarioActualizacion;
-
-	@Column(name="id_usuario_creacion")
-	private Integer idUsuarioCreacion;
-
-	@Column(name="tipo_contacto")
+	@Column(name = "tipo_contacto")
 	private String tipoContacto;
 
-	//bi-directional many-to-one association to Encargado
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="id_encargado")
+	// bi-directional many-to-one association to Encargado
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id_encargado")
 	private Encargado encargado;
 
-	//bi-directional many-to-one association to Persona
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="id_persona")
+	// bi-directional many-to-one association to Persona
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id_persona")
 	private Persona persona;
 
 	public Contacto() {
@@ -68,46 +59,6 @@ public class Contacto implements Serializable {
 
 	public void setDescripcionContacto(String descripcionContacto) {
 		this.descripcionContacto = descripcionContacto;
-	}
-
-	public String getEstado() {
-		return this.estado;
-	}
-
-	public void setEstado(String estado) {
-		this.estado = estado;
-	}
-
-	public Date getFechaActualizacion() {
-		return this.fechaActualizacion;
-	}
-
-	public void setFechaActualizacion(Date fechaActualizacion) {
-		this.fechaActualizacion = fechaActualizacion;
-	}
-
-	public Date getFechaCreacion() {
-		return this.fechaCreacion;
-	}
-
-	public void setFechaCreacion(Date fechaCreacion) {
-		this.fechaCreacion = fechaCreacion;
-	}
-
-	public Integer getIdUsuarioActualizacion() {
-		return this.idUsuarioActualizacion;
-	}
-
-	public void setIdUsuarioActualizacion(Integer idUsuarioActualizacion) {
-		this.idUsuarioActualizacion = idUsuarioActualizacion;
-	}
-
-	public Integer getIdUsuarioCreacion() {
-		return this.idUsuarioCreacion;
-	}
-
-	public void setIdUsuarioCreacion(Integer idUsuarioCreacion) {
-		this.idUsuarioCreacion = idUsuarioCreacion;
 	}
 
 	public String getTipoContacto() {

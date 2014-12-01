@@ -1,47 +1,39 @@
 package ec.com.avila.hiperion.emision.entities;
 
 import java.io.Serializable;
-import javax.persistence.*;
-import java.util.Date;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 
 /**
  * The persistent class for the cobert_soat database table.
  * 
  */
 @Entity
-@Table(name="cobert_soat")
-@NamedQuery(name="CobertSoat.findAll", query="SELECT c FROM CobertSoat c")
-public class CobertSoat implements Serializable {
+@Table(name = "cobert_soat")
+@NamedQuery(name = "CobertSoat.findAll", query = "SELECT c FROM CobertSoat c")
+public class CobertSoat extends Auditoria implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="id_cobert_soat")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id_cobert_soat")
 	private Integer idCobertSoat;
 
-	@Column(name="cobertura_soat")
+	@Column(name = "cobertura_soat")
 	private String coberturaSoat;
 
-	private String estado;
-
-	@Temporal(TemporalType.DATE)
-	@Column(name="fecha_actualizacion")
-	private Date fechaActualizacion;
-
-	@Temporal(TemporalType.DATE)
-	@Column(name="fecha_creacion")
-	private Date fechaCreacion;
-
-	@Column(name="id_usuario_actualizacion")
-	private Integer idUsuarioActualizacion;
-
-	@Column(name="id_usuario_creacion")
-	private Integer idUsuarioCreacion;
-
-	//bi-directional many-to-one association to RamoSoat
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="id_soat")
+	// bi-directional many-to-one association to RamoSoat
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id_soat")
 	private RamoSoat ramoSoat;
 
 	public CobertSoat() {
@@ -61,46 +53,6 @@ public class CobertSoat implements Serializable {
 
 	public void setCoberturaSoat(String coberturaSoat) {
 		this.coberturaSoat = coberturaSoat;
-	}
-
-	public String getEstado() {
-		return this.estado;
-	}
-
-	public void setEstado(String estado) {
-		this.estado = estado;
-	}
-
-	public Date getFechaActualizacion() {
-		return this.fechaActualizacion;
-	}
-
-	public void setFechaActualizacion(Date fechaActualizacion) {
-		this.fechaActualizacion = fechaActualizacion;
-	}
-
-	public Date getFechaCreacion() {
-		return this.fechaCreacion;
-	}
-
-	public void setFechaCreacion(Date fechaCreacion) {
-		this.fechaCreacion = fechaCreacion;
-	}
-
-	public Integer getIdUsuarioActualizacion() {
-		return this.idUsuarioActualizacion;
-	}
-
-	public void setIdUsuarioActualizacion(Integer idUsuarioActualizacion) {
-		this.idUsuarioActualizacion = idUsuarioActualizacion;
-	}
-
-	public Integer getIdUsuarioCreacion() {
-		return this.idUsuarioCreacion;
-	}
-
-	public void setIdUsuarioCreacion(Integer idUsuarioCreacion) {
-		this.idUsuarioCreacion = idUsuarioCreacion;
 	}
 
 	public RamoSoat getRamoSoat() {

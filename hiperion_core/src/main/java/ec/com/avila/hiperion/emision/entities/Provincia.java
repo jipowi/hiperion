@@ -11,7 +11,7 @@ import java.util.List;
  */
 @Entity
 @NamedQuery(name="Provincia.findAll", query="SELECT p FROM Provincia p")
-public class Provincia implements Serializable {
+public class Provincia extends Auditoria implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -25,7 +25,7 @@ public class Provincia implements Serializable {
 	private String nombreProvincia;
 
 	//bi-directional many-to-one association to Canton
-	@OneToMany(mappedBy="provincia")
+	@OneToMany(mappedBy="provincia", cascade={CascadeType.ALL})
 	private List<Canton> cantons;
 
 	//bi-directional many-to-one association to Direccion

@@ -1,75 +1,68 @@
 package ec.com.avila.hiperion.emision.entities;
 
 import java.io.Serializable;
-import javax.persistence.*;
 import java.math.BigDecimal;
-import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 /**
  * The persistent class for the ramo_riesgos_esp database table.
  * 
  */
 @Entity
-@Table(name="ramo_riesgos_esp")
-@NamedQuery(name="RamoRiesgosEsp.findAll", query="SELECT r FROM RamoRiesgosEsp r")
-public class RamoRiesgosEsp implements Serializable {
+@Table(name = "ramo_riesgos_esp")
+@NamedQuery(name = "RamoRiesgosEsp.findAll", query = "SELECT r FROM RamoRiesgosEsp r")
+public class RamoRiesgosEsp extends Auditoria implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="id_riesgo")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id_riesgo")
 	private Integer idRiesgo;
 
-	@Column(name="cond_imp_riesgos")
+	@Column(name = "cond_imp_riesgos")
 	private String condImpRiesgos;
 
-	@Column(name="desc_obj_aseg_riesgos")
+	@Column(name = "desc_obj_aseg_riesgos")
 	private String descObjAsegRiesgos;
 
-	private String estado;
-
-	@Temporal(TemporalType.DATE)
-	@Column(name="fecha_actualizacion")
-	private Date fechaActualizacion;
-
-	@Temporal(TemporalType.DATE)
-	@Column(name="fecha_creacion")
-	private Date fechaCreacion;
-
-	@Column(name="id_usuario_actualizacion")
-	private Integer idUsuarioActualizacion;
-
-	@Column(name="id_usuario_creacion")
-	private Integer idUsuarioCreacion;
-
-	@Column(name="tasa_riesgos_esp")
+	@Column(name = "tasa_riesgos_esp")
 	private BigDecimal tasaRiesgosEsp;
 
-	//bi-directional many-to-one association to ClausulasAddRiesgo
-	@OneToMany(mappedBy="ramoRiesgosEsp")
+	// bi-directional many-to-one association to ClausulasAddRiesgo
+	@OneToMany(mappedBy = "ramoRiesgosEsp")
 	private List<ClausulasAddRiesgo> clausulasAddRiesgos;
 
-	//bi-directional many-to-one association to CobertAddRiesgo
-	@OneToMany(mappedBy="ramoRiesgosEsp")
+	// bi-directional many-to-one association to CobertAddRiesgo
+	@OneToMany(mappedBy = "ramoRiesgosEsp")
 	private List<CobertAddRiesgo> cobertAddRiesgos;
 
-	//bi-directional many-to-one association to CobertRiesgo
-	@OneToMany(mappedBy="ramoRiesgosEsp")
+	// bi-directional many-to-one association to CobertRiesgo
+	@OneToMany(mappedBy = "ramoRiesgosEsp")
 	private List<CobertRiesgo> cobertRiesgos;
 
-	//bi-directional many-to-one association to CondEspRiesgo
-	@OneToMany(mappedBy="ramoRiesgosEsp")
+	// bi-directional many-to-one association to CondEspRiesgo
+	@OneToMany(mappedBy = "ramoRiesgosEsp")
 	private List<CondEspRiesgo> condEspRiesgos;
 
-	//bi-directional many-to-one association to CondPartRiesgo
-	@OneToMany(mappedBy="ramoRiesgosEsp")
+	// bi-directional many-to-one association to CondPartRiesgo
+	@OneToMany(mappedBy = "ramoRiesgosEsp")
 	private List<CondPartRiesgo> condPartRiesgos;
 
-	//bi-directional many-to-one association to Poliza
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="id_poliza")
+	// bi-directional many-to-one association to Poliza
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id_poliza")
 	private Poliza poliza;
 
 	public RamoRiesgosEsp() {
@@ -97,46 +90,6 @@ public class RamoRiesgosEsp implements Serializable {
 
 	public void setDescObjAsegRiesgos(String descObjAsegRiesgos) {
 		this.descObjAsegRiesgos = descObjAsegRiesgos;
-	}
-
-	public String getEstado() {
-		return this.estado;
-	}
-
-	public void setEstado(String estado) {
-		this.estado = estado;
-	}
-
-	public Date getFechaActualizacion() {
-		return this.fechaActualizacion;
-	}
-
-	public void setFechaActualizacion(Date fechaActualizacion) {
-		this.fechaActualizacion = fechaActualizacion;
-	}
-
-	public Date getFechaCreacion() {
-		return this.fechaCreacion;
-	}
-
-	public void setFechaCreacion(Date fechaCreacion) {
-		this.fechaCreacion = fechaCreacion;
-	}
-
-	public Integer getIdUsuarioActualizacion() {
-		return this.idUsuarioActualizacion;
-	}
-
-	public void setIdUsuarioActualizacion(Integer idUsuarioActualizacion) {
-		this.idUsuarioActualizacion = idUsuarioActualizacion;
-	}
-
-	public Integer getIdUsuarioCreacion() {
-		return this.idUsuarioCreacion;
-	}
-
-	public void setIdUsuarioCreacion(Integer idUsuarioCreacion) {
-		this.idUsuarioCreacion = idUsuarioCreacion;
 	}
 
 	public BigDecimal getTasaRiesgosEsp() {

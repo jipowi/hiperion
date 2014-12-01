@@ -1,74 +1,67 @@
 package ec.com.avila.hiperion.emision.entities;
 
 import java.io.Serializable;
-import javax.persistence.*;
 import java.math.BigDecimal;
-import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 /**
  * The persistent class for the ramo_rotura_maquinaria database table.
  * 
  */
 @Entity
-@Table(name="ramo_rotura_maquinaria")
-@NamedQuery(name="RamoRoturaMaquinaria.findAll", query="SELECT r FROM RamoRoturaMaquinaria r")
-public class RamoRoturaMaquinaria implements Serializable {
+@Table(name = "ramo_rotura_maquinaria")
+@NamedQuery(name = "RamoRoturaMaquinaria.findAll", query = "SELECT r FROM RamoRoturaMaquinaria r")
+public class RamoRoturaMaquinaria extends Auditoria implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="id_rotura")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id_rotura")
 	private Integer idRotura;
 
-	@Column(name="deduc_minimo_aseg_rot_maq")
+	@Column(name = "deduc_minimo_aseg_rot_maq")
 	private BigDecimal deducMinimoAsegRotMaq;
 
-	@Column(name="deduc_minimo_siniestro_rot")
+	@Column(name = "deduc_minimo_siniestro_rot")
 	private BigDecimal deducMinimoSiniestroRot;
 
-	@Column(name="deduc_siniestro_rot_maq")
+	@Column(name = "deduc_siniestro_rot_maq")
 	private BigDecimal deducSiniestroRotMaq;
 
-	private String estado;
-
-	@Temporal(TemporalType.DATE)
-	@Column(name="fecha_actualizacion")
-	private Date fechaActualizacion;
-
-	@Temporal(TemporalType.DATE)
-	@Column(name="fecha_creacion")
-	private Date fechaCreacion;
-
-	@Column(name="id_usuario_actualizacion")
-	private Integer idUsuarioActualizacion;
-
-	@Column(name="id_usuario_creacion")
-	private Integer idUsuarioCreacion;
-
-	@Column(name="tasa_rot_maq")
+	@Column(name = "tasa_rot_maq")
 	private BigDecimal tasaRotMaq;
 
-	//bi-directional many-to-one association to ClausulasAddRotura
-	@OneToMany(mappedBy="ramoRoturaMaquinaria")
+	// bi-directional many-to-one association to ClausulasAddRotura
+	@OneToMany(mappedBy = "ramoRoturaMaquinaria")
 	private List<ClausulasAddRotura> clausulasAddRoturas;
 
-	//bi-directional many-to-one association to CobertAddRotura
-	@OneToMany(mappedBy="ramoRoturaMaquinaria")
+	// bi-directional many-to-one association to CobertAddRotura
+	@OneToMany(mappedBy = "ramoRoturaMaquinaria")
 	private List<CobertAddRotura> cobertAddRoturas;
 
-	//bi-directional many-to-one association to CobertRotura
-	@OneToMany(mappedBy="ramoRoturaMaquinaria")
+	// bi-directional many-to-one association to CobertRotura
+	@OneToMany(mappedBy = "ramoRoturaMaquinaria")
 	private List<CobertRotura> cobertRoturas;
 
-	//bi-directional many-to-one association to ObjAsegRotura
-	@OneToMany(mappedBy="ramoRoturaMaquinaria")
+	// bi-directional many-to-one association to ObjAsegRotura
+	@OneToMany(mappedBy = "ramoRoturaMaquinaria")
 	private List<ObjAsegRotura> objAsegRoturas;
 
-	//bi-directional many-to-one association to Poliza
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="id_poliza")
+	// bi-directional many-to-one association to Poliza
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id_poliza")
 	private Poliza poliza;
 
 	public RamoRoturaMaquinaria() {
@@ -104,46 +97,6 @@ public class RamoRoturaMaquinaria implements Serializable {
 
 	public void setDeducSiniestroRotMaq(BigDecimal deducSiniestroRotMaq) {
 		this.deducSiniestroRotMaq = deducSiniestroRotMaq;
-	}
-
-	public String getEstado() {
-		return this.estado;
-	}
-
-	public void setEstado(String estado) {
-		this.estado = estado;
-	}
-
-	public Date getFechaActualizacion() {
-		return this.fechaActualizacion;
-	}
-
-	public void setFechaActualizacion(Date fechaActualizacion) {
-		this.fechaActualizacion = fechaActualizacion;
-	}
-
-	public Date getFechaCreacion() {
-		return this.fechaCreacion;
-	}
-
-	public void setFechaCreacion(Date fechaCreacion) {
-		this.fechaCreacion = fechaCreacion;
-	}
-
-	public Integer getIdUsuarioActualizacion() {
-		return this.idUsuarioActualizacion;
-	}
-
-	public void setIdUsuarioActualizacion(Integer idUsuarioActualizacion) {
-		this.idUsuarioActualizacion = idUsuarioActualizacion;
-	}
-
-	public Integer getIdUsuarioCreacion() {
-		return this.idUsuarioCreacion;
-	}
-
-	public void setIdUsuarioCreacion(Integer idUsuarioCreacion) {
-		this.idUsuarioCreacion = idUsuarioCreacion;
 	}
 
 	public BigDecimal getTasaRotMaq() {
