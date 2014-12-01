@@ -162,7 +162,7 @@ public class TransporteBacking implements Serializable {
 	public List<SelectItem> getTipoTransporteItems() throws HiperionException {
 
 		this.tipoTransporteItems = new ArrayList<SelectItem>();
-		Catalogo catalogo = catalogoService.consultarCatalogoById(HiperionMensajes.getInstancia().getInteger(
+		Catalogo catalogo = catalogoService.consultarCatalogoById(HiperionMensajes.getInstancia().getLong(
 				"ec.gob.avila.hiperion.recursos.catalogoMedioTransporte"));
 		List<DetalleCatalogo> tipos = catalogo.getDetalleCatalogos();
 

@@ -96,6 +96,7 @@ public class HiperionMensajes {
 			return null;
 		}
 	}
+	
 
 	/**
 	 * <b>Obtiene un mensaje del archivo de internacionalizaci&oacute;n con ciertos parametros de relleno</b>

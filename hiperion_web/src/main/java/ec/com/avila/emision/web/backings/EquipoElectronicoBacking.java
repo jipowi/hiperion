@@ -101,8 +101,9 @@ public class EquipoElectronicoBacking implements Serializable {
 	 */
 	public List<SelectItem> getDetalleItems() throws HiperionException {
 		this.detalleItems = new ArrayList<SelectItem>();
-		Catalogo catalogo = catalogoService.consultarCatalogoById(HiperionMensajes.getInstancia().getInteger(
-				"ec.gob.avila.hiperion.recursos.catalogoDetalleEquipoElectronico"));
+		Long idCatalogo = Long.parseLong(HiperionMensajes.getInstancia()
+				.getInteger("ec.gob.avila.hiperion.recursos.catalogoDetalleEquipoElectronico").toString());
+		Catalogo catalogo = catalogoService.consultarCatalogoById(idCatalogo);
 		List<DetalleCatalogo> sectores = catalogo.getDetalleCatalogos();
 
 		for (DetalleCatalogo detalle : sectores) {
@@ -232,7 +233,7 @@ public class EquipoElectronicoBacking implements Serializable {
 	 * <p>
 	 * [Author: Paul Jimenez, Date: Nov 7, 2014]
 	 * </p>
-	 *
+	 * 
 	 * @throws HiperionException
 	 */
 	public void guardarRamo() throws HiperionException {

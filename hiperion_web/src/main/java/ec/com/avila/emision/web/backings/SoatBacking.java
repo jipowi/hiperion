@@ -92,7 +92,6 @@ public class SoatBacking implements Serializable {
 		}
 
 	}
-	
 
 	/**
 	 * 
@@ -133,8 +132,9 @@ public class SoatBacking implements Serializable {
 	public List<SelectItem> getTipoVehiculoItems() throws HiperionException {
 
 		this.tipoVehiculoItems = new ArrayList<SelectItem>();
-		Catalogo catalogo = catalogoService.consultarCatalogoById(HiperionMensajes.getInstancia().getInteger(
-				"ec.gob.avila.hiperion.recursos.catalogoTipoVehiculoSoat"));
+		Long idCatalogo = Long.parseLong(HiperionMensajes.getInstancia().getInteger("ec.gob.avila.hiperion.recursos.catalogoTipoVehiculoSoat")
+				.toString());
+		Catalogo catalogo = catalogoService.consultarCatalogoById(idCatalogo);
 		List<DetalleCatalogo> tipos = catalogo.getDetalleCatalogos();
 
 		for (DetalleCatalogo detalle : tipos) {
@@ -264,7 +264,7 @@ public class SoatBacking implements Serializable {
 	public List<SelectItem> getTipoSoatItems() throws HiperionException {
 
 		this.tipoSoatItems = new ArrayList<SelectItem>();
-		Catalogo catalogo = catalogoService.consultarCatalogoById(HiperionMensajes.getInstancia().getInteger(
+		Catalogo catalogo = catalogoService.consultarCatalogoById(HiperionMensajes.getInstancia().getLong(
 				"ec.gob.avila.hiperion.recursos.catalogoTipoSoat"));
 		List<DetalleCatalogo> tipos = catalogo.getDetalleCatalogos();
 
