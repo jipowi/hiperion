@@ -146,7 +146,7 @@ public class FidelidadBacking implements Serializable {
 	 */
 	public void guardarRamo() throws HiperionException {
 		RamoFidelidad ramoFidelidad = new RamoFidelidad();
-		
+
 		ramoFidelidad.setValorColusorio(ramoFidelidadBean.getValorColusorio());
 		ramoFidelidad.setValorIndividual(ramoFidelidadBean.getValorIndividual());
 		ramoFidelidad.setDeducMinimoFidelidad(ramoFidelidadBean.getMinimoSiniestro());
@@ -154,9 +154,6 @@ public class FidelidadBacking implements Serializable {
 		ramoFidelidad.setSectorFidelidad(ramoFidelidadBean.getSector());
 		MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.fidelidad"));
 	}
-
-	
-
 
 	/**
 	 * @return the ramoFidelidadBean
@@ -194,7 +191,7 @@ public class FidelidadBacking implements Serializable {
 	public List<SelectItem> getSectorItems() throws HiperionException {
 
 		this.sectorItems = new ArrayList<SelectItem>();
-		Catalogo catalogo = catalogoService.consultarCatalogoById(HiperionMensajes.getInstancia().getInteger(
+		Catalogo catalogo = catalogoService.consultarCatalogoById(HiperionMensajes.getInstancia().getLong(
 				"ec.gob.avila.hiperion.recursos.catalogoSector"));
 		List<DetalleCatalogo> sectores = catalogo.getDetalleCatalogos();
 
@@ -218,7 +215,7 @@ public class FidelidadBacking implements Serializable {
 	 */
 	public List<SelectItem> getModalidadItems() throws HiperionException {
 		this.modalidadItems = new ArrayList<SelectItem>();
-		Catalogo catalogo = catalogoService.consultarCatalogoById(HiperionMensajes.getInstancia().getInteger(
+		Catalogo catalogo = catalogoService.consultarCatalogoById(HiperionMensajes.getInstancia().getLong(
 				"ec.gob.avila.hiperion.recursos.catalogoModalidadFidelidad"));
 		List<DetalleCatalogo> modalidades = catalogo.getDetalleCatalogos();
 

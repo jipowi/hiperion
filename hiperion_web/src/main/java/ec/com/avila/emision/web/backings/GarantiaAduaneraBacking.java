@@ -109,10 +109,9 @@ public class GarantiaAduaneraBacking implements Serializable {
 
 		ramoGarantiaAduanera.setObjAsgAduanera(ramoGarantiaAduaneraBean.getObjetoAsegurado());
 		ramoGarantiaAduanera.setValorContratoAduanera(ramoGarantiaAduaneraBean.getValorContrato());
-		//TODO reviar campos modelo
-		//ramoGarantiaAduanera.setValorPolizaAduanera(valorPolizaAduanera)(ramoGarantiaAduaneraBean.getValorPoliza());
-		//ramoGarantiaAduanera.setTipoContragarantiaAduanera(ramoGarantiaAduaneraBean.getTipoContragarantia());
-	
+		// TODO reviar campos modelo
+		// ramoGarantiaAduanera.setValorPolizaAduanera(valorPolizaAduanera)(ramoGarantiaAduaneraBean.getValorPoliza());
+		// ramoGarantiaAduanera.setTipoContragarantiaAduanera(ramoGarantiaAduaneraBean.getTipoContragarantia());
 
 		try {
 			ramoGarantiaAduaneraService.guardarRamoGarantiaAduanera(ramoGarantiaAduanera);
@@ -183,7 +182,7 @@ public class GarantiaAduaneraBacking implements Serializable {
 	public List<SelectItem> getSectorItems() throws HiperionException {
 
 		this.sectorItems = new ArrayList<SelectItem>();
-		Catalogo catalogo = catalogoService.consultarCatalogoById(HiperionMensajes.getInstancia().getInteger(
+		Catalogo catalogo = catalogoService.consultarCatalogoById(HiperionMensajes.getInstancia().getLong(
 				"ec.gob.avila.hiperion.recursos.catalogoSector"));
 		List<DetalleCatalogo> sectores = catalogo.getDetalleCatalogos();
 

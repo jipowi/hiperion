@@ -101,7 +101,7 @@ public class EquipoElectronicoBacking implements Serializable {
 	 */
 	public List<SelectItem> getDetalleItems() throws HiperionException {
 		this.detalleItems = new ArrayList<SelectItem>();
-		Catalogo catalogo = catalogoService.consultarCatalogoById(HiperionMensajes.getInstancia().getInteger(
+		Catalogo catalogo = catalogoService.consultarCatalogoById(HiperionMensajes.getInstancia().getLong(
 				"ec.gob.avila.hiperion.recursos.catalogoDetalleEquipoElectronico"));
 		List<DetalleCatalogo> sectores = catalogo.getDetalleCatalogos();
 

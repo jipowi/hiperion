@@ -53,7 +53,7 @@ public class ContactoBacking implements Serializable {
 
 	public List<SelectItem> obtenerContactos() {
 		try {
-			List<DetalleCatalogo> detalleCatalogos = detalleCatalogoService.consultarDetalleCatalogoByCodCatalogo(23);
+			List<DetalleCatalogo> detalleCatalogos = detalleCatalogoService.consultarDetalleCatalogoByCodCatalogo(new Long(23));
 			if (detalleCatalogos != null && detalleCatalogos.size() > 0) {
 				tipoContactosItems = new ArrayList<SelectItem>();
 				for (DetalleCatalogo detalleCatalogo : detalleCatalogos) {

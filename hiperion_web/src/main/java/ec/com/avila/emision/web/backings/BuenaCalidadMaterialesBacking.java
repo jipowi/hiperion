@@ -127,7 +127,7 @@ public class BuenaCalidadMaterialesBacking implements Serializable {
 	public List<SelectItem> getSectorItems() throws HiperionException {
 
 		this.sectorItems = new ArrayList<SelectItem>();
-		Catalogo catalogo = catalogoService.consultarCatalogoById(HiperionMensajes.getInstancia().getInteger(
+		Catalogo catalogo = catalogoService.consultarCatalogoById(HiperionMensajes.getInstancia().getLong(
 				"ec.gob.avila.hiperion.recursos.catalogoSector"));
 		List<DetalleCatalogo> sectores = catalogo.getDetalleCatalogos();
 
