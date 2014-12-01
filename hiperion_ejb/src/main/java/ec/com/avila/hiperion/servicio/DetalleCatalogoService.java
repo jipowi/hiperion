@@ -13,7 +13,7 @@ import ec.com.avila.hiperion.emision.entities.DetalleCatalogo;
 
 /**
  * 
- * <b> Servicio de interface local para realizar las operaciones sobre la tabla Detalle catalogo</b>
+ * <b> Servicio de interface local para realizar las operaciones sobre la tabla Detalle catalogo </b>
  * 
  * @author Dario Vinueza
  * @version 1.0,21/12/2013
@@ -33,7 +33,7 @@ public interface DetalleCatalogoService {
 	 * @return
 	 * @throws HiperionException
 	 */
-	public List<DetalleCatalogo> consultarDetalleCatalogoByCodCatalogo(Integer idCatalogo) throws HiperionException;
+	public List<DetalleCatalogo> consultarDetalleCatalogoByCodCatalogo(Long idCatalogo) throws HiperionException;
 
 	/**
 	 * 
