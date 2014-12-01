@@ -17,7 +17,7 @@ public class Catalogo extends Auditoria implements Serializable {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="id_catalogo")
-	private Integer idCatalogo;
+	private Long idCatalogo;
 
 	@Column(name="descripcion_catalogo")
 	private String descripcionCatalogo;
@@ -29,11 +29,11 @@ public class Catalogo extends Auditoria implements Serializable {
 	public Catalogo() {
 	}
 
-	public Integer getIdCatalogo() {
+	public Long getIdCatalogo() {
 		return this.idCatalogo;
 	}
 
-	public void setIdCatalogo(Integer idCatalogo) {
+	public void setIdCatalogo(Long idCatalogo) {
 		this.idCatalogo = idCatalogo;
 	}
 
