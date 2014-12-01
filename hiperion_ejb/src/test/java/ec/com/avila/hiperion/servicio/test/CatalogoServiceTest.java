@@ -26,7 +26,7 @@ public class CatalogoServiceTest {
 	public void consultarCatalogoById() throws NamingException, HiperionException {
 		CatalogoService remoto = (CatalogoService) context
 				.lookup("ejb:/hiperion_ejb-1.0/CatalogoServiceImpl!ec.com.avila.hiperion.servicio.CatalogoService");
-		Catalogo catalogo = remoto.consultarCatalogoById(1);
+		Catalogo catalogo = remoto.consultarCatalogoById(new Long(1));
 		if (catalogo != null) {
 			System.out.println(catalogo.getDescripcionCatalogo());
 			List<DetalleCatalogo> detalles = catalogo.getDetalleCatalogos();
