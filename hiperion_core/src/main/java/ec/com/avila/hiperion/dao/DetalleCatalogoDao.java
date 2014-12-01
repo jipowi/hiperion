@@ -20,7 +20,7 @@ import ec.com.avila.hiperion.emision.entities.DetalleCatalogo;
  * @since JDK1.6
  */
 @Local
-public interface DetalleCatalogoDao {
+public interface DetalleCatalogoDao extends GenericDAO<DetalleCatalogo, Long> {
 
 	/**
 	 * 

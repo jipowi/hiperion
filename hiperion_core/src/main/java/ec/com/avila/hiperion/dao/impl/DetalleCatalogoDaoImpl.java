@@ -20,7 +20,7 @@ import ec.com.avila.hiperion.emision.entities.DetalleCatalogo;
  * @since JDK1.6
  */
 @Stateless
-public class DetalleCatalogoDaoImpl implements DetalleCatalogoDao {
+public class DetalleCatalogoDaoImpl extends GenericDAOImpl<DetalleCatalogo, Long>implements DetalleCatalogoDao {
 
 	@PersistenceContext(unitName = "sgs_pu")
 	private EntityManager em;
