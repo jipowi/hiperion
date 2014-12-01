@@ -15,7 +15,8 @@ public class UsuarioBean implements Serializable {
 
 	private String usuario;
 	private String password;
-
+	private Exception exception;
+	
 	private Usuario sessionUser;
 
 	public String getUsuario() {
@@ -47,6 +48,20 @@ public class UsuarioBean implements Serializable {
 	 */
 	public void setSessionUser(Usuario sessionUser) {
 		this.sessionUser = sessionUser;
+	}
+
+	/**
+	 * @return the exception
+	 */
+	public Exception getException() {
+		return exception;
+	}
+
+	/**
+	 * @param exception the exception to set
+	 */
+	public void setException(Exception exception) {
+		this.exception = exception;
 	}
 
 }

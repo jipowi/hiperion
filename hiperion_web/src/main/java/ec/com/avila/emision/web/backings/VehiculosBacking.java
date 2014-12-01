@@ -109,12 +109,12 @@ public class VehiculosBacking implements Serializable {
 		try {
 			ramoVehiculoService.guardarRamoVehiculo(ramoVehiculo);
 			MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.save.sOjeto"));
-
+			
 		} catch (HiperionException e) {
 			log.error("Error al momento de guardar el Ramo Vehículos", e);
 			MessagesController.addError(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.error.save"));
 			throw new HiperionException(e);
-
+			
 		}
 	}
 
@@ -157,7 +157,7 @@ public class VehiculosBacking implements Serializable {
 	public List<SelectItem> getTipoVehiculoItems() throws HiperionException {
 
 		this.tipoVehiculoItems = new ArrayList<SelectItem>();
-		Catalogo catalogo = catalogoService.consultarCatalogoById(HiperionMensajes.getInstancia().getLong(
+		Catalogo catalogo = catalogoService.consultarCatalogoById(HiperionMensajes.getInstancia().getInteger(
 				"ec.gob.avila.hiperion.recursos.catalogoTipoVehiculo"));
 		List<DetalleCatalogo> tipos = catalogo.getDetalleCatalogos();
 
@@ -190,7 +190,7 @@ public class VehiculosBacking implements Serializable {
 	public List<SelectItem> getClaseVehiculoItems() throws HiperionException {
 
 		this.claseVehiculoItems = new ArrayList<SelectItem>();
-		Catalogo catalogo = catalogoService.consultarCatalogoById(HiperionMensajes.getInstancia().getLong(
+		Catalogo catalogo = catalogoService.consultarCatalogoById(HiperionMensajes.getInstancia().getInteger(
 				"ec.gob.avila.hiperion.recursos.catalogoClaseVehiculo"));
 		List<DetalleCatalogo> clases = catalogo.getDetalleCatalogos();
 
@@ -274,7 +274,7 @@ public class VehiculosBacking implements Serializable {
 	public List<SelectItem> getUsoVehiculoItems() throws HiperionException {
 
 		this.usoVehiculoItems = new ArrayList<SelectItem>();
-		Catalogo catalogo = catalogoService.consultarCatalogoById(HiperionMensajes.getInstancia().getLong(
+		Catalogo catalogo = catalogoService.consultarCatalogoById(HiperionMensajes.getInstancia().getInteger(
 				"ec.gob.avila.hiperion.recursos.catalogoUsoVehiculo"));
 		List<DetalleCatalogo> usos = catalogo.getDetalleCatalogos();
 

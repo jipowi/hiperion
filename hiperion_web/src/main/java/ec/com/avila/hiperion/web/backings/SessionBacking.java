@@ -4,8 +4,12 @@
  */
 package ec.com.avila.hiperion.web.backings;
 
+import java.io.Serializable;
+
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+
+import ec.com.avila.hiperion.emision.entities.Usuario;
 
 /**
  * <b> Permite adminitrar la seguridad de la aplicacion </b>
@@ -16,42 +20,27 @@ import javax.faces.bean.SessionScoped;
  */
 @ManagedBean
 @SessionScoped
-public class SessionBacking {
-
-	private String cedula;
-	private String nombre;
+public class SessionBacking implements Serializable{
 
 	/**
-	 * @return the cedula
+	 * 
 	 */
-	public String getCedula() {
-		return cedula;
-	}
+	private static final long serialVersionUID = 1L;
+	private Usuario usuario;
 
 	/**
-	 * @param cedula
-	 *            the cedula to set
+	 * @return the usuario
 	 */
-	public void setCedula(String cedula) {
-		this.cedula = cedula;
+	public Usuario getUsuario() {
+		return usuario;
 	}
 
 	/**
-	 * @return the nombre
+	 * @param usuario the usuario to set
 	 */
-	public String getNombre() {
-		return nombre;
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
 	}
 
-	/**
-	 * @param nombre
-	 *            the nombre to set
-	 */
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
-	}
-
-	public void buscarUsuario(){
-		
-	}
+	
 }

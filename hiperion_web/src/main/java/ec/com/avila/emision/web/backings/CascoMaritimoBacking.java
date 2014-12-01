@@ -124,7 +124,7 @@ public class CascoMaritimoBacking implements Serializable {
 	 */
 	public List<SelectItem> getEmbarcacionItems() throws HiperionException {
 		this.embarcacionItems = new ArrayList<SelectItem>();
-		Catalogo catalogo = catalogoService.consultarCatalogoById(HiperionMensajes.getInstancia().getLong(
+		Catalogo catalogo = catalogoService.consultarCatalogoById(HiperionMensajes.getInstancia().getInteger(
 				"ec.gob.avila.hiperion.recursos.catalogoClaseEmbarcacion"));
 		List<DetalleCatalogo> embarcaciones = catalogo.getDetalleCatalogos();
 
@@ -148,7 +148,7 @@ public class CascoMaritimoBacking implements Serializable {
 	 */
 	public List<SelectItem> getZonasItems() throws HiperionException {
 		this.zonasItems = new ArrayList<SelectItem>();
-		Catalogo catalogo = catalogoService.consultarCatalogoById(HiperionMensajes.getInstancia().getLong(
+		Catalogo catalogo = catalogoService.consultarCatalogoById(HiperionMensajes.getInstancia().getInteger(
 				"ec.gob.avila.hiperion.recursos.catalogoZonaNavegacion"));
 		List<DetalleCatalogo> zonas = catalogo.getDetalleCatalogos();
 

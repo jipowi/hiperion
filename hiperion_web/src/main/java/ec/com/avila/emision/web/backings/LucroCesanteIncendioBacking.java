@@ -160,7 +160,7 @@ public class LucroCesanteIncendioBacking implements Serializable {
 	 */
 	public List<SelectItem> getFormaSeguroItems() throws HiperionException {
 		this.formaSeguroItems = new ArrayList<SelectItem>();
-		Catalogo catalogo = catalogoService.consultarCatalogoById(HiperionMensajes.getInstancia().getLong(
+		Catalogo catalogo = catalogoService.consultarCatalogoById(HiperionMensajes.getInstancia().getInteger(
 				"ec.gob.avila.hiperion.recursos.catalogoFormaSeguro"));
 		List<DetalleCatalogo> formasSeguro = catalogo.getDetalleCatalogos();
 

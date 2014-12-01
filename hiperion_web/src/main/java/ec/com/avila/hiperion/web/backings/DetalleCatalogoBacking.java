@@ -88,9 +88,9 @@ public class DetalleCatalogoBacking implements Serializable {
 	 * 
 	 */
 	public void selectCatalogo() throws HiperionException {
-		Long codigoCatalogo = Long.parseLong(detalleCatalogoBean.getCodigoCatalogo().toString());
+		Integer codigoCatalogo = detalleCatalogoBean.getCodigoCatalogo();
 		catalogo = catalogoService.consultarCatalogoById(codigoCatalogo);
-		detallesCatalogo = detalleCatalogoService.consultarDetalleCatalogoByCodCatalogo(Integer.parseInt(codigoCatalogo.toString()));
+		detallesCatalogo = detalleCatalogoService.consultarDetalleCatalogoByCodCatalogo(codigoCatalogo);
 		if (detallesCatalogo != null) {
 			setDetallesCatalogo(detallesCatalogo);
 			setActivarDetCatalogoPanel(true);

@@ -69,7 +69,8 @@ public class PolizaBacking implements Serializable {
 	 */
 	public List<SelectItem> getFormasPagoItems() throws HiperionException {
 		this.formasPagoItems = new ArrayList<SelectItem>();
-		Catalogo catalogo = catalogoService.consultarCatalogoById(new Long(5));
+		// Busqueda por el Codigo de Formas de Pago (5)
+		Catalogo catalogo = catalogoService.consultarCatalogoById(5);
 		List<DetalleCatalogo> formasPago = catalogo.getDetalleCatalogos();
 		for (DetalleCatalogo detalle : formasPago) {
 			SelectItem selectItem = new SelectItem(detalle.getCodDetalleCatalogo(), detalle.getDescDetCatalogo());
@@ -91,7 +92,7 @@ public class PolizaBacking implements Serializable {
 	 */
 	public List<SelectItem> getTarjetasCreditoItems() throws HiperionException {
 		this.tarjetasCreditoItems = new ArrayList<SelectItem>();
-		Catalogo catalogo = catalogoService.consultarCatalogoById(new Long(7));
+		Catalogo catalogo = catalogoService.consultarCatalogoById(7);
 		List<DetalleCatalogo> formasPago = catalogo.getDetalleCatalogos();
 		for (DetalleCatalogo detalle : formasPago) {
 			SelectItem selectItem = new SelectItem(detalle.getCodDetalleCatalogo(), detalle.getDescDetCatalogo());
@@ -113,8 +114,7 @@ public class PolizaBacking implements Serializable {
 	 */
 	public List<SelectItem> getRamosItems() throws HiperionException {
 		this.ramosItems = new ArrayList<SelectItem>();
-		Long idCatalogo = Long.parseLong(HiperionMensajes.getInstancia().getInteger("ec.gob.avila.hiperion.recursos.catalogoFormasPago").toString());
-		Catalogo catalogo = catalogoService.consultarCatalogoById(idCatalogo);
+		Catalogo catalogo = catalogoService.consultarCatalogoById(4);
 		List<DetalleCatalogo> ramos = catalogo.getDetalleCatalogos();
 		for (DetalleCatalogo detalle : ramos) {
 			SelectItem selectItem = new SelectItem(detalle.getCodDetalleCatalogo(), detalle.getDescDetCatalogo());
@@ -136,6 +136,13 @@ public class PolizaBacking implements Serializable {
 	 */
 	public List<SelectItem> getUsuariosItems() throws HiperionException {
 		this.usuariosItems = new ArrayList<SelectItem>();
+		// List<Usuario> usuarios = usuarioService.consultarUsuarios();
+		// for (Usuario usuario : usuarios) {
+		// SelectItem selectItem = new SelectItem(usuario.getNombreUsuario(), usuario.getPersona().getNombre() + " "
+		// + usuario.getPersona().getApellidoPaterno());
+		// usuariosItems.add(selectItem);
+		// }
+
 		return usuariosItems;
 	}
 
@@ -151,9 +158,9 @@ public class PolizaBacking implements Serializable {
 	 */
 	public List<SelectItem> getDerechosEmisionItems() throws HiperionException {
 		this.derechosEmisionItems = new ArrayList<SelectItem>();
-		Long idCatalogo = Long.parseLong(HiperionMensajes.getInstancia().getInteger("ec.gob.avila.hiperion.recursos.catalogoDerechosEmision")
-				.toString());
-		Catalogo catalogo = catalogoService.consultarCatalogoById(idCatalogo);
+		// Busqueda por el Codigo de Derechos de Emision (4)
+		Catalogo catalogo = catalogoService.consultarCatalogoById(HiperionMensajes.getInstancia().getInteger(
+				"ec.gob.avila.hiperion.recursos.catalogoDerechosEmision"));
 		List<DetalleCatalogo> derechosEmision = catalogo.getDetalleCatalogos();
 		for (DetalleCatalogo detalle : derechosEmision) {
 			SelectItem selectItem = new SelectItem(detalle.getCodDetalleCatalogo(), detalle.getDescDetCatalogo());

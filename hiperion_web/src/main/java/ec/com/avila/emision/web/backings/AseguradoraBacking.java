@@ -192,9 +192,8 @@ public class AseguradoraBacking implements Serializable {
 
 		this.aseguradorasItems = new ArrayList<SelectItem>();
 
-		Long idCatalogo = Long
-				.parseLong(HiperionMensajes.getInstancia().getInteger("ec.gob.avila.hiperion.recursos.catalogoAseguradoras").toString());
-		Catalogo catalogo = catalogoService.consultarCatalogoById(idCatalogo);
+		Catalogo catalogo = catalogoService.consultarCatalogoById(HiperionMensajes.getInstancia().getInteger(
+				"ec.gob.avila.hiperion.recursos.catalogoAseguradoras"));
 
 		List<DetalleCatalogo> aseguradoras = catalogo.getDetalleCatalogos();
 

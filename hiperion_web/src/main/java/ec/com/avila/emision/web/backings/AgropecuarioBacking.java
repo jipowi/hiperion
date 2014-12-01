@@ -279,8 +279,8 @@ public class AgropecuarioBacking implements Serializable {
 	public List<SelectItem> getSexoItems() throws HiperionException {
 
 		this.sexoItems = new ArrayList<SelectItem>();
-		Long idCatalogo = Long.parseLong(HiperionMensajes.getInstancia().getInteger("ec.gob.avila.hiperion.recursos.catalogoSexo").toString());
-		Catalogo catalogo = catalogoService.consultarCatalogoById(idCatalogo);
+		Catalogo catalogo = catalogoService.consultarCatalogoById(HiperionMensajes.getInstancia().getInteger(
+				"ec.gob.avila.hiperion.recursos.catalogoSexo"));
 		List<DetalleCatalogo> sexos = catalogo.getDetalleCatalogos();
 
 		for (DetalleCatalogo detalle : sexos) {

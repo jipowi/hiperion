@@ -194,7 +194,7 @@ public class FidelidadBacking implements Serializable {
 	public List<SelectItem> getSectorItems() throws HiperionException {
 
 		this.sectorItems = new ArrayList<SelectItem>();
-		Catalogo catalogo = catalogoService.consultarCatalogoById(HiperionMensajes.getInstancia().getLong(
+		Catalogo catalogo = catalogoService.consultarCatalogoById(HiperionMensajes.getInstancia().getInteger(
 				"ec.gob.avila.hiperion.recursos.catalogoSector"));
 		List<DetalleCatalogo> sectores = catalogo.getDetalleCatalogos();
 
@@ -218,7 +218,7 @@ public class FidelidadBacking implements Serializable {
 	 */
 	public List<SelectItem> getModalidadItems() throws HiperionException {
 		this.modalidadItems = new ArrayList<SelectItem>();
-		Catalogo catalogo = catalogoService.consultarCatalogoById(HiperionMensajes.getInstancia().getLong(
+		Catalogo catalogo = catalogoService.consultarCatalogoById(HiperionMensajes.getInstancia().getInteger(
 				"ec.gob.avila.hiperion.recursos.catalogoModalidadFidelidad"));
 		List<DetalleCatalogo> modalidades = catalogo.getDetalleCatalogos();
 

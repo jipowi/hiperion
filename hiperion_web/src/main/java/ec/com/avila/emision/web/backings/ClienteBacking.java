@@ -118,7 +118,7 @@ public class ClienteBacking implements Serializable {
 	 */
 	public List<SelectItem> getTipoPersonaItems() throws HiperionException {
 		this.tipoPersonaItems = new ArrayList<SelectItem>();
-		Catalogo catalogo = catalogoService.consultarCatalogoById(new Long(1));
+		Catalogo catalogo = catalogoService.consultarCatalogoById(1);
 		List<DetalleCatalogo> tiposPersona = catalogo.getDetalleCatalogos();
 
 		for (DetalleCatalogo detalle : tiposPersona) {
@@ -141,7 +141,7 @@ public class ClienteBacking implements Serializable {
 	public List<SelectItem> obtenerTipoIdentificacionNattural() {
 		try {
 			this.tipoIdentificacionItems = new ArrayList<SelectItem>();
-			Catalogo catalogo = catalogoService.consultarCatalogoById(new Long(2));
+			Catalogo catalogo = catalogoService.consultarCatalogoById(2);
 			List<DetalleCatalogo> tiposPersona = catalogo.getDetalleCatalogos();
 
 			for (DetalleCatalogo detalle : tiposPersona) {
@@ -167,7 +167,7 @@ public class ClienteBacking implements Serializable {
 	public List<SelectItem> obtenerTipoIdentificacionJuridica() {
 		try {
 			this.tipoIdentificacionItems = new ArrayList<SelectItem>();
-			Catalogo catalogo = catalogoService.consultarCatalogoById(new Long(2));
+			Catalogo catalogo = catalogoService.consultarCatalogoById(2);
 			List<DetalleCatalogo> tiposPersona = catalogo.getDetalleCatalogos();
 			for (DetalleCatalogo detalle : tiposPersona) {
 				if (detalle.getDescDetCatalogo().equals("RUC")) {
