@@ -29,7 +29,7 @@ public class DetalleCatalogoDaoImpl extends GenericDAOImpl<DetalleCatalogo, Long
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<DetalleCatalogo> consultarDetalleCatalogoByCodCatalogo(Integer idCatalogo) {
+	public List<DetalleCatalogo> consultarDetalleCatalogoByCodCatalogo(Long idCatalogo) {
 		Query query = em.createNamedQuery("DetalleCatalogo.findByCodCatalogo");
 		query.setParameter("idCatalogo", idCatalogo);
 		List<DetalleCatalogo> detalleCatalogo = query.getResultList();
