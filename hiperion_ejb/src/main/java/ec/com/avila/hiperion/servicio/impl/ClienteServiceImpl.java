@@ -13,10 +13,9 @@ import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.dao.ClienteDao;
 import ec.com.avila.hiperion.emision.entities.Cliente;
 import ec.com.avila.hiperion.servicio.ClienteService;
-import ec.com.avila.hiperion.servicio.ClienteServiceRemote;
 
 @Stateless
-public class ClienteServiceImpl implements ClienteService, ClienteServiceRemote {
+public class ClienteServiceImpl implements ClienteService {
 
 	@EJB
 	private ClienteDao clienteDao;

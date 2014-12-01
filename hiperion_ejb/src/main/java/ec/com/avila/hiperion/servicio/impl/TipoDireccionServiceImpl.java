@@ -12,7 +12,6 @@ import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.dao.TipoDireccionDao;
 import ec.com.avila.hiperion.emision.entities.TipoDireccion;
 import ec.com.avila.hiperion.servicio.TipoDireccionService;
-import ec.com.avila.hiperion.servicio.TipoDireccionServiceRemote;
 
 /**
  * <b> Incluir aqui la descripcion de la clase. </b>
@@ -22,7 +21,7 @@ import ec.com.avila.hiperion.servicio.TipoDireccionServiceRemote;
  * @since JDK1.6
  */
 @Stateless
-public class TipoDireccionServiceImpl implements TipoDireccionService, TipoDireccionServiceRemote {
+public class TipoDireccionServiceImpl implements TipoDireccionService {
 
 	@EJB
 	private TipoDireccionDao tipoDireccionDao;

@@ -13,10 +13,9 @@ import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.dao.DetalleCatalogoDao;
 import ec.com.avila.hiperion.emision.entities.DetalleCatalogo;
 import ec.com.avila.hiperion.servicio.DetalleCatalogoService;
-import ec.com.avila.hiperion.servicio.DetalleCatalogoServiceRemote;
 
 @Stateless
-public class DetalleCatalogoServiceImpl implements DetalleCatalogoService, DetalleCatalogoServiceRemote {
+public class DetalleCatalogoServiceImpl implements DetalleCatalogoService {
 
 	@EJB
 	private DetalleCatalogoDao detalleCatalgoDao;
@@ -45,7 +44,9 @@ public class DetalleCatalogoServiceImpl implements DetalleCatalogoService, Detal
 
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see ec.com.avila.hiperion.servicio.DetalleCatalogoServiceRemote#consultarDetalleCatalogoByCodDetalle(java.lang.Integer, java.lang.Integer)
 	 */
 	@Override
@@ -53,13 +54,14 @@ public class DetalleCatalogoServiceImpl implements DetalleCatalogoService, Detal
 		return detalleCatalgoDao.consultarDetalleCatalogoByCodDetalle(codDepCatalogo, idCatalogo);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see ec.com.avila.hiperion.servicio.DetalleCatalogoService#consultarDetalleByCatalogoAndDetalle(java.lang.Integer, java.lang.Integer)
 	 */
 	@Override
 	public DetalleCatalogo consultarDetalleByCatalogoAndDetalle(Integer codCatalogo, Integer codDetCalogo) throws HiperionException {
 		return detalleCatalgoDao.consultarDetalleByCatalogoAndDetalle(codCatalogo, codDetCalogo);
 	}
-	
-	
+
 }

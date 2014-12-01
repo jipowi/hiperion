@@ -13,7 +13,6 @@ import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.dao.PolizaDao;
 import ec.com.avila.hiperion.emision.entities.Poliza;
 import ec.com.avila.hiperion.servicio.PolizaService;
-import ec.com.avila.hiperion.servicio.PolizaServiceRemote;
 
 /**
  * <b> Servicio que implementa las operaciones sobre la tabla Poliza </b>
@@ -23,7 +22,7 @@ import ec.com.avila.hiperion.servicio.PolizaServiceRemote;
  * @since JDK1.6
  */
 @Stateless
-public class PolizaServiceImpl implements PolizaService, PolizaServiceRemote {
+public class PolizaServiceImpl implements PolizaService {
 
 	@EJB
 	private PolizaDao polizaDao;

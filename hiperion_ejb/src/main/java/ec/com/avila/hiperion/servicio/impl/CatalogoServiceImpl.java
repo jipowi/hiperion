@@ -13,10 +13,9 @@ import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.dao.CatalogoDao;
 import ec.com.avila.hiperion.emision.entities.Catalogo;
 import ec.com.avila.hiperion.servicio.CatalogoService;
-import ec.com.avila.hiperion.servicio.CatalogoServiceRemote;
 
 @Stateless
-public class CatalogoServiceImpl implements CatalogoService, CatalogoServiceRemote {
+public class CatalogoServiceImpl implements CatalogoService {
 
 	// @EJB(lookup =
 	// "java:global/hiperion_core-1.0/CatalogoDaoImpl!ec.com.avila.hiperion.dao.CatalogoDao")

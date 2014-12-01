@@ -13,10 +13,9 @@ import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.dao.ProvinciaDao;
 import ec.com.avila.hiperion.emision.entities.Provincia;
 import ec.com.avila.hiperion.servicio.ProvinciaService;
-import ec.com.avila.hiperion.servicio.ProvinciaServiceRemote;
 
 @Stateless
-public class ProvinciaServiceImpl implements ProvinciaService, ProvinciaServiceRemote {
+public class ProvinciaServiceImpl implements ProvinciaService {
 
 	@EJB
 	private ProvinciaDao provinciaDao;

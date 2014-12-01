@@ -14,7 +14,6 @@ import ec.com.avila.hiperion.dao.AseguradoraDao;
 import ec.com.avila.hiperion.emision.entities.Aseguradora;
 import ec.com.avila.hiperion.emision.entities.Persona;
 import ec.com.avila.hiperion.servicio.AseguradoraService;
-import ec.com.avila.hiperion.servicio.AseguradoraServiceRemote;
 
 /**
  * <b>Implementacion del servicio de aseguradora</b>
@@ -24,7 +23,7 @@ import ec.com.avila.hiperion.servicio.AseguradoraServiceRemote;
  * @since JDK1.6
  */
 @Stateless
-public class AseguradoraServiceImpl implements AseguradoraService, AseguradoraServiceRemote {
+public class AseguradoraServiceImpl implements AseguradoraService {
 
 	@EJB
 	private AseguradoraDao aseguradoraDao;

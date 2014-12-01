@@ -13,10 +13,9 @@ import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.dao.PersonaDao;
 import ec.com.avila.hiperion.emision.entities.Persona;
 import ec.com.avila.hiperion.servicio.PersonaService;
-import ec.com.avila.hiperion.servicio.PersonaServiceRemote;
 
 @Stateless
-public class PersonaServiceImpl implements PersonaService, PersonaServiceRemote {
+public class PersonaServiceImpl implements PersonaService {
 
 	// @EJB(lookup = "java:global/hiperion_core-1.0/PersonaDaoImpl!ec.com.avila.hiperion.dao.PersonaDao")
 	@EJB

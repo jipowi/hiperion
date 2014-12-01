@@ -9,10 +9,9 @@ import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.dao.UsuarioDao;
 import ec.com.avila.hiperion.emision.entities.Usuario;
 import ec.com.avila.hiperion.servicio.UsuarioService;
-import ec.com.avila.hiperion.servicio.UsuarioServiceRemote;
 
 @Stateless
-public class UsuarioServiceImpl implements UsuarioService, UsuarioServiceRemote {
+public class UsuarioServiceImpl implements UsuarioService {
 
 	// @EJB(lookup =
 	// "java:global/hiperion_core-1.0/UsuarioDaoImpl!ec.com.avila.hiperion.dao.UsuarioDao")

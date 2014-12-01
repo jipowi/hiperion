@@ -13,10 +13,9 @@ import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.dao.CantonDao;
 import ec.com.avila.hiperion.emision.entities.Canton;
 import ec.com.avila.hiperion.servicio.CantonService;
-import ec.com.avila.hiperion.servicio.CantonServiceRemote;
 
 @Stateless
-public class CantonServiceImpl implements CantonService, CantonServiceRemote {
+public class CantonServiceImpl implements CantonService {
 
 	@EJB
 	private CantonDao cantonDao;
