@@ -15,21 +15,20 @@ import ec.com.avila.hiperion.dao.RamoIncendioLineasAliadaDao;
 import ec.com.avila.hiperion.emision.entities.ObjAsegIncendio;
 import ec.com.avila.hiperion.emision.entities.RamoIncendioLineasAliada;
 import ec.com.avila.hiperion.servicio.RamoIncendioLineasAliadaService;
-import ec.com.avila.hiperion.servicio.RamoIncendioLineasAliadaServiceRemote;
 
 /**
  * <b> Incluir aqui la descripcion de la clase. </b>
  * 
- * @author Avila Sistemas
+ * @author Franklin Pozo
  * @version 1.0,10/08/2014
  * @since JDK1.6
  */
 @Stateless
-public class RamoIncendioLineasAliadaServiceImpl implements RamoIncendioLineasAliadaService, RamoIncendioLineasAliadaServiceRemote {
+public class RamoIncendioLineasAliadaServiceImpl implements RamoIncendioLineasAliadaService {
 
 	@EJB
 	private RamoIncendioLineasAliadaDao ramoIncendioLineasAliadaDao;
-	
+
 	@EJB
 	private ObjAsegIncendioLineasAliadasDao incendioLineasAliadasDao;
 
@@ -41,7 +40,7 @@ public class RamoIncendioLineasAliadaServiceImpl implements RamoIncendioLineasAl
 	@Override
 	public void guardarRamoIncendioLineasAliada(RamoIncendioLineasAliada ramoIncendioLineasAliada) throws HiperionException {
 		ramoIncendioLineasAliadaDao.persist(ramoIncendioLineasAliada);
-		for(ObjAsegIncendio objeto : ramoIncendioLineasAliada.getObjAsegIncendios()){
+		for (ObjAsegIncendio objeto : ramoIncendioLineasAliada.getObjAsegIncendios()) {
 			incendioLineasAliadasDao.persist(objeto);
 		}
 

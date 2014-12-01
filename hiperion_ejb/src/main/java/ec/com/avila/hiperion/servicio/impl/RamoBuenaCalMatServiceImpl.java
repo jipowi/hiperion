@@ -13,7 +13,6 @@ import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.dao.RamoBuenaCalMatDao;
 import ec.com.avila.hiperion.emision.entities.RamoBuenaCalMat;
 import ec.com.avila.hiperion.servicio.RamoBuenaCalMatService;
-import ec.com.avila.hiperion.servicio.RamoBuenaCalMatServiceRemote;
 
 /**
  * <b> Incluir aqui la descripcion de la clase. </b>
@@ -23,7 +22,7 @@ import ec.com.avila.hiperion.servicio.RamoBuenaCalMatServiceRemote;
  * @since JDK1.6
  */
 @Stateless
-public class RamoBuenaCalMatServiceImpl implements RamoBuenaCalMatService, RamoBuenaCalMatServiceRemote {
+public class RamoBuenaCalMatServiceImpl implements RamoBuenaCalMatService{
 
 	@EJB
 	private RamoBuenaCalMatDao ramoBuenaCalMatDao;

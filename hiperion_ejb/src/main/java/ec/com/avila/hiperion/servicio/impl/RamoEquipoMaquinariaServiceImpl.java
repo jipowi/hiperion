@@ -15,7 +15,6 @@ import ec.com.avila.hiperion.dao.RamoEquipoMaquinariaDao;
 import ec.com.avila.hiperion.emision.entities.ObjAsegEquipoMaq;
 import ec.com.avila.hiperion.emision.entities.RamoEquipoMaquinaria;
 import ec.com.avila.hiperion.servicio.RamoEquipoMaquinariaService;
-import ec.com.avila.hiperion.servicio.RamoEquipoMaquinariaServiceRemote;
 
 /**
  * <b> Incluir aqui la descripcion de la clase. </b>
@@ -25,7 +24,7 @@ import ec.com.avila.hiperion.servicio.RamoEquipoMaquinariaServiceRemote;
  * @since JDK1.6
  */
 @Stateless
-public class RamoEquipoMaquinariaServiceImpl implements RamoEquipoMaquinariaService, RamoEquipoMaquinariaServiceRemote {
+public class RamoEquipoMaquinariaServiceImpl implements RamoEquipoMaquinariaService {
 
 	@EJB
 	private ObjAsegEquipoMaquinariaDao asegEquipoMaquinariaDao;
@@ -34,7 +33,7 @@ public class RamoEquipoMaquinariaServiceImpl implements RamoEquipoMaquinariaServ
 
 	public void guardarRamoEquipoMaquinaria(RamoEquipoMaquinaria ramoEquipoMaquinaria) throws HiperionException {
 		ramoEquipoMaquinariaDao.persist(ramoEquipoMaquinaria);
-		for(ObjAsegEquipoMaq objeto : ramoEquipoMaquinaria.getObjAsegEquipoMaqs() ){
+		for (ObjAsegEquipoMaq objeto : ramoEquipoMaquinaria.getObjAsegEquipoMaqs()) {
 			asegEquipoMaquinariaDao.persist(objeto);
 		}
 	}

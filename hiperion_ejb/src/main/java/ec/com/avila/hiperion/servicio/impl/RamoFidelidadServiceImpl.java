@@ -13,7 +13,6 @@ import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.dao.RamoFidelidadDao;
 import ec.com.avila.hiperion.emision.entities.RamoFidelidad;
 import ec.com.avila.hiperion.servicio.RamoFidelidadService;
-import ec.com.avila.hiperion.servicio.RamoFidelidadServiceRemote;
 
 /**
  * <b> Incluir aqui la descripcion de la clase. </b>
@@ -23,7 +22,7 @@ import ec.com.avila.hiperion.servicio.RamoFidelidadServiceRemote;
  * @since JDK1.6
  */
 @Stateless
-public class RamoFidelidadServiceImpl implements RamoFidelidadService, RamoFidelidadServiceRemote {
+public class RamoFidelidadServiceImpl implements RamoFidelidadService {
 
 	@EJB
 	private RamoFidelidadDao ramoFidelidadDao;

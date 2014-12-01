@@ -15,7 +15,6 @@ import ec.com.avila.hiperion.dao.RamoDineroValoreDao;
 import ec.com.avila.hiperion.emision.entities.ObjAsegDineroVal;
 import ec.com.avila.hiperion.emision.entities.RamoDineroValore;
 import ec.com.avila.hiperion.servicio.RamoDineroValoreService;
-import ec.com.avila.hiperion.servicio.RamoDineroValoreServiceRemote;
 
 /**
  * <b> Incluir aqui la descripcion de la clase. </b>
@@ -25,7 +24,7 @@ import ec.com.avila.hiperion.servicio.RamoDineroValoreServiceRemote;
  * @since JDK1.6
  */
 @Stateless
-public class RamoDineroValoreServiceImpl implements RamoDineroValoreService, RamoDineroValoreServiceRemote {
+public class RamoDineroValoreServiceImpl implements RamoDineroValoreService {
 
 	@EJB
 	private RamoDineroValoreDao ramoDineroValoreDao;

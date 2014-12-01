@@ -13,7 +13,6 @@ import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.dao.RamoGarantiaAduaneraDao;
 import ec.com.avila.hiperion.emision.entities.RamoGarantiaAduanera;
 import ec.com.avila.hiperion.servicio.RamoGarantiaAduaneraService;
-import ec.com.avila.hiperion.servicio.RamoGarantiaAduaneraServiceRemote;
 
 /**
  * <b> Incluir aqui la descripcion de la clase. </b>
@@ -23,7 +22,7 @@ import ec.com.avila.hiperion.servicio.RamoGarantiaAduaneraServiceRemote;
  * @since JDK1.6
  */
 @Stateless
-public class RamoGarantiaAduaneraServiceImpl implements RamoGarantiaAduaneraService, RamoGarantiaAduaneraServiceRemote {
+public class RamoGarantiaAduaneraServiceImpl implements RamoGarantiaAduaneraService {
 
 	@EJB
 	private RamoGarantiaAduaneraDao ramoGarantiaAduaneraDao;

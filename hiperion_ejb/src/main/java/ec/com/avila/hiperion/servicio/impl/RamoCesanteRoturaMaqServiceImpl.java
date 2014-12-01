@@ -15,7 +15,6 @@ import ec.com.avila.hiperion.dao.RamoCesanteRoturaMaqDao;
 import ec.com.avila.hiperion.emision.entities.ObjAsegLcRotMaq;
 import ec.com.avila.hiperion.emision.entities.RamoLcRotMaq;
 import ec.com.avila.hiperion.servicio.RamoCesanteRoturaMaqService;
-import ec.com.avila.hiperion.servicio.RamoCesanteRoturaMaqServiceRemote;
 
 /**
  * <b> Incluir aqui la descripcion de la clase. </b>
@@ -25,17 +24,17 @@ import ec.com.avila.hiperion.servicio.RamoCesanteRoturaMaqServiceRemote;
  * @since JDK1.6
  */
 @Stateless
-public class RamoCesanteRoturaMaqServiceImpl implements RamoCesanteRoturaMaqService, RamoCesanteRoturaMaqServiceRemote {
+public class RamoCesanteRoturaMaqServiceImpl implements RamoCesanteRoturaMaqService {
 
 	@EJB
 	private RamoCesanteRoturaMaqDao ramoCesanteRoturaMaqDao;
-	
+
 	@EJB
 	private ObjAsegLcRoturaMaquinariaDao asegLcRoturaMaquinariaDao;
 
 	public void guardarRamoCesanteRoturaMaq(RamoLcRotMaq ramoCesanteRoturaMaq) throws HiperionException {
 		ramoCesanteRoturaMaqDao.persist(ramoCesanteRoturaMaq);
-		for(ObjAsegLcRotMaq objeto : ramoCesanteRoturaMaq.getObjAsegLcRotMaqs()){
+		for (ObjAsegLcRotMaq objeto : ramoCesanteRoturaMaq.getObjAsegLcRotMaqs()) {
 			asegLcRoturaMaquinariaDao.persist(objeto);
 		}
 	}

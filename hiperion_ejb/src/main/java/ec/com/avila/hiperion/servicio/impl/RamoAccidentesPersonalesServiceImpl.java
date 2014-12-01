@@ -13,7 +13,6 @@ import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.dao.RamoAccidentesPersonalesDao;
 import ec.com.avila.hiperion.emision.entities.RamoAccidentesPersonale;
 import ec.com.avila.hiperion.servicio.RamoAccidentesPersonalesService;
-import ec.com.avila.hiperion.servicio.RamoAccidentesPersonalesServiceRemote;
 
 /**
  * <b> Incluir aqui la descripcion de la clase. </b>
@@ -23,7 +22,7 @@ import ec.com.avila.hiperion.servicio.RamoAccidentesPersonalesServiceRemote;
  * @since JDK1.6
  */
 @Stateless
-public class RamoAccidentesPersonalesServiceImpl implements RamoAccidentesPersonalesService, RamoAccidentesPersonalesServiceRemote {
+public class RamoAccidentesPersonalesServiceImpl implements RamoAccidentesPersonalesService {
 
 	@EJB
 	private RamoAccidentesPersonalesDao ramoAccidentesPersonalesDao;

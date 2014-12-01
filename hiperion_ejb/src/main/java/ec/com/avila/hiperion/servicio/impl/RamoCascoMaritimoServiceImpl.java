@@ -13,7 +13,6 @@ import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.dao.RamoCascoMaritimoDao;
 import ec.com.avila.hiperion.emision.entities.RamoCascoMaritimo;
 import ec.com.avila.hiperion.servicio.RamoCascoMaritimoService;
-import ec.com.avila.hiperion.servicio.RamoCascoMaritimoServiceRemote;
 
 /**
  * <b>Permite implementar los operaciones que se realizan sobre la tabla RamoCascoMaritimo</b>
@@ -23,7 +22,7 @@ import ec.com.avila.hiperion.servicio.RamoCascoMaritimoServiceRemote;
  * @since JDK1.6
  */
 @Stateless
-public class RamoCascoMaritimoServiceImpl implements RamoCascoMaritimoService, RamoCascoMaritimoServiceRemote {
+public class RamoCascoMaritimoServiceImpl implements RamoCascoMaritimoService {
 
 	@EJB
 	private RamoCascoMaritimoDao ramoCascoMaritimoDao;

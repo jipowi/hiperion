@@ -15,7 +15,6 @@ import ec.com.avila.hiperion.dao.RamoEquipoElectronicoDao;
 import ec.com.avila.hiperion.emision.entities.ObjAsegEquipo;
 import ec.com.avila.hiperion.emision.entities.RamoEquipoElectronico;
 import ec.com.avila.hiperion.servicio.RamoEquipoElectronicoService;
-import ec.com.avila.hiperion.servicio.RamoEquipoElectronicoServiceRemote;
 
 /**
  * <b>Permite implementar las operaciones necesarias de la tabla RamoEquipoElectronico </b>
@@ -25,7 +24,7 @@ import ec.com.avila.hiperion.servicio.RamoEquipoElectronicoServiceRemote;
  * @since JDK1.6
  */
 @Stateless
-public class RamoEquipoElectronicoServiceImpl implements RamoEquipoElectronicoService, RamoEquipoElectronicoServiceRemote {
+public class RamoEquipoElectronicoServiceImpl implements RamoEquipoElectronicoService {
 
 	@EJB
 	private RamoEquipoElectronicoDao ramoEquipoElectronicoDao;

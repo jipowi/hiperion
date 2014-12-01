@@ -15,7 +15,6 @@ import ec.com.avila.hiperion.dao.RamoRoturaMaquinariaDao;
 import ec.com.avila.hiperion.emision.entities.ObjAsegRotura;
 import ec.com.avila.hiperion.emision.entities.RamoRoturaMaquinaria;
 import ec.com.avila.hiperion.servicio.RamoRoturaMaquinariaService;
-import ec.com.avila.hiperion.servicio.RamoRoturaMaquinariaServiceRemote;
 
 /**
  * <b> Incluir aqui la descripcion de la clase. </b>
@@ -25,7 +24,7 @@ import ec.com.avila.hiperion.servicio.RamoRoturaMaquinariaServiceRemote;
  * @since JDK1.6
  */
 @Stateless
-public class RamoRoturaMaquinariaServiceImpl implements RamoRoturaMaquinariaService, RamoRoturaMaquinariaServiceRemote {
+public class RamoRoturaMaquinariaServiceImpl implements RamoRoturaMaquinariaService {
 
 	@EJB
 	private RamoRoturaMaquinariaDao ramoRoturaMaquinariaDao;

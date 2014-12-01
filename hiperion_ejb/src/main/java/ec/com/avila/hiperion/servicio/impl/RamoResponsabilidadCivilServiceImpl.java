@@ -14,7 +14,6 @@ import ec.com.avila.hiperion.dao.RamoResponsabilidadCivilDao;
 import ec.com.avila.hiperion.emision.entities.ObjAsegResponsabilidad;
 import ec.com.avila.hiperion.emision.entities.RamoResponsabilidadCivil;
 import ec.com.avila.hiperion.servicio.RamoResponsabilidadCivilService;
-import ec.com.avila.hiperion.servicio.RamoResponsabilidadCivilServiceRemote;
 
 /**
  * <b> Permite implementar las operaciones necesarias para el ramo de responsabilidad civil </b>
@@ -24,7 +23,7 @@ import ec.com.avila.hiperion.servicio.RamoResponsabilidadCivilServiceRemote;
  * @since JDK1.6
  */
 @Stateless
-public class RamoResponsabilidadCivilServiceImpl implements RamoResponsabilidadCivilService, RamoResponsabilidadCivilServiceRemote {
+public class RamoResponsabilidadCivilServiceImpl implements RamoResponsabilidadCivilService {
 
 	@EJB
 	private RamoResponsabilidadCivilDao ramoResponsabilidadCivilDao;

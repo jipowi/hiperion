@@ -14,7 +14,6 @@ import ec.com.avila.hiperion.dao.RamoRiesgoMontajeDao;
 import ec.com.avila.hiperion.emision.entities.ObjAsegMontaje;
 import ec.com.avila.hiperion.emision.entities.RamoRiesgoMontaje;
 import ec.com.avila.hiperion.servicio.RamoRiesgoMontajeService;
-import ec.com.avila.hiperion.servicio.RamoRiesgoMontajeServiceRemote;
 
 /**
  * <b> Servicio que implmenta las operaciones sobre la tabla RamoRiesgoMontaje </b>
@@ -24,7 +23,7 @@ import ec.com.avila.hiperion.servicio.RamoRiesgoMontajeServiceRemote;
  * @since JDK1.6
  */
 @Stateless
-public class RamoRiesgoMontajeServiceImpl implements RamoRiesgoMontajeService, RamoRiesgoMontajeServiceRemote {
+public class RamoRiesgoMontajeServiceImpl implements RamoRiesgoMontajeService {
 
 	@EJB
 	private RamoRiesgoMontajeDao ramoRiesgoMontajeDao;

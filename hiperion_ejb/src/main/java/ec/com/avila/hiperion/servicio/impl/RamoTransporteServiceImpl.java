@@ -15,7 +15,6 @@ import ec.com.avila.hiperion.dao.RamoTransporteDao;
 import ec.com.avila.hiperion.emision.entities.ObjAsegTransporte;
 import ec.com.avila.hiperion.emision.entities.RamoTransporte;
 import ec.com.avila.hiperion.servicio.RamoTransporteService;
-import ec.com.avila.hiperion.servicio.RamoTransporteServiceRemote;
 
 /**
  * <b> Servicio que implementa las operaciones en la tabla RamoTransporte </b>
@@ -25,7 +24,7 @@ import ec.com.avila.hiperion.servicio.RamoTransporteServiceRemote;
  * @since JDK1.6
  */
 @Stateless
-public class RamoTransporteServiceImpl implements RamoTransporteService, RamoTransporteServiceRemote {
+public class RamoTransporteServiceImpl implements RamoTransporteService {
 
 	@EJB
 	private RamoTransporteDao ramoTranspoteDao;

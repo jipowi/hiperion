@@ -13,7 +13,6 @@ import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.dao.RamoVidaDao;
 import ec.com.avila.hiperion.emision.entities.RamoVida;
 import ec.com.avila.hiperion.servicio.RamoVidaService;
-import ec.com.avila.hiperion.servicio.RamoVidaServiceRemote;
 
 /**
  * <b> Servicio que implementa las operaciones de la tabla RamoVida </b>
@@ -23,7 +22,7 @@ import ec.com.avila.hiperion.servicio.RamoVidaServiceRemote;
  * @since JDK1.6
  */
 @Stateless
-public class RamoVidaServiceImpl implements RamoVidaService, RamoVidaServiceRemote {
+public class RamoVidaServiceImpl implements RamoVidaService {
 
 	@EJB
 	private RamoVidaDao ramoVidaDao;

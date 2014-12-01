@@ -12,7 +12,6 @@ import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.dao.RamoRiesgosEspecialesDao;
 import ec.com.avila.hiperion.emision.entities.RamoRiesgosEsp;
 import ec.com.avila.hiperion.servicio.RamoRiesgosEspecialesService;
-import ec.com.avila.hiperion.servicio.RamoRiesgosEspecialesServiceRemote;
 
 /**
  * <b> Permite implementar las operaciones necesarias para el ramo de riesgos especiales </b>
@@ -22,26 +21,30 @@ import ec.com.avila.hiperion.servicio.RamoRiesgosEspecialesServiceRemote;
  * @since JDK1.6
  */
 @Stateless
-public class RamoRiesgosEspecialesServiceImpl implements RamoRiesgosEspecialesService, RamoRiesgosEspecialesServiceRemote{
+public class RamoRiesgosEspecialesServiceImpl implements RamoRiesgosEspecialesService {
 
 	@EJB
 	private RamoRiesgosEspecialesDao ramoRiesgosEspecialesDao;
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see ec.com.avila.hiperion.servicio.RamoRiesgosEspecialesService#guardarRamoRiesgosEspeciales(ec.com.avila.hiperion.emision.entities.RamoRiesgosEsp)
 	 */
 	@Override
 	public void guardarRamoRiesgosEspeciales(RamoRiesgosEsp ramoRiesgosEsp) throws HiperionException {
 		ramoRiesgosEspecialesDao.persist(ramoRiesgosEsp);
-		
+
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see ec.com.avila.hiperion.servicio.RamoRiesgosEspecialesService#consultarRamoRiesgoEspeciales()
 	 */
 	@Override
 	public List<RamoRiesgosEsp> consultarRamoRiesgoEspeciales() throws HiperionException {
-		
+
 		return ramoRiesgosEspecialesDao.findAll();
 	}
 

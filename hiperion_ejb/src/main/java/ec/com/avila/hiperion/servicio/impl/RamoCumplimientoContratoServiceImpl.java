@@ -13,7 +13,6 @@ import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.dao.RamoCumplimientoContratoDao;
 import ec.com.avila.hiperion.emision.entities.RamoCumplimientoContrato;
 import ec.com.avila.hiperion.servicio.RamoCumplimientoContratoService;
-import ec.com.avila.hiperion.servicio.RamoCumplimientoContratoServiceRemote;
 
 /**
  * <b> Incluir aqui la descripcion de la clase. </b>
@@ -23,7 +22,7 @@ import ec.com.avila.hiperion.servicio.RamoCumplimientoContratoServiceRemote;
  * @since JDK1.6
  */
 @Stateless
-public class RamoCumplimientoContratoServiceImpl implements RamoCumplimientoContratoService, RamoCumplimientoContratoServiceRemote {
+public class RamoCumplimientoContratoServiceImpl implements RamoCumplimientoContratoService {
 
 	@EJB
 	private RamoCumplimientoContratoDao ramoCumplimientoContratoDao;

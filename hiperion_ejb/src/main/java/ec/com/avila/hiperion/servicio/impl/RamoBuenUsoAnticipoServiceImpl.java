@@ -13,7 +13,6 @@ import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.dao.RamoBuenUsoAnticipoDao;
 import ec.com.avila.hiperion.emision.entities.RamoBuenUsoAnt;
 import ec.com.avila.hiperion.servicio.RamoBuenUsoAnticipoService;
-import ec.com.avila.hiperion.servicio.RamoBuenUsoAnticipoServiceRemote;
 
 /**
  * <b> Servicio que implementa las operaciones en la tabla Ramo Buen Uso Anticipo. </b>
@@ -23,7 +22,7 @@ import ec.com.avila.hiperion.servicio.RamoBuenUsoAnticipoServiceRemote;
  * @since JDK1.6
  */
 @Stateless
-public class RamoBuenUsoAnticipoServiceImpl implements RamoBuenUsoAnticipoService, RamoBuenUsoAnticipoServiceRemote {
+public class RamoBuenUsoAnticipoServiceImpl implements RamoBuenUsoAnticipoService{
 
 	@EJB
 	private RamoBuenUsoAnticipoDao ramoBuenUsoAnticipoDao;

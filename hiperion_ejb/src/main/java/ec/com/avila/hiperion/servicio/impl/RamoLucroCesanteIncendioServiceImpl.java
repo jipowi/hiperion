@@ -15,7 +15,6 @@ import ec.com.avila.hiperion.dao.RamoLucroCesanteIncendioDao;
 import ec.com.avila.hiperion.emision.entities.ObjAsegLcIn;
 import ec.com.avila.hiperion.emision.entities.RamoLcIncendio;
 import ec.com.avila.hiperion.servicio.RamoLucroCesanteIncendioService;
-import ec.com.avila.hiperion.servicio.RamoLucroCesanteIncendioServiceRemote;
 
 /**
  * <b>Servicio que implementa las operacions del DAO para acceso a la tabla RamoLucroCesanteIncendio</b>
@@ -25,17 +24,17 @@ import ec.com.avila.hiperion.servicio.RamoLucroCesanteIncendioServiceRemote;
  * @since JDK1.6
  */
 @Stateless
-public class RamoLucroCesanteIncendioServiceImpl implements RamoLucroCesanteIncendioService, RamoLucroCesanteIncendioServiceRemote {
+public class RamoLucroCesanteIncendioServiceImpl implements RamoLucroCesanteIncendioService {
 
 	@EJB
 	private RamoLucroCesanteIncendioDao ramoLucroCesanteIncendioDao;
-	
+
 	@EJB
 	private ObjAsegLcIncendioDao objAsegLcIncendioDao;
 
 	public void guardarRamoLucroCesanteIncendio(RamoLcIncendio ramoLucroCesanteIncendio) throws HiperionException {
 		ramoLucroCesanteIncendioDao.persist(ramoLucroCesanteIncendio);
-		for(ObjAsegLcIn objeto : ramoLucroCesanteIncendio.getObjAsegLcIns()){
+		for (ObjAsegLcIn objeto : ramoLucroCesanteIncendio.getObjAsegLcIns()) {
 			objAsegLcIncendioDao.persist(objeto);
 		}
 	}

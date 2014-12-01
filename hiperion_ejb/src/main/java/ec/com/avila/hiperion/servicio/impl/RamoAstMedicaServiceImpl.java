@@ -12,7 +12,6 @@ import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.dao.RamoAsistenciaMedicaDao;
 import ec.com.avila.hiperion.emision.entities.RamoAsistenciaMedica;
 import ec.com.avila.hiperion.servicio.RamoAstMedicaService;
-import ec.com.avila.hiperion.servicio.RamoAstMedicaServiceRemote;
 
 /**
  * <b> Servicio que implmenta las operaciones sobre la tabla RamoAstMedica </b>
@@ -21,7 +20,7 @@ import ec.com.avila.hiperion.servicio.RamoAstMedicaServiceRemote;
  * @version 1.0,31/12/2013
  * @since JDK1.6
  */
-public class RamoAstMedicaServiceImpl implements RamoAstMedicaService, RamoAstMedicaServiceRemote {
+public class RamoAstMedicaServiceImpl implements RamoAstMedicaService {
 
 	@EJB
 	protected RamoAsistenciaMedicaDao ramoAstMedicaDao;

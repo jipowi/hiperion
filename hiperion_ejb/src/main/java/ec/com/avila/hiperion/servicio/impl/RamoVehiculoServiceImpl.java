@@ -13,7 +13,6 @@ import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.dao.RamoVehiculoDao;
 import ec.com.avila.hiperion.emision.entities.RamoVehiculo;
 import ec.com.avila.hiperion.servicio.RamoVehiculoService;
-import ec.com.avila.hiperion.servicio.RamoVehiculoServiceRemote;
 
 /**
  * <b> Servicio que implementa las operaciones de la tabla RamoVehiculo. </b>
@@ -23,7 +22,7 @@ import ec.com.avila.hiperion.servicio.RamoVehiculoServiceRemote;
  * @since JDK1.6
  */
 @Stateless
-public class RamoVehiculoServiceImpl implements RamoVehiculoService, RamoVehiculoServiceRemote {
+public class RamoVehiculoServiceImpl implements RamoVehiculoService {
 
 	@EJB
 	private RamoVehiculoDao ramoVehiculoDao;
