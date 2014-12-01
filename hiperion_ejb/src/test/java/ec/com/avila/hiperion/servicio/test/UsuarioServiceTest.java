@@ -9,7 +9,7 @@ import org.junit.Before;
 
 import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.emision.entities.Usuario;
-import ec.com.avila.hiperion.servicio.UsuarioServiceRemote;
+import ec.com.avila.hiperion.servicio.UsuarioService;
 import ec.com.avila.hiperion.servicio.test.utilitario.ClientUtility;
 
 public class UsuarioServiceTest {
@@ -23,8 +23,8 @@ public class UsuarioServiceTest {
 
 	// @Test
 	public void consultarUsuariosTest() throws NamingException, HiperionException {
-		UsuarioServiceRemote remoto = (UsuarioServiceRemote) context
-				.lookup("ejb:/hiperion_ejb-1.0/UsuarioServicioImpl!ec.com.avila.hiperion.servicio.UsuarioServicioRemoto");
+		UsuarioService remoto = (UsuarioService) context
+				.lookup("ejb:/hiperion_ejb-1.0/UsuarioServicioImpl!ec.com.avila.hiperion.servicio.UsuarioService");
 		List<Usuario> usuarios = remoto.consultarUsuarios();
 		if (usuarios != null && usuarios.size() != 0) {
 			for (Usuario usuario : usuarios)
@@ -36,8 +36,8 @@ public class UsuarioServiceTest {
 
 //	@Test
 	public void consultarUsuarioByAliasTest() throws NamingException, HiperionException {
-		UsuarioServiceRemote remoto = (UsuarioServiceRemote) context
-				.lookup("ejb:/hiperion_ejb-1.0/UsuarioServicioImpl!ec.com.avila.hiperion.servicio.UsuarioServicioRemoto");
+		UsuarioService remoto = (UsuarioService) context
+				.lookup("ejb:/hiperion_ejb-1.0/UsuarioServicioImpl!ec.com.avila.hiperion.servicio.UsuarioService");
 		Usuario usuario = remoto.consultarUsuarioByAlias("dvinueza");
 		System.out.println(usuario);
 	}

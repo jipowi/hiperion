@@ -10,7 +10,7 @@ import org.junit.Before;
 import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.emision.entities.Catalogo;
 import ec.com.avila.hiperion.emision.entities.DetalleCatalogo;
-import ec.com.avila.hiperion.servicio.CatalogoServiceRemote;
+import ec.com.avila.hiperion.servicio.CatalogoService;
 import ec.com.avila.hiperion.servicio.test.utilitario.ClientUtility;
 
 public class CatalogoServiceTest {
@@ -24,8 +24,8 @@ public class CatalogoServiceTest {
 
 	//@Test
 	public void consultarCatalogoById() throws NamingException, HiperionException {
-		CatalogoServiceRemote remoto = (CatalogoServiceRemote) context
-				.lookup("ejb:/hiperion_ejb-1.0/CatalogoServiceImpl!ec.com.avila.hiperion.servicio.CatalogoServiceRemoto");
+		CatalogoService remoto = (CatalogoService) context
+				.lookup("ejb:/hiperion_ejb-1.0/CatalogoServiceImpl!ec.com.avila.hiperion.servicio.CatalogoService");
 		Catalogo catalogo = remoto.consultarCatalogoById(1);
 		if (catalogo != null) {
 			System.out.println(catalogo.getDescripcionCatalogo());

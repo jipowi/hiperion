@@ -9,7 +9,7 @@ import org.junit.Before;
 
 import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.emision.entities.Persona;
-import ec.com.avila.hiperion.servicio.PersonaServiceRemote;
+import ec.com.avila.hiperion.servicio.PersonaService;
 import ec.com.avila.hiperion.servicio.test.utilitario.ClientUtility;
 
 public class PersonaServiceTest {
@@ -25,7 +25,7 @@ public class PersonaServiceTest {
 	public void guardarPersonaTest() throws NamingException {
 		try {
 			Persona persona = new Persona();
-			PersonaServiceRemote remoto = (PersonaServiceRemote) context.lookup("ejb:/hiperion_ejb-1.0/PersonaServiceImpl!ec.com.avila.hiperion.servicio.PersonaServiceRemoto");
+			PersonaService remoto = (PersonaService) context.lookup("ejb:/hiperion_ejb-1.0/PersonaServiceImpl!ec.com.avila.hiperion.servicio.PersonaService");
 			remoto.guardarPersona(persona);
 		} catch (HiperionException e) {
 			e.printStackTrace();
@@ -35,7 +35,7 @@ public class PersonaServiceTest {
 	// @Test
 	public void consultarPersonas() throws NamingException {
 		try {
-			PersonaServiceRemote remoto = (PersonaServiceRemote) context.lookup("ejb:/hiperion_ejb-1.0/PersonaServiceImpl!ec.com.avila.hiperion.servicio.PersonaServiceRemoto");
+			PersonaService remoto = (PersonaService) context.lookup("ejb:/hiperion_ejb-1.0/PersonaServiceImpl!ec.com.avila.hiperion.servicio.PersonaService");
 			List<Persona> personas;
 
 			personas = remoto.consultarPersonas();
