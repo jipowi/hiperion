@@ -46,13 +46,25 @@ public interface CatalogoService {
 	 * @throws HiperionException
 	 */
 
-	public Catalogo consultarCatalogoById(Integer idCatalogo) throws HiperionException;
+	public Catalogo consultarCatalogoById(Long idCatalogo) throws HiperionException;
 
 	/**
 	 * 
-	 * <b> Permite guardar los registros en la tabla de Catalogo </b>
+	 * <b> Permite modificar un catalogo </b>
 	 * <p>
-	 * [Author: Dario Vinueza, Date: 21/12/2013]
+	 * [Author: Avila Sistemas, Date: 30/11/2014]
+	 * </p>
+	 * 
+	 * @param catalogo
+	 * @throws HiperionException
+	 */
+	public void modificarCatalogo(Catalogo catalogo) throws HiperionException;
+
+	/**
+	 * 
+	 * <b> Permite guardar el catalogoe en la tabla Catalogo </b>
+	 * <p>
+	 * [Author: Avila Sistemas, Date: 30/11/2014]
 	 * </p>
 	 * 
 	 * @param catalogo
@@ -60,15 +72,4 @@ public interface CatalogoService {
 	 */
 	public void guardarCatalogo(Catalogo catalogo) throws HiperionException;
 
-	/**
-	 * 
-	 * <b> Permite modificar los objetos de la tabla Catalogo </b>
-	 * <p>
-	 * [Author: Franklin Pozo, Date: 29/12/2013]
-	 * </p>
-	 * 
-	 * @param catalogo
-	 * @throws HiperionException
-	 */
-	public void modificarCatalogo(Catalogo catalogo) throws HiperionException;
 }

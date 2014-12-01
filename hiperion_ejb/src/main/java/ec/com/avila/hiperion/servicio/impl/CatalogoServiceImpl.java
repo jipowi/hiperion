@@ -26,19 +26,30 @@ public class CatalogoServiceImpl implements CatalogoService {
 	}
 
 	public List<Catalogo> consultarCatalogos() throws HiperionException {
-		return catalogoDao.consultarCatalogos();
+		return catalogoDao.findAll();
 	}
 
-	public Catalogo consultarCatalogoById(Integer idCatalogo) throws HiperionException {
-		return catalogoDao.consultarCatalogoById(idCatalogo);
+	public Catalogo consultarCatalogoById(Long idCatalogo) throws HiperionException {
+		return catalogoDao.findById(idCatalogo);
 	}
 
-	public void guardarCatalogo(Catalogo catalogo) throws HiperionException {
-		catalogoDao.guardarCatalogo(catalogo);
-	}
-
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see ec.com.avila.hiperion.servicio.CatalogoService#modificarCatalogo(ec.com.avila.hiperion.emision.entities.Catalogo)
+	 */
+	@Override
 	public void modificarCatalogo(Catalogo catalogo) throws HiperionException {
-		catalogoDao.modificarCatalogo(catalogo);
-
+		catalogoDao.update(catalogo);
 	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see ec.com.avila.hiperion.servicio.CatalogoService#guardarCatalogo(ec.com.avila.hiperion.emision.entities.Catalogo)
+	 */
+	public void guardarCatalogo(Catalogo catalogo) throws HiperionException {
+		catalogoDao.persist(catalogo);
+	}
+
 }
