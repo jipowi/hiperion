@@ -14,6 +14,14 @@ import ec.com.avila.hiperion.dao.DetalleCatalogoDao;
 import ec.com.avila.hiperion.emision.entities.DetalleCatalogo;
 import ec.com.avila.hiperion.servicio.DetalleCatalogoService;
 
+/**
+ * 
+ * <b> Implemtacion del servicio de Detalle de catalogo </b>
+ * 
+ * @author Paul Jimenez
+ * @version 1.0,Dec 1, 2014
+ * @since JDK1.6
+ */
 @Stateless
 public class DetalleCatalogoServiceImpl implements DetalleCatalogoService {
 
@@ -23,7 +31,7 @@ public class DetalleCatalogoServiceImpl implements DetalleCatalogoService {
 	public DetalleCatalogoServiceImpl() {
 	}
 
-	public List<DetalleCatalogo> consultarDetalleCatalogoByCodCatalogo(Integer idCatalogo) throws HiperionException {
+	public List<DetalleCatalogo> consultarDetalleCatalogoByCodCatalogo(Long idCatalogo) throws HiperionException {
 		return detalleCatalgoDao.consultarDetalleCatalogoByCodCatalogo(idCatalogo);
 	}
 
