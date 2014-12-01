@@ -12,7 +12,7 @@ public class DetalleCatalogoBean implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	// Atributos del Catalogo
-	private Integer codigoCatalogo;
+	private Long codigoCatalogo;
 	private String descripcionCatalogo;
 
 	// Atributos del Detalle de un Catalogo
@@ -43,11 +43,11 @@ public class DetalleCatalogoBean implements Serializable {
 		this.descripcionDetCatalogo = descripcionDetCatalogo;
 	}
 
-	public Integer getCodigoCatalogo() {
+	public Long getCodigoCatalogo() {
 		return codigoCatalogo;
 	}
 
-	public void setCodigoCatalogo(Integer codigoCatalogo) {
+	public void setCodigoCatalogo(Long codigoCatalogo) {
 		this.codigoCatalogo = codigoCatalogo;
 	}
 }
