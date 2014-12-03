@@ -7,6 +7,7 @@ package ec.com.avila.emision.web.backings;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -33,10 +34,13 @@ import ec.com.avila.hiperion.emision.entities.DetalleCatalogo;
 import ec.com.avila.hiperion.emision.entities.ObjAsegAgropecuario;
 import ec.com.avila.hiperion.emision.entities.Ramo;
 import ec.com.avila.hiperion.emision.entities.RamoAgropecuario;
+import ec.com.avila.hiperion.emision.entities.Usuario;
+import ec.com.avila.hiperion.enumeration.EstadoEnum;
 import ec.com.avila.hiperion.servicio.CatalogoService;
 import ec.com.avila.hiperion.servicio.RamoAgropecuarioService;
 import ec.com.avila.hiperion.servicio.RamoService;
 import ec.com.avila.hiperion.web.beans.RamoBean;
+import ec.com.avila.hiperion.web.beans.UsuarioBean;
 import ec.com.avila.hiperion.web.model.AnexosDataModel;
 import ec.com.avila.hiperion.web.util.ArchivoUtil;
 import ec.com.avila.hiperion.web.util.HiperionMensajes;
@@ -75,15 +79,34 @@ public class AgropecuarioBacking implements Serializable {
 	private UploadedFile file;
 	private List<SelectItem> sexoItems;
 
+	/**
+	 * @return the usuarioBean
+	 */
+	public UsuarioBean getUsuarioBean() {
+		return usuarioBean;
+	}
+
+	/**
+	 * @param usuarioBean the usuarioBean to set
+	 */
+	public void setUsuarioBean(UsuarioBean usuarioBean) {
+		this.usuarioBean = usuarioBean;
+	}
+
 	@ManagedProperty(value = "#{ramoBean}")
 	private RamoBean ramoBean;
 
 	@ManagedProperty(value = "#{ramoAgropecuarioBean}")
 	private RamoAgropecuarioBean ramoAgropecuarioBean;
+	
+	@ManagedProperty(value = "#{usuarioBean}")
+	private UsuarioBean usuarioBean;
 
 	Logger log = Logger.getLogger(AgropecuarioBacking.class);
 
 	RamoAgropecuario agropecuario = new RamoAgropecuario();
+
+	
 
 	@PostConstruct
 	public void inicializar() {
@@ -173,11 +196,16 @@ public class AgropecuarioBacking implements Serializable {
 	 * 
 	 */
 	public void setearRamo() {
+		Usuario usuario = usuarioBean.getSessionUser();
+
 		agropecuario.setTasaAgro(ramoAgropecuarioBean.getTasa());
 		agropecuario.setDeducAgro(ramoAgropecuarioBean.getDeducible());
 		agropecuario.setValorAseguradoAgro(ramoAgropecuarioBean.getValorAsegurado());
 		agropecuario.setDetalleAgro(ramoAgropecuarioBean.getDetalle());
 		agropecuario.setUbicacionAgro(ramoAgropecuarioBean.getUbicacion());
+		agropecuario.setIdUsuarioCreacion(usuario.getIdUsuario());
+		agropecuario.setFechaCreacion(new Date());
+		agropecuario.setEstado(EstadoEnum.A);
 
 		MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.setearInformacion"));
 	}
@@ -208,6 +236,11 @@ public class AgropecuarioBacking implements Serializable {
 					objAsegAgropecuario.setColorObjAgro(objeto.getColor());
 					objAsegAgropecuario.setEdadObjAgro(objeto.getEdad());
 					objAsegAgropecuario.setMontoAsegObjAgro(objeto.getMontoAsegurado());
+
+					Usuario usuario = usuarioBean.getSessionUser();
+					objAsegAgropecuario.setIdUsuarioCreacion(usuario.getIdUsuario());
+					objAsegAgropecuario.setFechaCreacion(new Date());
+					objAsegAgropecuario.setEstado(EstadoEnum.A);
 					listObjetos.add(objAsegAgropecuario);
 				}
 				agropecuario.setObjAsegAgropecuarios(listObjetos);
