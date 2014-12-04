@@ -68,6 +68,15 @@ public class AgropecuarioBacking implements Serializable {
 	@EJB
 	private CatalogoService catalogoService;
 
+	@ManagedProperty(value = "#{ramoBean}")
+	private RamoBean ramoBean;
+
+	@ManagedProperty(value = "#{ramoAgropecuarioBean}")
+	private RamoAgropecuarioBean ramoAgropecuarioBean;
+
+	@ManagedProperty(value = "#{usuarioBean}")
+	private UsuarioBean usuarioBean;
+
 	private AnexosDataModel anexosDataModel;
 	private List<DetalleAnexo> anexos;
 	private List<DetalleAnexoBean> clausulasAdicionales;
@@ -78,29 +87,6 @@ public class AgropecuarioBacking implements Serializable {
 	private DetalleAnexoBean[] selectCoberturasVida;
 	private UploadedFile file;
 	private List<SelectItem> sexoItems;
-
-	/**
-	 * @return the usuarioBean
-	 */
-	public UsuarioBean getUsuarioBean() {
-		return usuarioBean;
-	}
-
-	/**
-	 * @param usuarioBean the usuarioBean to set
-	 */
-	public void setUsuarioBean(UsuarioBean usuarioBean) {
-		this.usuarioBean = usuarioBean;
-	}
-
-	@ManagedProperty(value = "#{ramoBean}")
-	private RamoBean ramoBean;
-
-	@ManagedProperty(value = "#{ramoAgropecuarioBean}")
-	private RamoAgropecuarioBean ramoAgropecuarioBean;
-	
-	@ManagedProperty(value = "#{usuarioBean}")
-	private UsuarioBean usuarioBean;
 
 	Logger log = Logger.getLogger(AgropecuarioBacking.class);
 
@@ -422,4 +408,18 @@ public class AgropecuarioBacking implements Serializable {
 		this.file = file;
 	}
 
+	/**
+	 * @return the usuarioBean
+	 */
+	public UsuarioBean getUsuarioBean() {
+		return usuarioBean;
+	}
+
+	/**
+	 * @param usuarioBean
+	 *            the usuarioBean to set
+	 */
+	public void setUsuarioBean(UsuarioBean usuarioBean) {
+		this.usuarioBean = usuarioBean;
+	}
 }
