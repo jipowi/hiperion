@@ -31,10 +31,12 @@
 												<p:panel>
 													<h:panelGrid columns="2" cellpadding="3">
 														<p:outputLabel for="tasa" value="#{emision['agropecuario.tasa']}" styleClass="negrita" />
-														<p:inputText id="tasa" value="#{ramoAgropecuarioBean.tasa}" required="true" title="Ejemplo 2.56"  requiredMessage="#{emision['agropecuario.tasa.msn']}"/>
+														<p:inputText id="tasa" value="#{ramoAgropecuarioBean.tasa}" required="true" title="Ejemplo 2.56"
+															requiredMessage="#{emision['agropecuario.tasa.msn']}" />
 
 														<p:outputLabel for="deducible" value="#{emision['agropecuario.deducible']}" styleClass="negrita" />
-														<p:inputText id="deducible" value="#{ramoAgropecuarioBean.deducible}" required="true"  requiredMessage="#{emision['agropecuario.deducible.msn']}" />
+														<p:inputText id="deducible" value="#{ramoAgropecuarioBean.deducible}" required="true"
+															requiredMessage="#{emision['agropecuario.deducible.msn']}" />
 													</h:panelGrid>
 													<p:spacer height="15px;" />
 													<h:panelGrid columns="2">
@@ -43,13 +45,16 @@
 													</h:panelGrid>
 													<h:panelGrid columns="2">
 														<p:outputLabel for="valorAsegurado" value="#{emision['agropecuario.valorAsegurado']}" styleClass="negrita" />
-														<p:inputText id="valorAsegurado" value="#{ramoAgropecuarioBean.valorAsegurado}"  required="true"  requiredMessage="#{emision['agropecuario.valorAsegurado.msn']}" />
+														<p:inputText id="valorAsegurado" value="#{ramoAgropecuarioBean.valorAsegurado}" required="true"
+															requiredMessage="#{emision['agropecuario.valorAsegurado.msn']}" />
 
 														<p:outputLabel for="detalle" value="#{emision['agropecuario.detalle']}" styleClass="negrita" />
-														<p:inputTextarea id="detalle" value="#{ramoAgropecuarioBean.detalle}" cols="50" rows="2" required="true"  requiredMessage="#{emision['agropecuario.deducible.msn']}"/>
+														<p:inputTextarea id="detalle" value="#{ramoAgropecuarioBean.detalle}" cols="50" rows="2" required="true"
+															requiredMessage="#{emision['agropecuario.deducible.msn']}" />
 
 														<p:outputLabel for="ubicacion" value="#{emision['agropecuario.ubicacion']}" styleClass="negrita" />
-														<p:inputTextarea id="ubicacion" value="#{ramoAgropecuarioBean.ubicacion}" cols="50" rows="2" required="true"  requiredMessage="#{emision['agropecuario.ubicacion.msn']}"/>
+														<p:inputTextarea id="ubicacion" value="#{ramoAgropecuarioBean.ubicacion}" cols="50" rows="2" required="true"
+															requiredMessage="#{emision['agropecuario.ubicacion.msn']}" />
 													</h:panelGrid>
 
 													<h:panelGrid columns="1" cellpadding="3">
@@ -57,8 +62,9 @@
 															<p:outputLabel for="polizaVigente" value="#{emision['agropecuario.lbl.polizaVigente']}" />
 															<h:graphicImage name="pdf.png" library="img" />
 														</h:panelGrid>
-														<p:fileUpload id="polizaVigente" fileUploadListener="#{agropecuarioBacking.cargarArchivoPoliza}" mode="advanced" dragDropSupport="false" update="messages"
-															sizeLimit="2000000" fileLimit="3" allowTypes="/(\.|\/)(pdf)$/" required="true"  requiredMessage="#{emision['agropecuario.file.msn']}"/>
+														<p:fileUpload id="polizaVigente" fileUploadListener="#{agropecuarioBacking.cargarArchivoPoliza}" mode="advanced" dragDropSupport="false"
+															update="messages" sizeLimit="2000000" fileLimit="3" allowTypes="/(\.|\/)(pdf)$/" required="true"
+															requiredMessage="#{emision['agropecuario.file.msn']}" />
 														<p:growl id="messages" showDetail="true" />
 													</h:panelGrid>
 												</p:panel>
@@ -122,28 +128,28 @@
 												<p:growl id="messages" showDetail="true" />
 												<p:panelGrid columns="2">
 													<h:outputLabel for="idItem" value="#{emision['agropecuario.objeto.item']}" styleClass="negrita" />
-													<p:inputText  id="idItem" value="#{ramoAgropecuarioBean.item}" required="true"  requiredMessage="#{emision['agropecuario.objeto.item.msn']}" />
+													<p:inputText id="idItem" value="#{ramoAgropecuarioBean.item}" />
 
 													<h:outputLabel for="idNombre" value="#{emision['agropecuario.objeto.nombre']}" styleClass="negrita" />
-													<p:inputText id="idNombre" value="#{ramoAgropecuarioBean.nombre}" required="true" requiredMessage="#{emision['agropecuario.objeto.nombre.msn']}" />
+													<p:inputText id="idNombre" value="#{ramoAgropecuarioBean.nombre}" />
 
 													<h:outputLabel for="idSexo" value="#{emision['agropecuario.objeto.sexo']}" styleClass="negrita" />
-													<p:selectOneMenu id="idSexo" value="#{ramoAgropecuarioBean.sexo}" effect="drop" required="true" requiredMessage="#{emision['agropecuario.objeto.sexo.msn']}">
+													<p:selectOneMenu id="idSexo" value="#{ramoAgropecuarioBean.sexo}" effect="drop">
 														<f:selectItem itemLabel="Seleccione" noSelectionOption="true" />
 														<f:selectItems value="#{agropecuarioBacking.sexoItems}" />
 													</p:selectOneMenu>
 
 													<h:outputLabel for="idRaza" value="#{emision['agropecuario.objeto.raza']}" styleClass="negrita" />
-													<p:inputText id="Idraza" value="#{ramoAgropecuarioBean.raza}" required="true" requiredMessage="#{emision['agropecuario.objeto.raza.msn']}" />
+													<p:inputText id="Idraza" value="#{ramoAgropecuarioBean.raza}" />
 
 													<h:outputLabel for="idColor" value="#{emision['agropecuario.objeto.color']}" styleClass="negrita" />
-													<p:inputText id="idColor" value="#{ramoAgropecuarioBean.color}" required="true" requiredMessage="#{emision['agropecuario.objeto.color.msn']}"/>
+													<p:inputText id="idColor" value="#{ramoAgropecuarioBean.color}" />
 
 													<h:outputLabel for="idEdad" value="#{emision['agropecuario.objeto.edad']}" styleClass="negrita" />
-													<p:inputText id="idEdad" value="#{ramoAgropecuarioBean.edad}" required="true" requiredMessage="#{emision['agropecuario.objeto.edad.msn']}"/>
+													<p:inputText id="idEdad" value="#{ramoAgropecuarioBean.edad}" />
 
 													<h:outputLabel for="idMontoAsegurado" value="#{emision['agropecuario.objeto.montoAsegurado']}" styleClass="negrita" />
-													<p:inputText id="idMontoAsegurado" value="#{ramoAgropecuarioBean.montoAsegurado}" required="true" requiredMessage="#{emision['agropecuario.objeto.montoAsegurado.msn']}"/>
+													<p:inputText id="idMontoAsegurado" value="#{ramoAgropecuarioBean.montoAsegurado}" />
 												</p:panelGrid>
 												<f:facet name="footer">
 													<div align="center">
