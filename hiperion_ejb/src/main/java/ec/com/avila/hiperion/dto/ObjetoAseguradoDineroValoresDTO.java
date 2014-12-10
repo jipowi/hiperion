@@ -19,7 +19,7 @@ public class ObjetoAseguradoDineroValoresDTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	private Integer item;
-	private String dineroValores;
+	private BigDecimal dineroValores;
 	private BigDecimal limiteEstimadoAnual;
 	private BigDecimal limiteEmbarque;
 	private String trayectoDesde;
@@ -38,7 +38,7 @@ public class ObjetoAseguradoDineroValoresDTO implements Serializable {
 	 * @param trayectoHasta
 	 * @param medioTransporte
 	 */
-	public ObjetoAseguradoDineroValoresDTO(Integer item, String dineroValores, BigDecimal limiteEstimadoAnual, BigDecimal limiteEmbarque,
+	public ObjetoAseguradoDineroValoresDTO(Integer item, BigDecimal dineroValores, BigDecimal limiteEstimadoAnual, BigDecimal limiteEmbarque,
 			String trayectoDesde, String trayectoHasta, String medioTransporte) {
 		super();
 		this.item = item;
@@ -68,7 +68,7 @@ public class ObjetoAseguradoDineroValoresDTO implements Serializable {
 	/**
 	 * @return the dineroValores
 	 */
-	public String getDineroValores() {
+	public BigDecimal getDineroValores() {
 		return dineroValores;
 	}
 
@@ -76,7 +76,7 @@ public class ObjetoAseguradoDineroValoresDTO implements Serializable {
 	 * @param dineroValores
 	 *            the dineroValores to set
 	 */
-	public void setDineroValores(String dineroValores) {
+	public void setDineroValores(BigDecimal dineroValores) {
 		this.dineroValores = dineroValores;
 	}
 
