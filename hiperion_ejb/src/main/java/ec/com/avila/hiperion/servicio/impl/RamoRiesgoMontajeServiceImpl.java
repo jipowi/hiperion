@@ -11,7 +11,6 @@ import javax.ejb.Stateless;
 import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.dao.ObjAsegRiesgoMontajeDao;
 import ec.com.avila.hiperion.dao.RamoRiesgoMontajeDao;
-import ec.com.avila.hiperion.emision.entities.ObjAsegMontaje;
 import ec.com.avila.hiperion.emision.entities.RamoRiesgoMontaje;
 import ec.com.avila.hiperion.servicio.RamoRiesgoMontajeService;
 
@@ -38,9 +37,10 @@ public class RamoRiesgoMontajeServiceImpl implements RamoRiesgoMontajeService {
 	@Override
 	public void guardarRamoRiesgoMontaje(RamoRiesgoMontaje ramoRiesgoMontaje) throws HiperionException {
 		ramoRiesgoMontajeDao.persist(ramoRiesgoMontaje);
+		/*
 		for (ObjAsegMontaje objeto : ramoRiesgoMontaje.getObjAsegMontajes()) {
 			objAsegRiesgoMontajeDao.persist(objeto);
-		}
+		}*/
 	}
 
 	/*
