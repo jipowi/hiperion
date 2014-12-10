@@ -5,6 +5,7 @@ package ec.com.avila.emision.web.backings;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -22,11 +23,14 @@ import ec.com.avila.hiperion.emision.entities.Catalogo;
 import ec.com.avila.hiperion.emision.entities.DetalleCatalogo;
 import ec.com.avila.hiperion.emision.entities.ObjAsegLcIn;
 import ec.com.avila.hiperion.emision.entities.RamoLcIncendio;
+import ec.com.avila.hiperion.emision.entities.Usuario;
+import ec.com.avila.hiperion.enumeration.EstadoEnum;
 import ec.com.avila.hiperion.servicio.CatalogoService;
 import ec.com.avila.hiperion.servicio.DetalleCatalogoService;
 import ec.com.avila.hiperion.servicio.RamoLucroCesanteIncendioService;
 import ec.com.avila.hiperion.servicio.RamoService;
 import ec.com.avila.hiperion.web.beans.RamoBean;
+import ec.com.avila.hiperion.web.beans.UsuarioBean;
 import ec.com.avila.hiperion.web.util.HiperionMensajes;
 import ec.com.avila.hiperion.web.util.MessagesController;
 
@@ -64,6 +68,9 @@ public class LucroCesanteIncendioBacking implements Serializable {
 	@ManagedProperty(value = "#{ramoLucroCesanteIncendioBean}")
 	private RamoLucroCesanteIncendioBean ramoLucroCesanteIncendioBean;
 
+	@ManagedProperty(value = "#{usuarioBean}")
+	private UsuarioBean usuarioBean;
+
 	Logger log = Logger.getLogger(LucroCesanteIncendioBacking.class);
 
 	RamoLcIncendio ramoLucroCesanteIncendio = new RamoLcIncendio();
@@ -77,11 +84,18 @@ public class LucroCesanteIncendioBacking implements Serializable {
 	 * 
 	 */
 	public void setearInfRamo() throws HiperionException {
+
+		Usuario usuario = usuarioBean.getSessionUser();
+
 		ramoLucroCesanteIncendio.setValorItemsLc(ramoLucroCesanteIncendioBean.getValorItems());
 		ramoLucroCesanteIncendio.setPeriodoIndemnizacion(ramoLucroCesanteIncendioBean.getPeriodoIndemnizacion());
 		ramoLucroCesanteIncendio.setTasaComprensivaLc(ramoLucroCesanteIncendioBean.getTasaComprensiva());
 		ramoLucroCesanteIncendio.setDeducCatastroficoLc(ramoLucroCesanteIncendioBean.getDeducibleCatastrofico());
 		ramoLucroCesanteIncendio.setDeducOtrosLc(ramoLucroCesanteIncendioBean.getDeducibleOtros());
+
+		ramoLucroCesanteIncendio.setIdUsuarioCreacion(usuario.getIdUsuario());
+		ramoLucroCesanteIncendio.setFechaCreacion(new Date());
+		ramoLucroCesanteIncendio.setEstado(EstadoEnum.A);
 
 		MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.setearInformacion"));
 	}
@@ -107,6 +121,11 @@ public class LucroCesanteIncendioBacking implements Serializable {
 					asegLucro.setFormaSeguroLc(objeto.getFormaSeguro());
 					asegLucro.setUtilidadBrutaLcIncendio(objeto.getUtilidad());
 					asegLucro.setDetalleObjLcIncendio(objeto.getDetalle());
+
+					Usuario usuario = usuarioBean.getSessionUser();
+					asegLucro.setIdUsuarioCreacion(usuario.getIdUsuario());
+					asegLucro.setFechaCreacion(new Date());
+					asegLucro.setEstado(EstadoEnum.A);
 					listObjetos.add(asegLucro);
 				}
 				ramoLucroCesanteIncendio.setObjAsegLcIns(listObjetos);
@@ -178,6 +197,21 @@ public class LucroCesanteIncendioBacking implements Serializable {
 	 */
 	public void setFormaSeguroItems(List<SelectItem> formaSeguroItems) {
 		this.formaSeguroItems = formaSeguroItems;
+	}
+
+	/**
+	 * @return the usuarioBean
+	 */
+	public UsuarioBean getUsuarioBean() {
+		return usuarioBean;
+	}
+
+	/**
+	 * @param usuarioBean
+	 *            the usuarioBean to set
+	 */
+	public void setUsuarioBean(UsuarioBean usuarioBean) {
+		this.usuarioBean = usuarioBean;
 	}
 
 }

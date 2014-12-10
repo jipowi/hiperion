@@ -6,6 +6,7 @@ package ec.com.avila.emision.web.backings;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -27,10 +28,13 @@ import ec.com.avila.hiperion.emision.entities.DetalleCatalogo;
 import ec.com.avila.hiperion.emision.entities.ObjAsegEquipo;
 import ec.com.avila.hiperion.emision.entities.Ramo;
 import ec.com.avila.hiperion.emision.entities.RamoEquipoElectronico;
+import ec.com.avila.hiperion.emision.entities.Usuario;
+import ec.com.avila.hiperion.enumeration.EstadoEnum;
 import ec.com.avila.hiperion.servicio.CatalogoService;
 import ec.com.avila.hiperion.servicio.RamoEquipoElectronicoService;
 import ec.com.avila.hiperion.servicio.RamoService;
 import ec.com.avila.hiperion.web.beans.RamoBean;
+import ec.com.avila.hiperion.web.beans.UsuarioBean;
 import ec.com.avila.hiperion.web.model.AnexosDataModel;
 import ec.com.avila.hiperion.web.util.HiperionMensajes;
 import ec.com.avila.hiperion.web.util.MessagesController;
@@ -60,6 +64,9 @@ public class EquipoElectronicoBacking implements Serializable {
 
 	@ManagedProperty(value = "#{ramoEquipoElectronicoBean}")
 	private RamoEquipoElectronicoBean ramoEquipoElectronicoBean;
+	
+	@ManagedProperty(value = "#{usuarioBean}")
+	private UsuarioBean usuarioBean;
 
 	Logger log = Logger.getLogger(EquipoElectronicoBacking.class);
 
@@ -214,6 +221,9 @@ public class EquipoElectronicoBacking implements Serializable {
 	 * 
 	 */
 	public void setearInfRamo() throws HiperionException {
+		
+		Usuario usuario=usuarioBean.getSessionUser();
+		
 		equipoElectronico.setTasaEquiposFijos(ramoEquipoElectronicoBean.getTasaFijos());
 		equipoElectronico.setTasaExtDatos(ramoEquipoElectronicoBean.getTasaDatos());
 		equipoElectronico.setTasaOperacion(ramoEquipoElectronicoBean.getTasaOperacion());
@@ -221,6 +231,10 @@ public class EquipoElectronicoBacking implements Serializable {
 		equipoElectronico.setTasaCelulares(ramoEquipoElectronicoBean.getTasaCelulares());
 		equipoElectronico.setTasaHurtoEqElec(ramoEquipoElectronicoBean.getTasaHurto());
 		equipoElectronico.setTasaHurtoEqElec(ramoEquipoElectronicoBean.getTasaOtros());
+		
+		equipoElectronico.setIdUsuarioCreacion(usuario.getIdUsuario());
+		equipoElectronico.setFechaCreacion(new Date());
+		equipoElectronico.setEstado(EstadoEnum.A);
 
 		MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.setearInformacion"));
 
@@ -249,6 +263,11 @@ public class EquipoElectronicoBacking implements Serializable {
 					asegEquipo.setDetalleObjetoEqElec(objeto.getDetalle());
 					asegEquipo.setValorObjEqElec(objeto.getValorObjeto());
 					asegEquipo.setDescObjEqElec(objeto.getDescripcion());
+					
+					Usuario usuario=usuarioBean.getSessionUser();
+					asegEquipo.setIdUsuarioCreacion(usuario.getIdUsuario());
+					asegEquipo.setFechaCreacion(new Date());
+					asegEquipo.setEstado(EstadoEnum.A);
 					listObjetos.add(asegEquipo);
 				}
 				equipoElectronico.setObjAsegEquipos(listObjetos);
@@ -268,6 +287,21 @@ public class EquipoElectronicoBacking implements Serializable {
 			throw new HiperionException(e);
 		}
 
+	}
+
+	
+	/**
+	 * @return the usuarioBean
+	 */
+	public UsuarioBean getUsuarioBean() {
+		return usuarioBean;
+	}
+
+	/**
+	 * @param usuarioBean the usuarioBean to set
+	 */
+	public void setUsuarioBean(UsuarioBean usuarioBean) {
+		this.usuarioBean = usuarioBean;
 	}
 
 	/**

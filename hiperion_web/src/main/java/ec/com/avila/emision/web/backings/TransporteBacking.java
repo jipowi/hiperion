@@ -6,6 +6,7 @@ package ec.com.avila.emision.web.backings;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -23,10 +24,13 @@ import ec.com.avila.hiperion.emision.entities.Catalogo;
 import ec.com.avila.hiperion.emision.entities.DetalleCatalogo;
 import ec.com.avila.hiperion.emision.entities.ObjAsegTransporte;
 import ec.com.avila.hiperion.emision.entities.RamoTransporte;
+import ec.com.avila.hiperion.emision.entities.Usuario;
+import ec.com.avila.hiperion.enumeration.EstadoEnum;
 import ec.com.avila.hiperion.servicio.CatalogoService;
 import ec.com.avila.hiperion.servicio.RamoService;
 import ec.com.avila.hiperion.servicio.RamoTransporteService;
 import ec.com.avila.hiperion.web.beans.RamoBean;
+import ec.com.avila.hiperion.web.beans.UsuarioBean;
 import ec.com.avila.hiperion.web.util.HiperionMensajes;
 import ec.com.avila.hiperion.web.util.MessagesController;
 
@@ -49,6 +53,9 @@ public class TransporteBacking implements Serializable {
 	@ManagedProperty(value = "#{ramoTransporteBean}")
 	private RamoTransporteBean ramoTransporteBean;
 
+	@ManagedProperty(value = "#{usuarioBean}")
+	private UsuarioBean usuarioBean;
+
 	private List<SelectItem> tipoTransporteItems;
 
 	RamoTransporte ramoTransporte = new RamoTransporte();
@@ -70,10 +77,12 @@ public class TransporteBacking implements Serializable {
 	 * <p>
 	 * [Author: Paul Jimenez, Date: Nov 8, 2014]
 	 * </p>
-	 *
+	 * 
 	 * @throws HiperionException
 	 */
 	public void setearInfRammo() throws HiperionException {
+
+		Usuario usuario = usuarioBean.getSessionUser();
 
 		ramoTransporte.setTasaTransporte(ramoTransporteBean.getTasa());
 		ramoTransporte.setCondImportantesTransporte(ramoTransporteBean.getCondImportantes());
@@ -81,6 +90,10 @@ public class TransporteBacking implements Serializable {
 		ramoTransporte.setMinimoSiniestroTrans(ramoTransporteBean.getMinimoSiniestro());
 		ramoTransporte.setEmbarqueTrans(ramoTransporteBean.getPorcentajeEmbarque());
 		ramoTransporte.setMinimoEmbarqueTrans(ramoTransporteBean.getMinimoEmbarque());
+
+		ramoTransporte.setIdUsuarioCreacion(usuario.getIdUsuario());
+		ramoTransporte.setFechaCreacion(new Date());
+		ramoTransporte.setEstado(EstadoEnum.A);
 
 		MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.setearInformacion"));
 	}
@@ -93,7 +106,7 @@ public class TransporteBacking implements Serializable {
 	 * </p>
 	 * 
 	 * @throws HiperionException
-	 *
+	 * 
 	 */
 	public void guardarRamo() throws HiperionException {
 		try {
@@ -112,6 +125,10 @@ public class TransporteBacking implements Serializable {
 					objAsegTransporte.setTipoEmbalaje(objeto.getTipoEmbalaje());
 					objAsegTransporte.setValuacion(objeto.getValuacion().toString());
 
+					Usuario usuario = usuarioBean.getSessionUser();
+					objAsegTransporte.setIdUsuarioCreacion(usuario.getIdUsuario());
+					objAsegTransporte.setFechaCreacion(new Date());
+					objAsegTransporte.setEstado(EstadoEnum.A);
 					listObjetos.add(objAsegTransporte);
 				}
 				ramoTransporte.setObjAsegTransportes(listObjetos);
@@ -130,6 +147,21 @@ public class TransporteBacking implements Serializable {
 
 			throw new HiperionException(e);
 		}
+	}
+
+	/**
+	 * @return the usuarioBean
+	 */
+	public UsuarioBean getUsuarioBean() {
+		return usuarioBean;
+	}
+
+	/**
+	 * @param usuarioBean
+	 *            the usuarioBean to set
+	 */
+	public void setUsuarioBean(UsuarioBean usuarioBean) {
+		this.usuarioBean = usuarioBean;
 	}
 
 	/**

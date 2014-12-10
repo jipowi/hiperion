@@ -6,6 +6,7 @@ package ec.com.avila.emision.web.backings;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -25,10 +26,13 @@ import ec.com.avila.hiperion.emision.entities.DetalleAnexo;
 import ec.com.avila.hiperion.emision.entities.DetalleCatalogo;
 import ec.com.avila.hiperion.emision.entities.Ramo;
 import ec.com.avila.hiperion.emision.entities.RamoGarantiaAduanera;
+import ec.com.avila.hiperion.emision.entities.Usuario;
+import ec.com.avila.hiperion.enumeration.EstadoEnum;
 import ec.com.avila.hiperion.servicio.CatalogoService;
 import ec.com.avila.hiperion.servicio.RamoGarantiaAduaneraService;
 import ec.com.avila.hiperion.servicio.RamoService;
 import ec.com.avila.hiperion.web.beans.RamoBean;
+import ec.com.avila.hiperion.web.beans.UsuarioBean;
 import ec.com.avila.hiperion.web.model.AnexosDataModel;
 import ec.com.avila.hiperion.web.util.HiperionMensajes;
 import ec.com.avila.hiperion.web.util.MessagesController;
@@ -59,6 +63,9 @@ public class GarantiaAduaneraBacking implements Serializable {
 
 	@ManagedProperty(value = "#{ramoGarantiaAduaneraBean}")
 	private RamoGarantiaAduaneraBean ramoGarantiaAduaneraBean;
+	
+	@ManagedProperty(value = "#{usuarioBean}")
+	private UsuarioBean usuarioBean;
 
 	Logger log = Logger.getLogger(GarantiaAduaneraBacking.class);
 
@@ -105,13 +112,17 @@ public class GarantiaAduaneraBacking implements Serializable {
 
 	public void guardarRamo() throws HiperionException {
 
+		Usuario usuario =usuarioBean.getSessionUser();
 		RamoGarantiaAduanera ramoGarantiaAduanera = new RamoGarantiaAduanera();
 
 		ramoGarantiaAduanera.setObjAsgAduanera(ramoGarantiaAduaneraBean.getObjetoAsegurado());
 		ramoGarantiaAduanera.setValorContratoAduanera(ramoGarantiaAduaneraBean.getValorContrato());
-		// TODO reviar campos modelo
-		// ramoGarantiaAduanera.setValorPolizaAduanera(valorPolizaAduanera)(ramoGarantiaAduaneraBean.getValorPoliza());
-		// ramoGarantiaAduanera.setTipoContragarantiaAduanera(ramoGarantiaAduaneraBean.getTipoContragarantia());
+		ramoGarantiaAduanera.setValorPolizaAduanera(ramoGarantiaAduaneraBean.getValorPoliza());
+		ramoGarantiaAduanera.setTipoContragarantiaAduanera(ramoGarantiaAduaneraBean.getTipoContragarantia());
+		
+		ramoGarantiaAduanera.setIdUsuarioCreacion(usuario.getIdUsuario());
+		ramoGarantiaAduanera.setFechaCreacion(new Date());
+		ramoGarantiaAduanera.setEstado(EstadoEnum.A);
 
 		try {
 			ramoGarantiaAduaneraService.guardarRamoGarantiaAduanera(ramoGarantiaAduanera);
@@ -121,6 +132,22 @@ public class GarantiaAduaneraBacking implements Serializable {
 			MessagesController.addError(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.error.save"));
 			throw new HiperionException(e);
 		}
+	}
+	
+	
+
+	/**
+	 * @return the usuarioBean
+	 */
+	public UsuarioBean getUsuarioBean() {
+		return usuarioBean;
+	}
+
+	/**
+	 * @param usuarioBean the usuarioBean to set
+	 */
+	public void setUsuarioBean(UsuarioBean usuarioBean) {
+		this.usuarioBean = usuarioBean;
 	}
 
 	/**

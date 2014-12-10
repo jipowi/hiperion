@@ -6,6 +6,7 @@ package ec.com.avila.emision.web.backings;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -20,9 +21,12 @@ import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.dto.ObjetoAseguradoRoturaMaqDTO;
 import ec.com.avila.hiperion.emision.entities.ObjAsegRotura;
 import ec.com.avila.hiperion.emision.entities.RamoRoturaMaquinaria;
+import ec.com.avila.hiperion.emision.entities.Usuario;
+import ec.com.avila.hiperion.enumeration.EstadoEnum;
 import ec.com.avila.hiperion.servicio.RamoRoturaMaquinariaService;
 import ec.com.avila.hiperion.servicio.RamoService;
 import ec.com.avila.hiperion.web.beans.RamoBean;
+import ec.com.avila.hiperion.web.beans.UsuarioBean;
 import ec.com.avila.hiperion.web.util.HiperionMensajes;
 import ec.com.avila.hiperion.web.util.MessagesController;
 
@@ -41,80 +45,105 @@ public class RoturaMaquinariaBacking implements Serializable {
 
 	@ManagedProperty(value = "#{ramoBean}")
 	private RamoBean ramoBean;
-	@ManagedProperty(value="#{ramoRoturaMaquinariaBean}")
+	@ManagedProperty(value = "#{ramoRoturaMaquinariaBean}")
 	private RamoRoturaMaquinariaBean ramoRoturaMaquinariaBean;
-	
+
+	@ManagedProperty(value = "#{usuarioBean}")
+	private UsuarioBean usuarioBean;
+
 	Logger log = Logger.getLogger(RoturaMaquinariaBacking.class);
 
 	@EJB
 	private RamoService ramoService;
-	@EJB 
+	@EJB
 	private RamoRoturaMaquinariaService ramoRoturaMaquinariaService;
 
-	RamoRoturaMaquinaria ramoRoturaMaquinaria =new RamoRoturaMaquinaria();
+	RamoRoturaMaquinaria ramoRoturaMaquinaria = new RamoRoturaMaquinaria();
+
 	/**
 	 * 
-	 * <b>
-	 * Permite setear objetos objetos en el Ramo Rotura de Maquinaria
-	 * </b>
-	 * <p>[Author: Franklin Pozo, Date: 09/09/2014]</p>
-	 *
+	 * <b> Permite setear objetos objetos en el Ramo Rotura de Maquinaria </b>
+	 * <p>
+	 * [Author: Franklin Pozo, Date: 09/09/2014]
+	 * </p>
+	 * 
 	 */
-	public void setearInfRamo()throws HiperionException {
-		
-		
+	public void setearInfRamo() throws HiperionException {
+
+		Usuario usuario = usuarioBean.getSessionUser();
+
 		ramoRoturaMaquinaria.setTasaRotMaq(ramoRoturaMaquinariaBean.getTasa());
 		ramoRoturaMaquinaria.setDeducSiniestroRotMaq(ramoRoturaMaquinariaBean.getPorcentajeValorSiniestro());
 		ramoRoturaMaquinaria.setDeducMinimoSiniestroRot(ramoRoturaMaquinariaBean.getMinimo());
 		ramoRoturaMaquinaria.setDeducMinimoSiniestroRot(ramoRoturaMaquinariaBean.getMinimoPorcentajeValorAsegurado());
-	
-		
-			MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.setearInformacion"));
+
+		ramoRoturaMaquinaria.setIdUsuarioCreacion(usuario.getIdUsuario());
+		ramoRoturaMaquinaria.setFechaCreacion(new Date());
+		ramoRoturaMaquinaria.setEstado(EstadoEnum.A);
+		MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.setearInformacion"));
 	}
-	
+
 	/**
 	 * 
-	 * <b>
-	 * Permite guardar la informacion del ramo y objeto asegurado en sus respectivas tablas
-	 * </b>
-	 * <p>[Author: Franklin Pozo, Date: 11/11/2014]</p>
-	 *
+	 * <b> Permite guardar la informacion del ramo y objeto asegurado en sus respectivas tablas </b>
+	 * <p>
+	 * [Author: Franklin Pozo, Date: 11/11/2014]
+	 * </p>
+	 * 
 	 * @throws HiperionException
 	 */
-	public void guardarRamo()throws HiperionException{
-		
-		try{
-			if(!ramoRoturaMaquinariaBean.getOrderlist().isEmpty()){
-				
-				List<ObjAsegRotura>listObjetos=new ArrayList<>();
-				for(ObjetoAseguradoRoturaMaqDTO objeto:ramoRoturaMaquinariaBean.getOrderlist()){
+	public void guardarRamo() throws HiperionException {
+
+		try {
+			if (!ramoRoturaMaquinariaBean.getOrderlist().isEmpty()) {
+
+				List<ObjAsegRotura> listObjetos = new ArrayList<>();
+				for (ObjetoAseguradoRoturaMaqDTO objeto : ramoRoturaMaquinariaBean.getOrderlist()) {
 					ObjAsegRotura objAsegRotura = new ObjAsegRotura();
-					
+
 					objAsegRotura.setItemObjRotura(objeto.getNumeroItem());
 					objAsegRotura.setUbicacionObjRotura(objeto.getUbicacionRiesgo());
 					objAsegRotura.setDescripcionObjRotura(objeto.getDescripcionObjeto());
 					objAsegRotura.setTotalObjRotura(objeto.getTotal());
+
+					Usuario usuario = usuarioBean.getSessionUser();
+					objAsegRotura.setIdUsuarioCreacion(usuario.getIdUsuario());
+					objAsegRotura.setFechaCreacion(new Date());
+					objAsegRotura.setEstado(EstadoEnum.A);
 					listObjetos.add(objAsegRotura);
 				}
 				ramoRoturaMaquinaria.setObjAsegRoturas(listObjetos);
-			}else{
+			} else {
 				MessagesController.addError(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.error.save.Obj"));
 			}
 			ramoRoturaMaquinariaService.guardarRamoRoturaMaquinaria(ramoRoturaMaquinaria);
 			MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.save"));
-			ramoRoturaMaquinaria =new RamoRoturaMaquinaria();
+			ramoRoturaMaquinaria = new RamoRoturaMaquinaria();
 			ramoRoturaMaquinariaBean.getOrderlist().clear();
-		}catch (HiperionException e){
+		} catch (HiperionException e) {
 			log.error("Error al momento de guardar el ramo rotura maquinaria", e);
 			MessagesController.addError(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.error.save"));
 
 			throw new HiperionException(e);
 
 		}
-		
-		
+
 	}
-	
+
+	/**
+	 * @return the usuarioBean
+	 */
+	public UsuarioBean getUsuarioBean() {
+		return usuarioBean;
+	}
+
+	/**
+	 * @param usuarioBean
+	 *            the usuarioBean to set
+	 */
+	public void setUsuarioBean(UsuarioBean usuarioBean) {
+		this.usuarioBean = usuarioBean;
+	}
 
 	/**
 	 * @return the ramoRoturaMaquinariaBean
@@ -123,16 +152,13 @@ public class RoturaMaquinariaBacking implements Serializable {
 		return ramoRoturaMaquinariaBean;
 	}
 
-
-
 	/**
-	 * @param ramoRoturaMaquinariaBean the ramoRoturaMaquinariaBean to set
+	 * @param ramoRoturaMaquinariaBean
+	 *            the ramoRoturaMaquinariaBean to set
 	 */
 	public void setRamoRoturaMaquinariaBean(RamoRoturaMaquinariaBean ramoRoturaMaquinariaBean) {
 		this.ramoRoturaMaquinariaBean = ramoRoturaMaquinariaBean;
 	}
-
-
 
 	public RamoBean getRamoBean() {
 		return ramoBean;

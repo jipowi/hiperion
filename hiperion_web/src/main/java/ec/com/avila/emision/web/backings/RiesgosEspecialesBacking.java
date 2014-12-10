@@ -5,6 +5,7 @@
 package ec.com.avila.emision.web.backings;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -16,9 +17,12 @@ import org.apache.log4j.Logger;
 import ec.com.avila.emision.web.beans.RamoRiesgosEspecialesBean;
 import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.emision.entities.RamoRiesgosEsp;
+import ec.com.avila.hiperion.emision.entities.Usuario;
+import ec.com.avila.hiperion.enumeration.EstadoEnum;
 import ec.com.avila.hiperion.servicio.RamoRiesgosEspecialesService;
 import ec.com.avila.hiperion.servicio.RamoService;
 import ec.com.avila.hiperion.web.beans.RamoBean;
+import ec.com.avila.hiperion.web.beans.UsuarioBean;
 import ec.com.avila.hiperion.web.util.HiperionMensajes;
 import ec.com.avila.hiperion.web.util.MessagesController;
 
@@ -40,6 +44,9 @@ public class RiesgosEspecialesBacking implements Serializable {
 
 	@ManagedProperty(value = "#{ramoRiesgosEspecialesBean}")
 	private RamoRiesgosEspecialesBean ramoRiesgosEspecialesBean;
+	
+	@ManagedProperty(value = "#{usuarioBean}")
+	private UsuarioBean usuarioBean;
 
 	@EJB
 	private RamoService ramoService;
@@ -62,8 +69,14 @@ public class RiesgosEspecialesBacking implements Serializable {
 
 		RamoRiesgosEsp ramoRiesgosEsp = new RamoRiesgosEsp();
 
+		Usuario usuario =usuarioBean.getSessionUser();
+		
 		ramoRiesgosEsp.setTasaRiesgosEsp(ramoRiesgosEspecialesBean.getTasa());
 		ramoRiesgosEsp.setCondImpRiesgos(ramoRiesgosEspecialesBean.getCondicionesImp());
+		
+		ramoRiesgosEsp.setIdUsuarioCreacion(usuario.getIdUsuario());
+		ramoRiesgosEsp.setFechaCreacion(new Date());
+		ramoRiesgosEsp.setEstado(EstadoEnum.A);
 
 		try {
 			ramoRiesgosEspecialesService.guardarRamoRiesgosEspeciales(ramoRiesgosEsp);
@@ -75,6 +88,23 @@ public class RiesgosEspecialesBacking implements Serializable {
 		}
 
 	}
+
+	
+	/**
+	 * @return the usuarioBean
+	 */
+	public UsuarioBean getUsuarioBean() {
+		return usuarioBean;
+	}
+
+
+	/**
+	 * @param usuarioBean the usuarioBean to set
+	 */
+	public void setUsuarioBean(UsuarioBean usuarioBean) {
+		this.usuarioBean = usuarioBean;
+	}
+
 
 	/**
 	 * @return the ramoRiesgosEspecialesBean

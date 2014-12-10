@@ -6,6 +6,7 @@ package ec.com.avila.emision.web.backings;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -21,11 +22,14 @@ import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.emision.entities.Catalogo;
 import ec.com.avila.hiperion.emision.entities.DetalleCatalogo;
 import ec.com.avila.hiperion.emision.entities.RamoCascoMaritimo;
+import ec.com.avila.hiperion.emision.entities.Usuario;
+import ec.com.avila.hiperion.enumeration.EstadoEnum;
 import ec.com.avila.hiperion.servicio.CatalogoService;
 import ec.com.avila.hiperion.servicio.DetalleCatalogoService;
 import ec.com.avila.hiperion.servicio.RamoCascoMaritimoService;
 import ec.com.avila.hiperion.servicio.RamoService;
 import ec.com.avila.hiperion.web.beans.RamoBean;
+import ec.com.avila.hiperion.web.beans.UsuarioBean;
 import ec.com.avila.hiperion.web.util.HiperionMensajes;
 import ec.com.avila.hiperion.web.util.MessagesController;
 
@@ -44,6 +48,9 @@ public class CascoMaritimoBacking implements Serializable {
 
 	@ManagedProperty(value = "#{ramoBean}")
 	private RamoBean ramoBean;
+
+	@ManagedProperty(value = "#{usuarioBean}")
+	private UsuarioBean usuarioBean;
 
 	@EJB
 	private RamoService ramoService;
@@ -73,15 +80,15 @@ public class CascoMaritimoBacking implements Serializable {
 	 * 
 	 */
 	public void guardarRamo() throws HiperionException {
+		Usuario usuario =usuarioBean.getSessionUser();
 		RamoCascoMaritimo cascoMaritimo = new RamoCascoMaritimo();
 
 		cascoMaritimo.setNombreNave(ramoCascoMaritimoBean.getNombreNave());
 		cascoMaritimo.setNumeroRegistro(ramoCascoMaritimoBean.getNumeroRegistro());
 		cascoMaritimo.setTonelajeBruto(ramoCascoMaritimoBean.getTonelajeBruto());
-		//TODO Revisar en la base 
-		//cascoMaritimo.setClaseEmbarcacion(ramoCascoMaritimoBean.getClaseEmbarcacion());
-		//cascoMaritimo.setBandera(ramoCascoMaritimoBean.getBandera());
-		//cascoMaritimo.setZonaNavegacion(ramoCascoMaritimoBean.getZonaNavegacion());
+		cascoMaritimo.setClaseEmbarcacion(ramoCascoMaritimoBean.getClaseEmbarcacion());
+		cascoMaritimo.setBandera(ramoCascoMaritimoBean.getBandera());
+		cascoMaritimo.setZonaNavegacion(ramoCascoMaritimoBean.getZonaNavegacion());
 		cascoMaritimo.setEslora(ramoCascoMaritimoBean.getEslora());
 		cascoMaritimo.setPuntal(ramoCascoMaritimoBean.getPuntal());
 		cascoMaritimo.setAnioConstrMaritimo(ramoCascoMaritimoBean.getAnioConstruccion());
@@ -92,6 +99,10 @@ public class CascoMaritimoBacking implements Serializable {
 		cascoMaritimo.setValorRedes(ramoCascoMaritimoBean.getValorRedes());
 		cascoMaritimo.setOtrosMaritimo(ramoCascoMaritimoBean.getOtros());
 		cascoMaritimo.setTotalMaritimo(ramoCascoMaritimoBean.getOtros());
+		
+		cascoMaritimo.setIdUsuarioCreacion(usuario.getIdUsuario());
+		cascoMaritimo.setFechaCreacion(new Date());
+		cascoMaritimo.setEstado(EstadoEnum.A);
 
 		try {
 			ramoCascoMaritimoService.guardarRamoCascoMaritimo(cascoMaritimo);
@@ -174,5 +185,21 @@ public class CascoMaritimoBacking implements Serializable {
 	public void setRamoCascoMaritimoBean(RamoCascoMaritimoBean ramoCascoMaritimoBean) {
 		this.ramoCascoMaritimoBean = ramoCascoMaritimoBean;
 	}
+
+	/**
+	 * @return the usuarioBean
+	 */
+	public UsuarioBean getUsuarioBean() {
+		return usuarioBean;
+	}
+
+	/**
+	 * @param usuarioBean the usuarioBean to set
+	 */
+	public void setUsuarioBean(UsuarioBean usuarioBean) {
+		this.usuarioBean = usuarioBean;
+	}
+	
+	
 
 }

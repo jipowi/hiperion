@@ -6,6 +6,7 @@ package ec.com.avila.emision.web.backings;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -24,9 +25,12 @@ import ec.com.avila.hiperion.emision.entities.DetalleAnexo;
 import ec.com.avila.hiperion.emision.entities.ObjAsegDineroVal;
 import ec.com.avila.hiperion.emision.entities.Ramo;
 import ec.com.avila.hiperion.emision.entities.RamoDineroValore;
+import ec.com.avila.hiperion.emision.entities.Usuario;
+import ec.com.avila.hiperion.enumeration.EstadoEnum;
 import ec.com.avila.hiperion.servicio.RamoDineroValoreService;
 import ec.com.avila.hiperion.servicio.RamoService;
 import ec.com.avila.hiperion.web.beans.RamoBean;
+import ec.com.avila.hiperion.web.beans.UsuarioBean;
 import ec.com.avila.hiperion.web.model.AnexosDataModel;
 import ec.com.avila.hiperion.web.util.HiperionMensajes;
 import ec.com.avila.hiperion.web.util.MessagesController;
@@ -54,6 +58,9 @@ public class DineroValoresBacking implements Serializable {
 
 	@ManagedProperty(value = "#{ramoDineroValoresBean}")
 	private RamoDineroValoresBean ramoDineroValoresBean;
+
+	@ManagedProperty(value = "#{usuarioBean}")
+	private UsuarioBean usuarioBean;
 
 	Logger log = Logger.getLogger(DineroValoresBacking.class);
 
@@ -132,10 +139,16 @@ public class DineroValoresBacking implements Serializable {
 	 * 
 	 */
 	public void setearInfRamo() throws HiperionException {
+		Usuario usuario = usuarioBean.getSessionUser();
+
 		ramoDineroValores.setTasaDinero(ramoDineroValoresBean.getTasa());
 		ramoDineroValores.setPorcentajeEmbarqueDinero(ramoDineroValoresBean.getPorcentajeEmbarque());
 		ramoDineroValores.setDeducPorSiniestroDinero(ramoDineroValoresBean.getPorcentajeSiniestro());
 		ramoDineroValores.setDeducMinimoDinero(ramoDineroValoresBean.getValorMinimo());
+
+		ramoDineroValores.setIdUsuarioCreacion(usuario.getIdUsuario());
+		ramoDineroValores.setFechaCreacion(new Date());
+		ramoDineroValores.setEstado(EstadoEnum.A);
 
 		MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.setearInformacion"));
 	}
@@ -148,7 +161,7 @@ public class DineroValoresBacking implements Serializable {
 					ObjAsegDineroVal objAsegDineroVal = new ObjAsegDineroVal();
 					// TODO revisar campos
 					objAsegDineroVal.setItemObjDinero(objeto.getItem());
-					//objAsegDineroVal.setDineroValores(objeto.getDineroValores());
+					objAsegDineroVal.setDineroValores(objeto.getDineroValores());
 					objAsegDineroVal.setDesde(objeto.getTrayectoDesde());
 					objAsegDineroVal.setLimiteEstimado(objeto.getLimiteEstimadoAnual());
 					objAsegDineroVal.setLimiteEmbarqueObjDinero(objeto.getLimiteEmbarque());
@@ -156,23 +169,43 @@ public class DineroValoresBacking implements Serializable {
 					objAsegDineroVal.setHasta(objeto.getTrayectoHasta());
 					objAsegDineroVal.setMedioTransporteDinero(objeto.getMedioTransporte());
 
+					Usuario usuario = usuarioBean.getSessionUser();
+					objAsegDineroVal.setIdUsuarioCreacion(usuario.getIdUsuario());
+					objAsegDineroVal.setFechaCreacion(new Date());
+					objAsegDineroVal.setEstado(EstadoEnum.A);
 					listObjetos.add(objAsegDineroVal);
 				}
 
 				ramoDineroValores.setObjAsegDineroVals(listObjetos);
-				ramoDineroValoreService.guardarRamoDineroValore(ramoDineroValores);
-				MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.save"));
-				ramoDineroValores = new RamoDineroValore();
-				ramoDineroValoresBean.getObjetoaseguradolist().clear();
+
 			} else {
 				MessagesController.addError(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.error.save.Obj"));
 			}
+			ramoDineroValoreService.guardarRamoDineroValore(ramoDineroValores);
+			MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.save"));
+			ramoDineroValores = new RamoDineroValore();
+			ramoDineroValoresBean.getObjetoaseguradolist().clear();
 		} catch (HiperionException e) {
 			log.error("Error al momento de guardar el ramo de dinero y valores", e);
 			MessagesController.addError(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.error.save"));
 
 			throw new HiperionException(e);
 		}
+	}
+
+	/**
+	 * @return the usuarioBean
+	 */
+	public UsuarioBean getUsuarioBean() {
+		return usuarioBean;
+	}
+
+	/**
+	 * @param usuarioBean
+	 *            the usuarioBean to set
+	 */
+	public void setUsuarioBean(UsuarioBean usuarioBean) {
+		this.usuarioBean = usuarioBean;
 	}
 
 	/**

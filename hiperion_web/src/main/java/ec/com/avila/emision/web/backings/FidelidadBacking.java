@@ -6,6 +6,7 @@ package ec.com.avila.emision.web.backings;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -25,11 +26,14 @@ import ec.com.avila.hiperion.emision.entities.DetalleAnexo;
 import ec.com.avila.hiperion.emision.entities.DetalleCatalogo;
 import ec.com.avila.hiperion.emision.entities.Ramo;
 import ec.com.avila.hiperion.emision.entities.RamoFidelidad;
+import ec.com.avila.hiperion.emision.entities.Usuario;
+import ec.com.avila.hiperion.enumeration.EstadoEnum;
 import ec.com.avila.hiperion.servicio.CatalogoService;
 import ec.com.avila.hiperion.servicio.DetalleCatalogoService;
 import ec.com.avila.hiperion.servicio.RamoFidelidadService;
 import ec.com.avila.hiperion.servicio.RamoService;
 import ec.com.avila.hiperion.web.beans.RamoBean;
+import ec.com.avila.hiperion.web.beans.UsuarioBean;
 import ec.com.avila.hiperion.web.model.AnexosDataModel;
 import ec.com.avila.hiperion.web.util.HiperionMensajes;
 import ec.com.avila.hiperion.web.util.MessagesController;
@@ -55,6 +59,9 @@ public class FidelidadBacking implements Serializable {
 
 	@ManagedProperty(value = "#{ramoBean}")
 	private RamoBean ramoBean;
+
+	@ManagedProperty(value = "#{usuarioBean}")
+	private UsuarioBean usuarioBean;
 
 	@EJB
 	private RamoService ramoService;
@@ -145,6 +152,7 @@ public class FidelidadBacking implements Serializable {
 	 * 
 	 */
 	public void guardarRamo() throws HiperionException {
+		Usuario usuario = usuarioBean.getSessionUser();
 		RamoFidelidad ramoFidelidad = new RamoFidelidad();
 
 		ramoFidelidad.setValorColusorio(ramoFidelidadBean.getValorColusorio());
@@ -152,7 +160,26 @@ public class FidelidadBacking implements Serializable {
 		ramoFidelidad.setDeducMinimoFidelidad(ramoFidelidadBean.getMinimoSiniestro());
 		ramoFidelidad.setDeducSiniestroFidelidad(ramoFidelidadBean.getPorcentajeValorSiniestro());
 		ramoFidelidad.setSectorFidelidad(ramoFidelidadBean.getSector());
-		MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.fidelidad"));
+
+		ramoFidelidad.setIdUsuarioCreacion(usuario.getIdUsuario());
+		ramoFidelidad.setFechaCreacion(new Date());
+		ramoFidelidad.setEstado(EstadoEnum.A);
+		MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.setearInformacion"));
+	}
+
+	/**
+	 * @return the usuarioBean
+	 */
+	public UsuarioBean getUsuarioBean() {
+		return usuarioBean;
+	}
+
+	/**
+	 * @param usuarioBean
+	 *            the usuarioBean to set
+	 */
+	public void setUsuarioBean(UsuarioBean usuarioBean) {
+		this.usuarioBean = usuarioBean;
 	}
 
 	/**

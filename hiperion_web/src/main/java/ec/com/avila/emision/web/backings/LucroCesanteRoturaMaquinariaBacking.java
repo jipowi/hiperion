@@ -7,6 +7,7 @@ package ec.com.avila.emision.web.backings;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -25,9 +26,12 @@ import ec.com.avila.hiperion.emision.entities.DetalleAnexo;
 import ec.com.avila.hiperion.emision.entities.ObjAsegLcRotMaq;
 import ec.com.avila.hiperion.emision.entities.Ramo;
 import ec.com.avila.hiperion.emision.entities.RamoLcRotMaq;
+import ec.com.avila.hiperion.emision.entities.Usuario;
+import ec.com.avila.hiperion.enumeration.EstadoEnum;
 import ec.com.avila.hiperion.servicio.RamoCesanteRoturaMaqService;
 import ec.com.avila.hiperion.servicio.RamoService;
 import ec.com.avila.hiperion.web.beans.RamoBean;
+import ec.com.avila.hiperion.web.beans.UsuarioBean;
 import ec.com.avila.hiperion.web.model.AnexosDataModel;
 import ec.com.avila.hiperion.web.util.HiperionMensajes;
 import ec.com.avila.hiperion.web.util.MessagesController;
@@ -56,6 +60,9 @@ public class LucroCesanteRoturaMaquinariaBacking implements Serializable {
 
 	@ManagedProperty(value = "#{ramoCesanteRoturaMaqBean}")
 	private RamoCesanteRoturaMaqBean ramoCesanteRoturaMaqBean;
+
+	@ManagedProperty(value = "#{usuarioBean}")
+	private UsuarioBean usuarioBean;
 
 	Logger log = Logger.getLogger(LucroCesanteIncendioBacking.class);
 
@@ -160,14 +167,18 @@ public class LucroCesanteRoturaMaquinariaBacking implements Serializable {
 	 */
 	public void setearInfRamo() throws HiperionException {
 
+		Usuario usuario = usuarioBean.getSessionUser();
+
 		ramoCesanteRoturaMaq.setUtilidadBrutaLcRotura(ramoCesanteRoturaMaqBean.getUtilidadBruta());
 		ramoCesanteRoturaMaq.setTasaLcRotura(ramoCesanteRoturaMaqBean.getTasa());
 		ramoCesanteRoturaMaq.setPeriodIndemnizacionLc(Integer.parseInt(ramoCesanteRoturaMaqBean.getPeriodoIndemnizacion()));
 		ramoCesanteRoturaMaq.setDeducMinimoAsegLcRotura(ramoCesanteRoturaMaqBean.getMinPorcentajeValorAsegurado());
 		ramoCesanteRoturaMaq.setDeducMinimoLcRotura(ramoCesanteRoturaMaqBean.getMinimo());
-		// TODO cambiar el tipo de dato del setDeducNumDias
-		// ramoCesanteRoturaMaq.setDeducNumDias(ramoCesanteRoturaMaqBean.getNumeroDiasDeducible());
+		ramoCesanteRoturaMaq.setDeducNumDias(ramoCesanteRoturaMaqBean.getNumeroDiasDeducible());
 
+		ramoCesanteRoturaMaq.setIdUsuarioCreacion(usuario.getIdUsuario());
+		ramoCesanteRoturaMaq.setFechaCreacion(new Date());
+		ramoCesanteRoturaMaq.setEstado(EstadoEnum.A);
 		MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.setearInformacion"));
 
 	}
@@ -193,6 +204,11 @@ public class LucroCesanteRoturaMaquinariaBacking implements Serializable {
 					objAsegCesante.setUbicacionObjLcRotura(objeto.getUbicacionRiesgo());
 					objAsegCesante.setValorAsegObjLcRotura(objeto.getValorAsegurado());
 					objAsegCesante.setDesObjLcRotura(objeto.getDescripcionObjeto());
+
+					Usuario usuario = usuarioBean.getSessionUser();
+					objAsegCesante.setIdUsuarioCreacion(usuario.getIdUsuario());
+					objAsegCesante.setFechaCreacion(new Date());
+					objAsegCesante.setEstado(EstadoEnum.A);
 					listObjetos.add(objAsegCesante);
 				}
 				ramoCesanteRoturaMaq.setObjAsegLcRotMaqs(listObjetos);
@@ -208,6 +224,21 @@ public class LucroCesanteRoturaMaquinariaBacking implements Serializable {
 			MessagesController.addError(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.error.save"));
 			throw new HiperionException(e);
 		}
+	}
+
+	/**
+	 * @return the usuarioBean
+	 */
+	public UsuarioBean getUsuarioBean() {
+		return usuarioBean;
+	}
+
+	/**
+	 * @param usuarioBean
+	 *            the usuarioBean to set
+	 */
+	public void setUsuarioBean(UsuarioBean usuarioBean) {
+		this.usuarioBean = usuarioBean;
 	}
 
 	/**

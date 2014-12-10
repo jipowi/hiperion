@@ -6,6 +6,7 @@ package ec.com.avila.emision.web.backings;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -22,9 +23,12 @@ import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.emision.entities.DetalleAnexo;
 import ec.com.avila.hiperion.emision.entities.Ramo;
 import ec.com.avila.hiperion.emision.entities.RamoCumplimientoContrato;
+import ec.com.avila.hiperion.emision.entities.Usuario;
+import ec.com.avila.hiperion.enumeration.EstadoEnum;
 import ec.com.avila.hiperion.servicio.RamoCumplimientoContratoService;
 import ec.com.avila.hiperion.servicio.RamoService;
 import ec.com.avila.hiperion.web.beans.RamoBean;
+import ec.com.avila.hiperion.web.beans.UsuarioBean;
 import ec.com.avila.hiperion.web.model.AnexosDataModel;
 import ec.com.avila.hiperion.web.util.HiperionMensajes;
 import ec.com.avila.hiperion.web.util.MessagesController;
@@ -52,6 +56,9 @@ public class CumplimientoContratoBacking implements Serializable {
 
 	@ManagedProperty(value = "#{ramoCumplimientoContratoBean}")
 	private RamoCumplimientoContratoBean ramoCumplimientoContratoBean;
+	
+	@ManagedProperty(value = "#{usuarioBean}")
+	private UsuarioBean usuarioBean;
 
 	Logger log = Logger.getLogger(CumplimientoContratoBacking.class);
 
@@ -104,12 +111,19 @@ public class CumplimientoContratoBacking implements Serializable {
 	 * @throws HiperionException
 	 */
 	public void guardarRamo() throws HiperionException {
+		Usuario usuario=usuarioBean.getSessionUser();
+		
 		RamoCumplimientoContrato cumplimientoContrato = new RamoCumplimientoContrato();
 
 		cumplimientoContrato.setObjetoAsegContrato(ramoCumplimientoContratoBean.getObjetoAsegurado());
 		cumplimientoContrato.setValorContrato(ramoCumplimientoContratoBean.getValorContrato());
 		cumplimientoContrato.setValorAseguradoContrato(ramoCumplimientoContratoBean.getValorAsegurado());
 		cumplimientoContrato.setTipoContragarantiaContrato(ramoCumplimientoContratoBean.getTipoContragarantia());
+		
+		cumplimientoContrato.setIdUsuarioCreacion(usuario.getIdUsuario());
+		cumplimientoContrato.setFechaCreacion(new Date());
+		cumplimientoContrato.setEstado(EstadoEnum.A);
+		
 
 		try {
 			ramoCumplimientoContratoService.guardarRamoCumplimientoContrato(cumplimientoContrato);
@@ -119,6 +133,22 @@ public class CumplimientoContratoBacking implements Serializable {
 			MessagesController.addError(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.error.save"));
 			throw new HiperionException(e);
 		}
+	}
+	
+	
+
+	/**
+	 * @return the usuarioBean
+	 */
+	public UsuarioBean getUsuarioBean() {
+		return usuarioBean;
+	}
+
+	/**
+	 * @param usuarioBean the usuarioBean to set
+	 */
+	public void setUsuarioBean(UsuarioBean usuarioBean) {
+		this.usuarioBean = usuarioBean;
 	}
 
 	/**

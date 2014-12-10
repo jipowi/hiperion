@@ -5,6 +5,7 @@ package ec.com.avila.emision.web.backings;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -20,12 +21,15 @@ import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.emision.entities.Catalogo;
 import ec.com.avila.hiperion.emision.entities.DetalleCatalogo;
 import ec.com.avila.hiperion.emision.entities.RamoVehiculo;
+import ec.com.avila.hiperion.emision.entities.Usuario;
+import ec.com.avila.hiperion.enumeration.EstadoEnum;
 import ec.com.avila.hiperion.servicio.CatalogoService;
 import ec.com.avila.hiperion.servicio.DetalleCatalogoService;
 import ec.com.avila.hiperion.servicio.RamoService;
 import ec.com.avila.hiperion.servicio.RamoVehiculoService;
 import ec.com.avila.hiperion.web.beans.MarcasDto;
 import ec.com.avila.hiperion.web.beans.RamoBean;
+import ec.com.avila.hiperion.web.beans.UsuarioBean;
 import ec.com.avila.hiperion.web.util.HiperionMensajes;
 import ec.com.avila.hiperion.web.util.MessagesController;
 
@@ -47,6 +51,9 @@ public class VehiculosBacking implements Serializable {
 
 	@ManagedProperty(value = "#{ramoBean}")
 	private RamoBean ramoBean;
+
+	@ManagedProperty(value = "#{usuarioBean}")
+	private UsuarioBean usuarioBean;
 
 	@EJB
 	private CatalogoService catalogoService;
@@ -80,6 +87,7 @@ public class VehiculosBacking implements Serializable {
 	 * 
 	 */
 	public void guardarRamo() throws HiperionException {
+		Usuario usuario = usuarioBean.getSessionUser();
 		RamoVehiculo ramoVehiculo = new RamoVehiculo();
 
 		ramoVehiculo.setClaseVh(ramoVehiculoBean.getClaseVehiculo());
@@ -105,6 +113,10 @@ public class VehiculosBacking implements Serializable {
 		ramoVehiculo.setDeducPorcentajeVh(ramoVehiculoBean.getPorcentajeDeducible());
 		ramoVehiculo.setDeducSiniestroVh(ramoVehiculoBean.getPorcentajeSiniestro());
 		ramoVehiculo.setDeducValorAsegVh(ramoVehiculoBean.getPorcentajeValorAsegurado());
+
+		ramoVehiculo.setIdUsuarioCreacion(usuario.getIdUsuario());
+		ramoVehiculo.setFechaCreacion(new Date());
+		ramoVehiculo.setEstado(EstadoEnum.A);
 
 		try {
 			ramoVehiculoService.guardarRamoVehiculo(ramoVehiculo);
@@ -307,6 +319,21 @@ public class VehiculosBacking implements Serializable {
 	 */
 	public void setActivarMarcaAuto(Boolean activarMarcaAuto) {
 		this.activarMarcaAuto = activarMarcaAuto;
+	}
+
+	/**
+	 * @return the usuarioBean
+	 */
+	public UsuarioBean getUsuarioBean() {
+		return usuarioBean;
+	}
+
+	/**
+	 * @param usuarioBean
+	 *            the usuarioBean to set
+	 */
+	public void setUsuarioBean(UsuarioBean usuarioBean) {
+		this.usuarioBean = usuarioBean;
 	}
 
 	/**

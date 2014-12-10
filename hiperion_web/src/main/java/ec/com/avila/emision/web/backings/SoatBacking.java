@@ -6,6 +6,7 @@ package ec.com.avila.emision.web.backings;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -21,12 +22,15 @@ import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.emision.entities.Catalogo;
 import ec.com.avila.hiperion.emision.entities.DetalleCatalogo;
 import ec.com.avila.hiperion.emision.entities.RamoSoat;
+import ec.com.avila.hiperion.emision.entities.Usuario;
+import ec.com.avila.hiperion.enumeration.EstadoEnum;
 import ec.com.avila.hiperion.servicio.CatalogoService;
 import ec.com.avila.hiperion.servicio.DetalleCatalogoService;
 import ec.com.avila.hiperion.servicio.RamoService;
 import ec.com.avila.hiperion.servicio.RamoSoatService;
 import ec.com.avila.hiperion.web.beans.MarcasDto;
 import ec.com.avila.hiperion.web.beans.RamoBean;
+import ec.com.avila.hiperion.web.beans.UsuarioBean;
 import ec.com.avila.hiperion.web.util.HiperionMensajes;
 import ec.com.avila.hiperion.web.util.MessagesController;
 
@@ -45,6 +49,9 @@ public class SoatBacking implements Serializable {
 
 	@ManagedProperty(value = "#{ramoBean}")
 	private RamoBean ramoBean;
+
+	@ManagedProperty(value = "#{usuarioBean}")
+	private UsuarioBean usuarioBean;
 
 	private List<SelectItem> tipoVehiculoItems;
 	private List<SelectItem> tipoSoatItems;
@@ -72,6 +79,8 @@ public class SoatBacking implements Serializable {
 	private Boolean activarMarcaMoto;
 
 	public void guardarRamo() throws HiperionException {
+
+		Usuario usuario = usuarioBean.getSessionUser();
 		RamoSoat ramoSoat = new RamoSoat();
 
 		ramoSoat.setAsegurado(ramoSoatBean.getAsegurado());
@@ -81,9 +90,13 @@ public class SoatBacking implements Serializable {
 		ramoSoat.setAnioSoat(ramoSoatBean.getAnio());
 		ramoSoat.setCilindrajeSoat(ramoSoatBean.getCilindraje());
 
+		ramoSoat.setIdUsuarioCreacion(usuario.getIdUsuario());
+		ramoSoat.setFechaCreacion(new Date());
+		ramoSoat.setEstado(EstadoEnum.A);
+
 		try {
 			ramoSoatService.guardarRamoSoat(ramoSoat);
-			MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.soat"));
+			MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.save.sOjeto"));
 		} catch (HiperionException e) {
 			log.error("Error al momento de guardar el Ramo Soat", e);
 			MessagesController.addError(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.error.soat"));
@@ -142,6 +155,21 @@ public class SoatBacking implements Serializable {
 		}
 
 		return tipoVehiculoItems;
+	}
+
+	/**
+	 * @return the usuarioBean
+	 */
+	public UsuarioBean getUsuarioBean() {
+		return usuarioBean;
+	}
+
+	/**
+	 * @param usuarioBean
+	 *            the usuarioBean to set
+	 */
+	public void setUsuarioBean(UsuarioBean usuarioBean) {
+		this.usuarioBean = usuarioBean;
 	}
 
 	/**

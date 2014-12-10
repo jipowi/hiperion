@@ -5,6 +5,7 @@
 package ec.com.avila.emision.web.backings;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -16,9 +17,12 @@ import org.apache.log4j.Logger;
 import ec.com.avila.emision.web.beans.RamoRiesgoContratistaBean;
 import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.emision.entities.RamoRiesgoContratista;
+import ec.com.avila.hiperion.emision.entities.Usuario;
+import ec.com.avila.hiperion.enumeration.EstadoEnum;
 import ec.com.avila.hiperion.servicio.RamoRiesgoContratistaService;
 import ec.com.avila.hiperion.servicio.RamoService;
 import ec.com.avila.hiperion.web.beans.RamoBean;
+import ec.com.avila.hiperion.web.beans.UsuarioBean;
 import ec.com.avila.hiperion.web.util.HiperionMensajes;
 import ec.com.avila.hiperion.web.util.MessagesController;
 
@@ -38,6 +42,9 @@ public class RiesgosContratistaBacking implements Serializable {
 
 	@ManagedProperty(value = "#{ramoBean}")
 	private RamoBean ramoBean;
+	
+	@ManagedProperty(value = "#{usuarioBean}")
+	private UsuarioBean usuarioBean;
 
 	@EJB
 	private RamoService ramoService;
@@ -60,6 +67,8 @@ public class RiesgosContratistaBacking implements Serializable {
 	 *
 	 */
 	public void guardarRamo()throws HiperionException {
+		
+		Usuario usuario =usuarioBean.getSessionUser();
 		RamoRiesgoContratista ramoRiesgoContratista=new RamoRiesgoContratista();
 		
 		ramoRiesgoContratista.setPeriodConstruccionContratista(ramoRiesgoContratistaBean.getPeriodoConstruccion());
@@ -75,9 +84,12 @@ public class RiesgosContratistaBacking implements Serializable {
 		ramoRiesgoContratista.setMinimoAmparoG(ramoRiesgoContratistaBean.getMinimoG());
 		ramoRiesgoContratista.setTasaPeridConst(ramoRiesgoContratistaBean.getTasa());
 		
+		ramoRiesgoContratista.setIdUsuarioCreacion(usuario.getIdUsuario());
+		ramoRiesgoContratista.setFechaCreacion(new Date());
+		ramoRiesgoContratista.setEstado(EstadoEnum.A);
 		try{
 			ramoRiesgoContratistaService.guardarRamoRiesgoContratista(ramoRiesgoContratista);
-			MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.todoRiesgoContratista"));
+			MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.save.sOjeto"));
 			
 		}catch(HiperionException e){
 			log.error("Error al momento de guardar el Ramo Todo Riesgo Contratista",e);
@@ -87,6 +99,25 @@ public class RiesgosContratistaBacking implements Serializable {
 	}
 
 	
+	
+	/**
+	 * @return the usuarioBean
+	 */
+	public UsuarioBean getUsuarioBean() {
+		return usuarioBean;
+	}
+
+
+
+	/**
+	 * @param usuarioBean the usuarioBean to set
+	 */
+	public void setUsuarioBean(UsuarioBean usuarioBean) {
+		this.usuarioBean = usuarioBean;
+	}
+
+
+
 	/**
 	 * @return the ramoRiesgoContratistaBean
 	 */

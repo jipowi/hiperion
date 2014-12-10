@@ -5,6 +5,7 @@ package ec.com.avila.emision.web.backings;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -19,9 +20,12 @@ import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.dto.ObjetoAseguradoRoboDTO;
 import ec.com.avila.hiperion.emision.entities.ObjAsegRobo;
 import ec.com.avila.hiperion.emision.entities.RamoRoboAsalto;
+import ec.com.avila.hiperion.emision.entities.Usuario;
+import ec.com.avila.hiperion.enumeration.EstadoEnum;
 import ec.com.avila.hiperion.servicio.RamoRoboAsaltoService;
 import ec.com.avila.hiperion.servicio.RamoService;
 import ec.com.avila.hiperion.web.beans.RamoBean;
+import ec.com.avila.hiperion.web.beans.UsuarioBean;
 import ec.com.avila.hiperion.web.util.HiperionMensajes;
 import ec.com.avila.hiperion.web.util.MessagesController;
 
@@ -43,6 +47,9 @@ public class RoboAsaltoBacking implements Serializable {
 	@ManagedProperty(value = "#{ramoRoboAsaltoBean}")
 	private RamoRoboAsaltoBean ramoRoboAsaltoBean;
 
+	@ManagedProperty(value = "#{usuarioBean}")
+	private UsuarioBean usuarioBean;
+
 	@EJB
 	private RamoService ramoService;
 	@EJB
@@ -62,55 +69,78 @@ public class RoboAsaltoBacking implements Serializable {
 	 */
 	public void setearInfRamo() throws HiperionException {
 
+		Usuario usuario = usuarioBean.getSessionUser();
+
 		ramoRoboAsalto.setTasaRoboAsalto(ramoRoboAsaltoBean.getTasaRobo());
 		ramoRoboAsalto.setTasaHurtoRobo(ramoRoboAsaltoBean.getMinimoHurto());
 		ramoRoboAsalto.setTasaPropiedad(ramoRoboAsaltoBean.getTasaPropiedad());
 		ramoRoboAsalto.setTasaContenidos(ramoRoboAsaltoBean.getTasaContenidos());
-		//TODO agregar deducibles modelo
-		
-		
+		// TODO agregar deducibles modelo
+
+		ramoRoboAsalto.setIdUsuarioCreacion(usuario.getIdUsuario());
+		ramoRoboAsalto.setFechaCreacion(new Date());
+		ramoRoboAsalto.setEstado(EstadoEnum.A);
+
 		MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.setearInformacion"));
 
 	}
 
-	public void guadraRamo() throws HiperionException{
-		try{
-			if(ramoRoboAsaltoBean.getObjetoaseguradolist().isEmpty()){
-				List<ObjAsegRobo>listObjetos = new ArrayList<>();
-				for(ObjetoAseguradoRoboDTO objeto : ramoRoboAsaltoBean.getObjetoaseguradolist()){
+	public void guadraRamo() throws HiperionException {
+		try {
+			if (ramoRoboAsaltoBean.getObjetoaseguradolist().isEmpty()) {
+				List<ObjAsegRobo> listObjetos = new ArrayList<>();
+				for (ObjetoAseguradoRoboDTO objeto : ramoRoboAsaltoBean.getObjetoaseguradolist()) {
 					ObjAsegRobo objAsegRobo = new ObjAsegRobo();
-					
+
 					objAsegRobo.setItemRoboAsalto(objeto.getNumeroItem());
 					objAsegRobo.setValorObjRobo(objeto.getValorDetalleObjeto());
-					//TODO revisar en el modelo
-					//objAsegRobo.setUbicacionObjRobo(objeto.getUbicacionRiesgo());
-					//objAsegRobo.setDetalleObjRobo(objeto.getDetalleObjeto());
+					objAsegRobo.setUbicacionObjRobo(objeto.getUbicacionRiesgo());
+					objAsegRobo.setDetalleObjRobo(objeto.getDetalleObjeto());
 					objAsegRobo.setMueblesObjRobo(objeto.getMueblesEnseresEquipos());
 					objAsegRobo.setJoyasObjRobo(objeto.getJoyasObrasArte());
 					objAsegRobo.setMaquinariaObjRobo(objeto.getMaquinaria());
 					objAsegRobo.setDineroObjRobo(objeto.getDineroPermanencia());
 					objAsegRobo.setMarcaderiaObjRobo(objeto.getMercaderia());
+
+					Usuario usuario = usuarioBean.getSessionUser();
+					objAsegRobo.setIdUsuarioCreacion(usuario.getIdUsuario());
+					objAsegRobo.setFechaCreacion(new Date());
+					objAsegRobo.setEstado(EstadoEnum.A);
 					listObjetos.add(objAsegRobo);
-					
+
 				}
 				ramoRoboAsalto.setObjAsegRobos(listObjetos);
-			}else{
+			} else {
 				MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.error.save"));
 			}
 			ramoRoboAsaltoService.guardarRamoRoboAsalto(ramoRoboAsalto);
 			MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.save"));
 			ramoRoboAsalto = new RamoRoboAsalto();
 			ramoRoboAsaltoBean.getObjetoaseguradolist().clear();
-		}catch(HiperionException e){
+		} catch (HiperionException e) {
 			log.error("Error al momento de guardar el ramo robo y/o asalto", e);
 			MessagesController.addError(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.error.save"));
 
 			throw new HiperionException(e);
 		}
-		
-		}
-		
-	
+
+	}
+
+	/**
+	 * @return the usuarioBean
+	 */
+	public UsuarioBean getUsuarioBean() {
+		return usuarioBean;
+	}
+
+	/**
+	 * @param usuarioBean
+	 *            the usuarioBean to set
+	 */
+	public void setUsuarioBean(UsuarioBean usuarioBean) {
+		this.usuarioBean = usuarioBean;
+	}
+
 	/**
 	 * @return the ramoRoboAsaltoBeans
 	 */

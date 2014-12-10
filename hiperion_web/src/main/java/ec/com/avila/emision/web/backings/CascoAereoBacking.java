@@ -5,6 +5,7 @@
 package ec.com.avila.emision.web.backings;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -16,9 +17,12 @@ import org.apache.log4j.Logger;
 import ec.com.avila.emision.web.beans.RamoCascoAereoBean;
 import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.emision.entities.RamoCascoAereo;
+import ec.com.avila.hiperion.emision.entities.Usuario;
+import ec.com.avila.hiperion.enumeration.EstadoEnum;
 import ec.com.avila.hiperion.servicio.RamoCascoAereoService;
 import ec.com.avila.hiperion.servicio.RamoService;
 import ec.com.avila.hiperion.web.beans.RamoBean;
+import ec.com.avila.hiperion.web.beans.UsuarioBean;
 import ec.com.avila.hiperion.web.util.HiperionMensajes;
 import ec.com.avila.hiperion.web.util.MessagesController;
 
@@ -45,6 +49,9 @@ public class CascoAereoBacking implements Serializable {
 
 	@ManagedProperty(value = "#{ramoCascoAereoBean}")
 	private RamoCascoAereoBean ramoCascoAereoBean;
+	
+	@ManagedProperty(value = "#{usuarioBean}")
+	private UsuarioBean usuarioBean;
 
 	Logger log = Logger.getLogger(CascoAereoBacking.class);
 
@@ -57,6 +64,7 @@ public class CascoAereoBacking implements Serializable {
 	 * 
 	 */
 	public void guardarRamo() throws HiperionException {
+		Usuario usuario=usuarioBean.getSessionUser();
 		RamoCascoAereo cascoAereo = new RamoCascoAereo();
 
 		cascoAereo.setMatricula(ramoCascoAereoBean.getMatricula());
@@ -74,6 +82,10 @@ public class CascoAereoBacking implements Serializable {
 		cascoAereo.setDeducSiniestroAereo(ramoCascoAereoBean.getPorcentajeSiniestro());
 		cascoAereo.setDeducMinimoSiniestroAereo(ramoCascoAereoBean.getMinimoSiniestro());
 		
+		cascoAereo.setIdUsuarioCreacion(usuario.getIdUsuario());
+		cascoAereo.setFechaCreacion(new Date());
+		cascoAereo.setEstado(EstadoEnum.A);
+		
 
 		try {
 
@@ -87,6 +99,23 @@ public class CascoAereoBacking implements Serializable {
 		}
 
 	}
+
+	
+	/**
+	 * @return the usuarioBean
+	 */
+	public UsuarioBean getUsuarioBean() {
+		return usuarioBean;
+	}
+
+
+	/**
+	 * @param usuarioBean the usuarioBean to set
+	 */
+	public void setUsuarioBean(UsuarioBean usuarioBean) {
+		this.usuarioBean = usuarioBean;
+	}
+
 
 	/**
 	 * @return the ramoCascoAereoBean

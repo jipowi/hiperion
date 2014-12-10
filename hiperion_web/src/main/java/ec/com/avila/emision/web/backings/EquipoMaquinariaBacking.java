@@ -6,6 +6,7 @@ package ec.com.avila.emision.web.backings;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -24,9 +25,12 @@ import ec.com.avila.hiperion.emision.entities.DetalleAnexo;
 import ec.com.avila.hiperion.emision.entities.ObjAsegEquipoMaq;
 import ec.com.avila.hiperion.emision.entities.Ramo;
 import ec.com.avila.hiperion.emision.entities.RamoEquipoMaquinaria;
+import ec.com.avila.hiperion.emision.entities.Usuario;
+import ec.com.avila.hiperion.enumeration.EstadoEnum;
 import ec.com.avila.hiperion.servicio.RamoEquipoMaquinariaService;
 import ec.com.avila.hiperion.servicio.RamoService;
 import ec.com.avila.hiperion.web.beans.RamoBean;
+import ec.com.avila.hiperion.web.beans.UsuarioBean;
 import ec.com.avila.hiperion.web.model.AnexosDataModel;
 import ec.com.avila.hiperion.web.util.HiperionMensajes;
 import ec.com.avila.hiperion.web.util.MessagesController;
@@ -54,6 +58,9 @@ public class EquipoMaquinariaBacking implements Serializable {
 
 	@ManagedProperty(value = "#{ramoEquipoMaquinaraBean}")
 	private RamoEquipoMaquinaraBean ramoEquipoMaquinaraBean;
+
+	@ManagedProperty(value = "#{usuarioBean}")
+	private UsuarioBean usuarioBean;
 
 	RamoEquipoMaquinaria ramoEquipoMaquinaria = new RamoEquipoMaquinaria();
 
@@ -148,11 +155,16 @@ public class EquipoMaquinariaBacking implements Serializable {
 	 */
 	public void setearInfRamo() throws HiperionException {
 
+		Usuario usuario = usuarioBean.getSessionUser();
+
 		ramoEquipoMaquinaria.setTasaEquipoMaq(ramoEquipoMaquinaraBean.getTasa());
 		ramoEquipoMaquinaria.setDeducMinimoSiniestroMaq(ramoEquipoMaquinaraBean.getMinimoSiniestro());
 		ramoEquipoMaquinaria.setDeducMinAsegMaq(ramoEquipoMaquinaraBean.getMinimoAsegurado());
 		ramoEquipoMaquinaria.setDeducPorcSiniestroMaq(ramoEquipoMaquinaraBean.getPorcentajeSiniestro());
 
+		ramoEquipoMaquinaria.setIdUsuarioCreacion(usuario.getIdUsuario());
+		ramoEquipoMaquinaria.setFechaCreacion(new Date());
+		ramoEquipoMaquinaria.setEstado(EstadoEnum.A);
 		MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.setearDatos"));
 	}
 
@@ -183,6 +195,10 @@ public class EquipoMaquinariaBacking implements Serializable {
 					objAsegEquipoMaq.setValorAsegObjEqMaq(objeto.getValorAsegurado());
 					objAsegEquipoMaq.setNumeroSerieObjMaq(objeto.getSerie());
 
+					Usuario usuario = usuarioBean.getSessionUser();
+					objAsegEquipoMaq.setIdUsuarioCreacion(usuario.getIdUsuario());
+					objAsegEquipoMaq.setFechaCreacion(new Date());
+					objAsegEquipoMaq.setEstado(EstadoEnum.A);
 					listObjetos.add(objAsegEquipoMaq);
 				}
 				ramoEquipoMaquinaria.setObjAsegEquipoMaqs(listObjetos);
@@ -199,6 +215,21 @@ public class EquipoMaquinariaBacking implements Serializable {
 			throw new HiperionException(e);
 
 		}
+	}
+
+	
+	/**
+	 * @return the usuarioBean
+	 */
+	public UsuarioBean getUsuarioBean() {
+		return usuarioBean;
+	}
+
+	/**
+	 * @param usuarioBean the usuarioBean to set
+	 */
+	public void setUsuarioBean(UsuarioBean usuarioBean) {
+		this.usuarioBean = usuarioBean;
 	}
 
 	public RamoBean getRamoBean() {

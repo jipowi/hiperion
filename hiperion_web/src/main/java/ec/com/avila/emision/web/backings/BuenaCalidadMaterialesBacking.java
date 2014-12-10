@@ -6,6 +6,7 @@ package ec.com.avila.emision.web.backings;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -25,11 +26,14 @@ import ec.com.avila.hiperion.emision.entities.DetalleAnexo;
 import ec.com.avila.hiperion.emision.entities.DetalleCatalogo;
 import ec.com.avila.hiperion.emision.entities.Ramo;
 import ec.com.avila.hiperion.emision.entities.RamoBuenaCalMat;
+import ec.com.avila.hiperion.emision.entities.Usuario;
+import ec.com.avila.hiperion.enumeration.EstadoEnum;
 import ec.com.avila.hiperion.servicio.CatalogoService;
 import ec.com.avila.hiperion.servicio.DetalleCatalogoService;
 import ec.com.avila.hiperion.servicio.RamoBuenaCalMatService;
 import ec.com.avila.hiperion.servicio.RamoService;
 import ec.com.avila.hiperion.web.beans.RamoBean;
+import ec.com.avila.hiperion.web.beans.UsuarioBean;
 import ec.com.avila.hiperion.web.model.AnexosDataModel;
 import ec.com.avila.hiperion.web.util.HiperionMensajes;
 import ec.com.avila.hiperion.web.util.MessagesController;
@@ -70,6 +74,9 @@ public class BuenaCalidadMaterialesBacking implements Serializable {
 
 	@ManagedProperty(value = "#{ramoBuenaCalMatBean}")
 	private RamoBuenaCalMatBean ramoBuenaCalMatBean;
+	
+	@ManagedProperty(value = "#{usuarioBean}")
+	private UsuarioBean usuarioBean;
 
 	Logger log = Logger.getLogger(BuenaCalidadMaterialesBacking.class);
 
@@ -165,12 +172,17 @@ public class BuenaCalidadMaterialesBacking implements Serializable {
 	 */
 	public void guardarRamo() throws HiperionException {
 
+		Usuario usuario =usuarioBean.getSessionUser();
 		RamoBuenaCalMat buenaCalidadMateriales = new RamoBuenaCalMat();
 
 		buenaCalidadMateriales.setSectorCalMat(ramoBuenaCalMatBean.getSector());
 		buenaCalidadMateriales.setObjAsegCalMat(ramoBuenaCalMatBean.getObjetoAsegurado());
 		buenaCalidadMateriales.setValorContratoMateriales(ramoBuenaCalMatBean.getValorContrato());
 		buenaCalidadMateriales.setValorPolizaMateriales(ramoBuenaCalMatBean.getValorPoliza());
+		
+		buenaCalidadMateriales.setIdUsuarioCreacion(usuario.getIdUsuario());
+		buenaCalidadMateriales.setFechaCreacion(new Date());
+		buenaCalidadMateriales.setEstado(EstadoEnum.A);
 
 		try {
 
@@ -184,6 +196,21 @@ public class BuenaCalidadMaterialesBacking implements Serializable {
 
 			throw new HiperionException(e);
 		}
+	}
+
+	
+	/**
+	 * @return the usuarioBean
+	 */
+	public UsuarioBean getUsuarioBean() {
+		return usuarioBean;
+	}
+
+	/**
+	 * @param usuarioBean the usuarioBean to set
+	 */
+	public void setUsuarioBean(UsuarioBean usuarioBean) {
+		this.usuarioBean = usuarioBean;
 	}
 
 	/**

@@ -5,6 +5,7 @@ package ec.com.avila.emision.web.backings;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -23,9 +24,12 @@ import ec.com.avila.hiperion.emision.entities.DetalleAnexo;
 import ec.com.avila.hiperion.emision.entities.ObjAsegIncendio;
 import ec.com.avila.hiperion.emision.entities.Ramo;
 import ec.com.avila.hiperion.emision.entities.RamoIncendioLineasAliada;
+import ec.com.avila.hiperion.emision.entities.Usuario;
+import ec.com.avila.hiperion.enumeration.EstadoEnum;
 import ec.com.avila.hiperion.servicio.RamoIncendioLineasAliadaService;
 import ec.com.avila.hiperion.servicio.RamoService;
 import ec.com.avila.hiperion.web.beans.RamoBean;
+import ec.com.avila.hiperion.web.beans.UsuarioBean;
 import ec.com.avila.hiperion.web.model.AnexosDataModel;
 import ec.com.avila.hiperion.web.util.HiperionMensajes;
 import ec.com.avila.hiperion.web.util.MessagesController;
@@ -64,6 +68,9 @@ public class IncendioLineasAliadasBacking implements Serializable {
 
 	@ManagedProperty(value = "#{ramoIncendioLineasAliadaBean}")
 	private RamoIncendioLineasAliadaBean ramoIncendioLineasAliadaBean;
+	
+	@ManagedProperty(value = "#{usuarioBean}")
+	private UsuarioBean usuarioBean;
 
 	@EJB
 	private RamoService ramoService;
@@ -307,7 +314,12 @@ public class IncendioLineasAliadasBacking implements Serializable {
 					objAsegIncendio.setItemIncendio(objeto.getNumeroItem().toString());
 					objAsegIncendio.setUbicacionIncendio(objeto.getUbicacionRiesgo());
 					objAsegIncendio.setDetalleIncendio(objeto.getDetalle());
-					// Falta agregar el campo valor
+					objAsegIncendio.setValorObjAsegIncendio(objeto.getValor());
+					
+					Usuario usuario =usuarioBean.getSessionUser();
+					objAsegIncendio.setIdUsuarioCreacion(usuario.getIdUsuario());
+					objAsegIncendio.setFechaCreacion(new Date());
+					objAsegIncendio.setEstado(EstadoEnum.A);
 					objetosList.add(objAsegIncendio);
 				}
 				ramoIncendioLineasAliada.setObjAsegIncendios(objetosList);
@@ -340,6 +352,8 @@ public class IncendioLineasAliadasBacking implements Serializable {
 	 */
 	public void setearInfRamo() {
 
+		Usuario usuario =usuarioBean.getSessionUser();
+		
 		ramoIncendioLineasAliada.setValorItemsIncendio(ramoIncendioLineasAliadaBean.getValorItems());
 		ramoIncendioLineasAliada.setConsideracionesImpIncendio(ramoIncendioLineasAliadaBean.getConsideracionesImp());
 		ramoIncendioLineasAliada.setDeducTerremoto(ramoIncendioLineasAliadaBean.getMinimoTerremoto());
@@ -353,9 +367,32 @@ public class IncendioLineasAliadasBacking implements Serializable {
 		ramoIncendioLineasAliada.setTasaClaElectrica(ramoIncendioLineasAliadaBean.getTasaClausulaElectrica());
 		ramoIncendioLineasAliada.setTasaAutoexplosion(ramoIncendioLineasAliadaBean.getTasaAutoexplosion());
 		ramoIncendioLineasAliada.setTasaVidrios(ramoIncendioLineasAliadaBean.getTasaVidrios());
-		// TODO Falta agregar los minimos del deducible
+		ramoIncendioLineasAliada.setDeducMinimoTerremoto(ramoIncendioLineasAliadaBean.getMinimoTerremoto());
+		ramoIncendioLineasAliada.setDeducMinimoLluvia(ramoIncendioLineasAliadaBean.getMinimoLluvia());
+		ramoIncendioLineasAliada.setDeducMinimoOtros(ramoIncendioLineasAliadaBean.getMinimoOtrosEventos());
+		ramoIncendioLineasAliada.setDeducMinimoVidrios(ramoIncendioLineasAliadaBean.getMinimoOtrosEventos());
+
+		ramoIncendioLineasAliada.setIdUsuarioCreacion(usuario.getIdUsuario());
+		ramoIncendioLineasAliada.setFechaCreacion(new Date());
+		ramoIncendioLineasAliada.setEstado(EstadoEnum.A);
 		MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.setearDatos"));
 
+	}
+
+	
+	
+	/**
+	 * @return the usuarioBean
+	 */
+	public UsuarioBean getUsuarioBean() {
+		return usuarioBean;
+	}
+
+	/**
+	 * @param usuarioBean the usuarioBean to set
+	 */
+	public void setUsuarioBean(UsuarioBean usuarioBean) {
+		this.usuarioBean = usuarioBean;
 	}
 
 	public RamoBean getRamoBean() {

@@ -5,6 +5,7 @@
 package ec.com.avila.emision.web.backings;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -16,9 +17,12 @@ import org.apache.log4j.Logger;
 import ec.com.avila.emision.web.beans.RamoTodoRiesgoMontajeBean;
 import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.emision.entities.RamoRiesgoMontaje;
+import ec.com.avila.hiperion.emision.entities.Usuario;
+import ec.com.avila.hiperion.enumeration.EstadoEnum;
 import ec.com.avila.hiperion.servicio.RamoRiesgoMontajeService;
 import ec.com.avila.hiperion.servicio.RamoService;
 import ec.com.avila.hiperion.web.beans.RamoBean;
+import ec.com.avila.hiperion.web.beans.UsuarioBean;
 import ec.com.avila.hiperion.web.util.HiperionMensajes;
 import ec.com.avila.hiperion.web.util.MessagesController;
 
@@ -37,9 +41,12 @@ public class TodoRiesgoMontajeBacking implements Serializable {
 
 	@ManagedProperty(value = "#{ramoBean}")
 	private RamoBean ramoBean;
-	
+
 	@ManagedProperty(value = "#{ramoTodoRiesgoMontajeBean}")
 	private RamoTodoRiesgoMontajeBean ramoTodoRiesgoMontajeBean;
+
+	@ManagedProperty(value = "#{usuarioBean}")
+	private UsuarioBean usuarioBean;
 
 	Logger log = Logger.getLogger(TodoRiesgoMontajeBacking.class);
 
@@ -50,16 +57,17 @@ public class TodoRiesgoMontajeBacking implements Serializable {
 
 	/**
 	 * 
-	 * <b>
-	 * Permite guardar informacion del Ramo Riesgo Contratista
-	 * </b>
-	 * <p>[Author: Franklin Pozo, Date: 12/10/2014]</p>
-	 *
+	 * <b> Permite guardar informacion del Ramo Riesgo Contratista </b>
+	 * <p>
+	 * [Author: Franklin Pozo, Date: 12/10/2014]
+	 * </p>
+	 * 
 	 */
-	public void guardarRamo()throws HiperionException {
-	
-	RamoRiesgoMontaje ramoRiesgoMontaje=new RamoRiesgoMontaje();
-		
+	public void guardarRamo() throws HiperionException {
+
+		Usuario usuario = usuarioBean.getSessionUser();
+		RamoRiesgoMontaje ramoRiesgoMontaje = new RamoRiesgoMontaje();
+
 		ramoRiesgoMontaje.setTasaMontaje(ramoTodoRiesgoMontajeBean.getTasa());
 		ramoRiesgoMontaje.setPeriodoConstrucMontaje(ramoTodoRiesgoMontajeBean.getPeriodoConstruccion());
 		ramoRiesgoMontaje.setPeriodoMantMontaje(ramoTodoRiesgoMontajeBean.getPeriodoMantenimiento());
@@ -72,18 +80,41 @@ public class TodoRiesgoMontajeBacking implements Serializable {
 		ramoRiesgoMontaje.setMinimoAmparoDMontaje(ramoTodoRiesgoMontajeBean.getMinimoD());
 		ramoRiesgoMontaje.setAmparoGMontaje(ramoTodoRiesgoMontajeBean.getPorcentajeConstruccionG());
 		ramoRiesgoMontaje.setMinimoAmparoGMontaje(ramoTodoRiesgoMontajeBean.getMinimoG());
-		
-		
-		try{
+
+		ramoRiesgoMontaje.setIdUsuarioCreacion(usuario.getIdUsuario());
+		ramoRiesgoMontaje.setFechaCreacion(new Date());
+		ramoRiesgoMontaje.setEstado(EstadoEnum.A);
+
+		try {
 			ramoRiesgoMontajeService.guardarRamoRiesgoMontaje(ramoRiesgoMontaje);
-			MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.todoRiesgoMontaje"));
-		}catch(HiperionException e){
-			log.error("Error al momento de guardar el Ramo Todo Riesgo Montaje",e);
+			MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.save.sOjeto"));
+		} catch (HiperionException e) {
+			log.error("Error al momento de guardar el Ramo Todo Riesgo Montaje", e);
 			MessagesController.addError(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.error.todoRiesgoMontaje"));
 			throw new HiperionException(e);
 		}
-		
+
 	}
+	
+	
+
+	/**
+	 * @return the usuarioBean
+	 */
+	public UsuarioBean getUsuarioBean() {
+		return usuarioBean;
+	}
+
+
+
+	/**
+	 * @param usuarioBean the usuarioBean to set
+	 */
+	public void setUsuarioBean(UsuarioBean usuarioBean) {
+		this.usuarioBean = usuarioBean;
+	}
+
+
 
 	/**
 	 * @return the ramoBean
@@ -93,7 +124,8 @@ public class TodoRiesgoMontajeBacking implements Serializable {
 	}
 
 	/**
-	 * @param ramoBean the ramoBean to set
+	 * @param ramoBean
+	 *            the ramoBean to set
 	 */
 	public void setRamoBean(RamoBean ramoBean) {
 		this.ramoBean = ramoBean;
@@ -107,11 +139,11 @@ public class TodoRiesgoMontajeBacking implements Serializable {
 	}
 
 	/**
-	 * @param ramoTodoRiesgoMontajeBean the ramoTodoRiesgoMontajeBean to set
+	 * @param ramoTodoRiesgoMontajeBean
+	 *            the ramoTodoRiesgoMontajeBean to set
 	 */
 	public void setRamoTodoRiesgoMontajeBean(RamoTodoRiesgoMontajeBean ramoTodoRiesgoMontajeBean) {
 		this.ramoTodoRiesgoMontajeBean = ramoTodoRiesgoMontajeBean;
 	}
 
-	
 }
