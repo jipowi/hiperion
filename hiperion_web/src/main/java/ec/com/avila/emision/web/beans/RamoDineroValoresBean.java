@@ -55,7 +55,7 @@ public class RamoDineroValoresBean implements Serializable {
 
 	// Tabla Objeto Asegurado
 	private Integer item;
-	private String dineroValores;
+	private BigDecimal dineroValores;
 	private BigDecimal limiteEstimadoAnual;
 	private BigDecimal limiteEmbarque;
 	private String trayectoDesde;
@@ -90,7 +90,7 @@ public class RamoDineroValoresBean implements Serializable {
 	/**
 	 * @return the dineroValores
 	 */
-	public String getDineroValores() {
+	public BigDecimal getDineroValores() {
 		return dineroValores;
 	}
 
@@ -98,7 +98,7 @@ public class RamoDineroValoresBean implements Serializable {
 	 * @param dineroValores
 	 *            the dineroValores to set
 	 */
-	public void setDineroValores(String dineroValores) {
+	public void setDineroValores(BigDecimal dineroValores) {
 		this.dineroValores = dineroValores;
 	}
 
@@ -403,7 +403,7 @@ public class RamoDineroValoresBean implements Serializable {
 		objetoAseguradoList.add(objetoAseguradoItem);
 
 		item = 0;
-		dineroValores = "";
+		dineroValores = new BigDecimal(0);
 		limiteEstimadoAnual = new BigDecimal(0);
 		limiteEmbarque = new BigDecimal(0);
 		trayectoDesde = "";
