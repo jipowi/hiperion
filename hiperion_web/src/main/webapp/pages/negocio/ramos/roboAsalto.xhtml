@@ -23,9 +23,10 @@
 								<p:outputPanel>
 									<p:messages id="messageRoboAsalto" showDetail="true" autoUpdate="true" closable="true" />
 								</p:outputPanel>
-								<h:panelGrid columns="1">
-									<h:form id="formPricipal">
-										<div align="center">
+
+								<h:form id="formPricipal">
+									<div align="center">
+										<h:panelGrid columns="1">
 											<p:panel>
 												<h:panelGrid columns="2">
 													<p:outputLabel value="#{emision['robo.tasaRoboAsalto']}" styleClass="negrita" />
@@ -43,16 +44,15 @@
 												<h:panelGrid columns="1" cellpadding="3">
 													<p:outputLabel value="#{emision['robo.polizaVigente']}" styleClass="negrita" />
 													<p:fileUpload fileLimit="1" />
-
 												</h:panelGrid>
 
 												<p:spacer height="30px;" />
-												<p:panelGrid columns="2">
+												<h:panelGrid columns="2">
 													<h:outputLabel value="#{emision['emision.deducibles']}" />
 													<h:graphicImage name="deducibles.jpg" library="img" />
-												</p:panelGrid>
+												</h:panelGrid>
 												<p:growl id="messagesDeducible" showDetail="true" />
-												<h:panelGrid columns="3" style="text-align:center">
+												<h:panelGrid columns="3">
 													<h:outputLabel value="#{emision['robo.deducible.deducibles']}" styleClass="negrita" />
 													<h:outputLabel value="#{emision['robo.deducible.porcentajeValorSiniestro']}" styleClass="negrita" />
 													<h:outputLabel value="#{emision['robo.deducible.minimo']}" styleClass="negrita" />
@@ -68,26 +68,18 @@
 													<h:outputLabel value="#{emision['robo.deducible.propiedadEmpleados']}" />
 													<p:inputText value="#{ramoRoboAsaltoBean.porcentajeSiniestroPropiedad}" />
 													<p:inputText value="#{ramoRoboAsaltoBean.minimoPropiedad}" />
-
 												</h:panelGrid>
 											</p:panel>
-											<p:spacer height="30px;" />
-											<div align="center">
-												<p:commandButton id="guardarRoboBtnId" oncomplete="asmDlg.hide();" actionListener="#{roboAsaltoBacking.setearInfRamo()}" icon="icon-save"
-													value="#{emision['boton.aceptar']}" title="Guardar" />
-												<p:commandButton id="cancelarBtnId" oncomplete="asmDlg.hide();" icon="icon-cancel" value="#{emision['boton.cancelar']}" process="@this"
-													title="Cancelar" />
-											</div>
+										</h:panelGrid>
+										<p:spacer height="30px;" />
+										<p:commandButton id="guardarRoboBtnId" oncomplete="asmDlg.hide();" actionListener="#{roboAsaltoBacking.setearInfRamo()}" icon="icon-save"
+											value="#{emision['boton.aceptar']}" title="Guardar" />
+										<p:commandButton id="cancelarBtnId" oncomplete="asmDlg.hide();" icon="icon-cancel" value="#{emision['boton.cancelar']}" process="@this"
+											title="Cancelar" />
+									</div>
+								</h:form>
+								<p:spacer height="30px;" />
 
-										</div>
-									</h:form>
-
-
-
-
-									<p:spacer height="30px;" />
-
-								</h:panelGrid>
 
 							</p:tab>
 							<!-- OBJETO ASEGURADO -->
