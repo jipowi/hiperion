@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      PostgreSQL 8                                 */
-/* Created on:     11/25/2014 10:00:33 PM                       */
+/* Created on:     12/7/2014 4:15:46 PM                         */
 /*==============================================================*/
 
 
@@ -10,7 +10,6 @@
 create table ANEXO (
    ID_ANEXO             SERIAL               not null,
    NOMBRE_ANEXO         TEXT                 null,
-   
    constraint PK_ANEXO primary key (ID_ANEXO)
 );
 
@@ -86,7 +85,11 @@ create table CANTON (
    ID_CANTON            SERIAL               not null,
    ID_PROVINCIA         INT4                 null,
    NOMBRE_CANTON        TEXT                 null,
-   
+   ID_USUARIO_CREACION  INT4                 not null,
+   ID_USUARIO_ACTUALIZACION INT4                 null,
+   FECHA_CREACION       DATE                 not null,
+   FECHA_ACTUALIZACION  DATE                 null,
+   ESTADO               TEXT                 not null,
    constraint PK_CANTON primary key (ID_CANTON)
 );
 
@@ -2214,21 +2217,27 @@ ID_AST_MEDICA
 /* Table: MENU                                                  */
 /*==============================================================*/
 create table MENU (
-   MENU_ID              SERIAL               not null,
-   NIVEL                INT4                 null,
-   ORDEN                INT4                 null,
-   URL                  TEXT                 null,
-   ICONO                TEXT                 null,
+   ID_MENU              SERIAL               not null,
+   ID_ROL               INT4                 null,
+   ID_PADRE             INT4                 null,
    NOMBRE_MENU          TEXT                 null,
+   URL                  TEXT                 null,
    ESTADO_MENU          TEXT                 null,
-   constraint PK_MENU primary key (MENU_ID)
+   constraint PK_MENU primary key (ID_MENU)
 );
 
 /*==============================================================*/
 /* Index: MENU_PK                                               */
 /*==============================================================*/
 create unique index MENU_PK on MENU (
-MENU_ID
+ID_MENU
+);
+
+/*==============================================================*/
+/* Index: MENU_FK                                               */
+/*==============================================================*/
+create  index MENU_FK on MENU (
+ID_ROL
 );
 
 /*==============================================================*/
@@ -3967,6 +3976,7 @@ ID_POLIZA
 /*==============================================================*/
 create table ROL (
    ID_ROL               SERIAL               not null,
+   ID_USUARIO           INT4                 null,
    NOMBRE_ROL           TEXT                 null,
    DESCRIPCION_ROL      TEXT                 null,
    ESTADO_ROL           TEXT                 null,
@@ -3981,34 +3991,10 @@ ID_ROL
 );
 
 /*==============================================================*/
-/* Table: ROL_MENU                                              */
+/* Index: ROL_FK                                                */
 /*==============================================================*/
-create table ROL_MENU (
-   ID_ROL               INT4                 not null,
-   MENU_ID              INT4                 not null,
-   constraint PK_ROL_MENU primary key (ID_ROL, MENU_ID)
-);
-
-/*==============================================================*/
-/* Index: ROL_MENU_PK                                           */
-/*==============================================================*/
-create unique index ROL_MENU_PK on ROL_MENU (
-ID_ROL,
-MENU_ID
-);
-
-/*==============================================================*/
-/* Index: ROL_MENU_FK                                           */
-/*==============================================================*/
-create  index ROL_MENU_FK on ROL_MENU (
-ID_ROL
-);
-
-/*==============================================================*/
-/* Index: ROL_MENU_FK2                                          */
-/*==============================================================*/
-create  index ROL_MENU_FK2 on ROL_MENU (
-MENU_ID
+create  index ROL_FK on ROL (
+ID_USUARIO
 );
 
 /*==============================================================*/
@@ -4083,13 +4069,12 @@ ID_TITULO
 /*==============================================================*/
 create table USUARIO (
    ID_USUARIO           SERIAL               not null,
-   ID_ROL               INT4                 null,
-   ID_PERSONA           INT4                 null,
    USUARIO              TEXT                 null,
+   NOMBRE_USUARIO       TEXT                 null,
    CLAVE                TEXT                 null,
+   IDENTIFICACION_USUARIO TEXT                 null,
    EMAIL_USUARIO        TEXT                 null,
    ESTADO_USUARIO       TEXT                 null,
-   TELEFONO             TEXT                 null,
    USUARIO_CREACION     TEXT                 null,
    FECHA_CREACION       DATE                 null,
    USUARIO_MODIFICACION TEXT                 null,
@@ -4102,20 +4087,6 @@ create table USUARIO (
 /*==============================================================*/
 create unique index USUARIO_PK on USUARIO (
 ID_USUARIO
-);
-
-/*==============================================================*/
-/* Index: USUARIO_FK                                            */
-/*==============================================================*/
-create  index USUARIO_FK on USUARIO (
-ID_PERSONA
-);
-
-/*==============================================================*/
-/* Index: USUARIO_FK2                                           */
-/*==============================================================*/
-create  index USUARIO_FK2 on USUARIO (
-ID_ROL
 );
 
 alter table ARCHIVO_BASE
@@ -4513,6 +4484,11 @@ alter table LIMITES_COSTOS_ASM
       references RAMO_ASISTENCIA_MEDICA (ID_AST_MEDICA)
       on delete restrict on update restrict;
 
+alter table MENU
+   add constraint FK_MENU_ROL_MENU_ROL foreign key (ID_ROL)
+      references ROL (ID_ROL)
+      on delete restrict on update restrict;
+
 alter table MIEMBROS_GRUPO_ACC
    add constraint FK_MIEMBROS_GRUPO_MIE_GRUPO_AC foreign key (ID_GRUPO_ACCP)
       references GRUPO_ACC_PERSONALES (ID_GRUPO_ACCP)
@@ -4768,23 +4744,8 @@ alter table RAMO_VIDA
       references POLIZA (ID_POLIZA)
       on delete restrict on update restrict;
 
-alter table ROL_MENU
-   add constraint FK_ROL_MENU_ROL_MENU_ROL foreign key (ID_ROL)
-      references ROL (ID_ROL)
-      on delete restrict on update restrict;
-
-alter table ROL_MENU
-   add constraint FK_ROL_MENU_ROL_MENU2_MENU foreign key (MENU_ID)
-      references MENU (MENU_ID)
-      on delete restrict on update restrict;
-
-alter table USUARIO
-   add constraint FK_USUARIO_PERSONA_U_PERSONA foreign key (ID_PERSONA)
-      references PERSONA (ID_PERSONA)
-      on delete restrict on update restrict;
-
-alter table USUARIO
-   add constraint FK_USUARIO_USUARIO_R_ROL foreign key (ID_ROL)
-      references ROL (ID_ROL)
+alter table ROL
+   add constraint FK_ROL_USUARIO_R_USUARIO foreign key (ID_USUARIO)
+      references USUARIO (ID_USUARIO)
       on delete restrict on update restrict;
 

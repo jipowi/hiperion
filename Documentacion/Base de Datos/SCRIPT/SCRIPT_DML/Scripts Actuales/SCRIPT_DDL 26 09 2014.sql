@@ -1972,10 +1972,10 @@ INSERT INTO ANEXO VALUES (2,'COBERTURAS.');
 INSERT INTO ANEXO VALUES (3,'CONDICIONES ESPECIALES.');
 INSERT INTO ANEXO VALUES (4,'LIMITES Y COSTOS.');
 INSERT INTO ANEXO VALUES (5,'GARANTIAS DE LA POLIZA.');
-INSERT INTO ANEXO VALUES (6,'COBERTURAS ADICIONALES');
+INSERT INTO ANEXO VALUES (6,'COBERTURAS ADICIONALES.');
 
 --TABLA TITULO
-INSERT INTO TITULO VALUES (1,'PARA TRANSPORTE');
+INSERT INTO TITULO VALUES (1,'PARA TRANSPORTE',);
 INSERT INTO TITULO VALUES (2,'PARA VIDA');
 INSERT INTO TITULO VALUES (3,'BENEFICIOS');
 INSERT INTO TITULO VALUES (4,'BENEFICIOS ADICIONALES');
@@ -2242,14 +2242,46 @@ INSERT INTO DETALLE_ANEXO (ID_DETALLE_ANEXO, ID_RAMO, ID_ANEXO, NOMBRE_DETALLE_A
 -- COBERTURAS ADICIONALES
 INSERT INTO DETALLE_ANEXO (ID_DETALLE_ANEXO, ID_RAMO, ID_ANEXO, NOMBRE_DETALLE_ANEXO) VALUES (202, 15, 6, 'FLETE AEREO.');
 INSERT INTO DETALLE_ANEXO (ID_DETALLE_ANEXO, ID_RAMO, ID_ANEXO, NOMBRE_DETALLE_ANEXO) VALUES (203, 15, 6, 'GASTOS EXTRAORDINARIOS.');
+--TABLA USUARIO
+INSERT INTO USUARIO VALUES (1, 'admin', 'PAUL JIMENEZ','admin', '1719186262', 'A', 'PAUL');
+INSERT INTO USUARIO VALUES (2, 'fpozo', 'FRANKLIN POZO','fpozo', '1719186262', 'A', 'PAUL');
 
 -- TABLA DE ROL
--- Roles
-INSERT INTO ROL VALUES (1, 'DEPARTAMENTO COMERCIAL', 'A');
-INSERT INTO ROL VALUES (2, 'DEPARTAMENTO VIDA  Y ASISTENCIA MEDICA', 'A');
-INSERT INTO ROL VALUES (3, 'DEPARTAMENTO SERVICIO AL CLIENTE', 'A');
-INSERT INTO ROL VALUES (4, 'DEPARTAMENTO DE COBRANZAS', 'A');
-INSERT INTO ROL VALUES (5, 'DEPARTAMENTO ADMINISTRATIVO', 'A');
-INSERT INTO ROL VALUES (6, 'GERENCIA', 'A');
-INSERT INTO ROL VALUES (7, 'MENSAJERÍA', 'A');
-INSERT INTO ROL VALUES (8, 'SISTEMAS', 'A');
+INSERT INTO ROL VALUES (1,1, 'COMERCIAL', 'DEPARTAMENTO COMERCIAL', 'A');
+INSERT INTO ROL VALUES (2,1, 'VIDA Y ASM', 'DEPARTAMENTO VIDA  Y ASISTENCIA MEDICA', 'A');
+INSERT INTO ROL VALUES (3,1, 'SERVICIO AL CLIENTE','DEPARTAMENTO SERVICIO AL CLIENTE', 'A');
+INSERT INTO ROL VALUES (4,1, 'COBRANZAS','DEPARTAMENTO DE COBRANZAS', 'A');
+INSERT INTO ROL VALUES (5,1, 'ADMINISTRATIVO','DEPARTAMENTO ADMINISTRATIVO', 'A');
+INSERT INTO ROL VALUES (6,1, 'GERENCIA','GERENCIA', 'A');
+INSERT INTO ROL VALUES (7,1, 'MENSAJERÍA','MENSAJERÍA', 'A');
+INSERT INTO ROL VALUES (8,1, 'SISTEMAS','SISTEMAS', 'A');
+INSERT INTO ROL VALUES (9,1, 'ADMINISTRADOR','ADMINISTRADOR', 'A');
+
+--TABLA MENU
+INSERT INTO MENU VALUES (1, 1, NULL, 'Accidentes Personales', '/pages/negocio/ramos/accidentesPersonales.jsf','A');
+INSERT INTO MENU VALUES (2, 1, NULL, 'Agropecuario', '/pages/negocio/ramos/agropecuario.jsf','A');
+INSERT INTO MENU VALUES (3, 1, NULL, 'Asistencia Medica', '/pages/negocio/ramos/asistenciaMedica.jsf','A');
+INSERT INTO MENU VALUES (4, 1, NULL, 'Buen Uso Anticipo', '/pages/negocio/ramos/buenUsoAnticipo.jsf','A');
+INSERT INTO MENU VALUES (5, 1, NULL, 'Buena Calidad de Materiales', '/pages/negocio/ramos/buenaCalidadMateriales.jsf','A');
+INSERT INTO MENU VALUES (6, 1, NULL, 'Casco Aereo', '/pages/negocio/ramos/cascoAereo.jsf','A');
+INSERT INTO MENU VALUES (7, 1, NULL, 'Casco Maritimo', '/pages/negocio/ramos/cascoMaritimo.jsf','A');
+INSERT INTO MENU VALUES (8, 1, NULL, 'Cumplimiento Contrato', '/pages/negocio/ramos/cumplimientoContrato.jsf','A');
+INSERT INTO MENU VALUES (9, 1, NULL, 'Dinero Valores', '/pages/negocio/ramos/dineroValores.jsf','A');
+INSERT INTO MENU VALUES (10, 1, NULL, 'Equipo Electronico', '/pages/negocio/ramos/equipoElectronico.jsf','A');
+INSERT INTO MENU VALUES (11, 1, NULL, 'Equipo Maquinaria', '/pages/negocio/ramos/equipoMaquinaria.jsf','A');
+INSERT INTO MENU VALUES (12, 1, NULL, 'Fidelidad', '/pages/negocio/ramos/fidelidad.jsf','A');
+INSERT INTO MENU VALUES (13, 1, NULL, 'Garantia Aduanera', '/pages/negocio/ramos/garantiaAduanera.jsf','A');
+INSERT INTO MENU VALUES (14, 1, NULL, 'Incendio Lineas Aliadas', '/pages/negocio/ramos/incendioLineasAliadas.jsf','A');
+INSERT INTO MENU VALUES (15, 1, NULL, 'Lucro Cesante Rotura Maquinaria', '/pages/negocio/ramos/lucroCesanteRoturaMaquinaria.jsf','A');
+INSERT INTO MENU VALUES (16, 1, NULL, 'Lucro Cesante Incendio Lineas Aliadas', '/pages/negocio/ramos/lucroCesanteIncendioLineasAliadas.jsf','A');
+INSERT INTO MENU VALUES (17, 1, NULL, 'Responsabilidad Civil', '/pages/negocio/ramos/responsabilidadCivil.jsf','A');
+INSERT INTO MENU VALUES (18, 1, NULL, 'Riesgos Especiales', '/pages/negocio/ramos/riesgosEspeciales.jsf','A');
+INSERT INTO MENU VALUES (19, 1, NULL, 'Robo Asalto', '/pages/negocio/ramos/roboAsalto.jsf','A');
+INSERT INTO MENU VALUES (20, 1, NULL, 'Rotura Maquinaria', '/pages/negocio/ramos/roturaMaquinaria.jsf','A');
+INSERT INTO MENU VALUES (21, 1, NULL, 'Soat', '/pages/negocio/ramos/soat.jsf','A');
+INSERT INTO MENU VALUES (22, 1, NULL, 'Todo Riesgo Contratista', '/pages/negocio/ramos/todoRiesgoContratista.jsf','A');
+INSERT INTO MENU VALUES (23, 1, NULL, 'Todo Riesgo Montaje', '/pages/negocio/ramos/todoRiesgoMontaje.jsf','A');
+INSERT INTO MENU VALUES (24, 1, NULL, 'Transporte', '/pages/negocio/ramos/transporte.jsf','A');
+INSERT INTO MENU VALUES (25, 1, NULL, 'Vehiculos', '/pages/negocio/ramos/vehiculos.jsf','A');
+INSERT INTO MENU VALUES (26, 1, NULL, 'vida', '/pages/negocio/ramos/vida.jsf','A');
+
