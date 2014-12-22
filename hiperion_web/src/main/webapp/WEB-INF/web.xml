@@ -58,4 +58,8 @@
 			<param-value>/notAutorizedPage.jsf</param-value>
 		</init-param>
 	</filter>
+	<filter-mapping>
+		<filter-name>LoginFilter</filter-name>
+		<url-pattern>/pages/*</url-pattern>
+	</filter-mapping>
 </web-app>
