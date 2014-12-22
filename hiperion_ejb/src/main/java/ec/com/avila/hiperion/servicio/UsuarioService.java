@@ -9,6 +9,8 @@ import java.util.List;
 import javax.ejb.Local;
 
 import ec.com.avila.hiperion.comun.HiperionException;
+import ec.com.avila.hiperion.emision.entities.Menu;
+import ec.com.avila.hiperion.emision.entities.Rol;
 import ec.com.avila.hiperion.emision.entities.Usuario;
 
 /**
@@ -54,10 +56,11 @@ public interface UsuarioService {
 	 * </p>
 	 * 
 	 * @param nombreUsuario
+	 * @param clave
 	 * @return
 	 * @throws HiperionException
 	 */
-	public Usuario consultarUsuarioByAlias(String nombreUsuario) throws HiperionException;
+	public Usuario loginUser(String nombreUsuario, String clave) throws HiperionException;
 
 	/**
 	 * 
@@ -70,4 +73,30 @@ public interface UsuarioService {
 	 * @throws HiperionException
 	 */
 	public void modificarUsuario(Usuario usuario) throws HiperionException;
+
+	/**
+	 * 
+	 * <b> Permite consultar los roles que tiene un usuario </b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: Dec 10, 2014]
+	 * </p>
+	 * 
+	 * @param usuario
+	 * @return
+	 * @throws HiperionException
+	 */
+	public List<Rol> consultarRolByUsuario(Usuario usuario) throws HiperionException;
+
+	/**
+	 * 
+	 * <b> Permite consultar los menus a los cuales el usuario tiene acceso </b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: Dec 10, 2014]
+	 * </p>
+	 * 
+	 * @param rol
+	 * @return
+	 * @throws HiperionException
+	 */
+	public List<Menu> consultarMenuByRol(Rol rol) throws HiperionException;
 }

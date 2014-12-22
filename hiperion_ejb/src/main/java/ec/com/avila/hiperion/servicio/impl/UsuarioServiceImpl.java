@@ -6,7 +6,11 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
 import ec.com.avila.hiperion.comun.HiperionException;
+import ec.com.avila.hiperion.dao.MenuDao;
+import ec.com.avila.hiperion.dao.RolDao;
 import ec.com.avila.hiperion.dao.UsuarioDao;
+import ec.com.avila.hiperion.emision.entities.Menu;
+import ec.com.avila.hiperion.emision.entities.Rol;
 import ec.com.avila.hiperion.emision.entities.Usuario;
 import ec.com.avila.hiperion.servicio.UsuarioService;
 
@@ -18,6 +22,12 @@ public class UsuarioServiceImpl implements UsuarioService {
 	@EJB
 	private UsuarioDao usuarioDao;
 
+	@EJB
+	private RolDao rolDao;
+
+	@EJB
+	private MenuDao menuDao;
+
 	public void guardarUsuario(Usuario usuario) throws HiperionException {
 		usuarioDao.guardarUsuario(usuario);
 	}
@@ -26,11 +36,31 @@ public class UsuarioServiceImpl implements UsuarioService {
 		return usuarioDao.consultarUsuarios();
 	}
 
-	public Usuario consultarUsuarioByAlias(String nombreUsuario) throws HiperionException {
-		return usuarioDao.consultarUsuarioByAlias(nombreUsuario);
+	public Usuario loginUser(String nombreUsuario, String clave) throws HiperionException {
+		return usuarioDao.loginUser(nombreUsuario, clave);
 	}
 
 	public void modificarUsuario(Usuario usuario) throws HiperionException {
 		usuarioDao.modificarUsuario(usuario);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see ec.com.avila.hiperion.servicio.UsuarioService#consultarRolByUsuario(ec.com.avila.hiperion.emision.entities.Usuario)
+	 */
+	@Override
+	public List<Rol> consultarRolByUsuario(Usuario usuario) throws HiperionException {
+		return rolDao.consultarRolByUsuario(usuario);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see ec.com.avila.hiperion.servicio.UsuarioService#consultarMenuByRol(ec.com.avila.hiperion.emision.entities.Rol)
+	 */
+	@Override
+	public List<Menu> consultarMenuByRol(Rol rol) throws HiperionException {
+		return menuDao.consultarMenuByRol(rol);
 	}
 }
