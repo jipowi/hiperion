@@ -37,9 +37,10 @@ public class UsuarioDaoImpl implements UsuarioDao {
 	}
 
 	@SuppressWarnings("unchecked")
-	public Usuario consultarUsuarioByAlias(String nombreUsuario) {
-		Query query = em.createNamedQuery("Usuario.findByNombre");
+	public Usuario loginUser(String nombreUsuario, String clave) {
+		Query query = em.createNamedQuery("Usuario.loginUser");
 		query.setParameter("nombreUsuario", nombreUsuario);
+		query.setParameter("clave", clave);
 		List<Usuario> usuarios = query.getResultList();
 		return usuarios.get(0);
 	}
