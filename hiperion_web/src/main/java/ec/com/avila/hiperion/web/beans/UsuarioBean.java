@@ -13,18 +13,25 @@ public class UsuarioBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private String usuario;
+	private String nombreUsuario;
 	private String password;
 	private Exception exception;
-	
+
 	private Usuario sessionUser;
 
-	public String getUsuario() {
-		return usuario;
+	/**
+	 * @return the nombreUsuario
+	 */
+	public String getNombreUsuario() {
+		return nombreUsuario;
 	}
 
-	public void setUsuario(String usuario) {
-		this.usuario = usuario;
+	/**
+	 * @param nombreUsuario
+	 *            the nombreUsuario to set
+	 */
+	public void setNombreUsuario(String nombreUsuario) {
+		this.nombreUsuario = nombreUsuario;
 	}
 
 	public String getPassword() {
@@ -58,7 +65,8 @@ public class UsuarioBean implements Serializable {
 	}
 
 	/**
-	 * @param exception the exception to set
+	 * @param exception
+	 *            the exception to set
 	 */
 	public void setException(Exception exception) {
 		this.exception = exception;

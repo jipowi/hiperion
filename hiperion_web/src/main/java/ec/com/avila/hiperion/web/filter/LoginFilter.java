@@ -3,6 +3,7 @@ package ec.com.avila.hiperion.web.filter;
 import java.io.IOException;
 import java.util.Enumeration;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.faces.FactoryFinder;
@@ -21,7 +22,8 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import ec.com.avila.hiperion.web.backings.SessionBacking;
+import ec.com.avila.hiperion.emision.entities.Menu;
+import ec.com.avila.hiperion.web.backings.UsuarioBacking;
 import ec.com.avila.hiperion.web.beans.UsuarioBean;
 
 /**
@@ -32,14 +34,14 @@ import ec.com.avila.hiperion.web.beans.UsuarioBean;
  */
 public class LoginFilter implements Filter {
 	private static final String PAGINA_MENSAJE_AUTORIZACION = "/pages/notAutorizedPage.jsf";
-	private static final String PAGINA_MENSAJE_LOGIN = "/login/login.jsf";
+	private static final String PAGINA_MENSAJE_LOGIN = "/pages/login.jsf";
 	private static final String PAGINA_MENSAJE_ERROR = "/pages/error.jsf";
-	private static final String PAGINA_MAIN = "/login/main.jsf";
+	private static final String PAGINA_MAIN = "/pages/hiperion.jsf";
 	private static final String RES_NOT_FOUND = "RES_NOT_FOUND";
 	private Set<String> paginasNoFiltradas;
 	private final String SESSION_DATAMANAGER_ID = "sessionBacking";
-	private final String LOGIN_CONTROLLER_ID = "loginController";
-	private final String LOGIN_DTAMANAGER_ID = "loginDataManager";
+	private final String LOGIN_CONTROLLER_ID = "usuarioBacking";
+	private final String LOGIN_DTAMANAGER_ID = "usuarioBean";
 
 	/**
 	 * Inicializa el filtro
@@ -96,26 +98,48 @@ public class LoginFilter implements Filter {
 		// Se verifica si la pagina solicitada este entre las permitidas por defecto en la aplicacion
 		else if (isFilterRequired(request) && isValid(url)) {
 			try {
-				SessionBacking SessionBacking = null;
+				UsuarioBacking SessionBacking = null;
 				try {
-					SessionBacking = (SessionBacking) getManagedBean(SESSION_DATAMANAGER_ID, facesContext);
+					SessionBacking = (UsuarioBacking) getManagedBean("usuarioBacking", facesContext);
 				} catch (Exception e) {
 					chain.doFilter(req, resp);
 					return;
 				}
+				List<Menu> menus = SessionBacking.getMenuList();
 				// Verifica si hay un usuario conectado
-				if (SessionBacking.getUsuario() == null) {
+				if (SessionBacking.getUsuarioBean() == null) {
 					getManagedBean(LOGIN_CONTROLLER_ID, facesContext);
-				}else {
-					permiso = false;
 				}
-
+				//Se recorren todos los items uno por unour
+				if(menus!=null && !menus.isEmpty() ){
+					if(url.indexOf(PAGINA_MAIN)!=-1){
+						permiso=true;
+					}
+					else{
+						for(Menu viewAccIteDTO:menus){
+							String urldef= viewAccIteDTO.getUrl();
+							if(urldef != null && urldef.indexOf("?")!=-1){
+								urldef= urldef.substring(0,urldef.indexOf("?"));
+							}
+		
+							if(urldef!=null &&  !urldef.trim().equals("") && url.indexOf(urldef)!=-1){
+								permiso=true;
+							}
+							if(permiso){
+								break;
+							}
+						}
+					}
+	
+				}else{
+					permiso=false;
+				}
 				// Si no tiene los permisos niega el acceso a la pagina y envia a pagina de login
 				if (!permiso) {
 					if (pagina.startsWith("/") && !pagina.startsWith(urlContexto)) {
 						pagina = urlContexto + pagina;
 					}
-					if (SessionBacking.getUsuario() == null) {
+					if (SessionBacking.getUsuarioBean() == null) {
 						// log.info("Pagina no autorizada:'{" + url+ "}' del contexto '"+urlContexto+ "'");
 						pagina = urlContexto + PAGINA_MENSAJE_LOGIN;
 					} else {

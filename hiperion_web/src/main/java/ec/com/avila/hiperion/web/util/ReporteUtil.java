@@ -72,13 +72,10 @@ public class ReporteUtil {
 	 *            filtros seleccionados para cargar el reporte
 	 * @return
 	 */
-	public String generarReporte(String nombreReporte, Map<String, Object> parametros, HttpServletRequest request, Connection conn, String nombre,
-			Long sede) {
+	public String generarReporte(String nombreReporte, Map<String, Object> parametros, HttpServletRequest request, Connection conn) {
 		String rutaReporte = null;
 		String url = Utils.getInstancia().obtenerPathCompleto(request);
 		parametros.put("URL_LOGO", url + "/img/logo.png");
-		parametros.put("NOMBRE_OPERADOR", nombre);
-		parametros.put("COD_SEDE", sede);
 		parametros.put("CIUDAD", "Quito");
 		try {
 			JasperReport report = compileReport(nombreReporte);
