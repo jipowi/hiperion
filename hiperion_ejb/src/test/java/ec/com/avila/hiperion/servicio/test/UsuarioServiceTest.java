@@ -35,10 +35,10 @@ public class UsuarioServiceTest {
 	}
 
 //	@Test
-	public void consultarUsuarioByAliasTest() throws NamingException, HiperionException {
-		UsuarioService remoto = (UsuarioService) context
-				.lookup("ejb:/hiperion_ejb-1.0/UsuarioServicioImpl!ec.com.avila.hiperion.servicio.UsuarioService");
-		Usuario usuario = remoto.consultarUsuarioByAlias("dvinueza");
-		System.out.println(usuario);
-	}
+//	public void consultarUsuarioByAliasTest() throws NamingException, HiperionException {
+//		UsuarioService remoto = (UsuarioService) context
+//				.lookup("ejb:/hiperion_ejb-1.0/UsuarioServicioImpl!ec.com.avila.hiperion.servicio.UsuarioService");
+//		Usuario usuario = remoto.consultarUsuarioByAlias("dvinueza");
+//		System.out.println(usuario);
+//	}
 }
