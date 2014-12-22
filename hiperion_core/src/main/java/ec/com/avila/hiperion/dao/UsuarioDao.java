@@ -54,10 +54,11 @@ public interface UsuarioDao {
 	 * </p>
 	 * 
 	 * @param nombreUsuario
+	 * @param clave
 	 * @return
 	 * @throws HiperionException
 	 */
-	public Usuario consultarUsuarioByAlias(String nombreUsuario) throws HiperionException;
+	public Usuario loginUser(String nombreUsuario, String clave) throws HiperionException;
 
 	/**
 	 * 
