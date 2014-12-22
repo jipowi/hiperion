@@ -16,37 +16,17 @@
 			</object>
 		</h:panelGrid>
 	</div>
+	<a href="#{facesContext.externalContext.request.contextPath}/index.jsp">Salir</a>
+	
 	<!-- Todo el Temmplate -->
 	<div id="container">
 		<div>
 			<!-- Menu del Template ubicado en la parte derecha -->
 			<div id="left">
 				<h:form>
-					<p:panelMenu>
-						<p:submenu label="#{emision['panel.menu.emision']}">
-							<p:menuitem value="#{emision['panel.submenu.cliente']}" action="/pages/negocio/emision/cliente.xhtml" />
-							<p:menuitem value="#{emision['panel.submenu.poliza']}" action="/pages/negocio/emision/poliza.xhtml" />
-						</p:submenu>
-						<p:submenu label="#{administrador['panel.menu.admin']}">
-							<p:menuitem value="#{administrador['admin.catalogos']}" action="/pages/admin/seguridad.xhtml" icon="ui-icon-key" />
-							<p:menuitem value="#{administrador['admin.seguridad']}" action="/pages/negocio/emision/permisos.xhtml" icon="ui-icon-key" />
-						</p:submenu>
-						<p:submenu label="#{emision['panel.menu.aseguradoras']}">
-							<p:menuitem value="#{emision['panel.submenu.ingresarAseguradoras']}" action="/pages/negocio/emision/aseguradoras.xhtml" />
-						</p:submenu>
-						<p:submenu label="#{emision['panel.menu.correspondencia']}">
-							<p:menuitem value="#{emision['panel.submenu.enviarCorreos']}" action="/pages/negocio/emision/correspondencia.xhtml" />
-							<p:menuitem value="#{emision['panel.submenu.generarCarta']}" action="/pages/negocio/emision/aseguradoras.xhtml" />
-						</p:submenu>
-						<p:submenu label="#{emision['panel.menu.gestorDocumental']}">
-							<p:menuitem value="#{emision['panel.submenu.enviarCorreos']}" action="/pages/negocio/emision/correspondencia.xhtml" />
-							<p:menuitem value="#{emision['panel.submenu.generarCarta']}" action="/pages/negocio/emision/aseguradoras.xhtml" />
-						</p:submenu>
-						<p:submenu label="#{emision['panel.menu.siniestros']}">
-							<p:menuitem value="#{emision['panel.submenu.enviarCorreos']}" action="/pages/negocio/emision/correspondencia.xhtml" />
-							<p:menuitem value="#{emision['panel.submenu.generarCarta']}" action="/pages/negocio/emision/aseguradoras.xhtml" />
-						</p:submenu>
-					</p:panelMenu>
+					<p:menu model="#{usuarioBacking.menumodel}">
+						
+					</p:menu>
 				</h:form>
 			</div>
 			<!-- Contenido del Template unicado en la parte izquierda -->

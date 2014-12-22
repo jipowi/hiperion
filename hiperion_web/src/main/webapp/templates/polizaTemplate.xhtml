@@ -1,81 +1,81 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui">
-<h:body>
-	<div id="containerDivId">
-		<div id="header" class="template_top">
-			<h:form>
-				<p:megaMenu style="height: 30px;">
-					<p:submenu label="#{emision['emision.poliza.ramos']}" icon="ui-icon-document">
-						<p:column>
-							<p:submenu label="A">
-								<p:menuitem value="#{emision['emision.poliza.ramo.ap']}" action="/pages/negocio/ramos/accidentesPersonales.xhtml" />
-								<p:menuitem value="#{emision['emision.poliza.ramo.agp']}" action="/pages/negocio/ramos/agropecuario.xhtml" />
-								<p:menuitem value="#{emision['emision.poliza.ramo.asm']}" action="/pages/negocio/ramos/asistenciaMedica.xhtml" />
-							</p:submenu>
-							<p:submenu label="B">
-								<p:menuitem value="#{emision['emision.poliza.ramo.bua']}" action="/pages/negocio/ramos/buenUsoAnticipo.xhtml" />
-								<p:menuitem value="#{emision['emision.poliza.ramo.bcm']}" action="/pages/negocio/ramos/buenaCalidadMateriales.xhtml" />
-							</p:submenu>
-						</p:column>
-						<p:column>
-							<p:submenu label="C">
-								<p:menuitem value="#{emision['emision.poliza.ramo.ca']}" action="/pages/negocio/ramos/cascoAereo.xhtml" />
-								<p:menuitem value="#{emision['emision.poliza.ramo.cm']}" action="/pages/negocio/ramos/cascoMaritimo.xhtml" />
-								<p:menuitem value="#{emision['emision.poliza.ramo.cc']}" action="/pages/negocio/ramos/cumplimientoContrato.xhtml" />
-							</p:submenu>
-						</p:column>
-						<p:column>
-							<p:submenu label="D">
-								<p:menuitem value="#{emision['emision.poliza.ramo.dv']}" action="/pages/negocio/ramos/dineroValores.xhtml" />
-							</p:submenu>
-							<p:submenu label="E">
-								<p:menuitem value="#{emision['emision.poliza.ramo.ee']}" action="/pages/negocio/ramos/equipoElectronico.xhtml" />
-								<p:menuitem value="#{emision['emision.poliza.ramo.em']}" action="/pages/negocio/ramos/equipoMaquinaria.xhtml" />
-							</p:submenu>
-							<p:submenu label="F">
-								<p:menuitem value="#{emision['emision.poliza.ramo.fd']}" action="/pages/negocio/ramos/fidelidad.xhtml" />
-							</p:submenu>
-							<p:submenu label="G">
-								<p:menuitem value="#{emision['emision.poliza.ramo.ga']}" action="/pages/negocio/ramos/garantiaAduanera.xhtml" />
-							</p:submenu>
-						</p:column>
-						<p:column>
-							<p:submenu label="I">
-								<p:menuitem value="#{emision['emision.poliza.ramo.ila']}" action="/pages/negocio/ramos/incendioLineasAliadas.xhtml" />
-							</p:submenu>
-							<p:submenu label="L">
-								<p:menuitem value="#{emision['emision.poliza.ramo.lcrm']}" action="/pages/negocio/ramos/lucroCesanteRoturaMaquinaria.xhtml" />
-								<p:menuitem value="#{emision['emision.poliza.ramo.lcila']}" action="/pages/negocio/ramos/lucroCesanteIncendioLineasAliadas.xhtml" />
-							</p:submenu>
-							<p:submenu label="R">
-								<p:menuitem value="#{emision['emision.poliza.ramo.rc']}" action="/pages/negocio/ramos/responsabilidadCivil.xhtml" />
-								<p:menuitem value="#{emision['emision.poliza.ramo.re']}" action="/pages/negocio/ramos/riesgosEspeciales.xhtml" />
-								<p:menuitem value="#{emision['emision.poliza.ramo.rb']}" action="/pages/negocio/ramos/roboAsalto.xhtml" />
-								<p:menuitem value="#{emision['emision.poliza.ramo.rm']}" action="/pages/negocio/ramos/roturaMaquinaria.xhtml" />
-							</p:submenu>
-						</p:column>
-						<p:column>
-							<p:submenu label="S">
-								<p:menuitem value="#{emision['emision.poliza.ramo.st']}" action="/pages/negocio/ramos/soat.xhtml" />
-							</p:submenu>
-							<p:submenu label="T">
-								<p:menuitem value="#{emision['emision.poliza.ramo.trc']}" action="/pages/negocio/ramos/todoRiesgoContratista.xhtml" />
-								<p:menuitem value="#{emision['emision.poliza.ramo.trm']}" action="/pages/negocio/ramos/todoRiesgoMontaje.xhtml" />
-								<p:menuitem value="#{emision['emision.poliza.ramo.tr']}" action="/pages/negocio/ramos/transporte.xhtml" />
-							</p:submenu>
-							<p:submenu label="V">
-								<p:menuitem value="#{emision['emision.poliza.ramo.vh']}" action="/pages/negocio/ramos/vehiculos.xhtml" />
-								<p:menuitem value="#{emision['emision.poliza.ramo.vd']}" action="/pages/negocio/ramos/vida.xhtml" />
-							</p:submenu>
-						</p:column>
-					</p:submenu>
-				</p:megaMenu>
-			</h:form>
+	<h:body>
+		<div id="containerDivId">
+			<div id="header" class="template_top">
+				<h:form>
+					<p:megaMenu style="height: 30px;">
+						<p:submenu label="#{emision['emision.poliza.ramos']}" icon="ui-icon-document">
+							<p:column>
+								<p:submenu label="A">
+									<p:menuitem value="#{emision['emision.poliza.ramo.ap']}" action="/pages/negocio/ramos/accidentesPersonales.xhtml" />
+									<p:menuitem value="#{emision['emision.poliza.ramo.agp']}" action="/pages/negocio/ramos/agropecuario.xhtml" />
+									<p:menuitem value="#{emision['emision.poliza.ramo.asm']}" action="/pages/negocio/ramos/asistenciaMedica.xhtml" />
+								</p:submenu>
+								<p:submenu label="B">
+									<p:menuitem value="#{emision['emision.poliza.ramo.bua']}" action="/pages/negocio/ramos/buenUsoAnticipo.xhtml" />
+									<p:menuitem value="#{emision['emision.poliza.ramo.bcm']}" action="/pages/negocio/ramos/buenaCalidadMateriales.xhtml" />
+								</p:submenu>
+							</p:column>
+							<p:column>
+								<p:submenu label="C">
+									<p:menuitem value="#{emision['emision.poliza.ramo.ca']}" action="/pages/negocio/ramos/cascoAereo.xhtml" />
+									<p:menuitem value="#{emision['emision.poliza.ramo.cm']}" action="/pages/negocio/ramos/cascoMaritimo.xhtml" />
+									<p:menuitem value="#{emision['emision.poliza.ramo.cc']}" action="/pages/negocio/ramos/cumplimientoContrato.xhtml" />
+								</p:submenu>
+							</p:column>
+							<p:column>
+								<p:submenu label="D">
+									<p:menuitem value="#{emision['emision.poliza.ramo.dv']}" action="/pages/negocio/ramos/dineroValores.xhtml" />
+								</p:submenu>
+								<p:submenu label="E">
+									<p:menuitem value="#{emision['emision.poliza.ramo.ee']}" action="/pages/negocio/ramos/equipoElectronico.xhtml" />
+									<p:menuitem value="#{emision['emision.poliza.ramo.em']}" action="/pages/negocio/ramos/equipoMaquinaria.xhtml" />
+								</p:submenu>
+								<p:submenu label="F">
+									<p:menuitem value="#{emision['emision.poliza.ramo.fd']}" action="/pages/negocio/ramos/fidelidad.xhtml" />
+								</p:submenu>
+								<p:submenu label="G">
+									<p:menuitem value="#{emision['emision.poliza.ramo.ga']}" action="/pages/negocio/ramos/garantiaAduanera.xhtml" />
+								</p:submenu>
+							</p:column>
+							<p:column>
+								<p:submenu label="I">
+									<p:menuitem value="#{emision['emision.poliza.ramo.ila']}" action="/pages/negocio/ramos/incendioLineasAliadas.xhtml" />
+								</p:submenu>
+								<p:submenu label="L">
+									<p:menuitem value="#{emision['emision.poliza.ramo.lcrm']}" action="/pages/negocio/ramos/lucroCesanteRoturaMaquinaria.xhtml" />
+									<p:menuitem value="#{emision['emision.poliza.ramo.lcila']}" action="/pages/negocio/ramos/lucroCesanteIncendioLineasAliadas.xhtml" />
+								</p:submenu>
+								<p:submenu label="R">
+									<p:menuitem value="#{emision['emision.poliza.ramo.rc']}" action="/pages/negocio/ramos/responsabilidadCivil.xhtml" />
+									<p:menuitem value="#{emision['emision.poliza.ramo.re']}" action="/pages/negocio/ramos/riesgosEspeciales.xhtml" />
+									<p:menuitem value="#{emision['emision.poliza.ramo.rb']}" action="/pages/negocio/ramos/roboAsalto.xhtml" />
+									<p:menuitem value="#{emision['emision.poliza.ramo.rm']}" action="/pages/negocio/ramos/roturaMaquinaria.xhtml" />
+								</p:submenu>
+							</p:column>
+							<p:column>
+								<p:submenu label="S">
+									<p:menuitem value="#{emision['emision.poliza.ramo.st']}" action="/pages/negocio/ramos/soat.xhtml" />
+								</p:submenu>
+								<p:submenu label="T">
+									<p:menuitem value="#{emision['emision.poliza.ramo.trc']}" action="/pages/negocio/ramos/todoRiesgoContratista.xhtml" />
+									<p:menuitem value="#{emision['emision.poliza.ramo.trm']}" action="/pages/negocio/ramos/todoRiesgoMontaje.xhtml" />
+									<p:menuitem value="#{emision['emision.poliza.ramo.tr']}" action="/pages/negocio/ramos/transporte.xhtml" />
+								</p:submenu>
+								<p:submenu label="V">
+									<p:menuitem value="#{emision['emision.poliza.ramo.vh']}" action="/pages/negocio/ramos/vehiculos.xhtml" />
+									<p:menuitem value="#{emision['emision.poliza.ramo.vd']}" action="/pages/negocio/ramos/vida.xhtml" />
+								</p:submenu>
+							</p:column>
+						</p:submenu>
+					</p:megaMenu>
+				</h:form>
+			</div>
+			<div id="content">
+				<ui:insert name="content">BODY</ui:insert>
+			</div>
 		</div>
-		<div id="content">
-			<ui:insert name="content">BODY</ui:insert>
-		</div>
-	</div>
-</h:body>
+	</h:body>
 </html>
