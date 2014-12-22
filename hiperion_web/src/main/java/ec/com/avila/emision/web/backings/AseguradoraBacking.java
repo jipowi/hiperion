@@ -4,15 +4,22 @@
 package ec.com.avila.emision.web.backings;
 
 import java.io.Serializable;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
+import javax.servlet.http.HttpServletRequest;
+import javax.sql.DataSource;
 
 import ec.com.avila.emision.web.beans.AseguradoraBean;
 import ec.com.avila.hiperion.comun.HiperionException;
@@ -26,8 +33,10 @@ import ec.com.avila.hiperion.emision.entities.Persona;
 import ec.com.avila.hiperion.servicio.AseguradoraService;
 import ec.com.avila.hiperion.servicio.CatalogoService;
 import ec.com.avila.hiperion.servicio.DetalleCatalogoService;
+import ec.com.avila.hiperion.web.servlet.ReportServlet;
 import ec.com.avila.hiperion.web.util.HiperionMensajes;
 import ec.com.avila.hiperion.web.util.MessagesController;
+import ec.com.avila.hiperion.web.util.ReporteUtil;
 
 /**
  * <b>permite manejar las operaciones necesarias para manejar la logica de las aseguradoras</b>
@@ -59,9 +68,39 @@ public class AseguradoraBacking implements Serializable {
 
 	private List<SelectItem> aseguradorasItems;
 
+	@Resource(mappedName = "java:/AvilaSgsDS")
+	private DataSource dataSource;
+
+	private String rutaReporte;
+
 	@PostConstruct
 	public void inicializar() throws HiperionException {
 		// consultarAseguradoras();
+	}
+
+	/**
+	 * 
+	 * <b> Incluir aqui­ la descripcion del metodo. </b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: Dec 1, 2014]
+	 * </p>
+	 * @throws SQLException 
+	 * 
+	 */
+	public void cargarReporte(String tipoReporte) throws SQLException {
+		FacesContext facesContext = FacesContext.getCurrentInstance();
+		HttpServletRequest request = (HttpServletRequest) facesContext.getExternalContext().getRequest();
+		Map<String, Object> parametros = new HashMap<String, Object>();
+		if (tipoReporte.equals("pdf"))
+			parametros.put("TIPO_REPORTE", "pdf");
+		else
+			parametros.put("TIPO_REPORTE", "excel");
+
+		if ("pdfembedded".equals(tipoReporte)) {
+			setRutaReporte(ReporteUtil.getInstancias().generarReporte("catalogos", parametros, request, dataSource.getConnection()));
+		} else {
+			request.getSession().setAttribute(ReportServlet.OBJETO_REPORTE, parametros);
+		}
 	}
 
 	/**
@@ -211,6 +250,21 @@ public class AseguradoraBacking implements Serializable {
 	 */
 	public void setAseguradorasItems(List<SelectItem> aseguradorasItems) {
 		this.aseguradorasItems = aseguradorasItems;
+	}
+
+	/**
+	 * @return the rutaReporte
+	 */
+	public String getRutaReporte() {
+		return rutaReporte;
+	}
+
+	/**
+	 * @param rutaReporte
+	 *            the rutaReporte to set
+	 */
+	public void setRutaReporte(String rutaReporte) {
+		this.rutaReporte = rutaReporte;
 	}
 
 }
