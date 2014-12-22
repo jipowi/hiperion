@@ -19,7 +19,7 @@
 				<p:panel id="loginPanel" header="Login" widgetVar="loginDlg">
 					<h:panelGrid columns="2" cellpadding="5">
 						<h:outputLabel for="usuario" value="Usuario: " styleClass="negrita" />
-						<p:inputText value="#{usuarioBean.usuario}" id="usuario" required="true" label="usuario" />
+						<p:inputText value="#{usuarioBean.nombreUsuario}" id="usuario" required="true" label="usuario" />
 
 						<h:outputLabel for="clave" value="Password:" styleClass="negrita" />
 						<p:password value="#{usuarioBean.password}" id="clave" required="true" label="clave" />

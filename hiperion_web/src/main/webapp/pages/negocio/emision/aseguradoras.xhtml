@@ -26,7 +26,8 @@
 								<p:outputLabel value="#{emision['aseguradora.ruc']}" styleClass="negrita" />
 								<p:inputText value="#{aseguradoraBean.ruc}" />
 							</h:panelGrid>
-							<p:commandLink title="Buscar aseguradoras" action="#{aseguradoraBacking.consultarAseguradoras()}" update="@form, formPricipal:idAseguradoras, formPricipal:tablaAseguradoras" >
+							<p:commandLink title="Buscar aseguradoras" action="#{aseguradoraBacking.consultarAseguradoras()}"
+								update="@form, formPricipal:idAseguradoras, formPricipal:tablaAseguradoras">
 								<h:graphicImage name="search.png" library="img/icon" />
 							</p:commandLink>
 						</h:panelGrid>
@@ -41,6 +42,10 @@
 
 				<p:spacer height="30px;" />
 
+				<p:commandLink title="Generar reporte" action="#{aseguradoraBacking.cargarReporte('pdf')}"
+					oncomplete="window.open('#{request.contextPath}/report?reporte=catalogos','_self','Test de texto','modal')">
+					<h:graphicImage name="search.png" library="img/icon" />
+				</p:commandLink>
 				<!-- NUEVA ASEGURADORA -->
 				<div align="center">
 					<h:panelGrid id="idAseguradoras" columns="1" rendered="#{aseguradoraBean.activarNewAseguradora}">
