@@ -2,49 +2,47 @@ package ec.com.avila.hiperion.emision.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;
-import java.util.List;
+
 
 /**
  * The persistent class for the menu database table.
  * 
  */
 @Entity
-@NamedQuery(name = "Menu.findAll", query = "SELECT m FROM Menu m")
+@NamedQuery(name="Menu.findAll", query="SELECT m FROM Menu m")
 public class Menu implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "menu_id")
-	private Integer menuId;
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name="id_menu")
+	private Integer idMenu;
 
-	@Column(name = "estado_menu")
+	@Column(name="estado_menu")
 	private String estadoMenu;
 
-	private String icono;
+	@Column(name="id_padre")
+	private Integer idPadre;
 
-	private Integer nivel;
-
-	@Column(name = "nombre_menu")
+	@Column(name="nombre_menu")
 	private String nombreMenu;
-
-	private Integer orden;
 
 	private String url;
 
-	// bi-directional many-to-many association to Rol
-	@ManyToMany(mappedBy = "menus")
-	private List<Rol> rols;
+	//bi-directional many-to-one association to Rol
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="id_rol")
+	private Rol rol;
 
 	public Menu() {
 	}
 
-	public Integer getMenuId() {
-		return this.menuId;
+	public Integer getIdMenu() {
+		return this.idMenu;
 	}
 
-	public void setMenuId(Integer menuId) {
-		this.menuId = menuId;
+	public void setIdMenu(Integer idMenu) {
+		this.idMenu = idMenu;
 	}
 
 	public String getEstadoMenu() {
@@ -55,20 +53,12 @@ public class Menu implements Serializable {
 		this.estadoMenu = estadoMenu;
 	}
 
-	public String getIcono() {
-		return this.icono;
+	public Integer getIdPadre() {
+		return this.idPadre;
 	}
 
-	public void setIcono(String icono) {
-		this.icono = icono;
-	}
-
-	public Integer getNivel() {
-		return this.nivel;
-	}
-
-	public void setNivel(Integer nivel) {
-		this.nivel = nivel;
+	public void setIdPadre(Integer idPadre) {
+		this.idPadre = idPadre;
 	}
 
 	public String getNombreMenu() {
@@ -79,14 +69,6 @@ public class Menu implements Serializable {
 		this.nombreMenu = nombreMenu;
 	}
 
-	public Integer getOrden() {
-		return this.orden;
-	}
-
-	public void setOrden(Integer orden) {
-		this.orden = orden;
-	}
-
 	public String getUrl() {
 		return this.url;
 	}
@@ -95,12 +77,12 @@ public class Menu implements Serializable {
 		this.url = url;
 	}
 
-	public List<Rol> getRols() {
-		return this.rols;
+	public Rol getRol() {
+		return this.rol;
 	}
 
-	public void setRols(List<Rol> rols) {
-		this.rols = rols;
+	public void setRol(Rol rol) {
+		this.rol = rol;
 	}
 
 }

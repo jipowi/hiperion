@@ -28,22 +28,14 @@ public class Rol implements Serializable {
 	@Column(name="nombre_rol")
 	private String nombreRol;
 
-	//bi-directional many-to-many association to Menu
-	@ManyToMany
-	@JoinTable(
-		name="rol_menu"
-		, joinColumns={
-			@JoinColumn(name="id_rol")
-			}
-		, inverseJoinColumns={
-			@JoinColumn(name="menu_id")
-			}
-		)
+	//bi-directional many-to-one association to Menu
+	@OneToMany(mappedBy="rol")
 	private List<Menu> menus;
 
 	//bi-directional many-to-one association to Usuario
-	@OneToMany(mappedBy="rol")
-	private List<Usuario> usuarios;
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="id_usuario")
+	private Usuario usuario;
 
 	public Rol() {
 	}
@@ -88,26 +80,26 @@ public class Rol implements Serializable {
 		this.menus = menus;
 	}
 
-	public List<Usuario> getUsuarios() {
-		return this.usuarios;
+	public Menu addMenus(Menu menus) {
+		getMenus().add(menus);
+		menus.setRol(this);
+
+		return menus;
 	}
 
-	public void setUsuarios(List<Usuario> usuarios) {
-		this.usuarios = usuarios;
+	public Menu removeMenus(Menu menus) {
+		getMenus().remove(menus);
+		menus.setRol(null);
+
+		return menus;
 	}
 
-	public Usuario addUsuario(Usuario usuario) {
-		getUsuarios().add(usuario);
-		usuario.setRol(this);
-
-		return usuario;
+	public Usuario getUsuario() {
+		return this.usuario;
 	}
 
-	public Usuario removeUsuario(Usuario usuario) {
-		getUsuarios().remove(usuario);
-		usuario.setRol(null);
-
-		return usuario;
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
 	}
 
 }

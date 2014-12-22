@@ -61,10 +61,7 @@ public class Persona implements Serializable {
 	@JoinColumn(name = "id_cliente")
 	private Cliente cliente;
 
-	// bi-directional many-to-one association to Usuario
-	@OneToMany(mappedBy = "persona")
-	private List<Usuario> usuarios;
-
+	
 	// bi-directional many-to-one association to Contacto
 	@OneToMany(mappedBy = "persona")
 	private List<Contacto> contactos;
@@ -196,28 +193,6 @@ public class Persona implements Serializable {
 
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
-	}
-
-	public List<Usuario> getUsuarios() {
-		return this.usuarios;
-	}
-
-	public void setUsuarios(List<Usuario> usuarios) {
-		this.usuarios = usuarios;
-	}
-
-	public Usuario addUsuario(Usuario usuario) {
-		getUsuarios().add(usuario);
-		usuario.setPersona(this);
-
-		return usuario;
-	}
-
-	public Usuario removeUsuario(Usuario usuario) {
-		getUsuarios().remove(usuario);
-		usuario.setPersona(null);
-
-		return usuario;
 	}
 
 	public List<Contacto> getContactos() {

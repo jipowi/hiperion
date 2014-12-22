@@ -1,53 +1,58 @@
 package ec.com.avila.hiperion.emision.entities;
 
 import java.io.Serializable;
+import javax.persistence.*;
+import java.util.Date;
+import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQuery;
 
 /**
  * The persistent class for the usuario database table.
  * 
  */
 @Entity
-@NamedQuery(name = "Usuario.findAll", query = "SELECT u FROM Usuario u")
+@NamedQuery(name="Usuario.findAll", query="SELECT u FROM Usuario u")
 public class Usuario implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_usuario")
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name="id_usuario")
 	private Integer idUsuario;
 
 	private String clave;
 
-	@Column(name = "email_usuario")
+	@Column(name="email_usuario")
 	private String emailUsuario;
 
-	@Column(name = "estado_usuario")
-	private String telefono;
+	@Column(name="estado_usuario")
+	private String estadoUsuario;
+
+	@Temporal(TemporalType.DATE)
+	@Column(name="fecha_creacion")
+	private Date fechaCreacion;
+
+	@Temporal(TemporalType.DATE)
+	@Column(name="fecha_modificacion")
+	private Date fechaModificacion;
+
+	@Column(name="identificacion_usuario")
+	private String identificacionUsuario;
+
+	@Column(name="nombre_usuario")
+	private String nombreUsuario;
 
 	private String usuario;
 
-	@Column(name = "usuario_creacion")
+	@Column(name="usuario_creacion")
 	private String usuarioCreacion;
 
-	// bi-directional many-to-one association to Persona
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "id_persona")
-	private Persona persona;
+	@Column(name="usuario_modificacion")
+	private String usuarioModificacion;
 
-	// bi-directional many-to-one association to Rol
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "id_rol")
-	private Rol rol;
+	//bi-directional many-to-one association to Rol
+	@OneToMany(mappedBy="usuario")
+	private List<Rol> rols;
 
 	public Usuario() {
 	}
@@ -76,12 +81,44 @@ public class Usuario implements Serializable {
 		this.emailUsuario = emailUsuario;
 	}
 
-	public String getTelefono() {
-		return this.telefono;
+	public String getEstadoUsuario() {
+		return this.estadoUsuario;
 	}
 
-	public void setTelefono(String telefono) {
-		this.telefono = telefono;
+	public void setEstadoUsuario(String estadoUsuario) {
+		this.estadoUsuario = estadoUsuario;
+	}
+
+	public Date getFechaCreacion() {
+		return this.fechaCreacion;
+	}
+
+	public void setFechaCreacion(Date fechaCreacion) {
+		this.fechaCreacion = fechaCreacion;
+	}
+
+	public Date getFechaModificacion() {
+		return this.fechaModificacion;
+	}
+
+	public void setFechaModificacion(Date fechaModificacion) {
+		this.fechaModificacion = fechaModificacion;
+	}
+
+	public String getIdentificacionUsuario() {
+		return this.identificacionUsuario;
+	}
+
+	public void setIdentificacionUsuario(String identificacionUsuario) {
+		this.identificacionUsuario = identificacionUsuario;
+	}
+
+	public String getNombreUsuario() {
+		return this.nombreUsuario;
+	}
+
+	public void setNombreUsuario(String nombreUsuario) {
+		this.nombreUsuario = nombreUsuario;
 	}
 
 	public String getUsuario() {
@@ -100,20 +137,34 @@ public class Usuario implements Serializable {
 		this.usuarioCreacion = usuarioCreacion;
 	}
 
-	public Persona getPersona() {
-		return this.persona;
+	public String getUsuarioModificacion() {
+		return this.usuarioModificacion;
 	}
 
-	public void setPersona(Persona persona) {
-		this.persona = persona;
+	public void setUsuarioModificacion(String usuarioModificacion) {
+		this.usuarioModificacion = usuarioModificacion;
 	}
 
-	public Rol getRol() {
-		return this.rol;
+	public List<Rol> getRols() {
+		return this.rols;
 	}
 
-	public void setRol(Rol rol) {
-		this.rol = rol;
+	public void setRols(List<Rol> rols) {
+		this.rols = rols;
+	}
+
+	public Rol addRol(Rol rol) {
+		getRols().add(rol);
+		rol.setUsuario(this);
+
+		return rol;
+	}
+
+	public Rol removeRol(Rol rol) {
+		getRols().remove(rol);
+		rol.setUsuario(null);
+
+		return rol;
 	}
 
 }
