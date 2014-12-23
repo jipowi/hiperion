@@ -16,28 +16,40 @@
 			</object>
 		</h:panelGrid>
 	</div>
-	<a href="#{facesContext.externalContext.request.contextPath}/index.jsp">Salir</a>
-	
-	<!-- Todo el Temmplate -->
+	<div align="right">
+		<h:panelGrid columns="2">
+			<p:outputLabel value="#{usuarioBacking.usuarioBean.sessionUser.nombreUsuario} " styleClass="negrita" />
+			<a href="#{facesContext.externalContext.request.contextPath}/index.jsp">Cerrar Sesion</a>
+			<p:spacer height="15px;" />
+		</h:panelGrid>
+	</div>
 	<div id="container">
-		<div>
-			<!-- Menu del Template ubicado en la parte derecha -->
-			<div id="left">
-				<h:form>
-					<p:menu model="#{usuarioBacking.menumodel}">
-						
-					</p:menu>
-				</h:form>
-			</div>
-			<!-- Contenido del Template unicado en la parte izquierda -->
-			<div id="content" class="left_content">
-				<ui:insert name="content">Content</ui:insert>
-			</div>
+		<div id="top" class="ui-widget-header ui-corner-all">
+			<ui:insert name="top">
+				<p:outputLabel value="#{usuarioBacking.usuarioBean.sessionUser.nombreUsuario} " styleClass="negrita" />  Bienvenidos al sistema de gestion de seguros HIPERION</ui:insert>
 		</div>
-		<!-- Pie de Pagina del Template -->
-		<div id="bottom">
-			<ui:insert name="bottom">Bottom</ui:insert>
-		</div>
+		<p:spacer height="15px;" />
+		<h:panelGrid columns="2">
+			<h:panelGrid columns="1">
+				<div id="left">
+					<h:form>
+						<p:menu model="#{usuarioBacking.menumodel}">
+
+						</p:menu>
+					</h:form>
+				</div>
+			</h:panelGrid>
+			<h:panelGrid columns="1">
+				<div id="content" class="left_content">
+					<ui:insert name="content">Content</ui:insert>
+				</div>
+			</h:panelGrid>
+		</h:panelGrid>
+
+	</div>
+	<!-- Pie de Pagina del Template -->
+	<div id="bottom">
+		<ui:insert name="bottom">Avila y Asociados productores de seguros  Av. America y Andagoya E12-56</ui:insert>
 	</div>
 </h:body>
 </html>

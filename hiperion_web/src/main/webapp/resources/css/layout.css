@@ -4,14 +4,14 @@
 	color: white;
 	padding: 5px;
 	margin: 0px 0px 1px 0px;
-	height: 55px;
+	height: 15px;
 }
 
 #bottom {
 	position: relative;
 	background-color: #c2dfef;
 	padding: 5px;
-	margin: 300px auto auto auto;
+	margin-left: 158px;
 }
 
 #left {
@@ -28,8 +28,8 @@
 }
 
 .left_content {
-	background-color: #dddddd;
-	margin-left: 205px;
+	
+	margin-left: 158px;
 	width: auto;
 	height: auto;
 }
