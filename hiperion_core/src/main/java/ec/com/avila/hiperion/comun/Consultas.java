@@ -26,7 +26,7 @@ import javax.persistence.NamedQuery;
 		// RAMO
 		@NamedQuery(name = "Ramo.findByCodigoRamo", query = "SELECT r FROM Ramo r WHERE r.codigoRamo =:codigoRamo"),
 		// USUARIO
-		@NamedQuery(name = "Usuario.loginUser", query = "SELECT u FROM Usuario u WHERE u.nombreUsuario =:nombreUsuario AND u.clave =:clave"),
+		@NamedQuery(name = "Usuario.loginUser", query = "SELECT u FROM Usuario u WHERE u.usuario =:usuario AND u.clave =:clave"),
 		// PROVINCIA
 		@NamedQuery(name = "Provincia.findByCodProvincia", query = "SELECT p FROM Provincia p WHERE p.codigo =:codigo"),
 		// CANTON
