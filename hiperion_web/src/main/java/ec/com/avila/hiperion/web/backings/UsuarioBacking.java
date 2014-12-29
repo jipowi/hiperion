@@ -16,11 +16,13 @@ import org.apache.log4j.Logger;
 import org.primefaces.context.RequestContext;
 import org.primefaces.model.menu.DefaultMenuItem;
 import org.primefaces.model.menu.DefaultMenuModel;
+import org.primefaces.model.menu.DefaultSubMenu;
 import org.primefaces.model.menu.MenuModel;
 
 import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.emision.entities.Menu;
 import ec.com.avila.hiperion.emision.entities.Rol;
+import ec.com.avila.hiperion.emision.entities.RolMenu;
 import ec.com.avila.hiperion.emision.entities.Usuario;
 import ec.com.avila.hiperion.servicio.UsuarioService;
 import ec.com.avila.hiperion.web.beans.UsuarioBean;
@@ -65,7 +67,7 @@ public class UsuarioBacking implements Serializable {
 	public String login(ActionEvent actionEvent) throws HiperionException {
 		menumodel = new DefaultMenuModel();
 		menuList = new ArrayList<>();
-		
+
 		try {
 			String salida = HiperionMensajes.getInstancia().getString("valor.navigation.error");
 
@@ -91,20 +93,31 @@ public class UsuarioBacking implements Serializable {
 			List<Rol> roles = usuarioServicio.consultarRolByUsuario(usuario);
 			// Consultar Menu por roles
 			for (Rol rol : roles) {
-				List<Menu> listTempMenu = usuarioServicio.consultarMenuByRol(rol);
-				for (Menu menu : listTempMenu) {
-					menuList.add(menu);
+				List<RolMenu> listRolMenus = usuarioServicio.consultarRolMenus(rol);
+				for (RolMenu rolMenu : listRolMenus) {
+					menuList.add(rolMenu.getMenu());
 				}
 			}
 
 			// Agregar menus para el usuario
-			for (Menu menu : menuList) {
-				// create the first menu item
-				DefaultMenuItem menuItem = new DefaultMenuItem(menu.getNombreMenu());
-				menuItem.setStyleClass(menu.getNombreMenu());
-				menuItem.setUrl(menu.getUrl());
-				menumodel.addElement(menuItem);
-				
+			List<Menu> listMenuPadres = new ArrayList<>();
+			for (Menu menuPadre : menuList) {
+				if (menuPadre.getIdPadre() == null) {
+					listMenuPadres.add(menuPadre);
+				}
+			}
+
+			for (Menu menuPadre : listMenuPadres) {
+				DefaultSubMenu firstSubmenu = new DefaultSubMenu(menuPadre.getNombreMenu());
+				for (Menu menuHijos : menuList) {
+					if (menuHijos.getIdPadre() == menuPadre.getIdMenu()) {
+						DefaultMenuItem menuItem = new DefaultMenuItem(menuHijos.getNombreMenu());
+						menuItem.setUrl(menuHijos.getUrl());
+
+						firstSubmenu.addElement(menuItem);
+					}
+				}
+				menumodel.addElement(firstSubmenu);
 			}
 
 			FacesContext.getCurrentInstance().addMessage(null, msg);
