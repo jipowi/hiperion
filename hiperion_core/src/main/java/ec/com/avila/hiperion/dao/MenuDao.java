@@ -11,6 +11,7 @@ import javax.ejb.Local;
 import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.emision.entities.Menu;
 import ec.com.avila.hiperion.emision.entities.Rol;
+import ec.com.avila.hiperion.emision.entities.RolMenu;
 
 /**
  * <b> Interfaz local para operaciones con la tabla Menu. </b>
@@ -33,5 +34,5 @@ public interface MenuDao extends GenericDAO<Menu, Long> {
 	 * @return
 	 * @throws HiperionException
 	 */
-	public List<Menu> consultarMenuByRol(Rol rol) throws HiperionException;
+	public List<RolMenu> consultarMenuByRol(Rol rol) throws HiperionException;
 }
