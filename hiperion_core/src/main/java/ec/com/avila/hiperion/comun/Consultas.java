@@ -38,7 +38,7 @@ import javax.persistence.NamedQuery;
 		// ROL
 		@NamedQuery(name = "Rol.findByUsuario", query = "SELECT r FROM Rol r WHERE r.usuario.idUsuario =:idUsuario"),
 		// MENU
-		@NamedQuery(name = "Menu.findByRol", query = "SELECT m FROM Menu m WHERE m.rol.idRol =:idRol") })
+		@NamedQuery(name = "Menu.findByRol", query = "SELECT m FROM RolMenu m WHERE m.rol.idRol =:idRol") })
 public class Consultas implements Serializable {
 
 	private static final long serialVersionUID = 1L;

@@ -28,14 +28,14 @@ public class Rol implements Serializable {
 	@Column(name="nombre_rol")
 	private String nombreRol;
 
-	//bi-directional many-to-one association to Menu
-	@OneToMany(mappedBy="rol")
-	private List<Menu> menus;
-
 	//bi-directional many-to-one association to Usuario
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="id_usuario")
 	private Usuario usuario;
+
+	//bi-directional many-to-one association to RolMenu
+	@OneToMany(mappedBy="rol")
+	private List<RolMenu> rolMenus;
 
 	public Rol() {
 	}
@@ -72,34 +72,34 @@ public class Rol implements Serializable {
 		this.nombreRol = nombreRol;
 	}
 
-	public List<Menu> getMenus() {
-		return this.menus;
-	}
-
-	public void setMenus(List<Menu> menus) {
-		this.menus = menus;
-	}
-
-	public Menu addMenus(Menu menus) {
-		getMenus().add(menus);
-		menus.setRol(this);
-
-		return menus;
-	}
-
-	public Menu removeMenus(Menu menus) {
-		getMenus().remove(menus);
-		menus.setRol(null);
-
-		return menus;
-	}
-
 	public Usuario getUsuario() {
 		return this.usuario;
 	}
 
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
+	}
+
+	public List<RolMenu> getRolMenus() {
+		return this.rolMenus;
+	}
+
+	public void setRolMenus(List<RolMenu> rolMenus) {
+		this.rolMenus = rolMenus;
+	}
+
+	public RolMenu addRolMenus(RolMenu rolMenus) {
+		getRolMenus().add(rolMenus);
+		rolMenus.setRol(this);
+
+		return rolMenus;
+	}
+
+	public RolMenu removeRolMenus(RolMenu rolMenus) {
+		getRolMenus().remove(rolMenus);
+		rolMenus.setRol(null);
+
+		return rolMenus;
 	}
 
 }

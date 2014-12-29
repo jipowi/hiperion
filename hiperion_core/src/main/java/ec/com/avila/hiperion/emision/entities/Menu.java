@@ -2,6 +2,7 @@ package ec.com.avila.hiperion.emision.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;
+import java.util.List;
 
 
 /**
@@ -29,10 +30,9 @@ public class Menu implements Serializable {
 
 	private String url;
 
-	//bi-directional many-to-one association to Rol
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="id_rol")
-	private Rol rol;
+	//bi-directional many-to-one association to RolMenu
+	@OneToMany(mappedBy="menu")
+	private List<RolMenu> rolMenus;
 
 	public Menu() {
 	}
@@ -77,12 +77,26 @@ public class Menu implements Serializable {
 		this.url = url;
 	}
 
-	public Rol getRol() {
-		return this.rol;
+	public List<RolMenu> getRolMenus() {
+		return this.rolMenus;
 	}
 
-	public void setRol(Rol rol) {
-		this.rol = rol;
+	public void setRolMenus(List<RolMenu> rolMenus) {
+		this.rolMenus = rolMenus;
+	}
+
+	public RolMenu addRolMenus(RolMenu rolMenus) {
+		getRolMenus().add(rolMenus);
+		rolMenus.setMenu(this);
+
+		return rolMenus;
+	}
+
+	public RolMenu removeRolMenus(RolMenu rolMenus) {
+		getRolMenus().remove(rolMenus);
+		rolMenus.setMenu(null);
+
+		return rolMenus;
 	}
 
 }

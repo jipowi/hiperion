@@ -136,5 +136,6 @@
 		<class>ec.com.avila.hiperion.emision.entities.TipoParroquia</class>
 		<class>ec.com.avila.hiperion.emision.entities.Titulo</class>
 		<class>ec.com.avila.hiperion.emision.entities.Usuario</class>
+		<class>ec.com.avila.hiperion.emision.entities.RolMenu</class>
 	</persistence-unit>
 </persistence>
