@@ -11,6 +11,7 @@ import javax.ejb.Local;
 import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.emision.entities.Menu;
 import ec.com.avila.hiperion.emision.entities.Rol;
+import ec.com.avila.hiperion.emision.entities.RolMenu;
 import ec.com.avila.hiperion.emision.entities.Usuario;
 
 /**
@@ -98,5 +99,7 @@ public interface UsuarioService {
 	 * @return
 	 * @throws HiperionException
 	 */
-	public List<Menu> consultarMenuByRol(Rol rol) throws HiperionException;
+	public List<RolMenu> consultarRolMenus(Rol rol) throws HiperionException;
+
+	public Menu consultarMenu(Integer idMenu) throws HiperionException;
 }

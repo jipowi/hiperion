@@ -11,6 +11,7 @@ import ec.com.avila.hiperion.dao.RolDao;
 import ec.com.avila.hiperion.dao.UsuarioDao;
 import ec.com.avila.hiperion.emision.entities.Menu;
 import ec.com.avila.hiperion.emision.entities.Rol;
+import ec.com.avila.hiperion.emision.entities.RolMenu;
 import ec.com.avila.hiperion.emision.entities.Usuario;
 import ec.com.avila.hiperion.servicio.UsuarioService;
 
@@ -60,7 +61,15 @@ public class UsuarioServiceImpl implements UsuarioService {
 	 * @see ec.com.avila.hiperion.servicio.UsuarioService#consultarMenuByRol(ec.com.avila.hiperion.emision.entities.Rol)
 	 */
 	@Override
-	public List<Menu> consultarMenuByRol(Rol rol) throws HiperionException {
+	public List<RolMenu> consultarRolMenus(Rol rol) throws HiperionException {
 		return menuDao.consultarMenuByRol(rol);
+	}
+
+	/* (non-Javadoc)
+	 * @see ec.com.avila.hiperion.servicio.UsuarioService#consultarMenu(java.lang.Integer)
+	 */
+	@Override
+	public Menu consultarMenu(Integer idMenu) throws HiperionException {
+		return menuDao.findById(new Long(idMenu));
 	}
 }
