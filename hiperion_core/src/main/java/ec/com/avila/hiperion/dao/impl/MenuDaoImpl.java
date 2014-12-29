@@ -17,6 +17,7 @@ import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.dao.MenuDao;
 import ec.com.avila.hiperion.emision.entities.Menu;
 import ec.com.avila.hiperion.emision.entities.Rol;
+import ec.com.avila.hiperion.emision.entities.RolMenu;
 
 /**
  * <b> Incluir aqui la descripcion de la clase. </b>
@@ -40,11 +41,11 @@ public class MenuDaoImpl extends GenericDAOImpl<Menu, Long> implements MenuDao {
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Menu> consultarMenuByRol(Rol rol) throws HiperionException {
+	public List<RolMenu> consultarMenuByRol(Rol rol) throws HiperionException {
 		try {
 			Query query = em.createNamedQuery("Menu.findByRol");
 			query.setParameter("idRol", rol.getIdRol());
-			List<Menu> menus = query.getResultList();
+			List<RolMenu> menus = query.getResultList();
 			
 			return menus;
 		} catch (Exception ex) {
