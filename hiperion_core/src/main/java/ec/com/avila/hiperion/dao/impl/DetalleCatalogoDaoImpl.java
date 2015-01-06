@@ -66,7 +66,7 @@ public class DetalleCatalogoDaoImpl extends GenericDAOImpl<DetalleCatalogo, Long
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<DetalleCatalogo> consultarDetalleCatalogoByCodDetalle(String codDepCatalogo, Integer idCatalogo) throws HiperionException {
+	public List<DetalleCatalogo> consultarDetalleCatalogoByCodDetalle(String codDepCatalogo, Long idCatalogo) throws HiperionException {
 		
 		Query query = em.createNamedQuery("DetalleCatalogo.findByCodigoDetalle");
 		query.setParameter("codDepDetalleCatalogo", codDepCatalogo);
