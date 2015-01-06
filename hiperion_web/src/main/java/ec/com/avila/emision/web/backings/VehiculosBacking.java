@@ -233,15 +233,15 @@ public class VehiculosBacking implements Serializable {
 
 		if (ramoVehiculoBean.getClaseVehiculo().equals("LIVIANO"))
 			catalogos = detalleCatalogoService.consultarDetalleCatalogoByCodDetalle(selectedMarca.getMarca(), HiperionMensajes.getInstancia()
-					.getInteger("ec.gob.avila.hiperion.recursos.catalogoModeloVehiculoLiviano"));
+					.getLong("ec.gob.avila.hiperion.recursos.catalogoModeloVehiculoLiviano"));
 
 		if (ramoVehiculoBean.getClaseVehiculo().equals("PESADO"))
 			catalogos = detalleCatalogoService.consultarDetalleCatalogoByCodDetalle(selectedMarca.getMarca(), HiperionMensajes.getInstancia()
-					.getInteger("ec.gob.avila.hiperion.recursos.catalogoModeloVehiculoPesado"));
+					.getLong("ec.gob.avila.hiperion.recursos.catalogoModeloVehiculoPesado"));
 
 		if (ramoVehiculoBean.getClaseVehiculo().equals("MOTO"))
 			catalogos = detalleCatalogoService.consultarDetalleCatalogoByCodDetalle(selectedMarca.getMarca(), HiperionMensajes.getInstancia()
-					.getInteger("ec.gob.avila.hiperion.recursos.catalogoModeloVehiculoMoto"));
+					.getLong("ec.gob.avila.hiperion.recursos.catalogoModeloVehiculoMoto"));
 
 		for (DetalleCatalogo detalle : catalogos) {
 			SelectItem selectItem = new SelectItem(detalle.getIdDetalleCatalogo(), detalle.getDescDetCatalogo());
