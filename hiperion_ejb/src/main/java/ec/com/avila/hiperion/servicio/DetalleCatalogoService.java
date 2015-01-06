@@ -98,7 +98,7 @@ public interface DetalleCatalogoService {
 	 * @return
 	 * @throws HiperionException
 	 */
-	public List<DetalleCatalogo> consultarDetalleCatalogoByCodDetalle(String codDepCatalogo, Integer idCatalogo) throws HiperionException;
+	public List<DetalleCatalogo> consultarDetalleCatalogoByCodDetalle(String codDepCatalogo, Long idCatalogo) throws HiperionException;
 	
 	/**
 	 * 

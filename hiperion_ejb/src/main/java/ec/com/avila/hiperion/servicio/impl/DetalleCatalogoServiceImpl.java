@@ -58,7 +58,7 @@ public class DetalleCatalogoServiceImpl implements DetalleCatalogoService {
 	 * @see ec.com.avila.hiperion.servicio.DetalleCatalogoServiceRemote#consultarDetalleCatalogoByCodDetalle(java.lang.Integer, java.lang.Integer)
 	 */
 	@Override
-	public List<DetalleCatalogo> consultarDetalleCatalogoByCodDetalle(String codDepCatalogo, Integer idCatalogo) throws HiperionException {
+	public List<DetalleCatalogo> consultarDetalleCatalogoByCodDetalle(String codDepCatalogo, Long idCatalogo) throws HiperionException {
 		return detalleCatalgoDao.consultarDetalleCatalogoByCodDetalle(codDepCatalogo, idCatalogo);
 	}
 
