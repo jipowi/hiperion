@@ -321,15 +321,15 @@ public class SoatBacking implements Serializable {
 
 		if (!ramoSoatBean.getTipoVehiculo().equals("3") && !ramoSoatBean.getTipoVehiculo().equals("5"))
 			catalogos = detalleCatalogoService.consultarDetalleCatalogoByCodDetalle(selectedMarca.getMarca(), HiperionMensajes.getInstancia()
-					.getInteger("ec.gob.avila.hiperion.recursos.catalogoModeloVehiculoLiviano"));
+					.getLong("ec.gob.avila.hiperion.recursos.catalogoModeloVehiculoLiviano"));
 
 		if (ramoSoatBean.getTipoVehiculo().equals("3"))
 			catalogos = detalleCatalogoService.consultarDetalleCatalogoByCodDetalle(selectedMarca.getMarca(), HiperionMensajes.getInstancia()
-					.getInteger("ec.gob.avila.hiperion.recursos.catalogoModeloVehiculoPesado"));
+					.getLong("ec.gob.avila.hiperion.recursos.catalogoModeloVehiculoPesado"));
 
 		if (ramoSoatBean.getTipoVehiculo().equals("5"))
 			catalogos = detalleCatalogoService.consultarDetalleCatalogoByCodDetalle(selectedMarca.getMarca(), HiperionMensajes.getInstancia()
-					.getInteger("ec.gob.avila.hiperion.recursos.catalogoModeloVehiculoMoto"));
+					.getLong("ec.gob.avila.hiperion.recursos.catalogoModeloVehiculoMoto"));
 
 		for (DetalleCatalogo detalle : catalogos) {
 			SelectItem selectItem = new SelectItem(detalle.getIdDetalleCatalogo(), detalle.getDescDetCatalogo());
