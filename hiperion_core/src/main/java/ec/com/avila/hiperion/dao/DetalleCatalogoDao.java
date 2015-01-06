@@ -47,7 +47,7 @@ public interface DetalleCatalogoDao extends GenericDAO<DetalleCatalogo, Long> {
 	 * @return
 	 * @throws HiperionException
 	 */
-	public List<DetalleCatalogo> consultarDetalleCatalogoByCodDetalle(String codDepCatalogo, Integer idCatalogo) throws HiperionException;
+	public List<DetalleCatalogo> consultarDetalleCatalogoByCodDetalle(String codDepCatalogo, Long idCatalogo) throws HiperionException;
 
 	/**
 	 * 
