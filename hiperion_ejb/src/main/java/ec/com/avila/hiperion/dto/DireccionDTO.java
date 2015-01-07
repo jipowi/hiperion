@@ -13,8 +13,6 @@ package ec.com.avila.hiperion.dto;
 public class DireccionDTO {
 
 	private ProvinciaDTO provinciaDTO;
-	private CantonDTO cantonDTO;
-	private ParroquiaDTO parroquiaDTO;
 	private String codTipoDireccion;
 	private String tipoDireccion;
 	private String callePrincipal;
@@ -129,36 +127,7 @@ public class DireccionDTO {
 		this.provinciaDTO = provinciaDTO;
 	}
 
-	/**
-	 * @return the cantonDTO
-	 */
-	public CantonDTO getCantonDTO() {
-		return cantonDTO;
-	}
-
-	/**
-	 * @param cantonDTO
-	 *            the cantonDTO to set
-	 */
-	public void setCantonDTO(CantonDTO cantonDTO) {
-		this.cantonDTO = cantonDTO;
-	}
-
-	/**
-	 * @return the parroquiaDTO
-	 */
-	public ParroquiaDTO getParroquiaDTO() {
-		return parroquiaDTO;
-	}
-
-	/**
-	 * @param parroquiaDTO
-	 *            the parroquiaDTO to set
-	 */
-	public void setParroquiaDTO(ParroquiaDTO parroquiaDTO) {
-		this.parroquiaDTO = parroquiaDTO;
-	}
-
+	
 	/**
 	 * @return the telefonoConvencional
 	 */
