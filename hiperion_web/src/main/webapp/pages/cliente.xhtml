@@ -3,17 +3,48 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui" xmlns:c="http://java.sun.com/jsp/jstl/core">
 <ui:composition template="/templates/menuPrincipalTemplate.xhtml">
 	<ui:define name="content">
-
 		<h:outputStylesheet name="cliente.css" library="css" />
+		<h:form id="formPricipal">
+			<p:outputPanel id="messagesAseguradora">
+				<p:messages></p:messages>
+			</p:outputPanel>
+			<p:panel>
+				<!-- PANEL DE BUSQUEDAA -->
+				<h:panelGrid columns="1">
+					<p:panel>
+						<f:facet name="header">
+							<h:outputText value="#{emision['cliente.buscar']}" />
+						</f:facet>
+						<h:panelGrid columns="2">
+							<h:panelGrid columns="2">
 
-		<!-- Boton Nuevo -->
-		<h:form>
-			<p:commandButton id="crearClienteBtn" value="#{administrador['cliente.boton.agregar']}" actionListener="#{clienteBacking.obtenerCodigoCliente}"
-				update=":clienteFormId:agregarClienteDlgId" oncomplete="crearClienteDlg.show();" title="Nuevo" icon="icon-client">
-				<p:ajax update=":clienteFormId, :direccionesFormId, :direccionFormId" />
-			</p:commandButton>
+								<p:outputLabel value="#{emision['cliente.identificacion']}" styleClass="negrita" />
+								<p:inputText value="#{clienteBean.identificacion}" />
+
+								<p:outputLabel value="#{emision['cliente.nombre']}" styleClass="negrita" />
+								<p:inputText value="#{clienteBean.nombre}" />
+							</h:panelGrid>
+							<p:commandLink title="Buscar clientes" action="#{aseguradoraBacking.consultarAseguradoras()}">
+								<h:graphicImage name="search.png" library="img/icon" />
+							</p:commandLink>
+						</h:panelGrid>
+					</p:panel>
+				</h:panelGrid>
+				<div align="right">
+					<p:commandButton id="crearClienteBtn" value="#{administrador['cliente.boton.agregar']}" actionListener="#{clienteBacking.obtenerCodigoCliente}"
+						update=":clienteFormId:agregarClienteDlgId" oncomplete="crearClienteDlg.show();" title="Nuevo" icon="icon-client">
+						<p:ajax update=":clienteFormId, :direccionesFormId, :direccionFormId" />
+					</p:commandButton>
+				</div>
+
+				<div align="center">
+					<h:panelGrid columns="1">
+						<h:graphicImage name="client.jpg" library="img" />
+					</h:panelGrid>
+				</div>
+			</p:panel>
+
 		</h:form>
-
 		<h:form id="clienteFormId">
 			<!-- DIALOG - Datos del Cliente -->
 			<p:dialog id="agregarClienteDlgId" widgetVar="crearClienteDlg" showEffect="fade" hideEffect="explode" resizable="false" modal="true"
@@ -112,9 +143,8 @@
 				<f:facet name="footer">
 					<div id="crearClienteDivFooterId">
 						<p:commandButton id="guardarClienteBtnId" value="#{utilitario['hiperion.btn.guardar']}" actionListener="#{clienteBacking.guardarCliente}"
-							update=":clienteFormId:clienteTabViewId, :clientesFormId" icon="icon-save" />
-						<p:commandButton id="cancelarClienteBtnId" value="#{utilitario['hiperion.btn.cancelar']}" process="@this"
-							actionListener="#{clienteBacking.cancelarCliente}" icon="icon-cancel" />
+							update=":clienteFormId:clienteTabViewId" icon="icon-save" />
+
 					</div>
 				</f:facet>
 			</p:dialog>
@@ -140,9 +170,7 @@
 				<f:facet name="footer">
 					<div id="contactoDivFooterId">
 						<p:commandButton id="guardarContactoBtnId" value="#{utilitario['hiperion.btn.guardar']}" action="#{contactoBacking.guardarContacto}"
-							update=":contactosFormId:contactosTableId" icon="icon-save" />
-						<p:commandButton id="cancelarContactoBtnId" value="#{utilitario['hiperion.btn.cancelar']}" actionListener="#{contactoBacking.cancelarContacto}"
-							icon="icon-cancel" oncomplete="agregarContactoDlg.hide();" />
+							oncomplete="agregarContactoDlg.hide();" update=":contactosFormId:contactosTableId" icon="icon-save" />
 					</div>
 				</f:facet>
 			</p:dialog>
@@ -179,10 +207,8 @@
 				<f:facet name="footer">
 					<div id="contactosDivFooterId">
 						<p:commandButton id="guardarContactosBtnId" value="#{utilitario['hiperion.btn.guardar']}" action="#{contactoBacking.guardarContactos}"
-							icon="icon-save" />
-						<p:commandButton id="cancelarContactosBtnId" value="#{utilitario['hiperion.btn.cancelar']}"
-							actionListener="#{contactoBacking.cancelarContactos}" update=":contactosFormId:contactosTableId" oncomplete="contactosDlg.hide();"
-							icon="icon-cancel" />
+							oncomplete="contactosDlg.hide();" icon="icon-save" />
+
 					</div>
 				</f:facet>
 			</p:dialog>
@@ -229,18 +255,7 @@
 							</f:facet>
 						</p:cellEditor>
 					</p:column>
-					<p:column headerText="#{administrador['cliente.dlg.direcciones.table.canton']}" style="width:auto">
-						<p:cellEditor>
-							<f:facet name="output">
-								<h:outputText value="#{direccion.cantonDTO.nombre}" />
-							</f:facet>
-							<f:facet name="input">
-								<h:selectOneMenu value="#{direccion.cantonDTO.nombre}" style="width:auto">
-									<f:selectItems value="#{direccionBacking.cantonesDTO}" var="canton" itemLabel="#{canton.nombre}" itemValue="#{canton.nombre}" />
-								</h:selectOneMenu>
-							</f:facet>
-						</p:cellEditor>
-					</p:column>
+
 					<p:column headerText="#{administrador['cliente.dlg.direcciones.table.callePrincilapal']}" style="width:auto">
 						<p:cellEditor>
 							<f:facet name="output">
@@ -322,20 +337,8 @@
 							requiredMessage="#{administrador['cliente.dlg.direccion.msg.provincia']}" converter="provinciaConverter" effect="fade" var="p" filter="true"
 							style="width:210px;">
 							<f:selectItems value="#{direccionBacking.provinciasDTO}" var="provincia" itemLabel="#{provincia.nombre}" itemValue="#{provincia}" />
-							<p:ajax listener="#{direccionBacking.obtenerCantonesPorProvincia}" update="cantonId" />
 							<p:column>
 								<h:outputText value="#{p.nombre}" />
-							</p:column>
-						</p:selectOneMenu>
-
-						<p:outputLabel for="cantonId" value="#{administrador['cliente.dlg.direccion.canton']}" styleClass="negrita" />
-						<p:selectOneMenu id="cantonId" value="#{direccionBean.cantonDTO}" required="true"
-							requiredMessage="#{administrador['cliente.dlg.direccion.msg.canton']}" converter="cantonConverter" effect="fade" var="c" filter="true"
-							style="width:210px;">
-							<f:selectItems value="#{direccionBacking.cantonesDTO}" var="canton" itemLabel="#{canton.nombre}" itemValue="#{canton}" />
-							<p:ajax listener="#{direccionBacking.obtenerParroquiasPorCanton}" />
-							<p:column>
-								<h:outputText value="#{c.nombre}" />
 							</p:column>
 						</p:selectOneMenu>
 
@@ -367,37 +370,6 @@
 					</div>
 				</f:facet>
 			</p:dialog>
-		</h:form>
-
-		<!-- Tabla de Clientes -->
-		<h:form id="clientesFormId">
-			<p:panel visible="true">
-				<p:dataTable id="clientesTableId" var="cliente" value="#{clienteBacking.clientes}" widgetVar="clientesTable"
-					emptyMessage="No se ha encontrado el Cliente solicitado" filteredValue="#{clienteBacking.clientesFiltrados}">
-					<f:facet name="header">
-						<p:outputPanel>
-							<h:outputText value="Buscar en todos los campos: " />
-							<p:inputText id="globalFilter" onkeyup="PF('clientesTable').filter()" style="width:150px" placeholder="Buscar" />
-						</p:outputPanel>
-					</f:facet>
-
-					<p:column filterBy="#{cliente.codigoCliente}" headerText="Codigo">
-						<h:outputText value="#{cliente.codigoCliente}" />
-					</p:column>
-
-					<p:column filterBy="#{cliente.persona.identificacionPersona}" headerText="Identificacion">
-						<h:outputText value="#{cliente.persona.identificacionPersona}" />
-					</p:column>
-
-					<p:column filterBy="#{cliente.persona.nombrePersona}" headerText="Nombres">
-						<h:outputText value="#{cliente.persona.nombrePersona}" />
-					</p:column>
-
-					<p:column filterBy="#{cliente.persona.apellidoPaterno}" headerText="Apellido Paterno">
-						<h:outputText value="#{cliente.persona.apellidoPaterno}" />
-					</p:column>
-				</p:dataTable>
-			</p:panel>
 		</h:form>
 	</ui:define>
 </ui:composition>

@@ -16,13 +16,15 @@
 			</object>
 		</h:panelGrid>
 	</div>
-	<div align="right">
-		<h:panelGrid columns="2">
+	<div align="center">
+		<h:panelGrid columns="4">
 			<p:outputLabel value="#{usuarioBacking.usuarioBean.sessionUser.nombreUsuario} " styleClass="negrita" />
+			<p:spacer width="900px;" height="1px;" />
 			<a href="#{facesContext.externalContext.request.contextPath}/index.jsp">Cerrar Sesion</a>
-			<p:spacer height="15px;" />
+			<h:graphicImage name="login_in.png" library="img" />
 		</h:panelGrid>
 	</div>
+	<p:spacer height="15px;" />
 	<div id="container">
 		<div id="top" class="ui-widget-header ui-corner-all">
 			<ui:insert name="top">
