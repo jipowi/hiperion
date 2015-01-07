@@ -2,6 +2,7 @@ package ec.com.avila.emision.web.backings;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -18,7 +19,6 @@ import ec.com.avila.emision.web.beans.ContactoBean;
 import ec.com.avila.emision.web.beans.DireccionBean;
 import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.dto.DireccionDTO;
-import ec.com.avila.hiperion.emision.entities.Canton;
 import ec.com.avila.hiperion.emision.entities.Catalogo;
 import ec.com.avila.hiperion.emision.entities.Cliente;
 import ec.com.avila.hiperion.emision.entities.DetalleCatalogo;
@@ -26,6 +26,8 @@ import ec.com.avila.hiperion.emision.entities.Direccion;
 import ec.com.avila.hiperion.emision.entities.Persona;
 import ec.com.avila.hiperion.emision.entities.Provincia;
 import ec.com.avila.hiperion.emision.entities.TipoDireccion;
+import ec.com.avila.hiperion.emision.entities.Usuario;
+import ec.com.avila.hiperion.enumeration.EstadoEnum;
 import ec.com.avila.hiperion.servicio.CantonService;
 import ec.com.avila.hiperion.servicio.CatalogoService;
 import ec.com.avila.hiperion.servicio.ClienteService;
@@ -35,6 +37,7 @@ import ec.com.avila.hiperion.servicio.ParroquiaService;
 import ec.com.avila.hiperion.servicio.PersonaService;
 import ec.com.avila.hiperion.servicio.ProvinciaService;
 import ec.com.avila.hiperion.servicio.TipoDireccionService;
+import ec.com.avila.hiperion.web.beans.UsuarioBean;
 import ec.com.avila.hiperion.web.util.EmisionUtil;
 
 @ManagedBean
@@ -45,10 +48,15 @@ public class ClienteBacking implements Serializable {
 
 	@ManagedProperty(value = "#{clienteBean}")
 	private ClienteBean clienteBean;
+
 	@ManagedProperty(value = "#{direccionBean}")
 	private DireccionBean direccionBean;
+
 	@ManagedProperty(value = "#{contactoBean}")
 	private ContactoBean contactoBean;
+
+	@ManagedProperty(value = "#{usuarioBean}")
+	private UsuarioBean usuarioBean;
 
 	@EJB
 	private PersonaService personaService;
@@ -249,7 +257,6 @@ public class ClienteBacking implements Serializable {
 				} else {
 					// Persona Juridica
 					persona.setRazonSocial(clienteBean.getRazonSocial());
-					// cliente.setGiroNegocio(clienteBean.getGiroNegocio());
 				}
 
 				// Direcciones del Cliente
@@ -265,32 +272,11 @@ public class ClienteBacking implements Serializable {
 					Provincia provincia = provinciaService.consultarProvinciaPorCodigo(direccionDto.getProvinciaDTO().getCodProvincia());
 					direccion.setProvincia(provincia);
 
-					// Canton
-					Canton canton = cantonService.consultarCantonPorId(direccionDto.getCantonDTO().getCodCanton());
-					direccion.setCanton(canton);
-
 					// Calles y Numeracion
 					direccion.setCallePrincipal(direccionDto.getCallePrincipal());
 					direccion.setNumeracion(direccionDto.getNumeracion());
 					direccion.setCalleSecundaria(direccionDto.getCalleSecundaria());
 					direccion.setReferencia(direccionDto.getReferencia());
-
-					// Contacto Telefonico
-					// String telefonoConvencional = direccionDto.getTelefonoConvencional();
-					// String telefonoMovil = direccionDto.getTelefonoMovil();
-					// Telefono Convencionale
-					// if (telefonoConvencional != null && !telefonoConvencional.equals("")) {
-					// direccion.setTelefonoConvencional(telefonoConvencional);
-					// if (tipoDireccion.getCodigoTipoDireccion().equals("DOM")) {
-					// persona.setTelefonoConvPersona(telefonoConvencional);
-					// }
-					// }
-					// Telefono Movil
-					// if (telefonoMovil != null && !telefonoMovil.equals("")) {
-					// direccion.setTelefonoMovil(telefonoMovil);
-					// if (tipoDireccion.getCodigoTipoDireccion().equals("DOM"))
-					// persona.setTelefonoMovilPersona(telefonoMovil);
-					// }
 
 					direcciones.add(direccion);
 				}
@@ -300,6 +286,10 @@ public class ClienteBacking implements Serializable {
 
 				cliente.setDireccions(direcciones);
 				// Guardamos al Cliente
+				Usuario usuario = usuarioBean.getSessionUser();
+				cliente.setIdUsuarioCreacion(usuario.getIdUsuario());
+				cliente.setFechaCreacion(new Date());
+				cliente.setEstado(EstadoEnum.A);
 				clienteService.guardarCliente(cliente);
 				RequestContext.getCurrentInstance().execute("crearClienteDlg.hide();");
 				setClientes(clienteService.consultarClientes());
@@ -309,12 +299,6 @@ public class ClienteBacking implements Serializable {
 		} catch (HiperionException e) {
 			e.printStackTrace();
 		}
-	}
-
-	public void cancelarCliente() {
-		RequestContext.getCurrentInstance().execute("crearClienteDlg.hide();");
-		// Reset Tipo Persona
-		this.tipoIdentificacionItems = new ArrayList<SelectItem>();
 	}
 
 	public ClienteBean getClienteBean() {
@@ -453,4 +437,20 @@ public class ClienteBacking implements Serializable {
 	public void setTipoIdentificacionItems(List<SelectItem> tipoIdentificacionItems) {
 		this.tipoIdentificacionItems = tipoIdentificacionItems;
 	}
+
+	/**
+	 * @return the usuarioBean
+	 */
+	public UsuarioBean getUsuarioBean() {
+		return usuarioBean;
+	}
+
+	/**
+	 * @param usuarioBean
+	 *            the usuarioBean to set
+	 */
+	public void setUsuarioBean(UsuarioBean usuarioBean) {
+		this.usuarioBean = usuarioBean;
+	}
+
 }

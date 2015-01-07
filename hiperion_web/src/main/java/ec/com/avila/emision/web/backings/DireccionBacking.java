@@ -24,7 +24,6 @@ import ec.com.avila.hiperion.dto.CantonDTO;
 import ec.com.avila.hiperion.dto.DireccionDTO;
 import ec.com.avila.hiperion.dto.ParroquiaDTO;
 import ec.com.avila.hiperion.dto.ProvinciaDTO;
-import ec.com.avila.hiperion.emision.entities.Canton;
 import ec.com.avila.hiperion.emision.entities.Parroquia;
 import ec.com.avila.hiperion.emision.entities.Provincia;
 import ec.com.avila.hiperion.emision.entities.TipoDireccion;
@@ -79,43 +78,13 @@ public class DireccionBacking implements Serializable {
 
 				ProvinciaDTO provinciaDto = provinciasDTO.get(0);
 				direccionBean.setProvinciaDTO(provinciaDto);
-				obtenerCantonesPorProvincia();
 			}
 		} catch (HiperionException ex) {
 			ex.printStackTrace();
 		}
 	}
 
-	/**
-	 * 
-	 * <b> Permite obtener los Cantones por Provincia del Ecuador, en base a la Provincia seleccionada. </b>
-	 * <p>
-	 * [Author: Dario Vinueza, Date: 31/08/2014]
-	 * </p>
-	 * 
-	 */
-	public void obtenerCantonesPorProvincia() {
-		try {
-			this.cantonesDTO = new ArrayList<CantonDTO>();
-			if (direccionBean.getProvinciaDTO() != null) {
-				List<Canton> cantones = cantonService.consultarCantonesPorProvincia(direccionBean.getProvinciaDTO().getCodProvincia());
-
-				if (cantones != null && cantones.size() > 0) {
-					for (Canton canton : cantones) {
-						CantonDTO cantonDto = new CantonDTO(canton.getIdCanton(), canton.getNombreCanton());
-						cantonesDTO.add(cantonDto);
-					}
-
-					CantonDTO cantonDTO = cantonesDTO.get(0);
-					direccionBean.setCantonDTO(cantonDTO);
-					obtenerParroquiasPorCanton();
-				}
-			}
-		} catch (HiperionException ex) {
-			ex.printStackTrace();
-		}
-	}
-
+	
 	/**
 	 * 
 	 * <b> Permite obtener las Parroquias del Ecuador, en base a los Cantones que sea seleccionado. </b>
@@ -198,8 +167,6 @@ public class DireccionBacking implements Serializable {
 	public void agregarDireccion() {
 		direccionDto = new DireccionDTO();
 		direccionDto.setProvinciaDTO(direccionBean.getProvinciaDTO());
-		direccionDto.setCantonDTO(direccionBean.getCantonDTO());
-		direccionDto.setParroquiaDTO(direccionBean.getParroquiaDTO());
 		direccionDto.setTipoDireccion(direccionBean.getTipoDireccion());
 		direccionDto.setCallePrincipal(direccionBean.getCallePrincipal());
 		direccionDto.setNumeracion(direccionBean.getNumeracion());
