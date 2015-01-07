@@ -25,6 +25,9 @@
 										<h:panelGrid columns="1">
 											<p:panel>
 												<h:panelGrid columns="2">
+													<p:outputLabel value="#{emision['asm.numeroAsegurados']}" styleClass="negrita" />
+													<p:inputText />
+
 													<p:outputLabel value="#{emision['asm.totalMensualGrupo']}" styleClass="negrita" />
 													<p:inputText value="#{ramoAsistenciaMedicaBean.totalMensualGrupo}" />
 												</h:panelGrid>
@@ -87,6 +90,82 @@
 							</p:tab>
 							<!-- CONDICIONES PARTICULARES -->
 							<p:tab id="tabCondiciones" title="#{emision['asm.tab.condicionesParticulares']}"></p:tab>
+
+
+							<!-- GRUPOS -->
+							<p:tab title="#{emision['asm.grupo']}">
+								<h:form id="formGrupos">
+									<p:messages id="messagesGrupos" showDetail="true" autoUpdate="true" closable="true" />
+									<div align="center">
+										<h:panelGrid columns="1">
+											<f:facet name="header">
+												<p:outputLabel value="#{emision['asm.grupo.titulo']}" />
+											</f:facet>
+											<p:separator id="customSeparator" style="width:auto;height:1px" />
+											<p:growl id="messages" showDetail="true" />
+											<p:panelGrid columns="2">
+												<p:outputLabel value="#{emision['ap.grupo.numeroGrupo']}" styleClass="negrita" />
+												<p:inputText value="#{ramoAccidentesPersonalesBean.numGrupo}" />
+
+												<p:outputLabel value="#{emision['ap.grupo.nombreGrupo']}" styleClass="negrita" />
+												<p:inputText value="#{ramoAccidentesPersonalesBean.nomGrupo}" />
+
+												<p:outputLabel value="#{emision['ap.grupo.numeroPersonas']}" styleClass="negrita" />
+												<p:inputText value="#{ramoAccidentesPersonalesBean.numPersonas}" />
+
+												<p:outputLabel value="#{emision['ap.grupo.actividad']}" styleClass="negrita" />
+												<p:inputText value="#{ramoAccidentesPersonalesBean.actividad}" />
+
+												<p:outputLabel value="#{emision['ap.grupo.valorGrupo']}" styleClass="negrita" />
+												<p:inputText value="#{ramoAccidentesPersonalesBean.valorGrupo}" />
+											</p:panelGrid>
+
+											<p:spacer height="15px;" />
+											<h:panelGrid columns="2">
+												<h:outputLabel value="#{emision['emision.deducibles']}" />
+												<h:graphicImage name="deducibles.jpg" library="img" />
+											</h:panelGrid>
+
+										</h:panelGrid>
+										<p:spacer height="15px;" />
+
+										<table bgcolor="#E6E6E6">
+											<tr>
+												<td colspan="2" align="center"><p:outputLabel value="#{emision['asm.grupo.deducibleHospitalario']}" styleClass="negrita" /></td>
+												<td><p:outputLabel value="#{emision['asm.grupo.deducibleAmbulatorio']}" styleClass="negrita" /></td>
+											</tr>
+
+											<tr>
+												<td><p:outputLabel value="#{emision['asm.grupo.deducibleGrupo1']}" styleClass="negrita" /></td>
+												<td><p:inputText /></td>
+												<td><p:inputText /></td>
+											</tr>
+
+											<tr>
+												<td><p:outputLabel value="#{emision['asm.grupo.deducibleGrupo2']}" styleClass="negrita" /></td>
+												<td><p:inputText /></td>
+												<td><p:inputText /></td>
+											</tr>
+
+											<tr>
+												<td><p:outputLabel value="#{emision['asm.grupo.deducibleGrupo3']}" styleClass="negrita" /></td>
+												<td><p:inputText /></td>
+												<td><p:inputText /></td>
+											</tr>
+
+
+											<tr>
+												<td><p:outputLabel value="#{emision['asm.grupo.deducibleGrupo4']}" styleClass="negrita" /></td>
+												<td><p:inputText /></td>
+												<td><p:inputText /></td>
+											</tr>
+										</table>
+
+									</div>
+
+								</h:form>
+
+							</p:tab>
 							<!-- MODALIDAD -->
 							<p:tab id="tabModalidad" title="#{emision['asm.tab.modalidad']}">
 								<p:accordionPanel multiple="true">
