@@ -4,33 +4,34 @@ import java.io.Serializable;
 import javax.persistence.*;
 import java.util.List;
 
+
 /**
  * The persistent class for the ramo database table.
  * 
  */
 @Entity
-@NamedQuery(name = "Ramo.findAll", query = "SELECT r FROM Ramo r")
+@NamedQuery(name="Ramo.findAll", query="SELECT r FROM Ramo r")
 public class Ramo implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_ramo")
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name="id_ramo")
 	private Integer idRamo;
 
-	@Column(name = "codigo_ramo")
+	@Column(name="codigo_ramo")
 	private String codigoRamo;
 
-	@Column(name = "nombre_ramo")
+	@Column(name="nombre_ramo")
 	private String nombreRamo;
 
-	// bi-directional many-to-one association to DetalleAnexo
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "ramo")
-	private List<DetalleAnexo> detalleAnexos;
-
-	// bi-directional many-to-one association to RamoAseguradora
-	@OneToMany(mappedBy = "ramo")
+	//bi-directional many-to-one association to RamoAseguradora
+	@OneToMany(mappedBy="ramo")
 	private List<RamoAseguradora> ramoAseguradoras;
+
+	//bi-directional many-to-one association to DetalleAnexo
+	@OneToMany(mappedBy="ramo")
+	private List<DetalleAnexo> detalleAnexos;
 
 	public Ramo() {
 	}
@@ -59,28 +60,6 @@ public class Ramo implements Serializable {
 		this.nombreRamo = nombreRamo;
 	}
 
-	public List<DetalleAnexo> getDetalleAnexos() {
-		return this.detalleAnexos;
-	}
-
-	public void setDetalleAnexos(List<DetalleAnexo> detalleAnexos) {
-		this.detalleAnexos = detalleAnexos;
-	}
-
-	public DetalleAnexo addDetalleAnexo(DetalleAnexo detalleAnexo) {
-		getDetalleAnexos().add(detalleAnexo);
-		detalleAnexo.setRamo(this);
-
-		return detalleAnexo;
-	}
-
-	public DetalleAnexo removeDetalleAnexo(DetalleAnexo detalleAnexo) {
-		getDetalleAnexos().remove(detalleAnexo);
-		detalleAnexo.setRamo(null);
-
-		return detalleAnexo;
-	}
-
 	public List<RamoAseguradora> getRamoAseguradoras() {
 		return this.ramoAseguradoras;
 	}
@@ -101,6 +80,28 @@ public class Ramo implements Serializable {
 		ramoAseguradora.setRamo(null);
 
 		return ramoAseguradora;
+	}
+
+	public List<DetalleAnexo> getDetalleAnexos() {
+		return this.detalleAnexos;
+	}
+
+	public void setDetalleAnexos(List<DetalleAnexo> detalleAnexos) {
+		this.detalleAnexos = detalleAnexos;
+	}
+
+	public DetalleAnexo addDetalleAnexo(DetalleAnexo detalleAnexo) {
+		getDetalleAnexos().add(detalleAnexo);
+		detalleAnexo.setRamo(this);
+
+		return detalleAnexo;
+	}
+
+	public DetalleAnexo removeDetalleAnexo(DetalleAnexo detalleAnexo) {
+		getDetalleAnexos().remove(detalleAnexo);
+		detalleAnexo.setRamo(null);
+
+		return detalleAnexo;
 	}
 
 }

@@ -4,31 +4,28 @@ import java.io.Serializable;
 import javax.persistence.*;
 import java.util.List;
 
+
 /**
  * The persistent class for the provincia database table.
  * 
  */
 @Entity
-@NamedQuery(name = "Provincia.findAll", query = "SELECT p FROM Provincia p")
+@NamedQuery(name="Provincia.findAll", query="SELECT p FROM Provincia p")
 public class Provincia implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_provincia")
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name="id_provincia")
 	private Integer idProvincia;
 
 	private String codigo;
 
-	@Column(name = "nombre_provincia")
+	@Column(name="nombre_provincia")
 	private String nombreProvincia;
 
-	// bi-directional many-to-one association to Canton
-	@OneToMany(mappedBy = "provincia", cascade = { CascadeType.ALL })
-	private List<Canton> cantons;
-
-	// bi-directional many-to-one association to Direccion
-	@OneToMany(mappedBy = "provincia")
+	//bi-directional many-to-one association to Direccion
+	@OneToMany(mappedBy="provincia")
 	private List<Direccion> direccions;
 
 	public Provincia() {
@@ -56,28 +53,6 @@ public class Provincia implements Serializable {
 
 	public void setNombreProvincia(String nombreProvincia) {
 		this.nombreProvincia = nombreProvincia;
-	}
-
-	public List<Canton> getCantons() {
-		return this.cantons;
-	}
-
-	public void setCantons(List<Canton> cantons) {
-		this.cantons = cantons;
-	}
-
-	public Canton addCanton(Canton canton) {
-		getCantons().add(canton);
-		canton.setProvincia(this);
-
-		return canton;
-	}
-
-	public Canton removeCanton(Canton canton) {
-		getCantons().remove(canton);
-		canton.setProvincia(null);
-
-		return canton;
 	}
 
 	public List<Direccion> getDireccions() {

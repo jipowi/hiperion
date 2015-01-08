@@ -23,7 +23,7 @@ public class Titulo implements Serializable {
 	private String tipoTitulo;
 
 	//bi-directional many-to-one association to DetalleAnexo
-	@OneToMany(mappedBy="titulo", cascade={CascadeType.ALL})
+	@OneToMany(mappedBy="titulo")
 	private List<DetalleAnexo> detalleAnexos;
 
 	public Titulo() {

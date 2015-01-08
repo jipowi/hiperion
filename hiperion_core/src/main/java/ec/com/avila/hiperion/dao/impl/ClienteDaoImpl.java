@@ -9,6 +9,7 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 import org.apache.log4j.Logger;
 
@@ -25,38 +26,41 @@ import ec.com.avila.hiperion.emision.entities.Cliente;
  * @since JDK1.6
  */
 @Stateless
-public class ClienteDaoImpl implements ClienteDao {
+public class ClienteDaoImpl extends GenericDAOImpl<Cliente, Long> implements ClienteDao {
 
 	Logger log = Logger.getLogger(ClienteDaoImpl.class);
 
 	@PersistenceContext(unitName = "sgs_pu")
 	protected EntityManager em;
 
-	public void guardarCliente(Cliente cliente) throws HiperionException {
-		try {
-			em.persist(cliente);
-		} catch (Exception ex) {
-			log.error("Error: No se pudo Guardar el Cliente --> ClienteDaoImpl.guardarCliente: Line 35", ex);
-			throw new HiperionException(ex);
-		}
-	}
-
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see ec.com.avila.hiperion.dao.ClienteDao#consultarClienteByIdentificacion()
+	 */
 	@SuppressWarnings("unchecked")
-	public List<Cliente> consultarClientes() throws HiperionException {
-		try {
-			return em.createNamedQuery("Cliente.findAll").getResultList();
-		} catch (Exception ex) {
-			log.error("Error: No se pudo realizar la Consulta --> ClienteDaoImpl.consultarClientes: Line 45", ex);
-			throw new HiperionException(ex);
-		}
+	@Override
+	public Cliente consultarClienteByIdentificacion(String identificacion) throws HiperionException {
+		Query query = em.createNamedQuery("Cliente.findByIdentificacion");
+		query.setParameter("identificacion", identificacion);
+		List<Cliente> clientes = query.getResultList();
+		return clientes.get(0);
 	}
 
-	public void modificarCliente(Cliente cliente) throws HiperionException {
-		try {
-			em.merge(cliente);
-		} catch (Exception ex) {
-			log.error("Error: No se pudo modificar al Cliente --> ClienteDaoImpl.modificarCliente: Line 54", ex);
-			throw new HiperionException(ex);
-		}
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see ec.com.avila.hiperion.dao.ClienteDao#consultarClienteByApellido(java.lang.String)
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Cliente> consultarClienteByApellido(String apellido) throws HiperionException {
+		Query query = em.createNamedQuery("Cliente.findByNombre");
+		query.setParameter("nombre", apellido);
+		List<Cliente> clientes = query.getResultList();
+		return clientes;
 	}
+
+	
+	
 }

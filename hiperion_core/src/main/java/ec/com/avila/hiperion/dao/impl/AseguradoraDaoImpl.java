@@ -16,7 +16,7 @@ import org.apache.log4j.Logger;
 import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.dao.AseguradoraDao;
 import ec.com.avila.hiperion.emision.entities.Aseguradora;
-import ec.com.avila.hiperion.emision.entities.Persona;
+import ec.com.avila.hiperion.emision.entities.Cliente;
 
 /**
  * 
@@ -34,24 +34,14 @@ public class AseguradoraDaoImpl extends GenericDAOImpl<Aseguradora, Long> implem
 	@PersistenceContext(unitName = "sgs_pu")
 	protected EntityManager em;
 
-	public void guardarAseguradora(Aseguradora aseguradora, List<Persona> personas) throws HiperionException {
+	public void guardarAseguradora(Aseguradora aseguradora, List<Cliente> personas) throws HiperionException {
 		try {
 
 			em.persist(aseguradora);
 
-			for (Persona persona : personas) {
-
-//				PersonaAseguradoraPK aseguradoraPK = new PersonaAseguradoraPK();
-//				aseguradoraPK.setIdAseguradora(aseguradora.getIdAseguradora());
+			for (Cliente persona : personas) {
 
 				em.persist(persona);
-//				aseguradoraPK.setIdPersona(persona.getIdPersona());
-//
-//				PersonaAseguradora personaAseguradora = new PersonaAseguradora();
-//
-//				personaAseguradora.setId(aseguradoraPK);
-
-//				em.persist(personaAseguradora);
 			}
 		} catch (Exception e) {
 			log.error("Error no se pudo guardar la aseguradora ", e);

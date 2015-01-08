@@ -23,7 +23,7 @@ public class DetalleAnexo implements Serializable {
 	private String nombreDetalleAnexo;
 
 	//bi-directional many-to-one association to Anexo
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="id_anexo")
 	private Anexo anexo;
 
@@ -33,7 +33,7 @@ public class DetalleAnexo implements Serializable {
 	private Ramo ramo;
 
 	//bi-directional many-to-one association to Titulo
-	@ManyToOne(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="id_titulo")
 	private Titulo titulo;
 

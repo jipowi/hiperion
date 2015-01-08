@@ -10,7 +10,7 @@ import javax.ejb.Local;
 
 import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.emision.entities.Aseguradora;
-import ec.com.avila.hiperion.emision.entities.Persona;
+import ec.com.avila.hiperion.emision.entities.Cliente;
 
 /**
  * <b> Interfaz local de la tabla Aseguradora para realizar las operaciones necesarias</b>
@@ -33,7 +33,7 @@ public interface AseguradoraDao extends GenericDAO<Aseguradora, Long>{
 	 * @param contactos
 	 * @throws HiperionException
 	 */
-	public void guardarAseguradora(Aseguradora aseguradora, List<Persona> contactos) throws HiperionException;
+	public void guardarAseguradora(Aseguradora aseguradora, List<Cliente> contactos) throws HiperionException;
 
 	/**
 	 * 

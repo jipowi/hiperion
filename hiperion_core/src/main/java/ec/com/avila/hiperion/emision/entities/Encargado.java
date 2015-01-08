@@ -2,7 +2,6 @@ package ec.com.avila.hiperion.emision.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;
-import java.util.List;
 
 
 /**
@@ -32,15 +31,6 @@ public class Encargado implements Serializable {
 
 	@Column(name="tipo_titulo")
 	private String tipoTitulo;
-
-	//bi-directional many-to-one association to Contacto
-	@OneToMany(mappedBy="encargado")
-	private List<Contacto> contactos;
-
-	//bi-directional many-to-one association to Persona
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="id_persona")
-	private Persona persona;
 
 	public Encargado() {
 	}
@@ -91,36 +81,6 @@ public class Encargado implements Serializable {
 
 	public void setTipoTitulo(String tipoTitulo) {
 		this.tipoTitulo = tipoTitulo;
-	}
-
-	public List<Contacto> getContactos() {
-		return this.contactos;
-	}
-
-	public void setContactos(List<Contacto> contactos) {
-		this.contactos = contactos;
-	}
-
-	public Contacto addContacto(Contacto contacto) {
-		getContactos().add(contacto);
-		contacto.setEncargado(this);
-
-		return contacto;
-	}
-
-	public Contacto removeContacto(Contacto contacto) {
-		getContactos().remove(contacto);
-		contacto.setEncargado(null);
-
-		return contacto;
-	}
-
-	public Persona getPersona() {
-		return this.persona;
-	}
-
-	public void setPersona(Persona persona) {
-		this.persona = persona;
 	}
 
 }

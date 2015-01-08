@@ -9,7 +9,6 @@
 		<class>ec.com.avila.hiperion.emision.entities.Anexo</class>
 		<class>ec.com.avila.hiperion.emision.entities.ArchivoBase</class>
 		<class>ec.com.avila.hiperion.emision.entities.Aseguradora</class>
-		<class>ec.com.avila.hiperion.emision.entities.Canton</class>
 		<class>ec.com.avila.hiperion.emision.entities.Catalogo</class>
 		<class>ec.com.avila.hiperion.emision.entities.ClaAddLcRot</class>
 		<class>ec.com.avila.hiperion.emision.entities.ClausulasAddAccPer</class>
@@ -98,8 +97,6 @@
 		<class>ec.com.avila.hiperion.emision.entities.ObjAsegRotura</class>
 		<class>ec.com.avila.hiperion.emision.entities.ObjAsegTransporte</class>
 		<class>ec.com.avila.hiperion.emision.entities.PagoPoliza</class>
-		<class>ec.com.avila.hiperion.emision.entities.Parroquia</class>
-		<class>ec.com.avila.hiperion.emision.entities.Persona</class>
 		<class>ec.com.avila.hiperion.emision.entities.Poliza</class>
 		<class>ec.com.avila.hiperion.emision.entities.Provincia</class>
 		<class>ec.com.avila.hiperion.emision.entities.Ramo</class>
@@ -133,7 +130,6 @@
 		<class>ec.com.avila.hiperion.emision.entities.Rol</class>
 		<class>ec.com.avila.hiperion.emision.entities.TarjetaCredito</class>
 		<class>ec.com.avila.hiperion.emision.entities.TipoDireccion</class>
-		<class>ec.com.avila.hiperion.emision.entities.TipoParroquia</class>
 		<class>ec.com.avila.hiperion.emision.entities.Titulo</class>
 		<class>ec.com.avila.hiperion.emision.entities.Usuario</class>
 		<class>ec.com.avila.hiperion.emision.entities.RolMenu</class>

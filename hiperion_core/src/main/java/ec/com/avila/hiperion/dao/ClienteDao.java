@@ -13,40 +13,41 @@ import ec.com.avila.hiperion.emision.entities.Cliente;
 
 /**
  * 
- * <b> Interfaz local de la tabla CatalogoCliente </b>
+ * <b> Interfaz local de la tabla Cliente </b>
  * 
  * @author Dario Vinueza
  * @version 1.0, Nov 9, 2013
  * @since JDK1.6
  */
 @Local
-public interface ClienteDao {
+public interface ClienteDao extends GenericDAO<Cliente, Long> {
+
+		
 	/**
 	 * 
-	 * <b> Permite guardar los registros en la tabla clientes </b>
+	 * <b> Permite consultar el cliente por medio de la cedula de identidad </b>
 	 * <p>
-	 * [Author: Dario Vinueza, Date: Nov 9, 2013]
+	 * [Author: Paul Jimenez, Date: 07/01/2015]
 	 * </p>
 	 * 
-	 * @param cliente
-	 *            objeto de tipo cliente
+	 * @param identificacion
+	 * @return
 	 * @throws HiperionException
 	 */
-	public void guardarCliente(Cliente cliente) throws HiperionException;
+	public Cliente consultarClienteByIdentificacion(String identificacion) throws HiperionException;
 
 	/**
-	 * Permite consultar los clientes registrados en la base
 	 * 
-	 * @return lista de tipo clientes
+	 * <b> Permite consultar un cliente por medio de su apellido paterno </b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: 07/01/2015]
+	 * </p>
+	 * 
+	 * @param apellido
+	 * @return
 	 * @throws HiperionException
 	 */
-	public List<Cliente> consultarClientes() throws HiperionException;
+	public List<Cliente> consultarClienteByApellido(String apellido) throws HiperionException;
 
-	/**
-	 * Permite modificar los datos de un cliente
-	 * 
-	 * @param cliente
-	 * @throws HiperionException
-	 */
-	public void modificarCliente(Cliente cliente) throws HiperionException;
+	
 }

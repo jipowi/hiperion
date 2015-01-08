@@ -1,19 +1,11 @@
 package ec.com.avila.hiperion.emision.entities;
 
 import java.io.Serializable;
-import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
+
+import java.util.Date;
+import java.util.List;
 
 /**
  * The persistent class for the cliente database table.
@@ -29,20 +21,48 @@ public class Cliente extends Auditoria implements Serializable {
 	@Column(name = "id_cliente")
 	private Integer idCliente;
 
+	@Column(name = "actividad_profesion")
+	private String actividadProfesion;
+
+	@Column(name = "apellido_materno")
+	private String apellidoMaterno;
+
+	@Column(name = "apellido_paterno")
+	private String apellidoPaterno;
+
 	@Column(name = "codigo_cliente")
 	private String codigoCliente;
 
-	// bi-directional many-to-one association to Persona
-	@ManyToOne(cascade={CascadeType.ALL}, fetch=FetchType.LAZY)
-	@JoinColumn(name = "id_persona")
-	private Persona persona;
+	@Temporal(TemporalType.DATE)
+	@Column(name = "fecha_nacimiento")
+	private Date fechaNacimiento;
 
-	// bi-directional many-to-one association to Persona
+	@Column(name = "identificacion_persona")
+	private String identificacionPersona;
+
+	@Column(name = "nombre_persona")
+	private String nombrePersona;
+
+	@Column(name = "razon_social")
+	private String razonSocial;
+
+	@Column(name = "tipo_identificacion")
+	private String tipoIdentificacion;
+
+	@Column(name = "tipo_persona")
+	private String tipoPersona;
+
+	// bi-directional many-to-one association to Aseguradora
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id_aseguradora")
+	private Aseguradora aseguradora;
+
+	// bi-directional many-to-one association to Contacto
 	@OneToMany(mappedBy = "cliente")
-	private List<Persona> personas;
+	private List<Contacto> contactos;
 
 	// bi-directional many-to-one association to Direccion
-	@OneToMany(mappedBy="cliente", cascade={CascadeType.ALL})
+	@OneToMany(mappedBy = "cliente")
 	private List<Direccion> direccions;
 
 	public Cliente() {
@@ -56,6 +76,30 @@ public class Cliente extends Auditoria implements Serializable {
 		this.idCliente = idCliente;
 	}
 
+	public String getActividadProfesion() {
+		return this.actividadProfesion;
+	}
+
+	public void setActividadProfesion(String actividadProfesion) {
+		this.actividadProfesion = actividadProfesion;
+	}
+
+	public String getApellidoMaterno() {
+		return this.apellidoMaterno;
+	}
+
+	public void setApellidoMaterno(String apellidoMaterno) {
+		this.apellidoMaterno = apellidoMaterno;
+	}
+
+	public String getApellidoPaterno() {
+		return this.apellidoPaterno;
+	}
+
+	public void setApellidoPaterno(String apellidoPaterno) {
+		this.apellidoPaterno = apellidoPaterno;
+	}
+
 	public String getCodigoCliente() {
 		return this.codigoCliente;
 	}
@@ -64,34 +108,82 @@ public class Cliente extends Auditoria implements Serializable {
 		this.codigoCliente = codigoCliente;
 	}
 
-	public Persona getPersona() {
-		return this.persona;
+	public Date getFechaNacimiento() {
+		return this.fechaNacimiento;
 	}
 
-	public void setPersona(Persona persona) {
-		this.persona = persona;
+	public void setFechaNacimiento(Date fechaNacimiento) {
+		this.fechaNacimiento = fechaNacimiento;
 	}
 
-	public List<Persona> getPersonas() {
-		return this.personas;
+	public String getIdentificacionPersona() {
+		return this.identificacionPersona;
 	}
 
-	public void setPersonas(List<Persona> personas) {
-		this.personas = personas;
+	public void setIdentificacionPersona(String identificacionPersona) {
+		this.identificacionPersona = identificacionPersona;
 	}
 
-	public Persona addPersona(Persona persona) {
-		getPersonas().add(persona);
-		persona.setCliente(this);
-
-		return persona;
+	public String getNombrePersona() {
+		return this.nombrePersona;
 	}
 
-	public Persona removePersona(Persona persona) {
-		getPersonas().remove(persona);
-		persona.setCliente(null);
+	public void setNombrePersona(String nombrePersona) {
+		this.nombrePersona = nombrePersona;
+	}
 
-		return persona;
+	public String getRazonSocial() {
+		return this.razonSocial;
+	}
+
+	public void setRazonSocial(String razonSocial) {
+		this.razonSocial = razonSocial;
+	}
+
+	public String getTipoIdentificacion() {
+		return this.tipoIdentificacion;
+	}
+
+	public void setTipoIdentificacion(String tipoIdentificacion) {
+		this.tipoIdentificacion = tipoIdentificacion;
+	}
+
+	public String getTipoPersona() {
+		return this.tipoPersona;
+	}
+
+	public void setTipoPersona(String tipoPersona) {
+		this.tipoPersona = tipoPersona;
+	}
+
+	public Aseguradora getAseguradora() {
+		return this.aseguradora;
+	}
+
+	public void setAseguradora(Aseguradora aseguradora) {
+		this.aseguradora = aseguradora;
+	}
+
+	public List<Contacto> getContactos() {
+		return this.contactos;
+	}
+
+	public void setContactos(List<Contacto> contactos) {
+		this.contactos = contactos;
+	}
+
+	public Contacto addContacto(Contacto contacto) {
+		getContactos().add(contacto);
+		contacto.setCliente(this);
+
+		return contacto;
+	}
+
+	public Contacto removeContacto(Contacto contacto) {
+		getContactos().remove(contacto);
+		contacto.setCliente(null);
+
+		return contacto;
 	}
 
 	public List<Direccion> getDireccions() {

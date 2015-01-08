@@ -15,6 +15,10 @@ import javax.persistence.NamedQuery;
 		@NamedQuery(name = "Aseguradora.find", query = "SELECT c FROM Aseguradora c WHERE c.ruc =:ruc AND c.idAseguradora =:aseguradora"),
 		// CATALOGO
 		@NamedQuery(name = "Catalogo.findById", query = "SELECT c FROM Catalogo c WHERE c.idCatalogo =:idCatalogo"),
+		// CLIENTE
+		@NamedQuery(name = "Cliente.findByIdentificacion", query = "SELECT c FROM Cliente c WHERE c.identificacionPersona =:identificacion"),
+		@NamedQuery(name = "Cliente.findByNombre", query = "SELECT c FROM Cliente c WHERE lower(c.apellidoPaterno) like :nombre"),
+		
 		// TIPO_DIRECCION
 		@NamedQuery(name = "TipoDireccion.findCodigo", query = "SELECT t FROM TipoDireccion t WHERE t.codigoTipoDireccion =:codTipoDireccion"),
 		@NamedQuery(name = "TipoDireccion.findDescripcion", query = "SELECT t FROM TipoDireccion t WHERE t.descTipoDireccion =:descripcion"),
@@ -29,12 +33,7 @@ import javax.persistence.NamedQuery;
 		@NamedQuery(name = "Usuario.loginUser", query = "SELECT u FROM Usuario u WHERE u.usuario =:usuario AND u.clave =:clave"),
 		// PROVINCIA
 		@NamedQuery(name = "Provincia.findByCodProvincia", query = "SELECT p FROM Provincia p WHERE p.codigo =:codigo"),
-		// CANTON
-		@NamedQuery(name = "Canton.findByCodProvincia", query = "SELECT c FROM Canton c WHERE c.provincia.codigo =:codProvincia ORDER BY c.nombreCanton"),
-		@NamedQuery(name = "Canton.findByIdCanton", query = "SELECT c FROM Canton c WHERE c.idCanton =:idCanton"),
-		// PARROQUIA
-		@NamedQuery(name = "Parroquia.findByIdCanton", query = "SELECT p FROM Parroquia p WHERE p.canton.idCanton =:idCanton ORDER BY p.nombreParroquia"),
-		@NamedQuery(name = "Parroquia.findByIdParroquia", query = "SELECT p FROM Parroquia p WHERE p.idParroquia =:idParroquia"),
+		
 		// ROL
 		@NamedQuery(name = "Rol.findByUsuario", query = "SELECT r FROM Rol r WHERE r.usuario.idUsuario =:idUsuario"),
 		// MENU

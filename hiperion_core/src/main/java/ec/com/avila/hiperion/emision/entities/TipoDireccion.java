@@ -4,29 +4,30 @@ import java.io.Serializable;
 import javax.persistence.*;
 import java.util.List;
 
+
 /**
  * The persistent class for the tipo_direccion database table.
  * 
  */
 @Entity
-@Table(name = "tipo_direccion")
-@NamedQuery(name = "TipoDireccion.findAll", query = "SELECT t FROM TipoDireccion t")
+@Table(name="tipo_direccion")
+@NamedQuery(name="TipoDireccion.findAll", query="SELECT t FROM TipoDireccion t")
 public class TipoDireccion implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_tipo_direccion")
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name="id_tipo_direccion")
 	private Integer idTipoDireccion;
 
-	@Column(name = "codigo_tipo_direccion")
+	@Column(name="codigo_tipo_direccion")
 	private String codigoTipoDireccion;
 
-	@Column(name = "desc_tipo_direccion")
+	@Column(name="desc_tipo_direccion")
 	private String descTipoDireccion;
 
-	// bi-directional many-to-one association to Direccion
-	@OneToMany(mappedBy = "tipoDireccion")
+	//bi-directional many-to-one association to Direccion
+	@OneToMany(mappedBy="tipoDireccion")
 	private List<Direccion> direccions;
 
 	public TipoDireccion() {

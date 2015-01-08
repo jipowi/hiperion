@@ -28,25 +28,10 @@ public class Direccion implements Serializable {
 
 	private String referencia;
 
-	//bi-directional many-to-one association to Canton
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="id_canton")
-	private Canton canton;
-
 	//bi-directional many-to-one association to Cliente
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="id_cliente")
 	private Cliente cliente;
-
-	//bi-directional many-to-one association to Parroquia
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="id_parroquia")
-	private Parroquia parroquia;
-
-	//bi-directional many-to-one association to Persona
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="id_persona")
-	private Persona persona;
 
 	//bi-directional many-to-one association to Provincia
 	@ManyToOne(fetch=FetchType.LAZY)
@@ -101,36 +86,12 @@ public class Direccion implements Serializable {
 		this.referencia = referencia;
 	}
 
-	public Canton getCanton() {
-		return this.canton;
-	}
-
-	public void setCanton(Canton canton) {
-		this.canton = canton;
-	}
-
 	public Cliente getCliente() {
 		return this.cliente;
 	}
 
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
-	}
-
-	public Parroquia getParroquia() {
-		return this.parroquia;
-	}
-
-	public void setParroquia(Parroquia parroquia) {
-		this.parroquia = parroquia;
-	}
-
-	public Persona getPersona() {
-		return this.persona;
-	}
-
-	public void setPersona(Persona persona) {
-		this.persona = persona;
 	}
 
 	public Provincia getProvincia() {
