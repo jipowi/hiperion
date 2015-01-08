@@ -10,7 +10,7 @@ import javax.ejb.Local;
 
 import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.emision.entities.Aseguradora;
-import ec.com.avila.hiperion.emision.entities.Persona;
+import ec.com.avila.hiperion.emision.entities.Cliente;
 
 /**
  * <b> Servicio de interface local para realizar las operaciones sobre la tabla Aseguradora</b>
@@ -33,7 +33,7 @@ public interface AseguradoraService {
 	 * @param contactos
 	 * @throws HiperionException
 	 */
-	public void guardarAseguradora(Aseguradora aseguradora, List<Persona> contactos) throws HiperionException;
+	public void guardarAseguradora(Aseguradora aseguradora, List<Cliente> contactos) throws HiperionException;
 
 	/**
 	 * 

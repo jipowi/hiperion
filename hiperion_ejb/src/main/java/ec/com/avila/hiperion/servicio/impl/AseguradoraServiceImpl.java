@@ -12,7 +12,7 @@ import javax.ejb.Stateless;
 import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.dao.AseguradoraDao;
 import ec.com.avila.hiperion.emision.entities.Aseguradora;
-import ec.com.avila.hiperion.emision.entities.Persona;
+import ec.com.avila.hiperion.emision.entities.Cliente;
 import ec.com.avila.hiperion.servicio.AseguradoraService;
 
 /**
@@ -28,7 +28,7 @@ public class AseguradoraServiceImpl implements AseguradoraService {
 	@EJB
 	private AseguradoraDao aseguradoraDao;
 
-	public void guardarAseguradora(Aseguradora aseguradora, List<Persona> contactos) throws HiperionException {
+	public void guardarAseguradora(Aseguradora aseguradora, List<Cliente> contactos) throws HiperionException {
 		aseguradoraDao.guardarAseguradora(aseguradora, contactos);
 	}
 

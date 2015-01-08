@@ -36,9 +36,9 @@ public interface ClienteService {
 
 	/**
 	 * 
-	 * <b> Permite obtener la lista de clientes que se encuentran en la base de datos</b>
+	 * <b> Permite consultar los clientes ingresados </b>
 	 * <p>
-	 * [Author: Dario Vinueza, Date: 21/12/2013]
+	 * [Author: Paul Jimenez, Date: 08/01/2015]
 	 * </p>
 	 * 
 	 * @return
@@ -48,13 +48,27 @@ public interface ClienteService {
 
 	/**
 	 * 
-	 * <b> Permite modificar los datos de un cliente </b>
+	 * <b> Permite consultar el cliente por medio de la cedula de identidad </b>
 	 * <p>
-	 * [Author: Dario Vinueza, Date: 21/12/2013]
+	 * [Author: Paul Jimenez, Date: 07/01/2015]
 	 * </p>
 	 * 
-	 * @param cliente
+	 * @param identificacion
+	 * @return
 	 * @throws HiperionException
 	 */
-	public void modificarCliente(Cliente cliente) throws HiperionException;
+	public Cliente consultarClienteByIdentificacion(String identificacion) throws HiperionException;
+
+	/**
+	 * 
+	 * <b> Permite consultar un cliente por medio de su apellido paterno </b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: 07/01/2015]
+	 * </p>
+	 * 
+	 * @param apellido
+	 * @return
+	 * @throws HiperionException
+	 */
+	public List<Cliente> consultarClienteByApellido(String apellido) throws HiperionException;
 }
