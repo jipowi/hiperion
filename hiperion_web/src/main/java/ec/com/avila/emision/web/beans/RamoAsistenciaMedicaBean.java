@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -15,9 +16,11 @@ import javax.faces.context.FacesContext;
 
 import org.primefaces.event.RowEditEvent;
 
+import ec.com.avila.hiperion.dto.GrupoAccPersonalesDTO;
 import ec.com.avila.hiperion.dto.ModalidadDependienteDTO;
 import ec.com.avila.hiperion.dto.ModalidadFamiliaDTO;
 import ec.com.avila.hiperion.dto.ModalidadTitularDTO;
+import ec.com.avila.hiperion.dto.PlanAsmDTO;
 
 /**
  * <b> Permite encapsular varios objetos en un unico objeto, para hacer uso de un solo objeto en lugar de varios mas simples </b>
@@ -75,9 +78,217 @@ public class RamoAsistenciaMedicaBean implements Serializable {
 	public Integer edadFamilia;
 	public String parentescoFamilia;
 
+	// Tabla Grupos
+	private String grupoAsm;
+	/**
+	 * @return the nomPlan
+	 */
+	public String getNomPlan() {
+		return nomPlan;
+	}
+
+	/**
+	 * @param nomPlan the nomPlan to set
+	 */
+	public void setNomPlan(String nomPlan) {
+		this.nomPlan = nomPlan;
+	}
+
+	/**
+	 * @return the valorPlan
+	 */
+	public Double getValorPlan() {
+		return valorPlan;
+	}
+
+	/**
+	 * @param valorPlan the valorPlan to set
+	 */
+	public void setValorPlan(Double valorPlan) {
+		this.valorPlan = valorPlan;
+	}
+
+	private Integer numGrupo;
+	private String nomGrupo;
+	private Integer numPersonas;
+	private String actividad;
+	private Double valorGrupoAsm;
+
+	// Tabla Planes
+	private String nomPlan;
+	private Double valorPlan;
+
 	private static final ArrayList<ModalidadDependienteDTO> titularDependienteList = new ArrayList<ModalidadDependienteDTO>();
 	private static final ArrayList<ModalidadFamiliaDTO> titularFamiliaList = new ArrayList<ModalidadFamiliaDTO>();
 	private static final ArrayList<ModalidadTitularDTO> titularList = new ArrayList<ModalidadTitularDTO>();
+	private static List<GrupoAccPersonalesDTO> grupos = new ArrayList<GrupoAccPersonalesDTO>();
+	private static List<PlanAsmDTO> planes = new ArrayList<PlanAsmDTO>();
+
+	/**
+	 * @return the nombre
+	 */
+
+	/**
+	 * @return the planes
+	 */
+	public List<PlanAsmDTO> getPlanes() {
+		return planes;
+	}
+
+	/**
+	 * @param planes
+	 *            the planes to set
+	 */
+	public static void setPlanes(List<PlanAsmDTO> planes) {
+		RamoAsistenciaMedicaBean.planes = planes;
+	}
+
+	/**
+	 * @return the grupos
+	 */
+	public List<GrupoAccPersonalesDTO> getGrupos() {
+		return grupos;
+	}
+
+	/**
+	 * @param grupos
+	 *            the grupos to set
+	 */
+	public static void setGrupos(List<GrupoAccPersonalesDTO> grupos) {
+		RamoAsistenciaMedicaBean.grupos = grupos;
+	}
+
+	/**
+	 * 
+	 * <b> Permite agregar un registro a la tabla grupo </b>
+	 * <p>
+	 * [Author: Franklin Pozo, Date: 07/01/2015]
+	 * </p>
+	 * 
+	 * @return
+	 */
+	public String addGrupo() {
+		GrupoAccPersonalesDTO grupo = new GrupoAccPersonalesDTO(this.numGrupo, this.nomGrupo, this.numPersonas, this.actividad, this.valorGrupoAsm);
+		grupos.add(grupo);
+
+		numGrupo = 0;
+		nomGrupo = "";
+		numPersonas = 0;
+		actividad = "";
+		valorGrupoAsm = 0.0;
+
+		return null;
+	}
+
+	/**
+	 * 
+	 * <b> Permite agregar un registro a la tabla planes </b>
+	 * <p>
+	 * [Author: Franklin Pozo, Date: 07/01/2015]
+	 * </p>
+	 * 
+	 * @return
+	 */
+	public String addPlanes() {
+		PlanAsmDTO plan = new PlanAsmDTO(this.nomPlan, this.valorPlan);
+		planes.add(plan);
+
+		nomPlan = "";
+		valorPlan = 0.0;
+
+		return null;
+
+	}
+
+	/**
+	 * @return the grupoAsm
+	 */
+	public String getGrupoAsm() {
+		return grupoAsm;
+	}
+
+	/**
+	 * @param grupoAsm
+	 *            the grupoAsm to set
+	 */
+	public void setGrupoAsm(String grupoAsm) {
+		this.grupoAsm = grupoAsm;
+	}
+
+	/**
+	 * @return the numGrupo
+	 */
+	public Integer getNumGrupo() {
+		return numGrupo;
+	}
+
+	/**
+	 * @param numGrupo
+	 *            the numGrupo to set
+	 */
+	public void setNumGrupo(Integer numGrupo) {
+		this.numGrupo = numGrupo;
+	}
+
+	/**
+	 * @return the nomGrupo
+	 */
+	public String getNomGrupo() {
+		return nomGrupo;
+	}
+
+	/**
+	 * @param nomGrupo
+	 *            the nomGrupo to set
+	 */
+	public void setNomGrupo(String nomGrupo) {
+		this.nomGrupo = nomGrupo;
+	}
+
+	/**
+	 * @return the numPersonas
+	 */
+	public Integer getNumPersonas() {
+		return numPersonas;
+	}
+
+	/**
+	 * @param numPersonas
+	 *            the numPersonas to set
+	 */
+	public void setNumPersonas(Integer numPersonas) {
+		this.numPersonas = numPersonas;
+	}
+
+	/**
+	 * @return the actividad
+	 */
+	public String getActividad() {
+		return actividad;
+	}
+
+	/**
+	 * @param actividad
+	 *            the actividad to set
+	 */
+	public void setActividad(String actividad) {
+		this.actividad = actividad;
+	}
+
+	/**
+	 * @return the valorGrupoAsm
+	 */
+	public Double getValorGrupoAsm() {
+		return valorGrupoAsm;
+	}
+
+	/**
+	 * @param valorGrupoAsm
+	 *            the valorGrupoAsm to set
+	 */
+	public void setValorGrupoAsm(Double valorGrupoAsm) {
+		this.valorGrupoAsm = valorGrupoAsm;
+	}
 
 	/**
 	 * @return the parentescoDependiente
@@ -563,6 +774,64 @@ public class RamoAsistenciaMedicaBean implements Serializable {
 		parentescoFamilia = "";
 
 		return null;
+	}
+
+	/**
+	 * 
+	 * <b> Permite editar un grupo </b>
+	 * <p>
+	 * [Author: Franklin Pozo, Date: 07/01/2015]
+	 * </p>
+	 * 
+	 * @param event
+	 */
+	public void onEdit(RowEditEvent event) {
+		FacesMessage msg = new FacesMessage("Item Edited", ((GrupoAccPersonalesDTO) event.getObject()).getNumGrupo().toString());
+		FacesContext.getCurrentInstance().addMessage(null, msg);
+	}
+
+	/**
+	 * 
+	 * <b> Permite editar planes. </b>
+	 * <p>
+	 * [Author: Avila Sistemas, Date: 08/01/2015]
+	 * </p>
+	 * 
+	 * @param event
+	 */
+	public void onEditPlan(RowEditEvent event) {
+		FacesMessage msg = new FacesMessage("Item Edited", ((PlanAsmDTO) event.getObject()).getNomPlan());
+		FacesContext.getCurrentInstance().addMessage(null, msg);
+	}
+
+	/**
+	 * 
+	 * <b> Permite remover un objeto asegurado de la tabla </b>
+	 * <p>
+	 * [Author: Franklin Pozo, Date: 07/01/2015]
+	 * </p>
+	 * 
+	 * @param event
+	 */
+	public void onCancel(RowEditEvent event) {
+		FacesMessage msg = new FacesMessage("Item Cancelled");
+		FacesContext.getCurrentInstance().addMessage(null, msg);
+		grupos.remove((GrupoAccPersonalesDTO) event.getObject());
+	}
+	
+	/**
+	 * 
+	 * <b>
+	 * Permite remover un plan de la tabla
+	 * </b>
+	 * <p>[Author: Franklin Pozo, Date: 08/01/2015]</p>
+	 *
+	 * @param event
+	 */
+	public void onCancelPlan(RowEditEvent event){
+		FacesMessage msg= new FacesMessage("Item Cancelled");
+		FacesContext.getCurrentInstance().addMessage(null, msg);
+		planes.remove((PlanAsmDTO) event.getObject());
 	}
 
 	/**
