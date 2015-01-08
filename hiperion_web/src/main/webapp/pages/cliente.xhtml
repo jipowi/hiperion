@@ -24,7 +24,7 @@
 								<p:outputLabel value="#{emision['cliente.nombre']}" styleClass="negrita" />
 								<p:inputText value="#{clienteBean.nombre}" />
 							</h:panelGrid>
-							<p:commandLink title="Buscar clientes" action="#{aseguradoraBacking.consultarAseguradoras()}">
+							<p:commandLink title="Buscar clientes" action="#{clienteBacking.buscarCliente}">
 								<h:graphicImage name="search.png" library="img/icon" />
 							</p:commandLink>
 						</h:panelGrid>
