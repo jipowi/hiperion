@@ -30,7 +30,7 @@ public class Ramo implements Serializable {
 	private List<RamoAseguradora> ramoAseguradoras;
 
 	//bi-directional many-to-one association to DetalleAnexo
-	@OneToMany(mappedBy="ramo")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "ramo")
 	private List<DetalleAnexo> detalleAnexos;
 
 	public Ramo() {
