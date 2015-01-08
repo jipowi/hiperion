@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.log4j.Logger;
 
 import ec.com.avila.emision.web.beans.CorrespondenciaBean;
-import ec.com.avila.hiperion.emision.entities.Persona;
+import ec.com.avila.hiperion.emision.entities.Cliente;
 import ec.com.avila.hiperion.html.UtilsHtml;
 import ec.com.avila.hiperion.mail.MailUtil;
 import ec.com.avila.hiperion.web.resources.Utils;
@@ -68,7 +68,7 @@ public class CorrespondenciaBacking implements Serializable {
 	}
 
 	public void enviarMailII() {
-		Persona persona = new Persona();
+		Cliente persona = new Cliente();
 		persona.setNombrePersona("FRANKLIN POZO");
 
 		String fechaActual = FechasUtil.getInstancia().dateForStringFull(new Date());

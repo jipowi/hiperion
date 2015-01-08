@@ -27,9 +27,9 @@ import ec.com.avila.hiperion.dto.AseguradoraDTO;
 import ec.com.avila.hiperion.dto.PersonaContactoAseguradoraDTO;
 import ec.com.avila.hiperion.emision.entities.Aseguradora;
 import ec.com.avila.hiperion.emision.entities.Catalogo;
+import ec.com.avila.hiperion.emision.entities.Cliente;
 import ec.com.avila.hiperion.emision.entities.Contacto;
 import ec.com.avila.hiperion.emision.entities.DetalleCatalogo;
-import ec.com.avila.hiperion.emision.entities.Persona;
 import ec.com.avila.hiperion.servicio.AseguradoraService;
 import ec.com.avila.hiperion.servicio.CatalogoService;
 import ec.com.avila.hiperion.servicio.DetalleCatalogoService;
@@ -122,10 +122,10 @@ public class AseguradoraBacking implements Serializable {
 		aseguradora.setRuc(aseguradoraBean.getRuc());
 		aseguradora.setTelfConvencionalAseg((aseguradoraBean.getTelefono()));
 
-		List<Persona> contactosAseguradora = new ArrayList<>();
+		List<Cliente> contactosAseguradora = new ArrayList<>();
 		for (PersonaContactoAseguradoraDTO contactoAseguradora : aseguradoraBean.getContactoList()) {
 
-			Persona persona = new Persona();
+			Cliente persona = new Cliente();
 
 			persona.setNombrePersona(contactoAseguradora.getNombre());
 			persona.setApellidoPaterno(contactoAseguradora.getApellidoPaterno());

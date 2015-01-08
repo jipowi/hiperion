@@ -24,11 +24,8 @@ import ec.com.avila.hiperion.dto.CantonDTO;
 import ec.com.avila.hiperion.dto.DireccionDTO;
 import ec.com.avila.hiperion.dto.ParroquiaDTO;
 import ec.com.avila.hiperion.dto.ProvinciaDTO;
-import ec.com.avila.hiperion.emision.entities.Parroquia;
 import ec.com.avila.hiperion.emision.entities.Provincia;
 import ec.com.avila.hiperion.emision.entities.TipoDireccion;
-import ec.com.avila.hiperion.servicio.CantonService;
-import ec.com.avila.hiperion.servicio.ParroquiaService;
 import ec.com.avila.hiperion.servicio.ProvinciaService;
 import ec.com.avila.hiperion.servicio.TipoDireccionService;
 
@@ -45,10 +42,7 @@ public class DireccionBacking implements Serializable {
 	private TipoDireccionService tipoDireccionService;
 	@EJB
 	private ProvinciaService provinciaService;
-	@EJB
-	private CantonService cantonService;
-	@EJB
-	private ParroquiaService parroquiaService;
+	
 
 	private List<ProvinciaDTO> provinciasDTO;
 	private List<CantonDTO> cantonesDTO;
@@ -85,31 +79,7 @@ public class DireccionBacking implements Serializable {
 	}
 
 	
-	/**
-	 * 
-	 * <b> Permite obtener las Parroquias del Ecuador, en base a los Cantones que sea seleccionado. </b>
-	 * <p>
-	 * [Author: Dario Vinueza, Date: 16/06/2014]
-	 * </p>
-	 * 
-	 */
-	public void obtenerParroquiasPorCanton() {
-		try {
-			this.parroquiasDTO = new ArrayList<ParroquiaDTO>();
-			if (direccionBean.getCantonDTO() != null) {
-				List<Parroquia> parroquias = parroquiaService.consultarParroquiasPorCanton(direccionBean.getCantonDTO().getCodCanton());
-
-				if (parroquias != null && parroquias.size() > 0) {
-					for (Parroquia parroquia : parroquias) {
-						ParroquiaDTO parroquiaDto = new ParroquiaDTO(parroquia.getIdParroquia(), parroquia.getNombreParroquia());
-						parroquiasDTO.add(parroquiaDto);
-					}
-				}
-			}
-		} catch (HiperionException ex) {
-			ex.printStackTrace();
-		}
-	}
+	
 
 	/**
 	 * 

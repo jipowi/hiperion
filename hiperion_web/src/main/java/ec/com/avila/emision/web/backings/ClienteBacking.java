@@ -12,7 +12,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.model.SelectItem;
 
-import org.primefaces.context.RequestContext;
+import org.apache.log4j.Logger;
 
 import ec.com.avila.emision.web.beans.ClienteBean;
 import ec.com.avila.emision.web.beans.ContactoBean;
@@ -23,18 +23,14 @@ import ec.com.avila.hiperion.emision.entities.Catalogo;
 import ec.com.avila.hiperion.emision.entities.Cliente;
 import ec.com.avila.hiperion.emision.entities.DetalleCatalogo;
 import ec.com.avila.hiperion.emision.entities.Direccion;
-import ec.com.avila.hiperion.emision.entities.Persona;
 import ec.com.avila.hiperion.emision.entities.Provincia;
 import ec.com.avila.hiperion.emision.entities.TipoDireccion;
 import ec.com.avila.hiperion.emision.entities.Usuario;
 import ec.com.avila.hiperion.enumeration.EstadoEnum;
-import ec.com.avila.hiperion.servicio.CantonService;
 import ec.com.avila.hiperion.servicio.CatalogoService;
 import ec.com.avila.hiperion.servicio.ClienteService;
 import ec.com.avila.hiperion.servicio.DetalleCatalogoService;
 import ec.com.avila.hiperion.servicio.DireccionService;
-import ec.com.avila.hiperion.servicio.ParroquiaService;
-import ec.com.avila.hiperion.servicio.PersonaService;
 import ec.com.avila.hiperion.servicio.ProvinciaService;
 import ec.com.avila.hiperion.servicio.TipoDireccionService;
 import ec.com.avila.hiperion.web.beans.UsuarioBean;
@@ -59,8 +55,6 @@ public class ClienteBacking implements Serializable {
 	private UsuarioBean usuarioBean;
 
 	@EJB
-	private PersonaService personaService;
-	@EJB
 	private ClienteService clienteService;
 	@EJB
 	private CatalogoService catalogoService;
@@ -70,10 +64,7 @@ public class ClienteBacking implements Serializable {
 	private TipoDireccionService tipoDireccionService;
 	@EJB
 	private ProvinciaService provinciaService;
-	@EJB
-	private CantonService cantonService;
-	@EJB
-	private ParroquiaService parroquiaService;
+
 	@EJB
 	private DireccionService direccionService;
 
@@ -81,7 +72,8 @@ public class ClienteBacking implements Serializable {
 	private List<SelectItem> tipoIdentificacionItems;
 
 	private List<Cliente> clientes;
-	private List<Cliente> clientesFiltrados;
+	private List<Cliente> clientesObtenidos;
+	private Cliente clienteObtenido;
 
 	private boolean activarPanelPersonaNatural;
 	private boolean activarPanelPersonaJuridica;
@@ -89,12 +81,11 @@ public class ClienteBacking implements Serializable {
 	private boolean activarPanelDireccionDomicilio;
 	private boolean activarPanelDireccionOficina;
 
+	Logger log = Logger.getLogger(ClienteBacking.class);
+
 	@PostConstruct
 	public void inicializar() throws HiperionException {
 		clienteBean.setActivarIdentificacion(true);
-
-		// Obtengo todos los clientes que estan registrados.
-		setClientes(clienteService.consultarClientes());
 	}
 
 	/**
@@ -220,10 +211,30 @@ public class ClienteBacking implements Serializable {
 		}
 	}
 
-	public void guardarContactos() {
-	}
+	/**
+	 * 
+	 * <b> Permite buscar cliente por medio de ingreso de parametros en la pantalla </b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: 07/01/2015]
+	 * </p>
+	 * 
+	 * @throws HiperionException
+	 */
+	public void buscarCliente() throws HiperionException {
+		try {
+			clienteObtenido = new Cliente();
+			clientesObtenidos = new ArrayList<>();
 
-	public void refreshComboTipoContacto() {
+			if (clienteBean.getIdentificacion() != null) {
+				clienteObtenido = clienteService.consultarClienteByIdentificacion(clienteBean.getIdentificacion());
+			} else {
+				clientesObtenidos = clienteService.consultarClienteByApellido(clienteBean.getNombre());
+			}
+
+		} catch (HiperionException e) {
+			log.error("Error al momento de buscar clientes", e);
+			throw new HiperionException(e);
+		}
 	}
 
 	/**
@@ -239,26 +250,26 @@ public class ClienteBacking implements Serializable {
 		try {
 			// Direccion del Cliente
 			if (direccionBean.getDireccionesRegistradas() != null && direccionBean.getDireccionesRegistradas().size() > 0) {
-				Persona persona = new Persona();
 				Cliente cliente = new Cliente();
 				cliente.setCodigoCliente(clienteBean.getCodigoCliente());
-				persona.setTipoIdentificacion(clienteBean.getTipoIdentificacion());
-				persona.setIdentificacionPersona(clienteBean.getIdentificacion());
+
+				cliente.setTipoIdentificacion(clienteBean.getTipoIdentificacion());
+				cliente.setIdentificacionPersona(clienteBean.getIdentificacion());
 				// Tipo de Persona
 				int tipoPersona = clienteBean.getTipoPersona();
 				if (tipoPersona == 1) {
 					// Persona Natural
-					persona.setIdentificacionPersona(clienteBean.getIdentificacion());
-					persona.setNombrePersona(clienteBean.getNombre());
-					persona.setApellidoPaterno(clienteBean.getApePaterno());
-					persona.setApellidoMaterno(clienteBean.getApeMaterno());
-					persona.setActividadProfesion(clienteBean.getActividadProfecion());
-					persona.setFechaNacimiento(clienteBean.getFechaNacimiento());
+					cliente.setIdentificacionPersona(clienteBean.getIdentificacion());
+					cliente.setNombrePersona(clienteBean.getNombre());
+					cliente.setApellidoPaterno(clienteBean.getApePaterno());
+					cliente.setApellidoMaterno(clienteBean.getApeMaterno());
+					cliente.setActividadProfesion(clienteBean.getActividadProfecion());
+					cliente.setFechaNacimiento(clienteBean.getFechaNacimiento());
 				} else {
 					// Persona Juridica
-					persona.setRazonSocial(clienteBean.getRazonSocial());
+					cliente.setRazonSocial(clienteBean.getRazonSocial());
 				}
-
+				cliente.setTipoPersona(clienteBean.getTipoPersona().toString());
 				// Direcciones del Cliente
 				List<Direccion> direcciones = new ArrayList<Direccion>();
 				for (DireccionDTO direccionDto : direccionBean.getDireccionesRegistradas()) {
@@ -281,9 +292,6 @@ public class ClienteBacking implements Serializable {
 					direcciones.add(direccion);
 				}
 
-				if (tipoPersona == 1)
-					cliente.setPersona(persona);
-
 				cliente.setDireccions(direcciones);
 				// Guardamos al Cliente
 				Usuario usuario = usuarioBean.getSessionUser();
@@ -291,8 +299,7 @@ public class ClienteBacking implements Serializable {
 				cliente.setFechaCreacion(new Date());
 				cliente.setEstado(EstadoEnum.A);
 				clienteService.guardarCliente(cliente);
-				RequestContext.getCurrentInstance().execute("crearClienteDlg.hide();");
-				setClientes(clienteService.consultarClientes());
+
 			} else {
 
 			}
@@ -409,18 +416,33 @@ public class ClienteBacking implements Serializable {
 	}
 
 	/**
-	 * @return the clientesFiltrados
+	 * @return the clientesObtenidos
 	 */
-	public List<Cliente> getClientesFiltrados() {
-		return clientesFiltrados;
+	public List<Cliente> getClientesObtenidos() {
+		return clientesObtenidos;
 	}
 
 	/**
-	 * @param clientesFiltrados
-	 *            the clientesFiltrados to set
+	 * @param clientesObtenidos
+	 *            the clientesObtenidos to set
 	 */
-	public void setClientesFiltrados(List<Cliente> clientesFiltrados) {
-		this.clientesFiltrados = clientesFiltrados;
+	public void setClientesObtenidos(List<Cliente> clientesObtenidos) {
+		this.clientesObtenidos = clientesObtenidos;
+	}
+
+	/**
+	 * @return the clienteObtenido
+	 */
+	public Cliente getClienteObtenido() {
+		return clienteObtenido;
+	}
+
+	/**
+	 * @param clienteObtenido
+	 *            the clienteObtenido to set
+	 */
+	public void setClienteObtenido(Cliente clienteObtenido) {
+		this.clienteObtenido = clienteObtenido;
 	}
 
 	/**
