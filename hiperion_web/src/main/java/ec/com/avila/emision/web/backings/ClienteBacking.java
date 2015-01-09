@@ -35,6 +35,8 @@ import ec.com.avila.hiperion.servicio.ProvinciaService;
 import ec.com.avila.hiperion.servicio.TipoDireccionService;
 import ec.com.avila.hiperion.web.beans.UsuarioBean;
 import ec.com.avila.hiperion.web.util.EmisionUtil;
+import ec.com.avila.hiperion.web.util.HiperionMensajes;
+import ec.com.avila.hiperion.web.util.MessagesController;
 
 @ManagedBean
 @ViewScoped
@@ -223,11 +225,19 @@ public class ClienteBacking implements Serializable {
 		try {
 			clientesObtenidos = new ArrayList<>();
 
-			if (clienteBean.getIdentificacion() != null) {
+			if (!clienteBean.getIdentificacion().equals("")) {
 				Cliente clienteObtenido = clienteService.consultarClienteByIdentificacion(clienteBean.getIdentificacion());
-				clientesObtenidos.add(clienteObtenido);
+				if (clienteObtenido == null) {
+					MessagesController.addWarn(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.warn.buscar"));
+				} else {
+					clientesObtenidos.add(clienteObtenido);
+				}
 			} else {
-				clientesObtenidos = clienteService.consultarClienteByApellido(clienteBean.getNombre());
+				if (clienteBean.getNombre().equals("")) {
+					MessagesController.addWarn(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.warn.buscar"));
+				} else {
+					clientesObtenidos = clienteService.consultarClienteByApellido(clienteBean.getNombre());
+				}
 			}
 
 		} catch (HiperionException e) {
