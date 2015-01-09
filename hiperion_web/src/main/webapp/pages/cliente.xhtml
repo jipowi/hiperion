@@ -9,42 +9,64 @@
 				<p:messages></p:messages>
 			</p:outputPanel>
 			<p:panel>
-				<!-- PANEL DE BUSQUEDAA -->
-				<h:panelGrid columns="1">
-					<p:panel>
-						<f:facet name="header">
-							<h:outputText value="#{emision['cliente.buscar']}" />
-						</f:facet>
-						<h:panelGrid columns="2">
+				<h:panelGrid columns="2">
+					<h:panelGrid columns="1">
+						<!-- PANEL DE BUSQUEDA -->
+						<p:panel>
+							<f:facet name="header">
+								<h:outputText value="#{emision['cliente.buscar']}" />
+							</f:facet>
 							<h:panelGrid columns="2">
+								<h:panelGrid columns="2">
+									<p:outputLabel value="#{emision['cliente.identificacion']}" styleClass="negrita" />
+									<p:inputText value="#{clienteBean.identificacion}" />
 
-								<p:outputLabel value="#{emision['cliente.identificacion']}" styleClass="negrita" />
-								<p:inputText value="#{clienteBean.identificacion}" />
-
-								<p:outputLabel value="#{emision['cliente.nombre']}" styleClass="negrita" />
-								<p:inputText value="#{clienteBean.nombre}" />
+									<p:outputLabel value="#{emision['cliente.nombre']}" styleClass="negrita" />
+									<p:inputText value="#{clienteBean.nombre}" />
+								</h:panelGrid>
+								<p:commandLink title="Buscar clientes" action="#{clienteBacking.buscarCliente}" update="tablaClientes">
+									<h:graphicImage name="search.png" library="img/icon" />
+								</p:commandLink>
 							</h:panelGrid>
-							<p:commandLink title="Buscar clientes" action="#{clienteBacking.buscarCliente}">
-								<h:graphicImage name="search.png" library="img/icon" />
-							</p:commandLink>
+						</p:panel>
+					</h:panelGrid>
+
+					<h:panelGrid columns="1">
+						<h:panelGrid columns="1">
+							<h:graphicImage name="client.jpg" library="img" />
 						</h:panelGrid>
-					</p:panel>
+					</h:panelGrid>
 				</h:panelGrid>
-				<div align="right">
-					<p:commandButton id="crearClienteBtn" value="#{administrador['cliente.boton.agregar']}" actionListener="#{clienteBacking.obtenerCodigoCliente}"
+				<div align="center">
+					<p:commandButton id="crearClienteBtn" value="Crear nuevo cliente" actionListener="#{clienteBacking.obtenerCodigoCliente}"
 						update=":clienteFormId:agregarClienteDlgId" oncomplete="crearClienteDlg.show();" title="Nuevo" icon="icon-client">
 						<p:ajax update=":clienteFormId, :direccionesFormId, :direccionFormId" />
 					</p:commandButton>
 				</div>
+				<p:spacer height="30px;" />
 
 				<div align="center">
-					<h:panelGrid columns="1">
-						<h:graphicImage name="client.jpg" library="img" />
+					<h:panelGrid columns="1" id="tablaClientes">
+						<p:dataTable value="#{clienteBacking.clientesObtenidos}" var="cliente" widgetVar="50" editable="true">
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="#{emision['cliente.tabla.identificacion']}" />
+								</f:facet>
+								<h:outputText value="#{cliente.identificacionPersona}" />
+							</p:column>
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="#{emision['cliente.tabla.nombre']}" />
+								</f:facet>
+								<h:outputText value="#{cliente.nombrePersona} #{cliente.apellidoPaterno} #{cliente.apellidoMaterno}" />
+							</p:column>
+						</p:dataTable>
 					</h:panelGrid>
 				</div>
 			</p:panel>
 
 		</h:form>
+
 		<h:form id="clienteFormId">
 			<!-- DIALOG - Datos del Cliente -->
 			<p:dialog id="agregarClienteDlgId" widgetVar="crearClienteDlg" showEffect="fade" hideEffect="explode" resizable="false" modal="true"
