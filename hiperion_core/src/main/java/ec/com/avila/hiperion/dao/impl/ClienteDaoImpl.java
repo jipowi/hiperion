@@ -43,8 +43,14 @@ public class ClienteDaoImpl extends GenericDAOImpl<Cliente, Long> implements Cli
 	public Cliente consultarClienteByIdentificacion(String identificacion) throws HiperionException {
 		Query query = em.createNamedQuery("Cliente.findByIdentificacion");
 		query.setParameter("identificacion", identificacion);
+		
 		List<Cliente> clientes = query.getResultList();
-		return clientes.get(0);
+		
+		if (!clientes.isEmpty()) {
+			return clientes.get(0);
+		} else {
+			return null;
+		}
 	}
 
 	/*
@@ -56,11 +62,9 @@ public class ClienteDaoImpl extends GenericDAOImpl<Cliente, Long> implements Cli
 	@Override
 	public List<Cliente> consultarClienteByApellido(String apellido) throws HiperionException {
 		Query query = em.createNamedQuery("Cliente.findByNombre");
-		query.setParameter("nombre", apellido);
+		query.setParameter("nombre", "%" + apellido + "%");
 		List<Cliente> clientes = query.getResultList();
 		return clientes;
 	}
 
-	
-	
 }
