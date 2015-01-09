@@ -36,7 +36,6 @@ import ec.com.avila.hiperion.servicio.DetalleCatalogoService;
 import ec.com.avila.hiperion.web.servlet.ReportServlet;
 import ec.com.avila.hiperion.web.util.HiperionMensajes;
 import ec.com.avila.hiperion.web.util.MessagesController;
-import ec.com.avila.hiperion.web.util.ReporteUtil;
 
 /**
  * <b>permite manejar las operaciones necesarias para manejar la logica de las aseguradoras</b>
@@ -96,11 +95,7 @@ public class AseguradoraBacking implements Serializable {
 		else
 			parametros.put("TIPO_REPORTE", "excel");
 
-		if ("pdfembedded".equals(tipoReporte)) {
-			setRutaReporte(ReporteUtil.getInstancias().generarReporte("catalogos", parametros, request, dataSource.getConnection()));
-		} else {
-			request.getSession().setAttribute(ReportServlet.OBJETO_REPORTE, parametros);
-		}
+		request.getSession().setAttribute(ReportServlet.OBJETO_REPORTE, parametros);
 	}
 
 	/**

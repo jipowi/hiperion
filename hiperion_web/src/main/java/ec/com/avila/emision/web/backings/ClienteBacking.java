@@ -73,7 +73,6 @@ public class ClienteBacking implements Serializable {
 
 	private List<Cliente> clientes;
 	private List<Cliente> clientesObtenidos;
-	private Cliente clienteObtenido;
 
 	private boolean activarPanelPersonaNatural;
 	private boolean activarPanelPersonaJuridica;
@@ -222,11 +221,11 @@ public class ClienteBacking implements Serializable {
 	 */
 	public void buscarCliente() throws HiperionException {
 		try {
-			clienteObtenido = new Cliente();
 			clientesObtenidos = new ArrayList<>();
 
 			if (clienteBean.getIdentificacion() != null) {
-				clienteObtenido = clienteService.consultarClienteByIdentificacion(clienteBean.getIdentificacion());
+				Cliente clienteObtenido = clienteService.consultarClienteByIdentificacion(clienteBean.getIdentificacion());
+				clientesObtenidos.add(clienteObtenido);
 			} else {
 				clientesObtenidos = clienteService.consultarClienteByApellido(clienteBean.getNombre());
 			}
@@ -239,7 +238,7 @@ public class ClienteBacking implements Serializable {
 
 	/**
 	 * 
-	 * <b> Permite Guradar a un Nuevo Cliente. </b>
+	 * <b> Permite Guardar a un Nuevo Cliente. </b>
 	 * <p>
 	 * [Author: Dario Vinueza, Date: Jan 21, 2014]
 	 * </p>
@@ -428,21 +427,6 @@ public class ClienteBacking implements Serializable {
 	 */
 	public void setClientesObtenidos(List<Cliente> clientesObtenidos) {
 		this.clientesObtenidos = clientesObtenidos;
-	}
-
-	/**
-	 * @return the clienteObtenido
-	 */
-	public Cliente getClienteObtenido() {
-		return clienteObtenido;
-	}
-
-	/**
-	 * @param clienteObtenido
-	 *            the clienteObtenido to set
-	 */
-	public void setClienteObtenido(Cliente clienteObtenido) {
-		this.clienteObtenido = clienteObtenido;
 	}
 
 	/**
