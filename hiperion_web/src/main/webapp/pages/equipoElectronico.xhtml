@@ -33,14 +33,11 @@
 													<h:outputLabel value="#{emision['emision.tasas']}" />
 													<h:graphicImage name="tasa.jpg" library="img" />
 
+													<h:outputLabel style="color : #F4751B;" value="#{emision['equipoElectronico.seccionI']}" styleClass="negrita" />
+													<p:spacer height="30px;" />
+
 													<h:outputLabel value="#{emision['equipoElectronico.tasa.fijos']}" styleClass="negrita" />
 													<p:inputText value="#{ramoEquipoElectronicoBean.tasaFijos}" />
-
-													<h:outputLabel value="#{emision['equipoElectronico.tasa.datos']}" styleClass="negrita" />
-													<p:inputText value="#{ramoEquipoElectronicoBean.tasaDatos}" />
-
-													<h:outputLabel value="#{emision['equipoElectronico.tasa.operacion']}" styleClass="negrita" />
-													<p:inputText value="#{ramoEquipoElectronicoBean.tasaOperacion}" />
 
 													<h:outputLabel value="#{emision['equipoElectronico.tasa.portatiles']}" styleClass="negrita" />
 													<p:inputText value="#{ramoEquipoElectronicoBean.tasaPortatiles}" />
@@ -48,11 +45,24 @@
 													<h:outputLabel value="#{emision['equipoElectronico.tasa.celulares']}" styleClass="negrita" />
 													<p:inputText value="#{ramoEquipoElectronicoBean.tasaCelulares}" />
 
+													<h:outputLabel value="#{emision['equipoElectronico.tasa.otros']}" styleClass="negrita" />
+													<p:inputText value="#{ramoEquipoElectronicoBean.tasaOtros}" />
+
+													<h:outputLabel style="color : #F4751B;" value="#{emision['equipoElectronico.seccionII']}" styleClass="negrita" />
+													<p:spacer height="30px;" />
+
+													<h:outputLabel value="#{emision['equipoElectronico.tasa.datos']}" styleClass="negrita" />
+													<p:inputText value="#{ramoEquipoElectronicoBean.tasaDatos}" />
+
+													<h:outputLabel style="color : #F4751B;" value="#{emision['equipoElectronico.seccionIII']}" styleClass="negrita" />
+													<p:spacer height="30px;" />
+
+													<h:outputLabel value="#{emision['equipoElectronico.tasa.operacion']}" styleClass="negrita" />
+													<p:inputText value="#{ramoEquipoElectronicoBean.tasaOperacion}" />
+
 													<h:outputLabel value="#{emision['equipoElectronico.tasa.hurto']}" styleClass="negrita" />
 													<p:inputText value="#{ramoEquipoElectronicoBean.tasaHurto}" />
 
-													<h:outputLabel value="#{emision['equipoElectronico.tasa.otros']}" styleClass="negrita" />
-													<p:inputText value="#{ramoEquipoElectronicoBean.tasaOtros}" />
 												</h:panelGrid>
 
 												<h:panelGrid columns="2">
