@@ -5,10 +5,8 @@
 	<ui:define name="content">
 		<h:outputStylesheet name="cliente.css" library="css" />
 		<h:form id="formPricipal">
-			<p:outputPanel id="messagesAseguradora">
-				<p:messages></p:messages>
-			</p:outputPanel>
 			<p:panel>
+				<p:messages id="messagesCliente" showDetail="true" autoUpdate="true" closable="true" />
 				<h:panelGrid columns="2">
 					<h:panelGrid columns="1">
 						<!-- PANEL DE BUSQUEDA -->
@@ -165,7 +163,7 @@
 				<f:facet name="footer">
 					<div id="crearClienteDivFooterId">
 						<p:commandButton id="guardarClienteBtnId" value="#{utilitario['hiperion.btn.guardar']}" actionListener="#{clienteBacking.guardarCliente}"
-							update=":clienteFormId:clienteTabViewId" icon="icon-save" />
+							oncomplete="crearClienteDlg.hide();" update=":clienteFormId:clienteTabViewId" icon="icon-save" />
 
 					</div>
 				</f:facet>
