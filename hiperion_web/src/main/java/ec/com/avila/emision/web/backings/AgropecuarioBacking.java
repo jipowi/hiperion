@@ -92,8 +92,6 @@ public class AgropecuarioBacking implements Serializable {
 
 	RamoAgropecuario agropecuario = new RamoAgropecuario();
 
-	
-
 	@PostConstruct
 	public void inicializar() {
 		try {

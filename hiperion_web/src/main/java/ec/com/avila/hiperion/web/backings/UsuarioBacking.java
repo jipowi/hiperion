@@ -2,8 +2,10 @@ package ec.com.avila.hiperion.web.backings;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -11,6 +13,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.faces.model.SelectItem;
 
 import org.apache.log4j.Logger;
 import org.primefaces.context.RequestContext;
@@ -20,13 +23,20 @@ import org.primefaces.model.menu.DefaultSubMenu;
 import org.primefaces.model.menu.MenuModel;
 
 import ec.com.avila.hiperion.comun.HiperionException;
+import ec.com.avila.hiperion.dto.MenuDTO;
+import ec.com.avila.hiperion.emision.entities.Catalogo;
+import ec.com.avila.hiperion.emision.entities.DetalleCatalogo;
 import ec.com.avila.hiperion.emision.entities.Menu;
 import ec.com.avila.hiperion.emision.entities.Rol;
 import ec.com.avila.hiperion.emision.entities.RolMenu;
 import ec.com.avila.hiperion.emision.entities.Usuario;
+import ec.com.avila.hiperion.enumeration.EstadoEnum;
+import ec.com.avila.hiperion.servicio.CatalogoService;
+import ec.com.avila.hiperion.servicio.DetalleCatalogoService;
 import ec.com.avila.hiperion.servicio.UsuarioService;
 import ec.com.avila.hiperion.web.beans.UsuarioBean;
 import ec.com.avila.hiperion.web.util.HiperionMensajes;
+import ec.com.avila.hiperion.web.util.MessagesController;
 
 @ManagedBean
 @SessionScoped
@@ -39,11 +49,26 @@ public class UsuarioBacking implements Serializable {
 
 	@EJB
 	private UsuarioService usuarioServicio;
+	
+	@EJB
+	private CatalogoService catalogoService;
+
+	@EJB
+	private DetalleCatalogoService detalleCatalogoService;
+	
+	private List<SelectItem> rolesItems;
 
 	private MenuModel menumodel = new DefaultMenuModel();
 	List<Menu> menuList = new ArrayList<>();
+	List<Menu> menuSelectedList = new ArrayList<>();
+	List<MenuDTO> menuDTOList = new ArrayList<MenuDTO>();
 
 	Logger log = Logger.getLogger(UsuarioBacking.class);
+
+	@PostConstruct
+	public void inicializar() throws HiperionException {
+		obtenerMenus();
+	}
 
 	public UsuarioBean getUsuarioBean() {
 		return usuarioBean;
@@ -135,6 +160,120 @@ public class UsuarioBacking implements Serializable {
 	}
 
 	/**
+	 * 
+	 * <b> Permite cargar la lista de menus para seleccionar. </b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: 11/01/2015]
+	 * </p>
+	 * 
+	 * @throws HiperionException
+	 */
+	public void obtenerMenus() throws HiperionException {
+		menuDTOList = new ArrayList<>();
+
+		try {
+			List<Menu> menus = usuarioServicio.consultaMenus();
+
+			for (Menu menu : menus) {
+				
+				MenuDTO menuDTO = new MenuDTO();
+				
+				menuDTO.setIdMenu(menu.getIdMenu());
+				menuDTO.setNombreMenu(menu.getNombreMenu());
+				menuDTO.setUrl(menu.getUrl());
+				if (menu.getIdPadre() != null) {
+					menuDTO.setIdPadre(menu.getIdPadre());
+				}
+				menuDTO.setEstadoMenu(menu.getEstadoMenu());
+				menuDTOList.add(menuDTO);
+			}
+
+		} catch (HiperionException e) {
+			log.error("Error al momento de hacer login", e);
+			throw new HiperionException(e);
+		}
+	}
+
+	/**
+	 * 
+	 * <b> Permite agregar los menu a usuario que se esta registrando. </b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: 11/01/2015]
+	 * </p>
+	 * 
+	 */
+	public void agregarMenus() {
+		menuSelectedList = new ArrayList<>();
+		for (MenuDTO menuDTO : menuDTOList) {
+			if (menuDTO.getSelected()) {
+				Menu menu = new Menu();
+				
+				menu.setIdMenu(menuDTO.getIdMenu());
+				menu.setNombreMenu(menuDTO.getNombreMenu());
+				menu.setIdPadre(menuDTO.getIdPadre());
+				menu.setUrl(menuDTO.getUrl());
+				menu.setEstadoMenu(menuDTO.getEstadoMenu());
+				
+				menuSelectedList.add(menu);
+			}
+		}
+	}
+
+	/**
+	 * 
+	 * <b> Permite guardar usuarios en la base de datos </b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: 10/01/2015]
+	 * </p>
+	 * 
+	 * @throws HiperionException
+	 * 
+	 */
+	public void guardarUsuario() throws HiperionException {
+		// Usuario
+		Usuario usuario = new Usuario();
+		usuario.setUsuario(usuarioBean.getNickname());
+		usuario.setNombreUsuario(usuarioBean.getNombreApellido());
+		usuario.setIdentificacionUsuario(usuarioBean.getIdentificacion());
+		usuario.setClave(usuarioBean.getClave());
+		usuario.setEmailUsuario(usuarioBean.getCorreo());
+		usuario.setFechaCreacion(new Date());
+		usuario.setEstado(EstadoEnum.A);
+		
+		Usuario usuarioCreacion = usuarioBean.getSessionUser();
+		usuario.setIdUsuarioCreacion(usuarioCreacion.getIdUsuario());
+
+		// Rol de usuario
+		Integer idRol = Integer.parseInt(usuarioBean.getRol());
+		DetalleCatalogo detalleCatalogo = detalleCatalogoService.consultarDetalleByCatalogoAndDetalle(HiperionMensajes.getInstancia()
+				.getInteger("ec.gob.avila.hiperion.recursos.catalogoRoles"), idRol);
+		Rol rol = new Rol();
+
+		rol.setDescripcionRol(detalleCatalogo.getDescDetCatalogo());
+		rol.setEstadoRol(EstadoEnum.A);
+		rol.setNombreRol(detalleCatalogo.getDescDetCatalogo());
+		try {
+			usuarioServicio.guardarUsuario(usuario, rol, menuSelectedList);
+			
+			MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.usuario"));
+			
+			menuSelectedList = new ArrayList<>();
+			usuarioBean.setNickname("");
+			usuarioBean.setNombreApellido("");
+			usuarioBean.setIdentificacion("");
+			usuarioBean.setClave("");
+			usuarioBean.setCorreo("");
+			usuarioBean.setNickname("");
+			usuarioBean.setRol(null);
+
+		} catch (HiperionException e) {
+			log.error("Error al momento de guardar el usuario", e);
+			MessagesController.addError(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.error.save"));
+			throw new HiperionException(e);
+		}
+	}
+
+	/**
 	 * @return the menumodel
 	 */
 	public MenuModel getMenumodel() {
@@ -162,6 +301,47 @@ public class UsuarioBacking implements Serializable {
 	 */
 	public void setMenuList(List<Menu> menuList) {
 		this.menuList = menuList;
+	}
+
+	/**
+	 * @return the rolesItems
+	 * @throws HiperionException
+	 */
+	public List<SelectItem> getRolesItems() throws HiperionException {
+		this.rolesItems = new ArrayList<SelectItem>();
+		Catalogo catalogo = catalogoService.consultarCatalogoById(HiperionMensajes.getInstancia().getLong(
+				"ec.gob.avila.hiperion.recursos.catalogoRoles"));
+		List<DetalleCatalogo> roles = catalogo.getDetalleCatalogos();
+
+		for (DetalleCatalogo detalle : roles) {
+			SelectItem selectItem = new SelectItem(detalle.getCodDetalleCatalogo(), detalle.getDescDetCatalogo());
+			rolesItems.add(selectItem);
+		}
+
+		return rolesItems;
+	}
+
+	/**
+	 * @param rolesItems
+	 *            the rolesItems to set
+	 */
+	public void setRolesItems(List<SelectItem> rolesItems) {
+		this.rolesItems = rolesItems;
+	}
+
+	/**
+	 * @return the menuDTOList
+	 */
+	public List<MenuDTO> getMenuDTOList() {
+		return menuDTOList;
+	}
+
+	/**
+	 * @param menuDTOList
+	 *            the menuDTOList to set
+	 */
+	public void setMenuDTOList(List<MenuDTO> menuDTOList) {
+		this.menuDTOList = menuDTOList;
 	}
 
 }
