@@ -8,7 +8,7 @@
 		</div>
 		<div id="ramoHeader" class="template_top">
 			<p:accordionPanel dynamic="true" cache="true" activeIndex="null">
-				<p:tab title="Cabecera Poliza">
+				<p:tab title="#{emision['emision.titulo.caberaPoliza']}">
 					<h:form>
 						<p:tabView id="polizaTabId" dynamic="true" cache="true">
 							<!-- DATOS - POLIZA -->
@@ -17,10 +17,7 @@
 									<p:panel style="width:500px;">
 										<h:panelGrid columns="2" cellspacing="5">
 											<p:outputLabel value="#{emision['poliza.atributo.ejecutivo']}" styleClass="negrita" />
-											<p:selectOneMenu id="ejecutivoId" value="#{polizaBean.ejecutivo}" effect="drop" style="width:385px">
-												<f:selectItem itemLabel="-- Seleccionar --" noSelectionOption="true" />
-												<f:selectItems value="#{polizaBacking.usuariosItems}" />
-											</p:selectOneMenu>
+											<p:outputLabel value="#{polizaBacking.ejecutivo.nombreUsuario}"/>
 										</h:panelGrid>
 										<h:panelGrid columns="3" cellspacing="5">
 											<p:outputLabel value="#{emision['poliza.atributo.numeroPoliza']}" styleClass="negrita" />
@@ -36,6 +33,11 @@
 											<p:calendar value="#{polizaBean.vigenciaDesde}" pattern="dd/MM/yyyy HH:mm" locale="es" navigator="true" />
 											<p:calendar value="#{polizaBean.vigenciaHasta}" pattern="dd/MM/yyyy HH:mm" locale="es" navigator="true" />
 											<p:inputText value="#{polizaBean.diasCobertura}" />
+											
+											<p:outputLabel value="#{emision['poliza.atribuoto.factura']}" styleClass="negtita"/>
+											<p:inputText value="#{polizaBean.factura}"/>
+											
+											<p:spacer height="30px;" />
 
 											<p:outputLabel value="#{emision['poliza.atributo.suma']}" styleClass="negrita" />
 											<p:outputLabel value="#{emision['poliza.atributo.prima']}" styleClass="negrita" />
@@ -48,10 +50,7 @@
 											<p:outputLabel value="#{emision['poliza.atributo.derechosEmision']}" styleClass="negrita" />
 											<p:outputLabel />
 											<p:inputText value="#{polizaBean.seguroCampesino}" />
-											<p:selectOneMenu id="derechoEmisionId" value="#{polizaBean.derechoEmision}" required="true" effect="drop" style="width:140px">
-												<f:selectItem itemLabel="-- Seleccionar --" noSelectionOption="true" />
-												<f:selectItems value="#{polizaBacking.derechosEmisionItems}" />
-											</p:selectOneMenu>
+											<p:inputText value="#{polizaBean.derechoEmision}"/>
 											<p:outputLabel />
 										</h:panelGrid>
 									</p:panel>
