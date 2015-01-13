@@ -232,7 +232,7 @@
 													<p:outputLabel value="#{emision['ap.grupo.miembroGrupo.parentesco']}" styleClass="negrita" />
 													<p:selectOneMenu value="#{ramoAccidentesPersonalesBean.parentezco}" effect="drop">
 														<f:selectItem itemLabel="Seleccione" noSelectionOption="true" />
-														<f:selectItems value="" />
+														<f:selectItems value="#{accidentesPersonalesBacking.parentescoItems}" />
 													</p:selectOneMenu>
 													<p:outputLabel value="#{emision['ap.grupo.miembroGrupo.sexo']}" styleClass="negrita" />
 													<p:selectOneMenu id="idSexo" value="#{ramoAccidentesPersonalesBean.sexo}" effect="drop">

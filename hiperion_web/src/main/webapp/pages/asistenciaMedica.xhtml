@@ -546,7 +546,10 @@
 														<p:inputText value="#{ramoAsistenciaMedicaBean.edadFamilia}" />
 
 														<h:outputLabel value="#{emision['asm.modalidad.parentescoDependiente']}" styleClass="negrita" />
-														<p:inputText value="#{ramoAsistenciaMedicaBean.parentescoFamilia}" />
+														<p:selectOneMenu value="#{ramoAsistenciaMedicaBean.parentescoFamilia}" effect="drop">
+														<f:selectItem itemLabel="Seleccione" noSelectionOption="true" />
+														<f:selectItems value="#{asistenciaMedicaBacking.parentescoItems}" />
+													</p:selectOneMenu>
 
 													</p:panelGrid>
 													<f:facet name="footer">
