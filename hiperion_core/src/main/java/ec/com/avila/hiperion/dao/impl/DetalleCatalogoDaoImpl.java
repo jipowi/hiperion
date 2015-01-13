@@ -83,7 +83,7 @@ public class DetalleCatalogoDaoImpl extends GenericDAOImpl<DetalleCatalogo, Long
 	public DetalleCatalogo consultarDetalleByCatalogoAndDetalle(Integer codCatalogo, Integer codDetCalogo) throws HiperionException {
 		
 		Query query = em.createNamedQuery("DetalleCatalogo.findByCodCatalogoAndCodDetalle");
-		query.setParameter("idCatalogo", codCatalogo);
+		query.setParameter("idCatalogo", new Long(codCatalogo.toString()));
 		query.setParameter("codDetalleCatalogo", codDetCalogo.toString());
 		
 		DetalleCatalogo detalle = (DetalleCatalogo) query.getSingleResult();

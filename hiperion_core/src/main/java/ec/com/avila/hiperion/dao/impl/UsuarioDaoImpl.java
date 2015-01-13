@@ -19,21 +19,12 @@ import ec.com.avila.hiperion.emision.entities.Usuario;
  * @since JDK1.6
  */
 @Stateless
-public class UsuarioDaoImpl implements UsuarioDao {
+public class UsuarioDaoImpl extends GenericDAOImpl<Usuario, Long> implements UsuarioDao {
 
 	@PersistenceContext(unitName = "sgs_pu")
 	private EntityManager em;
 
 	public UsuarioDaoImpl() {
-	}
-
-	public void guardarUsuario(Usuario usuario) {
-		em.persist(usuario);
-	}
-
-	@SuppressWarnings("unchecked")
-	public List<Usuario> consultarUsuarios() {
-		return em.createNamedQuery("Usuario.findAll").getResultList();
 	}
 
 	@SuppressWarnings("unchecked")
