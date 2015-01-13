@@ -11,13 +11,18 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
+import javax.faces.model.SelectItem;
 
 import ec.com.avila.emision.web.beans.DetalleAnexoBean;
 import ec.com.avila.hiperion.comun.HiperionException;
+import ec.com.avila.hiperion.emision.entities.Catalogo;
 import ec.com.avila.hiperion.emision.entities.DetalleAnexo;
+import ec.com.avila.hiperion.emision.entities.DetalleCatalogo;
 import ec.com.avila.hiperion.emision.entities.Ramo;
+import ec.com.avila.hiperion.servicio.CatalogoService;
 import ec.com.avila.hiperion.servicio.RamoService;
 import ec.com.avila.hiperion.web.model.AnexosDataModel;
+import ec.com.avila.hiperion.web.util.HiperionMensajes;
 
 /**
  * <b> Clase que sirve de soporte para un objeto manejado dentro de la aplicacion, permite implementar los conportamientos especificos de la pagina
@@ -35,6 +40,9 @@ public class AsistenciaMedicaBacking implements Serializable {
 
 	@EJB
 	private RamoService ramoService;
+	
+	@EJB
+	private CatalogoService catalogoService;
 
 	private AnexosDataModel anexosDataModel;
 	private List<DetalleAnexo> anexos;
@@ -45,6 +53,7 @@ public class AsistenciaMedicaBacking implements Serializable {
 	private DetalleAnexoBean[] selectLimitesCostosBeneficios;
 	private DetalleAnexoBean[] selectLimitesCostosBenAdd;
 	private DetalleAnexoBean[] selectLimitesCostosMaternidad;
+	private List<SelectItem> parentescoItems;
 
 	@PostConstruct
 	public void inicializar() {
@@ -172,4 +181,31 @@ public class AsistenciaMedicaBacking implements Serializable {
 	public void setSelectLimitesCostosMaternidad(DetalleAnexoBean[] selectLimitesCostosMaternidad) {
 		this.selectLimitesCostosMaternidad = selectLimitesCostosMaternidad;
 	}
+
+	/**
+	 * @return the parentescoItems
+	 */
+	public List<SelectItem> getParentescoItems() throws HiperionException{
+		this.parentescoItems = new ArrayList<SelectItem>();
+		Catalogo catalogo = catalogoService.consultarCatalogoById(HiperionMensajes.getInstancia().getLong(
+				"ec.gob.avila.hiperion.recursos.parentesco"));
+		List<DetalleCatalogo> parentesco = catalogo.getDetalleCatalogos();
+		
+		for(DetalleCatalogo detalle: parentesco){
+			SelectItem selectItem=new SelectItem(detalle.getCodDetalleCatalogo(),detalle.getDescDetCatalogo());
+			parentescoItems.add(selectItem);
+		}
+		return parentescoItems;
+	}
+
+	/**
+	 * @param parentescoItems the parentescoItems to set
+	 */
+	public void setParentescoItems(List<SelectItem> parentescoItems) {
+		this.parentescoItems = parentescoItems;
+	}
+
+
+	
+	
 }

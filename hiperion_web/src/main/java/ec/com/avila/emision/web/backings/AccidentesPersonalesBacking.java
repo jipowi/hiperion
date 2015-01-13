@@ -51,7 +51,7 @@ public class AccidentesPersonalesBacking implements Serializable {
 
 	@EJB
 	private RamoAccidentesPersonalesService ramoAccidentesPersonalesService;
-	
+
 	@EJB
 	private CatalogoService catalogoService;
 
@@ -72,7 +72,7 @@ public class AccidentesPersonalesBacking implements Serializable {
 	private List<CondicionEspecial> condicionesEspeciales;
 	private List<CondicionEspecial> selectCondicionesEspeciales;
 	private List<SelectItem> sexoItems;
-	
+	private List<SelectItem> parentescoItems;
 
 	Logger log = Logger.getLogger(AccidentesPersonalesBacking.class);
 
@@ -247,8 +247,26 @@ public class AccidentesPersonalesBacking implements Serializable {
 	}
 
 	/**
-	 * @return the sexoItems
+	 * @return the parentescoItems
 	 * @throws HiperionException 
+	 */
+	public List<SelectItem> getParentescoItems() throws HiperionException {
+
+		this.parentescoItems = new ArrayList<SelectItem>();
+		Catalogo catalogo = catalogoService.consultarCatalogoById(HiperionMensajes.getInstancia().getLong(
+				"ec.gob.avila.hiperion.recursos.parentesco"));
+		List<DetalleCatalogo> parentesco = catalogo.getDetalleCatalogos();
+		
+		for(DetalleCatalogo detalle: parentesco){
+			SelectItem selectItem=new SelectItem(detalle.getCodDetalleCatalogo(),detalle.getDescDetCatalogo());
+			parentescoItems.add(selectItem);
+		}
+		return parentescoItems;
+	}
+
+	/**
+	 * @return the sexoItems
+	 * @throws HiperionException
 	 */
 	public List<SelectItem> getSexoItems() throws HiperionException {
 		this.sexoItems = new ArrayList<SelectItem>();
@@ -262,6 +280,14 @@ public class AccidentesPersonalesBacking implements Serializable {
 		}
 
 		return sexoItems;
+	}
+
+	/**
+	 * @param parentescoItems
+	 *            the parentescoItems to set
+	 */
+	public void setParentescoItems(List<SelectItem> parentescoItems) {
+		this.parentescoItems = parentescoItems;
 	}
 
 	/**

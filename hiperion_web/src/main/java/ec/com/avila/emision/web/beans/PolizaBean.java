@@ -10,9 +10,10 @@ import java.util.Date;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 
+import ec.com.avila.hiperion.emision.entities.Usuario;
+
 /**
- * <b> Permite encapsular varios objetos en un único objeto, para hacer uso de un solo objeto en lugar de varios más
- * simples. </b>
+ * <b> Permite encapsular varios objetos en un único objeto, para hacer uso de un solo objeto en lugar de varios más simples. </b>
  * 
  * @author Paul Jimenez
  * @version 1.0,Dec 18, 2013
@@ -23,13 +24,14 @@ import javax.faces.bean.RequestScoped;
 public class PolizaBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	private Integer codigoRamo;
 
 	// Cabecera de la poliza
 	private Double derechoEmision;
 	private Double diasCobertura;
-	private String ejecutivo;
+	// Modificacion cambia a tipo Usuario de String
+	private Usuario ejecutivo;
 	private String horaDesde;
 	private String horaHasta;
 	private String numeroAnexo;
@@ -41,6 +43,7 @@ public class PolizaBean implements Serializable {
 	private BigDecimal superBanSeguros;
 	private Date vigenciaDesde;
 	private Date vigenciaHasta;
+	private String factura;
 
 	// Pago de Poliza
 	private String formaPago;
@@ -79,11 +82,33 @@ public class PolizaBean implements Serializable {
 		this.diasCobertura = diasCobertura;
 	}
 
-	public String getEjecutivo() {
+	/**
+	 * @return the factura
+	 */
+	public String getFactura() {
+		return factura;
+	}
+
+	/**
+	 * @param factura
+	 *            the factura to set
+	 */
+	public void setFactura(String factura) {
+		this.factura = factura;
+	}
+
+	/**
+	 * @return the ejecutivo
+	 */
+	public Usuario getEjecutivo() {
 		return ejecutivo;
 	}
 
-	public void setEjecutivo(String ejecutivo) {
+	/**
+	 * @param ejecutivo
+	 *            the ejecutivo to set
+	 */
+	public void setEjecutivo(Usuario ejecutivo) {
 		this.ejecutivo = ejecutivo;
 	}
 
@@ -302,5 +327,9 @@ public class PolizaBean implements Serializable {
 	public void setCodigoRamo(Integer codigoRamo) {
 		this.codigoRamo = codigoRamo;
 	}
+
+	/**
+	 * @return the derechosEmision
+	 */
 
 }

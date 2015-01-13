@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
@@ -17,10 +18,11 @@ import ec.com.avila.emision.web.beans.PolizaBean;
 import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.emision.entities.Catalogo;
 import ec.com.avila.hiperion.emision.entities.DetalleCatalogo;
+import ec.com.avila.hiperion.emision.entities.Usuario;
 import ec.com.avila.hiperion.servicio.CatalogoService;
 import ec.com.avila.hiperion.servicio.PolizaService;
 import ec.com.avila.hiperion.servicio.UsuarioService;
-import ec.com.avila.hiperion.web.util.HiperionMensajes;
+import ec.com.avila.hiperion.web.beans.UsuarioBean;
 
 /**
  * <b> Clase que�sirve�de�soporte�para�un�objeto manejado�dentro�de�la�aplicacion se�codifican�los�comportamientos
@@ -50,12 +52,30 @@ public class PolizaBacking implements Serializable {
 	private List<SelectItem> tarjetasCreditoItems;
 	private List<SelectItem> ramosItems;
 	private List<SelectItem> usuariosItems;
-	private List<SelectItem> derechosEmisionItems;
+	private Usuario ejecutivo;
 
 	private Boolean activarPanelPagoContado = false;
 	private Boolean activarPanelPagoFinanciado = false;
 	private Boolean activarPanelPagoTarjetaCredito = false;
 	private Boolean activarPanelPagoDebitoBancario = false;
+	
+	@ManagedProperty(value = "#{usuarioBean}")
+	private UsuarioBean usuarioBean;
+	
+	/**
+	 * 
+	 * <b>
+	 * Permite visualizar el nombre del ejecutivo
+	 * </b>
+	 * <p>[Author: Franklin Pozo, Date: 12/01/2015]</p>
+	 *
+	 * @throws HiperionException
+	 */
+	@PostConstruct
+	 public void inicializar() throws HiperionException {
+		Usuario usuario = usuarioBean.getSessionUser();
+		ejecutivo = usuario;
+	 }
 
 	/**
 	 * 
@@ -146,29 +166,6 @@ public class PolizaBacking implements Serializable {
 		return usuariosItems;
 	}
 
-	/**
-	 * 
-	 * <b> Lista de Derechos de Emisi&oacute;n. </b>
-	 * <p>
-	 * [Author: Dario Vinueza, Date: Feb 1, 2014]
-	 * </p>
-	 * 
-	 * @return - Lista de Derechos de Emisi&oacute;n
-	 * @throws HiperionException
-	 */
-	public List<SelectItem> getDerechosEmisionItems() throws HiperionException {
-		this.derechosEmisionItems = new ArrayList<SelectItem>();
-		// Busqueda por el Codigo de Derechos de Emision (4)
-		Catalogo catalogo = catalogoService.consultarCatalogoById(HiperionMensajes.getInstancia().getLong(
-				"ec.gob.avila.hiperion.recursos.catalogoDerechosEmision"));
-		List<DetalleCatalogo> derechosEmision = catalogo.getDetalleCatalogos();
-		for (DetalleCatalogo detalle : derechosEmision) {
-			SelectItem selectItem = new SelectItem(detalle.getCodDetalleCatalogo(), detalle.getDescDetCatalogo());
-			derechosEmisionItems.add(selectItem);
-		}
-
-		return derechosEmisionItems;
-	}
 
 	/**
 	 * 
@@ -257,4 +254,36 @@ public class PolizaBacking implements Serializable {
 	public void setActivarPanelPagoDebitoBancario(Boolean activarPanelPagoDebitoBancario) {
 		this.activarPanelPagoDebitoBancario = activarPanelPagoDebitoBancario;
 	}
+
+	/**
+	 * @return the usuarioBean
+	 */
+	public UsuarioBean getUsuarioBean() {
+		return usuarioBean;
+	}
+
+	/**
+	 * @param usuarioBean the usuarioBean to set
+	 */
+	public void setUsuarioBean(UsuarioBean usuarioBean) {
+		this.usuarioBean = usuarioBean;
+	}
+
+	/**
+	 * @return the ejecutivo
+	 */
+	public Usuario getEjecutivo() {
+		return ejecutivo;
+	}
+
+	/**
+	 * @param ejecutivo the ejecutivo to set
+	 */
+	public void setEjecutivo(Usuario ejecutivo) {
+		this.ejecutivo = ejecutivo;
+	}
+	
+	
+	
+	
 }
