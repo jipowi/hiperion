@@ -1,57 +1,45 @@
 package ec.com.avila.hiperion.emision.entities;
 
 import java.io.Serializable;
-import javax.persistence.*;
-import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 
 /**
  * The persistent class for the usuario database table.
  * 
  */
 @Entity
-@NamedQuery(name="Usuario.findAll", query="SELECT u FROM Usuario u")
-public class Usuario implements Serializable {
+@NamedQuery(name = "Usuario.findAll", query = "SELECT u FROM Usuario u")
+public class Usuario extends Auditoria implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="id_usuario")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id_usuario")
 	private Integer idUsuario;
 
 	private String clave;
 
-	@Column(name="email_usuario")
+	@Column(name = "email_usuario")
 	private String emailUsuario;
 
-	@Column(name="estado_usuario")
-	private String estadoUsuario;
-
-	@Temporal(TemporalType.DATE)
-	@Column(name="fecha_creacion")
-	private Date fechaCreacion;
-
-	@Temporal(TemporalType.DATE)
-	@Column(name="fecha_modificacion")
-	private Date fechaModificacion;
-
-	@Column(name="identificacion_usuario")
+	@Column(name = "identificacion_usuario")
 	private String identificacionUsuario;
 
-	@Column(name="nombre_usuario")
+	@Column(name = "nombre_usuario")
 	private String nombreUsuario;
 
 	private String usuario;
 
-	@Column(name="usuario_creacion")
-	private String usuarioCreacion;
-
-	@Column(name="usuario_modificacion")
-	private String usuarioModificacion;
-
-	//bi-directional many-to-one association to Rol
-	@OneToMany(mappedBy="usuario")
+	// bi-directional many-to-one association to Rol
+	@OneToMany(mappedBy = "usuario")
 	private List<Rol> rols;
 
 	public Usuario() {
@@ -81,30 +69,6 @@ public class Usuario implements Serializable {
 		this.emailUsuario = emailUsuario;
 	}
 
-	public String getEstadoUsuario() {
-		return this.estadoUsuario;
-	}
-
-	public void setEstadoUsuario(String estadoUsuario) {
-		this.estadoUsuario = estadoUsuario;
-	}
-
-	public Date getFechaCreacion() {
-		return this.fechaCreacion;
-	}
-
-	public void setFechaCreacion(Date fechaCreacion) {
-		this.fechaCreacion = fechaCreacion;
-	}
-
-	public Date getFechaModificacion() {
-		return this.fechaModificacion;
-	}
-
-	public void setFechaModificacion(Date fechaModificacion) {
-		this.fechaModificacion = fechaModificacion;
-	}
-
 	public String getIdentificacionUsuario() {
 		return this.identificacionUsuario;
 	}
@@ -127,22 +91,6 @@ public class Usuario implements Serializable {
 
 	public void setUsuario(String usuario) {
 		this.usuario = usuario;
-	}
-
-	public String getUsuarioCreacion() {
-		return this.usuarioCreacion;
-	}
-
-	public void setUsuarioCreacion(String usuarioCreacion) {
-		this.usuarioCreacion = usuarioCreacion;
-	}
-
-	public String getUsuarioModificacion() {
-		return this.usuarioModificacion;
-	}
-
-	public void setUsuarioModificacion(String usuarioModificacion) {
-		this.usuarioModificacion = usuarioModificacion;
 	}
 
 	public List<Rol> getRols() {

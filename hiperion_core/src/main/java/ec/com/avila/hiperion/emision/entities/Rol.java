@@ -1,8 +1,22 @@
 package ec.com.avila.hiperion.emision.entities;
 
 import java.io.Serializable;
-import javax.persistence.*;
 import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+
+import ec.com.avila.hiperion.enumeration.EstadoEnum;
 
 
 /**
@@ -17,13 +31,14 @@ public class Rol implements Serializable {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="id_rol")
-	private Integer idRol;
+	private Long idRol;
 
 	@Column(name="descripcion_rol")
 	private String descripcionRol;
 
+	@Enumerated(EnumType.STRING)
 	@Column(name="estado_rol")
-	private String estadoRol;
+	private EstadoEnum estadoRol;
 
 	@Column(name="nombre_rol")
 	private String nombreRol;
@@ -40,11 +55,11 @@ public class Rol implements Serializable {
 	public Rol() {
 	}
 
-	public Integer getIdRol() {
+	public Long getIdRol() {
 		return this.idRol;
 	}
 
-	public void setIdRol(Integer idRol) {
+	public void setIdRol(Long idRol) {
 		this.idRol = idRol;
 	}
 
@@ -56,11 +71,11 @@ public class Rol implements Serializable {
 		this.descripcionRol = descripcionRol;
 	}
 
-	public String getEstadoRol() {
+	public EstadoEnum getEstadoRol() {
 		return this.estadoRol;
 	}
 
-	public void setEstadoRol(String estadoRol) {
+	public void setEstadoRol(EstadoEnum estadoRol) {
 		this.estadoRol = estadoRol;
 	}
 
