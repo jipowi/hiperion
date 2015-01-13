@@ -8,11 +8,13 @@ import javax.ejb.Stateless;
 import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.dao.MenuDao;
 import ec.com.avila.hiperion.dao.RolDao;
+import ec.com.avila.hiperion.dao.RolMenuDao;
 import ec.com.avila.hiperion.dao.UsuarioDao;
 import ec.com.avila.hiperion.emision.entities.Menu;
 import ec.com.avila.hiperion.emision.entities.Rol;
 import ec.com.avila.hiperion.emision.entities.RolMenu;
 import ec.com.avila.hiperion.emision.entities.Usuario;
+import ec.com.avila.hiperion.enumeration.EstadoEnum;
 import ec.com.avila.hiperion.servicio.UsuarioService;
 
 @Stateless
@@ -28,13 +30,31 @@ public class UsuarioServiceImpl implements UsuarioService {
 
 	@EJB
 	private MenuDao menuDao;
+	
+	@EJB
+	private RolMenuDao rolMenuDao;
+	
 
-	public void guardarUsuario(Usuario usuario) throws HiperionException {
-		usuarioDao.guardarUsuario(usuario);
+	public void guardarUsuario(Usuario usuario, Rol rol, List<Menu> menus) throws HiperionException {
+		
+		usuarioDao.persist(usuario);
+		rol.setUsuario(usuario);
+		rol.setEstadoRol(EstadoEnum.A);
+		rol.setDescripcionRol(rol.getDescripcionRol());
+		rolDao.persist(rol);
+		
+		for(Menu menu: menus){
+			RolMenu rolMenu = new RolMenu();
+			menu.getEstadoMenu();
+			rolMenu.setMenu(menu);
+			rolMenu.setRol(rol);
+			rolMenuDao.persist(rolMenu);
+		}
+		
 	}
 
 	public List<Usuario> consultarUsuarios() throws HiperionException {
-		return usuarioDao.consultarUsuarios();
+		return usuarioDao.findAll();
 	}
 
 	public Usuario loginUser(String nombreUsuario, String clave) throws HiperionException {
@@ -65,11 +85,43 @@ public class UsuarioServiceImpl implements UsuarioService {
 		return menuDao.consultarMenuByRol(rol);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see ec.com.avila.hiperion.servicio.UsuarioService#consultarMenu(java.lang.Integer)
 	 */
 	@Override
 	public Menu consultarMenu(Integer idMenu) throws HiperionException {
 		return menuDao.findById(new Long(idMenu));
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see ec.com.avila.hiperion.servicio.UsuarioService#consultarRoles()
+	 */
+	@Override
+	public List<Rol> consultarRoles() throws HiperionException {
+		return rolDao.findAll();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see ec.com.avila.hiperion.servicio.UsuarioService#consultaMenus()
+	 */
+	@Override
+	public List<Menu> consultaMenus() throws HiperionException {
+		return menuDao.findAll();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see ec.com.avila.hiperion.servicio.UsuarioService#consultarRolById()
+	 */
+	@Override
+	public Rol consultarRolById(Long idRol) throws HiperionException {
+		return rolDao.findById(idRol);
 	}
 }

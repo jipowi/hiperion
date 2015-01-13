@@ -27,15 +27,29 @@ public interface UsuarioService {
 
 	/**
 	 * 
-	 * <b> Permite guardar los registros en la tabla Usuarios. </b>
+	 * <b> Permite consultar ina lista de roles guardados en la base de datos. </b>
 	 * <p>
-	 * [Author: Paul Jimenez, Date: 22/12/2013]
+	 * [Author: Paul Jimenez, Date: 11/01/2015]
+	 * </p>
+	 * 
+	 * @return
+	 * @throws HiperionException
+	 */
+	public List<Rol> consultarRoles() throws HiperionException;
+
+	/**
+	 * 
+	 * <b> Permite guardar un usuario en la base de datos, con el rol y los menus relacionados. </b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: 12/01/2015]
 	 * </p>
 	 * 
 	 * @param usuario
+	 * @param rol
+	 * @param menus
 	 * @throws HiperionException
 	 */
-	public void guardarUsuario(Usuario usuario) throws HiperionException;
+	public void guardarUsuario(Usuario usuario, Rol rol, List<Menu> menus) throws HiperionException;
 
 	/**
 	 * 
@@ -101,5 +115,40 @@ public interface UsuarioService {
 	 */
 	public List<RolMenu> consultarRolMenus(Rol rol) throws HiperionException;
 
+	/**
+	 * 
+	 * <b> Permite consultar un menu por medio de id. </b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: 11/01/2015]
+	 * </p>
+	 * 
+	 * @param idMenu
+	 * @return
+	 * @throws HiperionException
+	 */
 	public Menu consultarMenu(Integer idMenu) throws HiperionException;
+
+	/**
+	 * 
+	 * <b> Permite consultar todos los menus registrados en la base. </b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: 11/01/2015]
+	 * </p>
+	 * 
+	 * @return
+	 * @throws HiperionException
+	 */
+	public List<Menu> consultaMenus() throws HiperionException;
+
+	/**
+	 * 
+	 * <b> Consultar el rol por id </b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: 12/01/2015]
+	 * </p>
+	 * 
+	 * @return
+	 * @throws HiperionException
+	 */
+	public Rol consultarRolById(Long idRol) throws HiperionException;
 }
