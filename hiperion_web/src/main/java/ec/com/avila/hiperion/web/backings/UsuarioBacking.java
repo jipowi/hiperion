@@ -22,6 +22,7 @@ import org.primefaces.model.menu.DefaultMenuModel;
 import org.primefaces.model.menu.DefaultSubMenu;
 import org.primefaces.model.menu.MenuModel;
 
+import ec.com.avila.emision.web.validator.ValidatorCedula;
 import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.dto.MenuDTO;
 import ec.com.avila.hiperion.emision.entities.Catalogo;
@@ -49,13 +50,13 @@ public class UsuarioBacking implements Serializable {
 
 	@EJB
 	private UsuarioService usuarioServicio;
-	
+
 	@EJB
 	private CatalogoService catalogoService;
 
 	@EJB
 	private DetalleCatalogoService detalleCatalogoService;
-	
+
 	private List<SelectItem> rolesItems;
 
 	private MenuModel menumodel = new DefaultMenuModel();
@@ -175,9 +176,9 @@ public class UsuarioBacking implements Serializable {
 			List<Menu> menus = usuarioServicio.consultaMenus();
 
 			for (Menu menu : menus) {
-				
+
 				MenuDTO menuDTO = new MenuDTO();
-				
+
 				menuDTO.setIdMenu(menu.getIdMenu());
 				menuDTO.setNombreMenu(menu.getNombreMenu());
 				menuDTO.setUrl(menu.getUrl());
@@ -207,13 +208,13 @@ public class UsuarioBacking implements Serializable {
 		for (MenuDTO menuDTO : menuDTOList) {
 			if (menuDTO.getSelected()) {
 				Menu menu = new Menu();
-				
+
 				menu.setIdMenu(menuDTO.getIdMenu());
 				menu.setNombreMenu(menuDTO.getNombreMenu());
 				menu.setIdPadre(menuDTO.getIdPadre());
 				menu.setUrl(menuDTO.getUrl());
 				menu.setEstadoMenu(menuDTO.getEstadoMenu());
-				
+
 				menuSelectedList.add(menu);
 			}
 		}
@@ -230,42 +231,49 @@ public class UsuarioBacking implements Serializable {
 	 * 
 	 */
 	public void guardarUsuario() throws HiperionException {
-		// Usuario
-		Usuario usuario = new Usuario();
-		usuario.setUsuario(usuarioBean.getNickname());
-		usuario.setNombreUsuario(usuarioBean.getNombreApellido());
-		usuario.setIdentificacionUsuario(usuarioBean.getIdentificacion());
-		usuario.setClave(usuarioBean.getClave());
-		usuario.setEmailUsuario(usuarioBean.getCorreo());
-		usuario.setFechaCreacion(new Date());
-		usuario.setEstado(EstadoEnum.A);
-		
-		Usuario usuarioCreacion = usuarioBean.getSessionUser();
-		usuario.setIdUsuarioCreacion(usuarioCreacion.getIdUsuario());
-
-		// Rol de usuario
-		Integer idRol = Integer.parseInt(usuarioBean.getRol());
-		DetalleCatalogo detalleCatalogo = detalleCatalogoService.consultarDetalleByCatalogoAndDetalle(HiperionMensajes.getInstancia()
-				.getInteger("ec.gob.avila.hiperion.recursos.catalogoRoles"), idRol);
-		Rol rol = new Rol();
-
-		rol.setDescripcionRol(detalleCatalogo.getDescDetCatalogo());
-		rol.setEstadoRol(EstadoEnum.A);
-		rol.setNombreRol(detalleCatalogo.getDescDetCatalogo());
 		try {
-			usuarioServicio.guardarUsuario(usuario, rol, menuSelectedList);
 			
-			MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.usuario"));
-			
-			menuSelectedList = new ArrayList<>();
-			usuarioBean.setNickname("");
-			usuarioBean.setNombreApellido("");
-			usuarioBean.setIdentificacion("");
-			usuarioBean.setClave("");
-			usuarioBean.setCorreo("");
-			usuarioBean.setNickname("");
-			usuarioBean.setRol(null);
+			ValidatorCedula validar = new ValidatorCedula();
 
+			if (validar.validateCedula(usuarioBean.getIdentificacion())) {
+				// Usuario
+				Usuario usuario = new Usuario();
+				usuario.setUsuario(usuarioBean.getNickname());
+				usuario.setNombreUsuario(usuarioBean.getNombreApellido());
+				usuario.setIdentificacionUsuario(usuarioBean.getIdentificacion());
+				usuario.setClave(usuarioBean.getClave());
+				usuario.setEmailUsuario(usuarioBean.getCorreo());
+				usuario.setFechaCreacion(new Date());
+				usuario.setEstado(EstadoEnum.A);
+
+				Usuario usuarioCreacion = usuarioBean.getSessionUser();
+				usuario.setIdUsuarioCreacion(usuarioCreacion.getIdUsuario());
+
+				// Rol de usuario
+				Integer idRol = Integer.parseInt(usuarioBean.getRol());
+				DetalleCatalogo detalleCatalogo = detalleCatalogoService.consultarDetalleByCatalogoAndDetalle(HiperionMensajes.getInstancia()
+						.getInteger("ec.gob.avila.hiperion.recursos.catalogoRoles"), idRol);
+				Rol rol = new Rol();
+
+				rol.setDescripcionRol(detalleCatalogo.getDescDetCatalogo());
+				rol.setEstadoRol(EstadoEnum.A);
+				rol.setNombreRol(detalleCatalogo.getDescDetCatalogo());
+
+				usuarioServicio.guardarUsuario(usuario, rol, menuSelectedList);
+
+				MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.usuario"));
+
+				menuSelectedList = new ArrayList<>();
+				usuarioBean.setNickname("");
+				usuarioBean.setNombreApellido("");
+				usuarioBean.setIdentificacion("");
+				usuarioBean.setClave("");
+				usuarioBean.setCorreo("");
+				usuarioBean.setNickname("");
+				usuarioBean.setRol(null);
+			}else{
+				MessagesController.addError(null, HiperionMensajes.getInstancia().getString("hiperion.mensage.error.identificacionNoValido"));
+			}
 		} catch (HiperionException e) {
 			log.error("Error al momento de guardar el usuario", e);
 			MessagesController.addError(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.error.save"));
