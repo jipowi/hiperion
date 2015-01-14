@@ -19,11 +19,14 @@
 						<p:outputLabel value="#{emision['usuario.nombres']}:" styleClass="negrita" />
 						<p:inputText value="#{usuarioBean.nombreApellido}" />
 
-						<p:outputLabel value="#{emision['usuario.identificacion']}:" styleClass="negrita" />
-						<p:inputText value="#{usuarioBean.identificacion}" />
-
+						<p:outputLabel  value="#{emision['usuario.identificacion']}:" styleClass="negrita" />
+						<p:inputText id="idIdentificacion" value="#{usuarioBean.identificacion}" validatorMessage="#{emision['msg.cedula.error']}">
+						 <f:validateRegex pattern="#{emision['msg.cedula.ok']}" />
+						</p:inputText>
 						<p:outputLabel value="#{emision['usuario.correo']}:" styleClass="negrita" />
-						<p:inputText value="#{usuarioBean.correo}" />
+						<p:inputText id="idCorreo" value="#{usuarioBean.correo}" validatorMessage="#{emision['msg.correo.error']}" >
+						<f:validateRegex pattern="#{emision['msg.correo.ok']}" />
+						</p:inputText>
 
 						<p:outputLabel value="#{emision['usuario.clave']}:" styleClass="negrita" />
 						<p:inputText value="#{usuarioBean.clave}" />

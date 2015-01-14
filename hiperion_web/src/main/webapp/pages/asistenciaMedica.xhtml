@@ -88,8 +88,6 @@
 									</p:tab>
 								</p:accordionPanel>
 							</p:tab>
-							<!-- CONDICIONES PARTICULARES -->
-							<p:tab id="tabCondiciones" title="#{emision['asm.tab.condicionesParticulares']}"></p:tab>
 
 							<!-- PLANES -->
 							<p:tab title="#{emision['asm.plan.cabecera']}">
@@ -107,7 +105,7 @@
 												<p:inputText value="#{ramoAsistenciaMedicaBean.nomPlan}" />
 
 												<p:outputLabel value="#{emision['asm.plan.valorPlan']}" styleClass="negrita" />
-												<p:inputText  value="#{ramoAsistenciaMedicaBean.valorPlan}"/>
+												<p:inputText value="#{ramoAsistenciaMedicaBean.valorPlan}" />
 											</h:panelGrid>
 											<p:spacer height="15px;" />
 											<div align="center">
@@ -133,7 +131,7 @@
 													</f:facet>
 												</p:cellEditor>
 											</p:column>
-											
+
 											<p:column>
 												<f:facet name="header">
 													<h:outputText value="#{emision['asm.plan.valorPlan']}" />
@@ -272,7 +270,7 @@
 											<tr>
 												<td colspan="2" align="center"><p:outputLabel value="#{emision['asm.grupo.deducibleHospitalario']}" styleClass="negrita" /></td>
 												<td><p:outputLabel value="#{emision['asm.grupo.deducibleAmbulatorio']}" styleClass="negrita" /></td>
-												<td><p:outputLabel value="#{emision['asm.grupo.deducibleViajero']}" styleClass="negrita"/> </td>
+												<td><p:outputLabel value="#{emision['asm.grupo.deducibleViajero']}" styleClass="negrita" /></td>
 											</tr>
 											<tr>
 												<td><p:outputLabel value="#{emision['asm.grupo.deducibleGrupo1']}" styleClass="negrita" /></td>
@@ -319,8 +317,9 @@
 														<p:calendar value="#{ramoAsistenciaMedicaBean.fechaNacimientoTitular}" pattern="dd/MM/yyyy HH:mm" locale="es" navigator="true" />
 
 														<h:outputLabel value="#{emision['asm.modalidad.cedula']}" styleClass="negrita" />
-														<p:inputText value="#{ramoAsistenciaMedicaBean.cedulaTitular}" />
-
+														<p:inputText id="idCedulaTitular" value="#{ramoAsistenciaMedicaBean.cedulaTitular}" validatorMessage="#{emision['msg.cedula.error']}">
+															<f:validateRegex pattern="#{emision['msg.cedula.ok']}" />
+														</p:inputText>
 														<h:outputLabel value="#{emision['asm.modalidad.edad']}" styleClass="negrita" />
 														<p:inputText value="#{ramoAsistenciaMedicaBean.edadTitular}" />
 
@@ -449,8 +448,9 @@
 														<p:calendar value="#{ramoAsistenciaMedicaBean.fechaNacimientoDependiente}" pattern="dd/MM/yyyy HH:mm" locale="es" navigator="true" />
 
 														<h:outputLabel value="#{emision['asm.modalidad.cedula']}" styleClass="negrita" />
-														<p:inputText value="#{ramoAsistenciaMedicaBean.cedulaDependiente}" />
-
+														<p:inputText id="idCedula" value="#{ramoAsistenciaMedicaBean.cedulaDependiente}" validatorMessage="#{emision['msg.cedula.error']}" >
+															<f:validateRegex pattern="#{emision['msg.cedula.ok']}" />
+														</p:inputText>
 														<h:outputLabel value="#{emision['asm.modalidad.edad']}" styleClass="negrita" />
 														<p:inputText value="#{ramoAsistenciaMedicaBean.edadDependiente}" />
 													</p:panelGrid>
@@ -540,16 +540,17 @@
 														<p:calendar value="#{ramoAsistenciaMedicaBean.fechaNacimientoFamilia}" pattern="dd/MM/yyyy HH:mm" locale="es" navigator="true" />
 
 														<h:outputLabel value="#{emision['asm.modalidad.cedula']}" styleClass="negrita" />
-														<p:inputText value="#{ramoAsistenciaMedicaBean.cedulaFamilia}" />
-
+														<p:inputText id="idCedula" value="#{ramoAsistenciaMedicaBean.cedulaFamilia}" validatorMessage="#{emision['msg.cedula.error']}">
+														 <f:validateRegex pattern="#{emision['msg.cedula.ok']}" />
+														</p:inputText>
 														<h:outputLabel value="#{emision['asm.modalidad.edad']}" styleClass="negrita" />
 														<p:inputText value="#{ramoAsistenciaMedicaBean.edadFamilia}" />
 
 														<h:outputLabel value="#{emision['asm.modalidad.parentescoDependiente']}" styleClass="negrita" />
 														<p:selectOneMenu value="#{ramoAsistenciaMedicaBean.parentescoFamilia}" effect="drop">
-														<f:selectItem itemLabel="Seleccione" noSelectionOption="true" />
-														<f:selectItems value="#{asistenciaMedicaBacking.parentescoItems}" />
-													</p:selectOneMenu>
+															<f:selectItem itemLabel="Seleccione" noSelectionOption="true" />
+															<f:selectItems value="#{asistenciaMedicaBacking.parentescoItems}" />
+														</p:selectOneMenu>
 
 													</p:panelGrid>
 													<f:facet name="footer">
