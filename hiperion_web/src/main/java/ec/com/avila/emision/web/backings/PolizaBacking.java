@@ -144,27 +144,6 @@ public class PolizaBacking implements Serializable {
 		return ramosItems;
 	}
 
-	/**
-	 * 
-	 * <b> Lista de Usuarios del Broker. </b>
-	 * <p>
-	 * [Author: Dario Vinueza, Date: Jan 25, 2014]
-	 * </p>
-	 * 
-	 * @return - Lista de Usuarios
-	 * @throws HiperionException
-	 */
-	public List<SelectItem> getUsuariosItems() throws HiperionException {
-		this.usuariosItems = new ArrayList<SelectItem>();
-		// List<Usuario> usuarios = usuarioService.consultarUsuarios();
-		// for (Usuario usuario : usuarios) {
-		// SelectItem selectItem = new SelectItem(usuario.getNombreUsuario(), usuario.getPersona().getNombre() + " "
-		// + usuario.getPersona().getApellidoPaterno());
-		// usuariosItems.add(selectItem);
-		// }
-
-		return usuariosItems;
-	}
 
 
 	/**
