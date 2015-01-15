@@ -23,6 +23,7 @@ import ec.com.avila.hiperion.servicio.CatalogoService;
 import ec.com.avila.hiperion.servicio.PolizaService;
 import ec.com.avila.hiperion.servicio.UsuarioService;
 import ec.com.avila.hiperion.web.beans.UsuarioBean;
+import ec.com.avila.hiperion.web.util.HiperionMensajes;
 
 /**
  * <b> Clase que�sirve�de�soporte�para�un�objeto manejado�dentro�de�la�aplicacion se�codifican�los�comportamientos
@@ -52,6 +53,8 @@ public class PolizaBacking implements Serializable {
 	private List<SelectItem> tarjetasCreditoItems;
 	private List<SelectItem> ramosItems;
 	private List<SelectItem> usuariosItems;
+	private List<SelectItem> cuotaIniacialItems;
+	private List<SelectItem> pagoTarjetaItems;
 	private Usuario ejecutivo;
 
 	private Boolean activarPanelPagoContado = false;
@@ -89,8 +92,9 @@ public class PolizaBacking implements Serializable {
 	 */
 	public List<SelectItem> getFormasPagoItems() throws HiperionException {
 		this.formasPagoItems = new ArrayList<SelectItem>();
-		// Busqueda por el Codigo de Formas de Pago (5)
-		Catalogo catalogo = catalogoService.consultarCatalogoById(new Long(5));
+		// Busqueda por el Codigo de Formas de Pago (4)
+		Catalogo catalogo = catalogoService.consultarCatalogoById(HiperionMensajes.getInstancia().getLong(
+				"ec.gob.avila.hiperion.recursos.catalogoFormasPago"));
 		List<DetalleCatalogo> formasPago = catalogo.getDetalleCatalogos();
 		for (DetalleCatalogo detalle : formasPago) {
 			SelectItem selectItem = new SelectItem(detalle.getCodDetalleCatalogo(), detalle.getDescDetCatalogo());
@@ -144,6 +148,27 @@ public class PolizaBacking implements Serializable {
 		return ramosItems;
 	}
 
+	/**
+	 * 
+	 * <b> Lista de Usuarios del Broker. </b>
+	 * <p>
+	 * [Author: Dario Vinueza, Date: Jan 25, 2014]
+	 * </p>
+	 * 
+	 * @return - Lista de Usuarios
+	 * @throws HiperionException
+	 */
+	public List<SelectItem> getUsuariosItems() throws HiperionException {
+		this.usuariosItems = new ArrayList<SelectItem>();
+		// List<Usuario> usuarios = usuarioService.consultarUsuarios();
+		// for (Usuario usuario : usuarios) {
+		// SelectItem selectItem = new SelectItem(usuario.getNombreUsuario(), usuario.getPersona().getNombre() + " "
+		// + usuario.getPersona().getApellidoPaterno());
+		// usuariosItems.add(selectItem);
+		// }
+
+		return usuariosItems;
+	}
 
 
 	/**
@@ -261,8 +286,58 @@ public class PolizaBacking implements Serializable {
 	public void setEjecutivo(Usuario ejecutivo) {
 		this.ejecutivo = ejecutivo;
 	}
-	
-	
+
+	/**
+	 * 
+	 * <b>
+	 * Crea el metodo combo cuota inicial
+	 * </b>
+	 * <p>[Author: Franklin Pozo, Date: 14/01/2015]</p>
+	 *
+	 * @return
+	 * @throws HiperionException
+	 */
+	public List<SelectItem> getCuotaIniacialItems() throws HiperionException {
+		this.cuotaIniacialItems=new ArrayList<SelectItem>();
+		
+		SelectItem selectItem20 = new SelectItem(1, "20%");
+		cuotaIniacialItems.add(selectItem20);
+		SelectItem selectItem30 = new SelectItem(2, "30%");
+		cuotaIniacialItems.add(selectItem30);
+		return cuotaIniacialItems;
+	}
+
+	/**
+	 * @param cuotaIniacialItems the cuotaIniacialItems to set
+	 */
+	public void setCuotaIniacialItems(List<SelectItem> cuotaIniacialItems) {
+		this.cuotaIniacialItems = cuotaIniacialItems;
+	}
+
+	/**
+	 * @return the pagoTarjetaItems
+	 */
+	public List<SelectItem> getPagoTarjetaItems() throws HiperionException {
+		this.pagoTarjetaItems= new ArrayList<SelectItem>();
+		Catalogo catalogo = catalogoService.consultarCatalogoById(HiperionMensajes.getInstancia().getLong(
+				"ec.gob.avila.hiperion.recursos.catalogoPagoTarjeta"));
+		List<DetalleCatalogo> pagoTarjeta = catalogo.getDetalleCatalogos();
+
+		for (DetalleCatalogo detalle : pagoTarjeta) {
+			SelectItem selectItem = new SelectItem(detalle.getCodDetalleCatalogo(), detalle.getDescDetCatalogo());
+			pagoTarjetaItems.add(selectItem);
+		}
+
+		return pagoTarjetaItems;
+	}
+
+	/**
+	 * @param pagoTarjetaItems the pagoTarjetaItems to set
+	 */
+	public void setPagoTarjetaItems(List<SelectItem> pagoTarjetaItems) {
+		this.pagoTarjetaItems = pagoTarjetaItems;
+	}
+
 	
 	
 }
