@@ -44,6 +44,7 @@ public class PolizaBean implements Serializable {
 	private Date vigenciaDesde;
 	private Date vigenciaHasta;
 	private String factura;
+	
 
 	// Pago de Poliza
 	private String formaPago;
@@ -54,6 +55,10 @@ public class PolizaBean implements Serializable {
 	private String numeroFactura;
 	private BigDecimal subtotal;
 	private BigDecimal total;
+	private BigDecimal financiacion;
+	private Integer letras;
+	private Integer pagosIguales;
+	private String pagoTarjeta;
 
 	// Financiamiento
 	private BigDecimal numeroCuota;
@@ -329,7 +334,62 @@ public class PolizaBean implements Serializable {
 	}
 
 	/**
-	 * @return the derechosEmision
+	 * @return the financiacion
 	 */
+	public BigDecimal getFinanciacion() {
+		return financiacion;
+	}
+
+	/**
+	 * @param financiacion the financiacion to set
+	 */
+	public void setFinanciacion(BigDecimal financiacion) {
+		this.financiacion = financiacion;
+	}
+
+	/**
+	 * @return the letras
+	 */
+	public Integer getLetras() {
+		return letras;
+	}
+
+	/**
+	 * @param letras the letras to set
+	 */
+	public void setLetras(Integer letras) {
+		this.letras = letras;
+	}
+
+	/**
+	 * @return the pagosIguales
+	 */
+	public Integer getPagosIguales() {
+		return pagosIguales;
+	}
+
+	/**
+	 * @param pagosIguales the pagosIguales to set
+	 */
+	public void setPagosIguales(Integer pagosIguales) {
+		this.pagosIguales = pagosIguales;
+	}
+
+	/**
+	 * @return the pagoTarjeta
+	 */
+	public String getPagoTarjeta() {
+		return pagoTarjeta;
+	}
+
+	/**
+	 * @param pagoTarjeta the pagoTarjeta to set
+	 */
+	public void setPagoTarjeta(String pagoTarjeta) {
+		this.pagoTarjeta = pagoTarjeta;
+	}
+
+	
+	
 
 }
