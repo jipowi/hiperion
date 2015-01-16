@@ -59,6 +59,11 @@ public class PolizaBean implements Serializable {
 	private Integer letras;
 	private Integer pagosIguales;
 	private String pagoTarjeta;
+	private String bancos;
+	private String cuentaBancos;
+	private Integer numeroDebitos;
+	private BigDecimal valorDebitos;
+	private String fechaDebito;
 
 	// Financiamiento
 	private BigDecimal numeroCuota;
@@ -387,6 +392,76 @@ public class PolizaBean implements Serializable {
 	 */
 	public void setPagoTarjeta(String pagoTarjeta) {
 		this.pagoTarjeta = pagoTarjeta;
+	}
+
+	/**
+	 * @return the bancos
+	 */
+	public String getBancos() {
+		return bancos;
+	}
+
+	/**
+	 * @param bancos the bancos to set
+	 */
+	public void setBancos(String bancos) {
+		this.bancos = bancos;
+	}
+
+	/**
+	 * @return the cuentaBancos
+	 */
+	public String getCuentaBancos() {
+		return cuentaBancos;
+	}
+
+	/**
+	 * @param cuentaBancos the cuentaBancos to set
+	 */
+	public void setCuentaBancos(String cuentaBancos) {
+		this.cuentaBancos = cuentaBancos;
+	}
+
+	/**
+	 * @return the numeroDebitos
+	 */
+	public Integer getNumeroDebitos() {
+		return numeroDebitos;
+	}
+
+	/**
+	 * @param numeroDebitos the numeroDebitos to set
+	 */
+	public void setNumeroDebitos(Integer numeroDebitos) {
+		this.numeroDebitos = numeroDebitos;
+	}
+
+	/**
+	 * @return the valorDebitos
+	 */
+	public BigDecimal getValorDebitos() {
+		return valorDebitos;
+	}
+
+	/**
+	 * @param valorDebitos the valorDebitos to set
+	 */
+	public void setValorDebitos(BigDecimal valorDebitos) {
+		this.valorDebitos = valorDebitos;
+	}
+
+	/**
+	 * @return the fechaDebito
+	 */
+	public String getFechaDebito() {
+		return fechaDebito;
+	}
+
+	/**
+	 * @param fechaDebito the fechaDebito to set
+	 */
+	public void setFechaDebito(String fechaDebito) {
+		this.fechaDebito = fechaDebito;
 	}
 
 	
