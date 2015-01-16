@@ -55,6 +55,8 @@ public class PolizaBacking implements Serializable {
 	private List<SelectItem> usuariosItems;
 	private List<SelectItem> cuotaIniacialItems;
 	private List<SelectItem> pagoTarjetaItems;
+	private List<SelectItem> bancoItems;
+	private List<SelectItem> cuentaBancoItems;
 	private Usuario ejecutivo;
 
 	private Boolean activarPanelPagoContado = false;
@@ -332,10 +334,87 @@ public class PolizaBacking implements Serializable {
 	}
 
 	/**
-	 * @param pagoTarjetaItems the pagoTarjetaItems to set
+	 * 
+	 * <b>
+	 * metodo que epermite crear el combo pago tarjeta
+	 * </b>
+	 * <p>[Author: Franklin Pozo, Date: 14/01/2015]</p>
+	 *
+	 * @param pagoTarjetaItems
+	 * @throws HiperionException
 	 */
-	public void setPagoTarjetaItems(List<SelectItem> pagoTarjetaItems) {
+	public void setPagoTarjetaItems(List<SelectItem> pagoTarjetaItems) throws HiperionException {
+		this.pagoTarjetaItems= new ArrayList<SelectItem>();
+		Catalogo catalogo = catalogoService.consultarCatalogoById(HiperionMensajes.getInstancia().getLong(
+				"ec.gob.avila.hiperion.recursos.catalogoPagoTarjeta"));
+		List<DetalleCatalogo> pagoTarjeta = catalogo.getDetalleCatalogos();
+
+		for (DetalleCatalogo detalle : pagoTarjeta) {
+			SelectItem selectItem = new SelectItem(detalle.getCodDetalleCatalogo(), detalle.getDescDetCatalogo());
+			pagoTarjetaItems.add(selectItem);
+		}
+		
 		this.pagoTarjetaItems = pagoTarjetaItems;
+	}
+
+	/**
+	 * 
+	 * <b>
+	 * metodo que crea el combo de bancos.
+	 * </b>
+	 * <p>[Author: Franklin Pozo, Date: 14/01/2015]</p>
+	 *
+	 * @return
+	 * @throws HiperionException
+	 */
+	public List<SelectItem> getBancoItems() throws HiperionException{
+		this.bancoItems=new ArrayList<SelectItem>();
+		Catalogo catalogo = catalogoService.consultarCatalogoById(HiperionMensajes.getInstancia().getLong(
+				"ec.gob.avila.hiperion.recursos.catalogoBancos"));
+		List<DetalleCatalogo> banco = catalogo.getDetalleCatalogos();
+
+		for (DetalleCatalogo detalle : banco) {
+			SelectItem selectItem = new SelectItem(detalle.getCodDetalleCatalogo(), detalle.getDescDetCatalogo());
+			bancoItems.add(selectItem);
+		}
+		return bancoItems;
+	}
+
+	/**
+	 * @param bancoItems the bancoItems to set
+	 */
+	public void setBancoItems(List<SelectItem> bancoItems) {
+		this.bancoItems = bancoItems;
+	}
+
+	/**
+	 * 
+	 * <b>
+	 * Permite crear el combo de tipo de cuenta
+	 * </b>
+	 * <p>[Author: Franklin Pozo, Date: 14/01/2015]</p>
+	 *
+	 * @return
+	 * @throws HiperionException
+	 */
+	public List<SelectItem> getCuentaBancoItems() throws HiperionException {
+		this.cuentaBancoItems=new ArrayList<SelectItem>();
+		Catalogo catalogo = catalogoService.consultarCatalogoById(HiperionMensajes.getInstancia().getLong(
+				"ec.gob.avila.hiperion.recursos.catalogoCuentaBanco"));
+		List<DetalleCatalogo> cuentaBanco = catalogo.getDetalleCatalogos();
+
+		for (DetalleCatalogo detalle : cuentaBanco) {
+			SelectItem selectItem = new SelectItem(detalle.getCodDetalleCatalogo(), detalle.getDescDetCatalogo());
+			cuentaBancoItems.add(selectItem);
+		}
+		return cuentaBancoItems;
+	}
+
+	/**
+	 * @param cuentaBancoItems the cuentaBancoItems to set
+	 */
+	public void setCuentaBancoItems(List<SelectItem> cuentaBancoItems) {
+		this.cuentaBancoItems = cuentaBancoItems;
 	}
 
 	
