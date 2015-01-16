@@ -4,18 +4,25 @@
 package ec.com.avila.emision.web.backings;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
+import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
+
+import org.apache.tools.ant.taskdefs.Truncate;
+import org.primefaces.event.RowEditEvent;
 
 import ec.com.avila.emision.web.beans.PolizaBean;
 import ec.com.avila.hiperion.comun.HiperionException;
+import ec.com.avila.hiperion.dto.TablaAmortizacionDTO;
 import ec.com.avila.hiperion.emision.entities.Catalogo;
 import ec.com.avila.hiperion.emision.entities.DetalleCatalogo;
 import ec.com.avila.hiperion.emision.entities.Usuario;
@@ -52,35 +59,35 @@ public class PolizaBacking implements Serializable {
 	private List<SelectItem> formasPagoItems;
 	private List<SelectItem> tarjetasCreditoItems;
 	private List<SelectItem> ramosItems;
-	private List<SelectItem> usuariosItems;
 	private List<SelectItem> cuotaIniacialItems;
 	private List<SelectItem> pagoTarjetaItems;
 	private List<SelectItem> bancoItems;
 	private List<SelectItem> cuentaBancoItems;
 	private Usuario ejecutivo;
 
+	private List<TablaAmortizacionDTO> tablaAmortizacionList = new ArrayList<TablaAmortizacionDTO>();
 	private Boolean activarPanelPagoContado = false;
 	private Boolean activarPanelPagoFinanciado = false;
 	private Boolean activarPanelPagoTarjetaCredito = false;
 	private Boolean activarPanelPagoDebitoBancario = false;
-	
+
 	@ManagedProperty(value = "#{usuarioBean}")
 	private UsuarioBean usuarioBean;
-	
+
 	/**
 	 * 
-	 * <b>
-	 * Permite visualizar el nombre del ejecutivo
-	 * </b>
-	 * <p>[Author: Franklin Pozo, Date: 12/01/2015]</p>
-	 *
+	 * <b> Permite visualizar el nombre del ejecutivo </b>
+	 * <p>
+	 * [Author: Franklin Pozo, Date: 12/01/2015]
+	 * </p>
+	 * 
 	 * @throws HiperionException
 	 */
 	@PostConstruct
-	 public void inicializar() throws HiperionException {
+	public void inicializar() throws HiperionException {
 		Usuario usuario = usuarioBean.getSessionUser();
 		ejecutivo = usuario;
-	 }
+	}
 
 	/**
 	 * 
@@ -152,29 +159,6 @@ public class PolizaBacking implements Serializable {
 
 	/**
 	 * 
-	 * <b> Lista de Usuarios del Broker. </b>
-	 * <p>
-	 * [Author: Dario Vinueza, Date: Jan 25, 2014]
-	 * </p>
-	 * 
-	 * @return - Lista de Usuarios
-	 * @throws HiperionException
-	 */
-	public List<SelectItem> getUsuariosItems() throws HiperionException {
-		this.usuariosItems = new ArrayList<SelectItem>();
-		// List<Usuario> usuarios = usuarioService.consultarUsuarios();
-		// for (Usuario usuario : usuarios) {
-		// SelectItem selectItem = new SelectItem(usuario.getNombreUsuario(), usuario.getPersona().getNombre() + " "
-		// + usuario.getPersona().getApellidoPaterno());
-		// usuariosItems.add(selectItem);
-		// }
-
-		return usuariosItems;
-	}
-
-
-	/**
-	 * 
 	 * <b> Permite activar los paneles segun la forma de pago que selecciono el usuario. </b>
 	 * <p>
 	 * [Author: Dario Vinueza, Date: Feb 3, 2014]
@@ -191,6 +175,56 @@ public class PolizaBacking implements Serializable {
 		} else if (polizaBean.getIdFormaPago() == 4) {
 			setActivarPanelPagoDebitoBancario(true);
 		}
+	}
+
+	/**
+	 * 
+	 * <b> Permite generar una tabla de amortizacion con valores ingresados en la pantalla. </b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: 15/01/2015]
+	 * </p>
+	 * 
+	 */
+	public void generarTablaAmortizacion() {
+
+		tablaAmortizacionList = new ArrayList<>();
+
+		Double total = polizaBean.getTotal().doubleValue();
+		Double numDebitos = polizaBean.getNumeroDebitos().doubleValue();
+		Double valorLetras = total / numDebitos;
+		valorLetras = redondear(valorLetras, 2);
+		polizaBean.setValorDebitos(new BigDecimal(valorLetras));
+
+		int cont = 1;
+
+		for (int i = 0; i < polizaBean.getNumeroDebitos(); i++) {
+
+			TablaAmortizacionDTO tablaAmortizacionDTO = new TablaAmortizacionDTO();
+			tablaAmortizacionDTO.setLetra("Letra " + cont);
+			tablaAmortizacionDTO.setValor(valorLetras);
+
+			tablaAmortizacionList.add(tablaAmortizacionDTO);
+			cont++;
+		}
+
+	}
+
+	public double redondear(double numero, int decimales) {
+		return Math.round(numero * Math.pow(10, decimales)) / Math.pow(10, decimales);
+	}
+
+	/**
+	 * 
+	 * <b> Permite editar un registro de la tabla de amortizacion </b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: Aug 3, 2014]
+	 * </p>
+	 * 
+	 * @param event
+	 */
+	public void onEditTable(RowEditEvent event) {
+		FacesMessage msg = new FacesMessage("Item Edited", ((TablaAmortizacionDTO) event.getObject()).getLetra());
+		FacesContext.getCurrentInstance().addMessage(null, msg);
 	}
 
 	public PolizaBean getPolizaBean() {
@@ -269,7 +303,8 @@ public class PolizaBacking implements Serializable {
 	}
 
 	/**
-	 * @param usuarioBean the usuarioBean to set
+	 * @param usuarioBean
+	 *            the usuarioBean to set
 	 */
 	public void setUsuarioBean(UsuarioBean usuarioBean) {
 		this.usuarioBean = usuarioBean;
@@ -283,7 +318,8 @@ public class PolizaBacking implements Serializable {
 	}
 
 	/**
-	 * @param ejecutivo the ejecutivo to set
+	 * @param ejecutivo
+	 *            the ejecutivo to set
 	 */
 	public void setEjecutivo(Usuario ejecutivo) {
 		this.ejecutivo = ejecutivo;
@@ -291,17 +327,17 @@ public class PolizaBacking implements Serializable {
 
 	/**
 	 * 
-	 * <b>
-	 * Crea el metodo combo cuota inicial
-	 * </b>
-	 * <p>[Author: Franklin Pozo, Date: 14/01/2015]</p>
-	 *
+	 * <b> Crea el metodo combo cuota inicial </b>
+	 * <p>
+	 * [Author: Franklin Pozo, Date: 14/01/2015]
+	 * </p>
+	 * 
 	 * @return
 	 * @throws HiperionException
 	 */
 	public List<SelectItem> getCuotaIniacialItems() throws HiperionException {
-		this.cuotaIniacialItems=new ArrayList<SelectItem>();
-		
+		this.cuotaIniacialItems = new ArrayList<SelectItem>();
+
 		SelectItem selectItem20 = new SelectItem(1, "20%");
 		cuotaIniacialItems.add(selectItem20);
 		SelectItem selectItem30 = new SelectItem(2, "30%");
@@ -310,7 +346,8 @@ public class PolizaBacking implements Serializable {
 	}
 
 	/**
-	 * @param cuotaIniacialItems the cuotaIniacialItems to set
+	 * @param cuotaIniacialItems
+	 *            the cuotaIniacialItems to set
 	 */
 	public void setCuotaIniacialItems(List<SelectItem> cuotaIniacialItems) {
 		this.cuotaIniacialItems = cuotaIniacialItems;
@@ -320,7 +357,7 @@ public class PolizaBacking implements Serializable {
 	 * @return the pagoTarjetaItems
 	 */
 	public List<SelectItem> getPagoTarjetaItems() throws HiperionException {
-		this.pagoTarjetaItems= new ArrayList<SelectItem>();
+		this.pagoTarjetaItems = new ArrayList<SelectItem>();
 		Catalogo catalogo = catalogoService.consultarCatalogoById(HiperionMensajes.getInstancia().getLong(
 				"ec.gob.avila.hiperion.recursos.catalogoPagoTarjeta"));
 		List<DetalleCatalogo> pagoTarjeta = catalogo.getDetalleCatalogos();
@@ -335,16 +372,16 @@ public class PolizaBacking implements Serializable {
 
 	/**
 	 * 
-	 * <b>
-	 * metodo que epermite crear el combo pago tarjeta
-	 * </b>
-	 * <p>[Author: Franklin Pozo, Date: 14/01/2015]</p>
-	 *
+	 * <b> metodo que epermite crear el combo pago tarjeta </b>
+	 * <p>
+	 * [Author: Franklin Pozo, Date: 14/01/2015]
+	 * </p>
+	 * 
 	 * @param pagoTarjetaItems
 	 * @throws HiperionException
 	 */
 	public void setPagoTarjetaItems(List<SelectItem> pagoTarjetaItems) throws HiperionException {
-		this.pagoTarjetaItems= new ArrayList<SelectItem>();
+		this.pagoTarjetaItems = new ArrayList<SelectItem>();
 		Catalogo catalogo = catalogoService.consultarCatalogoById(HiperionMensajes.getInstancia().getLong(
 				"ec.gob.avila.hiperion.recursos.catalogoPagoTarjeta"));
 		List<DetalleCatalogo> pagoTarjeta = catalogo.getDetalleCatalogos();
@@ -353,22 +390,22 @@ public class PolizaBacking implements Serializable {
 			SelectItem selectItem = new SelectItem(detalle.getCodDetalleCatalogo(), detalle.getDescDetCatalogo());
 			pagoTarjetaItems.add(selectItem);
 		}
-		
+
 		this.pagoTarjetaItems = pagoTarjetaItems;
 	}
 
 	/**
 	 * 
-	 * <b>
-	 * metodo que crea el combo de bancos.
-	 * </b>
-	 * <p>[Author: Franklin Pozo, Date: 14/01/2015]</p>
-	 *
+	 * <b> metodo que crea el combo de bancos. </b>
+	 * <p>
+	 * [Author: Franklin Pozo, Date: 14/01/2015]
+	 * </p>
+	 * 
 	 * @return
 	 * @throws HiperionException
 	 */
-	public List<SelectItem> getBancoItems() throws HiperionException{
-		this.bancoItems=new ArrayList<SelectItem>();
+	public List<SelectItem> getBancoItems() throws HiperionException {
+		this.bancoItems = new ArrayList<SelectItem>();
 		Catalogo catalogo = catalogoService.consultarCatalogoById(HiperionMensajes.getInstancia().getLong(
 				"ec.gob.avila.hiperion.recursos.catalogoBancos"));
 		List<DetalleCatalogo> banco = catalogo.getDetalleCatalogos();
@@ -381,7 +418,8 @@ public class PolizaBacking implements Serializable {
 	}
 
 	/**
-	 * @param bancoItems the bancoItems to set
+	 * @param bancoItems
+	 *            the bancoItems to set
 	 */
 	public void setBancoItems(List<SelectItem> bancoItems) {
 		this.bancoItems = bancoItems;
@@ -389,16 +427,16 @@ public class PolizaBacking implements Serializable {
 
 	/**
 	 * 
-	 * <b>
-	 * Permite crear el combo de tipo de cuenta
-	 * </b>
-	 * <p>[Author: Franklin Pozo, Date: 14/01/2015]</p>
-	 *
+	 * <b> Permite crear el combo de tipo de cuenta </b>
+	 * <p>
+	 * [Author: Franklin Pozo, Date: 14/01/2015]
+	 * </p>
+	 * 
 	 * @return
 	 * @throws HiperionException
 	 */
 	public List<SelectItem> getCuentaBancoItems() throws HiperionException {
-		this.cuentaBancoItems=new ArrayList<SelectItem>();
+		this.cuentaBancoItems = new ArrayList<SelectItem>();
 		Catalogo catalogo = catalogoService.consultarCatalogoById(HiperionMensajes.getInstancia().getLong(
 				"ec.gob.avila.hiperion.recursos.catalogoCuentaBanco"));
 		List<DetalleCatalogo> cuentaBanco = catalogo.getDetalleCatalogos();
@@ -411,12 +449,26 @@ public class PolizaBacking implements Serializable {
 	}
 
 	/**
-	 * @param cuentaBancoItems the cuentaBancoItems to set
+	 * @param cuentaBancoItems
+	 *            the cuentaBancoItems to set
 	 */
 	public void setCuentaBancoItems(List<SelectItem> cuentaBancoItems) {
 		this.cuentaBancoItems = cuentaBancoItems;
 	}
 
-	
-	
+	/**
+	 * @return the tablaAmortizacionList
+	 */
+	public List<TablaAmortizacionDTO> getTablaAmortizacionList() {
+		return tablaAmortizacionList;
+	}
+
+	/**
+	 * @param tablaAmortizacionList
+	 *            the tablaAmortizacionList to set
+	 */
+	public void setTablaAmortizacionList(List<TablaAmortizacionDTO> tablaAmortizacionList) {
+		this.tablaAmortizacionList = tablaAmortizacionList;
+	}
+
 }

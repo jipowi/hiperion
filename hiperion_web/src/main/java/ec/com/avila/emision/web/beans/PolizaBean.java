@@ -30,7 +30,6 @@ public class PolizaBean implements Serializable {
 	// Cabecera de la poliza
 	private Double derechoEmision;
 	private Double diasCobertura;
-	// Modificacion cambia a tipo Usuario de String
 	private Usuario ejecutivo;
 	private String horaDesde;
 	private String horaHasta;
@@ -44,7 +43,6 @@ public class PolizaBean implements Serializable {
 	private Date vigenciaDesde;
 	private Date vigenciaHasta;
 	private String factura;
-	
 
 	// Pago de Poliza
 	private String formaPago;
@@ -75,6 +73,7 @@ public class PolizaBean implements Serializable {
 	private String tipoPago;
 	private BigDecimal valorPago;
 	private BigDecimal numeroMeses;
+	private String numCuenta;
 
 	public Double getDerechoEmision() {
 		return derechoEmision;
@@ -346,7 +345,8 @@ public class PolizaBean implements Serializable {
 	}
 
 	/**
-	 * @param financiacion the financiacion to set
+	 * @param financiacion
+	 *            the financiacion to set
 	 */
 	public void setFinanciacion(BigDecimal financiacion) {
 		this.financiacion = financiacion;
@@ -360,7 +360,8 @@ public class PolizaBean implements Serializable {
 	}
 
 	/**
-	 * @param letras the letras to set
+	 * @param letras
+	 *            the letras to set
 	 */
 	public void setLetras(Integer letras) {
 		this.letras = letras;
@@ -374,7 +375,8 @@ public class PolizaBean implements Serializable {
 	}
 
 	/**
-	 * @param pagosIguales the pagosIguales to set
+	 * @param pagosIguales
+	 *            the pagosIguales to set
 	 */
 	public void setPagosIguales(Integer pagosIguales) {
 		this.pagosIguales = pagosIguales;
@@ -388,7 +390,8 @@ public class PolizaBean implements Serializable {
 	}
 
 	/**
-	 * @param pagoTarjeta the pagoTarjeta to set
+	 * @param pagoTarjeta
+	 *            the pagoTarjeta to set
 	 */
 	public void setPagoTarjeta(String pagoTarjeta) {
 		this.pagoTarjeta = pagoTarjeta;
@@ -402,7 +405,8 @@ public class PolizaBean implements Serializable {
 	}
 
 	/**
-	 * @param bancos the bancos to set
+	 * @param bancos
+	 *            the bancos to set
 	 */
 	public void setBancos(String bancos) {
 		this.bancos = bancos;
@@ -416,7 +420,8 @@ public class PolizaBean implements Serializable {
 	}
 
 	/**
-	 * @param cuentaBancos the cuentaBancos to set
+	 * @param cuentaBancos
+	 *            the cuentaBancos to set
 	 */
 	public void setCuentaBancos(String cuentaBancos) {
 		this.cuentaBancos = cuentaBancos;
@@ -430,7 +435,8 @@ public class PolizaBean implements Serializable {
 	}
 
 	/**
-	 * @param numeroDebitos the numeroDebitos to set
+	 * @param numeroDebitos
+	 *            the numeroDebitos to set
 	 */
 	public void setNumeroDebitos(Integer numeroDebitos) {
 		this.numeroDebitos = numeroDebitos;
@@ -444,7 +450,8 @@ public class PolizaBean implements Serializable {
 	}
 
 	/**
-	 * @param valorDebitos the valorDebitos to set
+	 * @param valorDebitos
+	 *            the valorDebitos to set
 	 */
 	public void setValorDebitos(BigDecimal valorDebitos) {
 		this.valorDebitos = valorDebitos;
@@ -458,13 +465,26 @@ public class PolizaBean implements Serializable {
 	}
 
 	/**
-	 * @param fechaDebito the fechaDebito to set
+	 * @param fechaDebito
+	 *            the fechaDebito to set
 	 */
 	public void setFechaDebito(String fechaDebito) {
 		this.fechaDebito = fechaDebito;
 	}
 
-	
-	
+	/**
+	 * @return the numCuenta
+	 */
+	public String getNumCuenta() {
+		return numCuenta;
+	}
+
+	/**
+	 * @param numCuenta
+	 *            the numCuenta to set
+	 */
+	public void setNumCuenta(String numCuenta) {
+		this.numCuenta = numCuenta;
+	}
 
 }
