@@ -1,7 +1,9 @@
 package ec.com.avila.hiperion.emision.entities;
 
 import java.io.Serializable;
+
 import javax.persistence.*;
+
 import java.util.List;
 
 
@@ -17,23 +19,23 @@ public class Titulo implements Serializable {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="id_titulo")
-	private Integer idTitulo;
+	private Long idTitulo;
 
 	@Column(name="tipo_titulo")
 	private String tipoTitulo;
 
 	//bi-directional many-to-one association to DetalleAnexo
-	@OneToMany(mappedBy="titulo")
+	@OneToMany(mappedBy="titulo", fetch = FetchType.EAGER)
 	private List<DetalleAnexo> detalleAnexos;
 
 	public Titulo() {
 	}
 
-	public Integer getIdTitulo() {
+	public Long getIdTitulo() {
 		return this.idTitulo;
 	}
 
-	public void setIdTitulo(Integer idTitulo) {
+	public void setIdTitulo(Long idTitulo) {
 		this.idTitulo = idTitulo;
 	}
 

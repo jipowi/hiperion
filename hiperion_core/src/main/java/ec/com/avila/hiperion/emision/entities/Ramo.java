@@ -17,7 +17,7 @@ public class Ramo implements Serializable {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="id_ramo")
-	private Integer idRamo;
+	private Long idRamo;
 
 	@Column(name="codigo_ramo")
 	private String codigoRamo;
@@ -36,11 +36,11 @@ public class Ramo implements Serializable {
 	public Ramo() {
 	}
 
-	public Integer getIdRamo() {
+	public Long getIdRamo() {
 		return this.idRamo;
 	}
 
-	public void setIdRamo(Integer idRamo) {
+	public void setIdRamo(Long idRamo) {
 		this.idRamo = idRamo;
 	}
 

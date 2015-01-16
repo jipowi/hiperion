@@ -17,7 +17,7 @@ public class DetalleAnexo implements Serializable {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="id_detalle_anexo")
-	private Integer idDetalleAnexo;
+	private Long idDetalleAnexo;
 
 	@Column(name="nombre_detalle_anexo")
 	private String nombreDetalleAnexo;
@@ -33,18 +33,18 @@ public class DetalleAnexo implements Serializable {
 	private Ramo ramo;
 
 	//bi-directional many-to-one association to Titulo
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="id_titulo")
 	private Titulo titulo;
 
 	public DetalleAnexo() {
 	}
 
-	public Integer getIdDetalleAnexo() {
+	public Long getIdDetalleAnexo() {
 		return this.idDetalleAnexo;
 	}
 
-	public void setIdDetalleAnexo(Integer idDetalleAnexo) {
+	public void setIdDetalleAnexo(Long idDetalleAnexo) {
 		this.idDetalleAnexo = idDetalleAnexo;
 	}
 

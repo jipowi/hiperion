@@ -26,7 +26,7 @@ public class Anexo implements Serializable {
 	private String nombreAnexo;
 
 	//bi-directional many-to-one association to DetalleAnexo
-	@OneToMany(mappedBy="anexo")
+	@OneToMany(mappedBy = "anexo", cascade = { CascadeType.ALL })
 	private List<DetalleAnexo> detalleAnexos;
 
 	public Anexo() {
