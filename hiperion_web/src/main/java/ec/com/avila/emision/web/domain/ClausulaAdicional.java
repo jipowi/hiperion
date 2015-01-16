@@ -13,7 +13,7 @@ package ec.com.avila.emision.web.domain;
  */
 public class ClausulaAdicional {
 
-	private Integer id;
+	private Long id;
 	private String nombre;
 	private Integer numeroDias;
 
@@ -22,7 +22,7 @@ public class ClausulaAdicional {
 	 * @param idAnexo
 	 * @param nombreDetalleAnexo
 	 */
-	public ClausulaAdicional(Integer id, String nombre) {
+	public ClausulaAdicional(Long id, String nombre) {
 		this.id = id;
 		this.nombre = nombre;
 	}
@@ -30,7 +30,7 @@ public class ClausulaAdicional {
 	/**
 	 * @return the id
 	 */
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
@@ -38,7 +38,7 @@ public class ClausulaAdicional {
 	 * @param id
 	 *            the id to set
 	 */
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

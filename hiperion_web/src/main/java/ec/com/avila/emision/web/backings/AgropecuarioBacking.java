@@ -115,6 +115,7 @@ public class AgropecuarioBacking implements Serializable {
 		clausulasAdicionales = new ArrayList<DetalleAnexoBean>();
 		if (anexos != null && anexos.size() > 0) {
 			for (DetalleAnexo anexo : anexos) {
+
 				if (anexo.getAnexo().getIdAnexo() == 1)
 					clausulasAdicionales.add(new DetalleAnexoBean(anexo.getIdDetalleAnexo(), anexo.getNombreDetalleAnexo()));
 			}
@@ -127,21 +128,28 @@ public class AgropecuarioBacking implements Serializable {
 
 	/**
 	 * 
-	 * <b> Incluir aqui­ la descripcion del metodo. </b>
+	 * <b>Permite obtener las coberturas de transporte </b>
 	 * <p>
 	 * [Author: DARVIN, Date: 20/04/2014]
 	 * </p>
 	 * 
 	 * @return
+	 * @throws HiperionException
 	 */
-	public AnexosDataModel obtenerCoberturasTransporte() {
-		coberturasTransporte = new ArrayList<DetalleAnexoBean>();
-		if (anexos != null && anexos.size() > 0) {
-			for (DetalleAnexo anexo : anexos) {
-				if (anexo.getAnexo().getIdAnexo() == 2 && anexo.getTitulo().getIdTitulo() == 1)
-					coberturasTransporte.add(new DetalleAnexoBean(anexo.getIdDetalleAnexo(), anexo.getNombreDetalleAnexo()));
-			}
+	public AnexosDataModel obtenerCoberturasTransporte() throws HiperionException {
 
+		coberturasTransporte = new ArrayList<DetalleAnexoBean>();
+
+		if (anexos != null && anexos.size() > 0) {
+			List<DetalleAnexo> detallesTransporte = new ArrayList<>();
+			for (DetalleAnexo detalleAnexo : anexos) {
+				if (detalleAnexo.getTitulo() != null) {
+					detallesTransporte = ramoAgropecuarioService.consultarDetallesByTitulo(detalleAnexo.getRamo().getIdRamo(), new Long(1));
+				}
+			}
+			for (DetalleAnexo detalle : detallesTransporte) {
+				coberturasTransporte.add(new DetalleAnexoBean(detalle.getIdDetalleAnexo(), detalle.getNombreDetalleAnexo()));
+			}
 			anexosDataModel = new AnexosDataModel(coberturasTransporte);
 		}
 
@@ -150,21 +158,27 @@ public class AgropecuarioBacking implements Serializable {
 
 	/**
 	 * 
-	 * <b> Incluir aqui­ la descripcion del metodo. </b>
+	 * <b>Permite obtener las coberturas por medio del ramo </b>
 	 * <p>
 	 * [Author: DARVIN, Date: 20/04/2014]
 	 * </p>
 	 * 
 	 * @return
+	 * @throws HiperionException
 	 */
-	public AnexosDataModel obtenerCoberturasVida() {
+	public AnexosDataModel obtenerCoberturasVida() throws HiperionException {
 		coberturasVida = new ArrayList<DetalleAnexoBean>();
-		if (anexos != null && anexos.size() > 0) {
-			for (DetalleAnexo anexo : anexos) {
-				if (anexo.getAnexo().getIdAnexo() == 2 && anexo.getTitulo().getIdTitulo() == 2)
-					coberturasVida.add(new DetalleAnexoBean(anexo.getIdDetalleAnexo(), anexo.getNombreDetalleAnexo()));
-			}
 
+		if (anexos != null && anexos.size() > 0) {
+			List<DetalleAnexo> detallesVida = new ArrayList<>();
+			for (DetalleAnexo detalleAnexo : anexos) {
+				if (detalleAnexo.getTitulo() != null) {
+					detallesVida = ramoAgropecuarioService.consultarDetallesByTitulo(detalleAnexo.getRamo().getIdRamo(), new Long(2));
+				}
+			}
+			for (DetalleAnexo detalle : detallesVida) {
+				coberturasVida.add(new DetalleAnexoBean(detalle.getIdDetalleAnexo(), detalle.getNombreDetalleAnexo()));
+			}
 			anexosDataModel = new AnexosDataModel(coberturasVida);
 		}
 

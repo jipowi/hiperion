@@ -14,14 +14,14 @@ package ec.com.avila.emision.web.beans;
  */
 public class DetalleAnexoBean {
 
-	private Integer idAnexo;
+	private Long idAnexo;
 	private String nombreDetalleAnexo;
 
 	/**
 	 * @param idAnexo
 	 * @param nombreDetalleAnexo
 	 */
-	public DetalleAnexoBean(Integer idAnexo, String nombreDetalleAnexo) {
+	public DetalleAnexoBean(Long idAnexo, String nombreDetalleAnexo) {
 		this.idAnexo = idAnexo;
 		this.nombreDetalleAnexo = nombreDetalleAnexo;
 	}
@@ -29,7 +29,7 @@ public class DetalleAnexoBean {
 	/**
 	 * @return the idAnexo
 	 */
-	public Integer getIdAnexo() {
+	public Long getIdAnexo() {
 		return idAnexo;
 	}
 
@@ -37,7 +37,7 @@ public class DetalleAnexoBean {
 	 * @param idAnexo
 	 *            the idAnexo to set
 	 */
-	public void setIdAnexo(Integer idAnexo) {
+	public void setIdAnexo(Long idAnexo) {
 		this.idAnexo = idAnexo;
 	}
 
