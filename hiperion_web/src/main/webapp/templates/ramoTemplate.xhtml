@@ -14,151 +14,226 @@
 							<!-- DATOS - POLIZA -->
 							<p:tab id="tab1Id" title="Poliza">
 								<div align="center">
-									<p:panel style="width:500px;">
-										<h:panelGrid columns="2" cellspacing="5">
+									<p:panel>
+										<h:panelGrid columns="2" cellpadding="3">
 											<p:outputLabel value="#{emision['poliza.atributo.ejecutivo']}" styleClass="negrita" />
-											<p:outputLabel value="#{polizaBacking.ejecutivo.nombreUsuario}" />
+											<p:outputLabel value="#{polizaBacking.ejecutivo.nombreUsuario}" style="color:green;" />
 										</h:panelGrid>
-										<h:panelGrid columns="3" cellspacing="5">
+										<h:panelGrid columns="4" cellpadding="3">
 											<p:outputLabel value="#{emision['poliza.atributo.numeroPoliza']}" styleClass="negrita" />
-											<p:outputLabel value="#{emision['poliza.atributo.numeroAnexo']}" styleClass="negrita" />
-											<p:outputLabel />
 											<p:inputText value="#{polizaBean.numeroPoliza}" />
+
+											<p:outputLabel value="#{emision['poliza.atributo.numeroAnexo']}" styleClass="negrita" />
 											<p:inputText value="#{polizaBean.numeroAnexo}" />
-											<p:outputLabel />
 
 											<p:outputLabel value="#{emision['poliza.atributo.vigenciaDesde']}" styleClass="negrita" />
-											<p:outputLabel value="#{emision['poliza.atributo.vigenciaHasta']}" styleClass="negrita" />
-											<p:outputLabel value="#{emision['poliza.atributo.diasCobertura']}" styleClass="negrita" />
 											<p:calendar value="#{polizaBean.vigenciaDesde}" pattern="dd/MM/yyyy HH:mm" locale="es" navigator="true" />
+
+											<p:outputLabel value="#{emision['poliza.atributo.vigenciaHasta']}" styleClass="negrita" />
 											<p:calendar value="#{polizaBean.vigenciaHasta}" pattern="dd/MM/yyyy HH:mm" locale="es" navigator="true" />
+
+											<p:outputLabel value="#{emision['poliza.atributo.diasCobertura']}" styleClass="negrita" />
 											<p:inputText value="#{polizaBean.diasCobertura}" />
 
-											<p:outputLabel value="#{emision['poliza.atribuoto.factura']}" styleClass="negtita" />
-											<p:inputText value="#{polizaBean.factura}" />
-
-											<p:spacer height="30px;" />
-
 											<p:outputLabel value="#{emision['poliza.atributo.suma']}" styleClass="negrita" />
-											<p:outputLabel value="#{emision['poliza.atributo.prima']}" styleClass="negrita" />
-											<p:outputLabel value="#{emision['poliza.atributo.superIntBancosSeguros']}" styleClass="negrita" />
 											<p:inputText value="#{polizaBean.sumaAsegurada}" />
+
+											<p:outputLabel value="#{emision['poliza.atributo.prima']}" styleClass="negrita" />
 											<p:inputText value="#{polizaBean.primaNeta}" />
+
+											<p:outputLabel value="#{emision['poliza.atributo.superIntBancosSeguros']}" styleClass="negrita" />
 											<p:inputText value="#{polizaBean.superBanSeguros}" />
 
 											<p:outputLabel value="#{emision['poliza.atributo.seguroCampesino']}" styleClass="negrita" />
-											<p:outputLabel value="#{emision['poliza.atributo.derechosEmision']}" styleClass="negrita" />
-											<p:outputLabel />
 											<p:inputText value="#{polizaBean.seguroCampesino}" />
+
+											<p:outputLabel value="#{emision['poliza.atributo.derechosEmision']}" styleClass="negrita" />
 											<p:inputText value="#{polizaBean.derechoEmision}" />
-											<p:outputLabel />
 										</h:panelGrid>
 									</p:panel>
 								</div>
 							</p:tab>
+							<!-- PAGO POLIZA -->
 							<p:tab id="tab2Id" title="Pago">
 								<h:panelGrid columns="2" cellpadding="3">
 									<p:outputLabel value="#{emision['poliza.atributo.factura']}" styleClass="negrita" />
 									<p:inputText value="#{polizaBean.numeroFactura}" />
+
 									<p:outputLabel value="#{emision['poliza.financiacion.atributo.formaPago']}" styleClass="negrita" />
 									<p:selectOneMenu id="formaPagoId" value="#{polizaBean.idFormaPago}" required="true" effect="drop">
-										<f:selectItem itemLabel="--Seleccionar--" noSelectionOption="true" />
+										<f:selectItem itemLabel="Seleccionar" noSelectionOption="true" />
 										<f:selectItems value="#{polizaBacking.formasPagoItems}" />
 										<p:ajax listener="#{polizaBacking.selectFormaDePago()}" update="pagoContadoId, pagoFinanciadoId, pagoTarjetaCreditoId, pagoDebitoBancarioId" />
 									</p:selectOneMenu>
 								</h:panelGrid>
 								<p:separator id="customSeparator" style="width:auto;height:3px" />
 								<div align="center">
-									<table cellpadding="10">
-										<tr>
-											<td valign="top" width="30%"><p:panel id="pagoContadoId" visible="#{polizaBacking.activarPanelPagoContado}">
-													<h:outputText value="Pago al Contado:" styleClass="negrita" />
-													<p:selectOneRadio id="contadoId">
-														<f:selectItem itemLabel="Efectivo" itemValue="1" />
-														<f:selectItem itemLabel="Cheque" itemValue="2" />
-													</p:selectOneRadio>
-												</p:panel> <p:panel id="pagoFinanciadoId" visible="#{polizaBacking.activarPanelPagoFinanciado}">
-													<h:outputText value="Pago Financiado:" styleClass="negrita" />
-												</p:panel> <p:panel id="pagoTarjetaCreditoId" visible="#{polizaBacking.activarPanelPagoTarjetaCredito}">
-													<h:outputText value="Pago Tarjeta de Credito" styleClass="negrita" />
-												</p:panel> <p:panel id="pagoDebitoBancarioId" visible="#{polizaBacking.activarPanelPagoDebitoBancario}">
-													<h:outputText value="Pago Debito Bancario" styleClass="negrita" />
-												</p:panel></td>
-											<td><p:panel>
-													<h:panelGrid columns="4" cellpadding="3" style="width: 550px">
-														<p:outputLabel value="#{emision['poliza.financiacion.atributo.financiacion']}" styleClass="negrita" />
-														<p:inputText value="#{polizaBean.financiacion}" />
-														<p:outputLabel value="#{emision['poliza.financiacion.atributo.subtotal']}" styleClass="negrita" />
-														<p:inputText value="#{polizaBean.subtotal}" />
-														<p:outputLabel value="#{emision['poliza.financiacion.atributo.adicionalSegCampesino']}" styleClass="negrita" />
-														<p:inputText value="#{polizaBean.adicionalSegCampesino}" />
-														<p:outputLabel value="#{emision['poliza.financiacion.atributo.iva']}" styleClass="negrita" />
-														<p:inputText value="#{polizaBean.iva}" />
-														<p:outputLabel />
-														<p:outputLabel />
-														<p:outputLabel value="#{emision['poliza.financiacion.atributo.total']}" styleClass="negrita" />
-														<p:inputText value="#{polizaBean.total}" />
-													</h:panelGrid>
-												</p:panel> <p:spacer height="15px;" /> <p:panel>
-													<h:panelGrid>
-														<p:outputLabel value="#{emision['poliza.financiacion.atributo.total']}" styleClass="negrita" />
-														<p:inputText value="#{polizaBean.total}" />
+									<h:panelGrid columns="1" cellpadding="3">
+										<!-- PANEL COMUN -->
+										<p:panel>
+											<h:panelGrid columns="2" cellpadding="3">
+												<p:outputLabel value="#{emision['poliza.financiacion.atributo.financiacion']}" styleClass="negrita" />
+												<p:inputText value="#{polizaBean.financiacion}" />
 
-														<p:spacer height="15px;" />
-														<p:outputLabel value="#{emision['poliza.financiacion.atributo.cuotaInicialPorcentaje']}" styleClass="negrita" />
-														<p:selectOneMenu value="#{polizaBean.cuotaInicial}" effect="drop">
-															<f:selectItem itemLabel="Seleccione" noSelectionOption="true" />
-															<f:selectItems value="#{polizaBacking.cuotaIniacialItems}" />
-														</p:selectOneMenu>
-														<p:outputLabel value="#{emision['poliza.financiacion.atributo.cuotaInicial']}" styleClass="negrita" />
-														<p:inputText value="#{polizaBean.cuotaInicial}" />
-														<p:outputLabel value="#{emision['poliza.financiacion.atributo.letras']}" styleClass="negrita" />
-														<p:selectOneRadio value="#{polizaBean.letras}">
-															<f:selectItem itemLabel="3 Letras" itemValue="1" />
-															<f:selectItem itemLabel="6 Letras" itemValue="2" />
-															<f:selectItem itemLabel="9 Letras" itemValue="3" />
-														</p:selectOneRadio>
-														<p:spacer height="5px;" />
-														<p:outputLabel value="#{emision['poliza.financiacion.atributo.pagosIguales']}" />
-														<p:selectOneRadio value="#{polizaBean.pagosIguales}">
-															<f:selectItem itemLabel="3 Pagos" itemValue="1" />
-															<f:selectItem itemLabel="6 Pagos" itemValue="2" />
-															<f:selectItem itemLabel="9 Pagos" itemValue="3" />
-															<f:selectItem itemLabel="12 Pagos" itemValue="4" />
-														</p:selectOneRadio>
-														
-														<p:outputLabel value="#{emision['poliza.financiacion.atributo.pagosIguales']}" styleClass="negrita" />
-														<p:selectOneMenu value="#{polizaBean.pagoTarjeta}" effect="drop">
-															<f:selectItem itemLabel="Seleccione" noSelectionOption="true" />
-															<f:selectItems value="#{polizaBacking.pagoTarjetaItems}" />
-														</p:selectOneMenu>
-														
-														<p:outputLabel value="#{emision['poliza.financiacion.atributo.debitoBancario']}" styleClass="negrita" />
-														<p:selectOneMenu value="#{polizaBean.bancos}" effect="drop">
-															<f:selectItem itemLabel="Seleccione" noSelectionOption="true" />
-															<f:selectItems value="#{polizaBacking.bancoItems}" />
-														</p:selectOneMenu>
-														
-														<p:outputLabel value="#{emision['poliza.financimiento.atributo.tipoCuenta']}" styleClass="negrita" />
-														<p:selectOneMenu value="#{polizaBean.cuentaBancos}" effect="drop">
-															<f:selectItem itemLabel="Seleccione" noSelectionOption="true" />
-															<f:selectItems value="#{polizaBacking.cuentaBancoItems}" />
-														</p:selectOneMenu>
-														<h:panelGrid columns="2">
-															<p:outputLabel value="#{emision['poliza.financimiento.atributo.numeroDebitos']}" styleClass="negrita" />
-															<p:inputText value="#{polizaBean.numeroDebitos}" />
-															
-															<p:outputLabel value="#{emision['poliza.financimiento.atributo.valorDebitos']}" styleClass="negrita" />
-															<p:inputText value="#{polizaBean.valorDebitos}" />
-															
-															<p:outputLabel value="#{emision['poliza.financimiento.atributo.fechaDebito']}" styleClass="negrita" />
-															<p:inputText value="#{polizaBean.fechaDebito}" />
+												<p:outputLabel value="#{emision['poliza.financiacion.atributo.subtotal']}" styleClass="negrita" />
+												<p:inputText value="#{polizaBean.subtotal}" />
 
-														</h:panelGrid>
-													</h:panelGrid>
-												</p:panel></td>
-										</tr>
-									</table>
+												<p:outputLabel value="#{emision['poliza.financiacion.atributo.adicionalSegCampesino']}" styleClass="negrita" />
+												<p:inputText value="#{polizaBean.adicionalSegCampesino}" />
+
+												<p:outputLabel value="#{emision['poliza.financiacion.atributo.iva']}" styleClass="negrita" />
+												<p:inputText value="#{polizaBean.iva}" />
+
+												<p:outputLabel value="#{emision['poliza.financiacion.atributo.total']}" styleClass="negrita" />
+												<p:inputText value="#{polizaBean.total}" />
+
+												<p:outputLabel value="#{emision['poliza.financiacion.atributo.pagosIguales']}" styleClass="negrita" />
+												<p:selectOneMenu value="#{polizaBean.pagoTarjeta}" effect="drop">
+													<f:selectItem itemLabel="Seleccione" noSelectionOption="true" />
+													<f:selectItems value="#{polizaBacking.pagoTarjetaItems}" />
+												</p:selectOneMenu>
+											</h:panelGrid>
+										</p:panel>
+
+										<!-- CONTADO -->
+										<p:panel id="pagoContadoId" visible="#{polizaBacking.activarPanelPagoContado}">
+											<div align="center">
+												<h:panelGrid columns="1">
+													<h:outputLabel value="PAGO AL CONTADO" style="color: chocolate;" />
+												</h:panelGrid>
+											</div>
+											<p:spacer height="10px;" />
+											<h:panelGrid columns="2" cellpadding="3">
+												<h:outputText value="#{emision['poliza.lbl.tipoPago']}:" styleClass="negrita" />
+												<p:selectOneRadio id="contadoId">
+													<f:selectItem itemLabel="Efectivo" itemValue="1" />
+													<f:selectItem itemLabel="Cheque" itemValue="2" />
+												</p:selectOneRadio>
+											</h:panelGrid>
+										</p:panel>
+										<!-- PAGO FINANCIADO -->
+										<p:panel id="pagoFinanciadoId" visible="#{polizaBacking.activarPanelPagoFinanciado}">
+											<div align="center">
+												<h:panelGrid columns="1">
+													<h:outputLabel value="PAGO FINANCIADO" style="color: chocolate;" />
+												</h:panelGrid>
+											</div>
+											<p:spacer height="10px;" />
+											<h:panelGrid columns="3" cellpadding="3">
+												<p:outputLabel value="#{emision['poliza.financiacion.atributo.cuotaInicial']}:" styleClass="negrita" />
+												<p:inputText value="#{polizaBean.cuotaInicial}" />
+												<p:selectOneMenu value="#{polizaBean.cuotaInicial}" effect="drop">
+													<f:selectItem itemLabel="Seleccione" noSelectionOption="true" />
+													<f:selectItems value="#{polizaBacking.cuotaIniacialItems}" />
+												</p:selectOneMenu>
+											</h:panelGrid>
+											<h:panelGrid columns="2" cellpadding="3">
+												<p:outputLabel value="#{emision['poliza.financiacion.atributo.letras']}" styleClass="negrita" />
+												<p:selectOneRadio value="#{polizaBean.letras}">
+													<f:selectItem itemLabel="3 Letras" itemValue="1" />
+													<f:selectItem itemLabel="6 Letras" itemValue="2" />
+													<f:selectItem itemLabel="9 Letras" itemValue="3" />
+												</p:selectOneRadio>
+
+												<p:outputLabel value="#{emision['poliza.financiacion.atributo.pagosIguales']}" />
+												<p:selectOneRadio value="#{polizaBean.pagosIguales}">
+													<f:selectItem itemLabel="3 Pagos" itemValue="1" />
+													<f:selectItem itemLabel="6 Pagos" itemValue="2" />
+													<f:selectItem itemLabel="9 Pagos" itemValue="3" />
+													<f:selectItem itemLabel="12 Pagos" itemValue="4" />
+												</p:selectOneRadio>
+
+											</h:panelGrid>
+										</p:panel>
+										<!-- TARJETA DE CREDITO -->
+										<p:panel id="pagoTarjetaCreditoId" visible="#{polizaBacking.activarPanelPagoTarjetaCredito}">
+											<div align="center">
+												<h:panelGrid columns="1">
+													<h:outputLabel value="TARJETA DE CREDITO" style="color: chocolate;" />
+												</h:panelGrid>
+											</div>
+											<p:spacer height="10px;" />
+											<h:panelGrid columns="2" cellpadding="3">
+
+											</h:panelGrid>
+										</p:panel>
+										<!-- DEBITO BANCARIO -->
+										<p:panel id="pagoDebitoBancarioId" visible="#{polizaBacking.activarPanelPagoDebitoBancario}">
+											<div align="center">
+												<h:panelGrid columns="1">
+													<h:outputLabel value="PAGO DEBITO BANCARIO" style="color: chocolate;" />
+												</h:panelGrid>
+											</div>
+											<p:spacer height="10px;" />
+											<h:panelGrid columns="2" cellpadding="3">
+												<p:outputLabel value="#{emision['poliza.financimiento.atributo.banco']}:" styleClass="negrita" />
+												<p:selectOneMenu value="#{polizaBean.bancos}" effect="drop">
+													<f:selectItem itemLabel="Seleccione" noSelectionOption="true" />
+													<f:selectItems value="#{polizaBacking.bancoItems}" />
+												</p:selectOneMenu>
+
+												<p:outputLabel value="#{emision['poliza.lbl.numCuenta']}:" styleClass="negrita" />
+												<p:inputText value="#{polizaBean.numCuenta}" />
+
+												<p:outputLabel value="#{emision['poliza.financimiento.atributo.tipoCuenta']}:" styleClass="negrita" />
+												<p:selectOneMenu value="#{polizaBean.cuentaBancos}" effect="drop">
+													<f:selectItem itemLabel="Seleccione" noSelectionOption="true" />
+													<f:selectItems value="#{polizaBacking.cuentaBancoItems}" />
+												</p:selectOneMenu>
+
+												<p:outputLabel value="#{emision['poliza.financimiento.atributo.numeroDebitos']}:" styleClass="negrita" />
+												<p:inputText value="#{polizaBean.numeroDebitos}" />
+
+												<p:outputLabel value="#{emision['poliza.financimiento.atributo.valorDebitos']}:" styleClass="negrita" />
+												<p:outputLabel value="#{polizaBean.valorDebitos}" />
+
+												<p:outputLabel value="#{emision['poliza.financimiento.atributo.fechaDebito']}:" styleClass="negrita" />
+												<p:inputText value="#{polizaBean.fechaDebito}" />
+											</h:panelGrid>
+										</p:panel>
+									</h:panelGrid>
+									<h:panelGrid columns="3">
+										<h:graphicImage name="help.png" library="img" />
+
+										<p:outputLabel value="#{emision['poliza.info.tablaAmortizacion']}" style="color:green;" />
+
+										<p:commandLink title="Generar tabla" actionListener="#{polizaBacking.generarTablaAmortizacion()}" update="tablaAmortizacion">
+											<h:graphicImage name="timeTable.png" library="img" />
+										</p:commandLink>
+									</h:panelGrid>
+
+									<p:dataTable id="tablaAmortizacion" value="#{polizaBacking.tablaAmortizacionList}" var="tabla" widgetVar="50" editable="true">
+										<p:ajax event="rowEdit" listener="#{polizaBacking.onEditTable}" update="tablaAmortizacion" />
+										<p:column>
+											<f:facet name="header">
+												<h:outputText value="#{emision['poliza.tabla.letra']}" />
+											</f:facet>
+											<h:outputText value="#{tabla.letra}" />
+										</p:column>
+										<p:column>
+											<f:facet name="header">
+												<h:outputText value="#{emision['poliza.tabla.valor']}" />
+											</f:facet>
+											<h:outputText value="#{tabla.valor}" />
+										</p:column>
+										<p:column>
+											<f:facet name="header">
+												<h:outputText value="#{emision['poliza.tabla.fechaVencimiento']}" />
+											</f:facet>
+
+											<p:cellEditor>
+												<f:facet name="output">
+													<h:outputText value="#{tabla.fechaVencimiento}" />
+												</f:facet>
+												<f:facet name="input">
+													<h:outputText value="#{tabla.fechaVencimiento}" />
+												</f:facet>
+											</p:cellEditor>
+										</p:column>
+										<p:column headerText="Options" style="width:50px">
+											<p:rowEditor />
+										</p:column>
+									</p:dataTable>
 								</div>
 							</p:tab>
 						</p:tabView>
