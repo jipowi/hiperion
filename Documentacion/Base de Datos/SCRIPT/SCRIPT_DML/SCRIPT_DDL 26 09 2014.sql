@@ -2306,7 +2306,7 @@ INSERT INTO MENU VALUES (36, 2, 'vida', '/pages/vida.jsf','A');
 INSERT INTO MENU VALUES (37, 1, 'Ingresar Cliente', '/pages/cliente.jsf','A');
 INSERT INTO MENU VALUES (38, 3, 'Ingresar Aseguradora', '/pages/aseguradoras.jsf','A');
 INSERT INTO MENU VALUES (39, 4, 'Ingresar Usuarios', '/pages/usuarios.jsf','A');
-INSERT INTO MENU VALUES (40, 4, 'Enviar correo', '/pages/correspondencia.jsf','A');
+INSERT INTO MENU VALUES (40, 5, 'Enviar correo', '/pages/correspondencia.jsf','A');
 
 INSERT INTO ROL_MENU VALUES (1,1,1);
 INSERT INTO ROL_MENU VALUES (2,1,2);
