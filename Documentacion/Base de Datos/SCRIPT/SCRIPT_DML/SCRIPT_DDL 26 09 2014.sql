@@ -2274,6 +2274,8 @@ INSERT INTO MENU VALUES (1, NULL, 'Cliente', NULL,'A');
 INSERT INTO MENU VALUES (2, NULL, 'Ramos', NULL,'A');
 INSERT INTO MENU VALUES (3, NULL, 'Aseguradoras', NULL,'A');
 INSERT INTO MENU VALUES (4, NULL, 'Administracion', NULL,'A');
+INSERT INTO MENU VALUES (5, NULL, 'Correspondencia', NULL,'A');
+
 
 INSERT INTO MENU VALUES (11, 2, 'Accidentes Personales', '/pages/accidentesPersonales.jsf','A');
 INSERT INTO MENU VALUES (12, 2, 'Agropecuario', '/pages/agropecuario.jsf','A');
@@ -2304,6 +2306,7 @@ INSERT INTO MENU VALUES (36, 2, 'vida', '/pages/vida.jsf','A');
 INSERT INTO MENU VALUES (37, 1, 'Ingresar Cliente', '/pages/cliente.jsf','A');
 INSERT INTO MENU VALUES (38, 3, 'Ingresar Aseguradora', '/pages/aseguradoras.jsf','A');
 INSERT INTO MENU VALUES (39, 4, 'Ingresar Usuarios', '/pages/usuarios.jsf','A');
+INSERT INTO MENU VALUES (40, 4, 'Enviar correo', '/pages/correspondencia.jsf','A');
 
 INSERT INTO ROL_MENU VALUES (1,1,1);
 INSERT INTO ROL_MENU VALUES (2,1,2);
@@ -2338,3 +2341,4 @@ INSERT INTO ROL_MENU VALUES (30,1,36);
 INSERT INTO ROL_MENU VALUES (31,1,37);
 INSERT INTO ROL_MENU VALUES (32,1,38);
 INSERT INTO ROL_MENU VALUES (33,1,39);
+INSERT INTO ROL_MENU VALUES (34,1,40);
