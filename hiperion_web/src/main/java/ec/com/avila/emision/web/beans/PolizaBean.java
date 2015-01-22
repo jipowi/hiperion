@@ -62,18 +62,19 @@ public class PolizaBean implements Serializable {
 	private Integer numeroDebitos;
 	private BigDecimal valorDebitos;
 	private String fechaDebito;
+	private String numeroCuenta;
+	private BigDecimal porcentajeFinanciamiento;
 
 	// Financiamiento
 	private BigDecimal numeroCuota;
 	private BigDecimal valor;
 	private Date fechaVencimiento;
+	private Integer numeroPagos;
 
 	// Tarjeta de credito
-	private Integer idTarjetaCredito;
-	private String tipoPago;
-	private BigDecimal valorPago;
-	private BigDecimal numeroMeses;
-	private String numCuenta;
+	private String numeroTarjeta;
+	private Date fechaCaducidad;
+	private BigDecimal interes;
 
 	public Double getDerechoEmision() {
 		return derechoEmision;
@@ -281,29 +282,6 @@ public class PolizaBean implements Serializable {
 		this.fechaVencimiento = fechaVencimiento;
 	}
 
-	public String getTipoPago() {
-		return tipoPago;
-	}
-
-	public void setTipoPago(String tipoPago) {
-		this.tipoPago = tipoPago;
-	}
-
-	public BigDecimal getValorPago() {
-		return valorPago;
-	}
-
-	public void setValorPago(BigDecimal valorPago) {
-		this.valorPago = valorPago;
-	}
-
-	public BigDecimal getNumeroMeses() {
-		return numeroMeses;
-	}
-
-	public void setNumeroMeses(BigDecimal numeroMeses) {
-		this.numeroMeses = numeroMeses;
-	}
 
 	public Integer getIdFormaPago() {
 		return idFormaPago;
@@ -313,13 +291,6 @@ public class PolizaBean implements Serializable {
 		this.idFormaPago = idFormaPago;
 	}
 
-	public Integer getIdTarjetaCredito() {
-		return idTarjetaCredito;
-	}
-
-	public void setIdTarjetaCredito(Integer idTarjetaCredito) {
-		this.idTarjetaCredito = idTarjetaCredito;
-	}
 
 	public String getFormaPago() {
 		return formaPago;
@@ -472,19 +443,91 @@ public class PolizaBean implements Serializable {
 		this.fechaDebito = fechaDebito;
 	}
 
+
 	/**
-	 * @return the numCuenta
+	 * @return the interes
 	 */
-	public String getNumCuenta() {
-		return numCuenta;
+	public BigDecimal getInteres() {
+		return interes;
 	}
 
 	/**
-	 * @param numCuenta
-	 *            the numCuenta to set
+	 * @param interes the interes to set
 	 */
-	public void setNumCuenta(String numCuenta) {
-		this.numCuenta = numCuenta;
+	public void setInteres(BigDecimal interes) {
+		this.interes = interes;
 	}
+
+	/**
+	 * @return the numeroTarjeta
+	 */
+	public String getNumeroTarjeta() {
+		return numeroTarjeta;
+	}
+
+	/**
+	 * @param numeroTarjeta the numeroTarjeta to set
+	 */
+	public void setNumeroTarjeta(String numeroTarjeta) {
+		this.numeroTarjeta = numeroTarjeta;
+	}
+
+	/**
+	 * @return the fechaCaducidad
+	 */
+	public Date getFechaCaducidad() {
+		return fechaCaducidad;
+	}
+
+	/**
+	 * @param fechaCaducidad the fechaCaducidad to set
+	 */
+	public void setFechaCaducidad(Date fechaCaducidad) {
+		this.fechaCaducidad = fechaCaducidad;
+	}
+
+	/**
+	 * @return the numeroCuenta
+	 */
+	public String getNumeroCuenta() {
+		return numeroCuenta;
+	}
+
+	/**
+	 * @param numeroCuenta the numeroCuenta to set
+	 */
+	public void setNumeroCuenta(String numeroCuenta) {
+		this.numeroCuenta = numeroCuenta;
+	}
+
+	/**
+	 * @return the numeroPagos
+	 */
+	public Integer getNumeroPagos() {
+		return numeroPagos;
+	}
+
+	/**
+	 * @param numeroPagos the numeroPagos to set
+	 */
+	public void setNumeroPagos(Integer numeroPagos) {
+		this.numeroPagos = numeroPagos;
+	}
+
+	/**
+	 * @return the porcentajeFinanciamiento
+	 */
+	public BigDecimal getPorcentajeFinanciamiento() {
+		return porcentajeFinanciamiento;
+	}
+
+	/**
+	 * @param porcentajeFinanciamiento the porcentajeFinanciamiento to set
+	 */
+	public void setPorcentajeFinanciamiento(BigDecimal porcentajeFinanciamiento) {
+		this.porcentajeFinanciamiento = porcentajeFinanciamiento;
+	}
+	
+	
 
 }

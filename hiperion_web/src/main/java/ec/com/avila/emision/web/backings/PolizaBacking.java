@@ -17,7 +17,6 @@ import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
-import org.apache.tools.ant.taskdefs.Truncate;
 import org.primefaces.event.RowEditEvent;
 
 import ec.com.avila.emision.web.beans.PolizaBean;
@@ -63,6 +62,7 @@ public class PolizaBacking implements Serializable {
 	private List<SelectItem> pagoTarjetaItems;
 	private List<SelectItem> bancoItems;
 	private List<SelectItem> cuentaBancoItems;
+	private List<SelectItem> pagoFinanciadoItems;
 	private Usuario ejecutivo;
 
 	private List<TablaAmortizacionDTO> tablaAmortizacionList = new ArrayList<TablaAmortizacionDTO>();
@@ -446,6 +446,31 @@ public class PolizaBacking implements Serializable {
 			cuentaBancoItems.add(selectItem);
 		}
 		return cuentaBancoItems;
+	}
+
+	/**
+	 * @return the pagoFinanciadoItems
+	 */
+	public List<SelectItem> getPagoFinanciadoItems() throws HiperionException {
+		this.pagoFinanciadoItems = new ArrayList<SelectItem>();
+
+		for (int i = 1; i <= 12; i++) {
+
+			SelectItem pago = new SelectItem();
+			pago = new SelectItem(i,""+i);
+			pagoFinanciadoItems.add(pago);
+
+		}
+
+		return pagoFinanciadoItems;
+	}
+
+	/**
+	 * @param pagoFinanciadoItems
+	 *            the pagoFinanciadoItems to set
+	 */
+	public void setPagoFinanciadoItems(List<SelectItem> pagoFinanciadoItems) {
+		this.pagoFinanciadoItems = pagoFinanciadoItems;
 	}
 
 	/**
