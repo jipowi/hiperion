@@ -58,20 +58,6 @@
 										</div>
 									</h:form>
 								</p:tab>
-
-								<!-- CLAUSULAS ADICIONALES -->
-								<p:tab title="#{emision['ap.tab.clausulasAdicionales']}">
-									<p:dataTable id="caAPTblId" var="clausula" value="#{accidentesPersonalesBacking.clausulasAdicionales}"
-										selection="#{accidentesPersonalesBacking.selectClausulasAdicionales}" rowKey="#{clausula.id}" style="margin-bottom:0" paginator="true"
-										rows="4">
-										<f:facet name="header">#{emision['anexo.titulo.cad']}</f:facet>
-										<p:column selectionMode="multiple" style="width:2px; text-align: center;" />
-										<p:column headerText="#{emision['ap.clausulas']}">#{clausula.nombre}</p:column>
-										<p:column headerText="#{emision['ap.numeroDias']}" style="width:60px; text-align: center;">
-											<p:inputText rendered="#{clausula.id==2 or clausula.id==4}" value="#{clausula.numeroDias}" style="width:50px;" />
-										</p:column>
-									</p:dataTable>
-								</p:tab>
 								<!-- COBERTURAS -->
 								<p:tab title="#{emision['anexo.titulo.tab.cob']}">
 									<p:dataTable id="cobAPTblId" var="cobertura" value="#{accidentesPersonalesBacking.coberturas}"
@@ -94,6 +80,20 @@
 										<p:column headerText="#{emision['anexo.ca.nombre']}">#{condespe.nombre}</p:column>
 									</p:dataTable>
 								</p:tab>
+								<!-- CLAUSULAS ADICIONALES -->
+								<p:tab title="#{emision['ap.tab.clausulasAdicionales']}">
+									<p:dataTable id="caAPTblId" var="clausula" value="#{accidentesPersonalesBacking.clausulasAdicionales}"
+										selection="#{accidentesPersonalesBacking.selectClausulasAdicionales}" rowKey="#{clausula.id}" style="margin-bottom:0" paginator="true"
+										rows="4">
+										<f:facet name="header">#{emision['anexo.titulo.cad']}</f:facet>
+										<p:column selectionMode="multiple" style="width:2px; text-align: center;" />
+										<p:column headerText="#{emision['ap.clausulas']}">#{clausula.nombre}</p:column>
+										<p:column headerText="#{emision['ap.numeroDias']}" style="width:60px; text-align: center;">
+											<p:inputText rendered="#{clausula.id==2 or clausula.id==4}" value="#{clausula.numeroDias}" style="width:50px;" />
+										</p:column>
+									</p:dataTable>
+								</p:tab>
+
 								<!-- GRUPOS -->
 								<p:tab title="#{emision['ap.tab.grupos']}">
 									<h:form id="formGrupos">
