@@ -86,14 +86,8 @@
 
 												<p:outputLabel value="#{emision['poliza.financiacion.atributo.total']}" styleClass="negrita" />
 												<p:inputText value="#{polizaBean.total}" />
-
-												<p:outputLabel value="#{emision['poliza.financiacion.atributo.pagosIguales']}" styleClass="negrita" />
-												<p:selectOneMenu value="#{polizaBean.pagoTarjeta}" effect="drop">
-													<f:selectItem itemLabel="Seleccione" noSelectionOption="true" />
-													<f:selectItems value="#{polizaBacking.pagoTarjetaItems}" />
-												</p:selectOneMenu>
 											</h:panelGrid>
-										</p:panel>
+											</p:panel>
 
 										<!-- CONTADO -->
 										<p:panel id="pagoContadoId" visible="#{polizaBacking.activarPanelPagoContado}">
@@ -108,6 +102,7 @@
 												<p:selectOneRadio id="contadoId">
 													<f:selectItem itemLabel="Efectivo" itemValue="1" />
 													<f:selectItem itemLabel="Cheque" itemValue="2" />
+													<f:selectItem itemLabel="Tarjeta de Credito" itemValue="3" />
 												</p:selectOneRadio>
 											</h:panelGrid>
 										</p:panel>
@@ -119,30 +114,18 @@
 												</h:panelGrid>
 											</div>
 											<p:spacer height="10px;" />
-											<h:panelGrid columns="3" cellpadding="3">
+											<h:panelGrid columns="2" cellpadding="3">
 												<p:outputLabel value="#{emision['poliza.financiacion.atributo.cuotaInicial']}:" styleClass="negrita" />
 												<p:inputText value="#{polizaBean.cuotaInicial}" />
-												<p:selectOneMenu value="#{polizaBean.cuotaInicial}" effect="drop">
+												
+												<p:outputLabel value="#{emision['poliza.financiacion.atributo.cuotaInicialPorcentaje']}" styleClass="negrita"/>
+												<p:inputText value="#{polizaBean.porcentajeFinanciamiento}"/>
+												
+												<p:outputLabel value="#{emision['poliza.financiacion.atributo.numeroPagos']}" styleClass="negrita"/>
+												<p:selectOneMenu value="#{polizaBean.numeroCuenta}" effect="drop">
 													<f:selectItem itemLabel="Seleccione" noSelectionOption="true" />
-													<f:selectItems value="#{polizaBacking.cuotaIniacialItems}" />
+													<f:selectItems value="#{polizaBacking.pagoFinanciadoItems}" />
 												</p:selectOneMenu>
-											</h:panelGrid>
-											<h:panelGrid columns="2" cellpadding="3">
-												<p:outputLabel value="#{emision['poliza.financiacion.atributo.letras']}" styleClass="negrita" />
-												<p:selectOneRadio value="#{polizaBean.letras}">
-													<f:selectItem itemLabel="3 Letras" itemValue="1" />
-													<f:selectItem itemLabel="6 Letras" itemValue="2" />
-													<f:selectItem itemLabel="9 Letras" itemValue="3" />
-												</p:selectOneRadio>
-
-												<p:outputLabel value="#{emision['poliza.financiacion.atributo.pagosIguales']}" />
-												<p:selectOneRadio value="#{polizaBean.pagosIguales}">
-													<f:selectItem itemLabel="3 Pagos" itemValue="1" />
-													<f:selectItem itemLabel="6 Pagos" itemValue="2" />
-													<f:selectItem itemLabel="9 Pagos" itemValue="3" />
-													<f:selectItem itemLabel="12 Pagos" itemValue="4" />
-												</p:selectOneRadio>
-
 											</h:panelGrid>
 										</p:panel>
 										<!-- TARJETA DE CREDITO -->
@@ -154,7 +137,14 @@
 											</div>
 											<p:spacer height="10px;" />
 											<h:panelGrid columns="2" cellpadding="3">
-
+												<p:outputLabel value="#{emision['poliza.tarjeta.numeroTarjeta']}" styleClass="negrita"/>
+												<p:inputText value="#{polizaBean.numeroTarjeta}"/>
+												
+												<p:outputLabel value="#{emision['poliza.tarjeta.fechaCaducidad']}" styleClass="negrita"/>
+												<p:inputText value="#{polizaBean.fechaCaducidad}"/>
+												
+												<p:outputLabel value="#{emision['poliza.tarjeta.intereses']}" styleClass="negrita"/>
+												<p:inputText value="#{polizaBean.interes}"/>
 											</h:panelGrid>
 										</p:panel>
 										<!-- DEBITO BANCARIO -->
@@ -173,7 +163,7 @@
 												</p:selectOneMenu>
 
 												<p:outputLabel value="#{emision['poliza.lbl.numCuenta']}:" styleClass="negrita" />
-												<p:inputText value="#{polizaBean.numCuenta}" />
+												<p:inputText value="#{polizaBean.numeroCuenta}" />
 
 												<p:outputLabel value="#{emision['poliza.financimiento.atributo.tipoCuenta']}:" styleClass="negrita" />
 												<p:selectOneMenu value="#{polizaBean.cuentaBancos}" effect="drop">
@@ -185,10 +175,11 @@
 												<p:inputText value="#{polizaBean.numeroDebitos}" />
 
 												<p:outputLabel value="#{emision['poliza.financimiento.atributo.valorDebitos']}:" styleClass="negrita" />
-												<p:outputLabel value="#{polizaBean.valorDebitos}" />
+												<p:inputText value="#{polizaBean.valorDebitos}" />
 
 												<p:outputLabel value="#{emision['poliza.financimiento.atributo.fechaDebito']}:" styleClass="negrita" />
-												<p:inputText value="#{polizaBean.fechaDebito}" />
+												<p:calendar value="#{polizaBean.fechaDebito}" pattern="dd/MM/yyyy HH:mm" locale="es" navigator="true" />
+												
 											</h:panelGrid>
 										</p:panel>
 									</h:panelGrid>
