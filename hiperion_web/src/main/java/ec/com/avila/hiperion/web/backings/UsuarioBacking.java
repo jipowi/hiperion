@@ -14,6 +14,7 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.model.SelectItem;
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
 import org.primefaces.context.RequestContext;
@@ -32,10 +33,14 @@ import ec.com.avila.hiperion.emision.entities.Rol;
 import ec.com.avila.hiperion.emision.entities.RolMenu;
 import ec.com.avila.hiperion.emision.entities.Usuario;
 import ec.com.avila.hiperion.enumeration.EstadoEnum;
+import ec.com.avila.hiperion.html.UtilsHtml;
+import ec.com.avila.hiperion.mail.MailUtil;
 import ec.com.avila.hiperion.servicio.CatalogoService;
 import ec.com.avila.hiperion.servicio.DetalleCatalogoService;
 import ec.com.avila.hiperion.servicio.UsuarioService;
 import ec.com.avila.hiperion.web.beans.UsuarioBean;
+import ec.com.avila.hiperion.web.resources.Utils;
+import ec.com.avila.hiperion.web.util.FechasUtil;
 import ec.com.avila.hiperion.web.util.HiperionMensajes;
 import ec.com.avila.hiperion.web.util.MessagesController;
 
@@ -162,6 +167,37 @@ public class UsuarioBacking implements Serializable {
 
 	/**
 	 * 
+	 * <b> Permite enviar mail de confirmacion de creacion de usuario en el sistema. </b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: 21/01/2015]
+	 * </p>
+	 * 
+	 */
+	public void enviarMailII() {
+
+		String fechaActual = FechasUtil.getInstancia().dateForStringFull(new Date());
+		HttpServletRequest req = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+		String url = Utils.getInstancia().obtenerPathCompleto(req);
+
+		String mensaje = UtilsHtml.getInstancia().obtenerContenidoHTML("formatoUsuario.html").replace("#{FechaActual}", fechaActual).replace("#{NombreUsuario}", usuarioBean.getNombreApellido())
+				.replace("#{Nickname}", usuarioBean.getNickname()).replace("#{Clave}", usuarioBean.getClave()).replace("#{direccion.app}", url);
+
+		log.info(mensaje);
+
+		String correo1 = usuarioBean.getCorreo();
+		String correo2 = "fpozo@avila-asociados.com";
+		String de = "paulitochevere999@gmail.com";
+		String subject = "Confirmacion de cuenta";
+
+		try {
+			MailUtil.getInstancia().envioMailBasico(new String[] { correo1, correo2 }, de, subject, mensaje);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * 
 	 * <b> Permite cargar la lista de menus para seleccionar. </b>
 	 * <p>
 	 * [Author: Paul Jimenez, Date: 11/01/2015]
@@ -232,7 +268,7 @@ public class UsuarioBacking implements Serializable {
 	 */
 	public void guardarUsuario() throws HiperionException {
 		try {
-			
+
 			ValidatorCedula validar = new ValidatorCedula();
 
 			if (validar.validateCedula(usuarioBean.getIdentificacion())) {
@@ -262,6 +298,7 @@ public class UsuarioBacking implements Serializable {
 				usuarioServicio.guardarUsuario(usuario, rol, menuSelectedList);
 
 				MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.usuario"));
+				enviarMailII();
 
 				menuSelectedList = new ArrayList<>();
 				usuarioBean.setNickname("");
@@ -271,7 +308,7 @@ public class UsuarioBacking implements Serializable {
 				usuarioBean.setCorreo("");
 				usuarioBean.setNickname("");
 				usuarioBean.setRol(null);
-			}else{
+			} else {
 				MessagesController.addError(null, HiperionMensajes.getInstancia().getString("hiperion.mensage.error.identificacionNoValido"));
 			}
 		} catch (HiperionException e) {
