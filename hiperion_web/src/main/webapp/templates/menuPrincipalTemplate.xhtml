@@ -28,7 +28,7 @@
 	<div id="container">
 		<div id="top" class="ui-widget-header ui-corner-all">
 			<ui:insert name="top">
-				<p:outputLabel value="#{usuarioBacking.usuarioBean.sessionUser.nombreUsuario} " styleClass="negrita" />  Bienvenidos al sistema de gestion de seguros HIPERION</ui:insert>
+				<p:outputLabel value="#{usuarioBacking.usuarioBean.sessionUser.nombreUsuario} " styleClass="negrita" />  #{emision['panel.modo.principal']}</ui:insert>
 		</div>
 		<p:spacer height="15px;" />
 		<div align="center">
