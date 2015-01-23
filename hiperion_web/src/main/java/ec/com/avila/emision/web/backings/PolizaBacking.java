@@ -227,6 +227,24 @@ public class PolizaBacking implements Serializable {
 		FacesContext.getCurrentInstance().addMessage(null, msg);
 	}
 
+	/**
+	 * 
+	 * <b> Permite calcular los valores de super de bancos y seguro campesino </b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: 22/01/2015]
+	 * </p>
+	 * 
+	 */
+	public void calcularValoresPago() {
+		if (polizaBean.getPrimaNeta() != null) {
+			Double valorSuperBan = redondear((polizaBean.getPrimaNeta() * 0.035), 2);
+			Double seguroCampesino = redondear((polizaBean.getPrimaNeta() * 0.005), 2);
+
+			polizaBean.setSuperBanSeguros(BigDecimal.valueOf(valorSuperBan));
+			polizaBean.setSeguroCampesino(seguroCampesino);
+		}
+	}
+
 	public PolizaBean getPolizaBean() {
 		return polizaBean;
 	}
@@ -457,7 +475,7 @@ public class PolizaBacking implements Serializable {
 		for (int i = 1; i <= 12; i++) {
 
 			SelectItem pago = new SelectItem();
-			pago = new SelectItem(i,""+i);
+			pago = new SelectItem(i, "" + i);
 			pagoFinanciadoItems.add(pago);
 
 		}

@@ -162,7 +162,6 @@ public class UsuarioBacking implements Serializable {
 			log.error("Error al momento de hacer login", e);
 			throw new HiperionException(e);
 		}
-
 	}
 
 	/**
