@@ -6,13 +6,19 @@
 		<div id="header">
 			<ui:insert name="ramoHeader">HEADER</ui:insert>
 		</div>
+		<div align="center">
+			<h:panelGrid columns="2" cellpadding="3">
+				<p:outputLabel value="ESTADO: " styleClass="negrita" />
+				<p:outputLabel value="COTIZADO" style="color:green;" />
+			</h:panelGrid>
+		</div>
 		<div id="ramoHeader" class="template_top">
 			<h:form id="formPoliza">
 				<p:growl id="msgs" showDetail="true" />
 				<p:accordionPanel dynamic="true" cache="true" activeIndex="null">
-					<p:tab title="#{emision['poliza.titulo']}">
+					<!-- CLIENTE -->
+					<p:tab title="#{emision['poliza.titulo.infoCliente']}">
 						<div align="center">
-
 							<p:panel>
 								<h:panelGrid columns="2" cellpadding="3">
 									<p:outputLabel value="#{emision['poliza.atributo.ejecutivo']}" styleClass="negrita" />
@@ -44,8 +50,28 @@
 				</p:accordionPanel>
 			</h:form>
 		</div>
+		<p:spacer height="15px;" />
+		<!-- PAGO -->
 		<div id="content">
-			<ui:insert name="ramoContent">BODY</ui:insert>
+			<h:form id="formPago">
+				<p:growl id="msgs" showDetail="true" />
+				<p:accordionPanel dynamic="true" cache="true" activeIndex="null">
+					<p:tab title="#{emision['poliza.titulo.infoPago']}">
+					</p:tab>
+				</p:accordionPanel>
+			</h:form>
+		</div>
+		<p:spacer height="15px;" />
+		<!-- POLIZA -->
+		<div id="content">
+			<h:form id="formBody">
+				<p:growl id="msgs" showDetail="true" />
+				<p:accordionPanel dynamic="true" cache="true" activeIndex="null">
+					<p:tab title="#{emision['poliza.titulo.infoPoliza']}">
+						<ui:insert name="ramoContent">BODY</ui:insert>
+					</p:tab>
+				</p:accordionPanel>
+			</h:form>
 		</div>
 	</div>
 </h:body>
