@@ -172,7 +172,7 @@ public class UsuarioBacking implements Serializable {
 	 * </p>
 	 * 
 	 */
-	public void enviarMailII() {
+	public void enviarMail() {
 
 		String fechaActual = FechasUtil.getInstancia().dateForStringFull(new Date());
 		HttpServletRequest req = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
@@ -297,7 +297,7 @@ public class UsuarioBacking implements Serializable {
 				usuarioServicio.guardarUsuario(usuario, rol, menuSelectedList);
 
 				MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.usuario"));
-				enviarMailII();
+				enviarMail();
 
 				menuSelectedList = new ArrayList<>();
 				usuarioBean.setNickname("");

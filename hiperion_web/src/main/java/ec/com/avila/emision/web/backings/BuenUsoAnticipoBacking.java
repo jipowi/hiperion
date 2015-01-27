@@ -3,6 +3,9 @@
  */
 package ec.com.avila.emision.web.backings;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -13,9 +16,21 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
+
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.FontFactory;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
 
 import ec.com.avila.emision.web.beans.DetalleAnexoBean;
 import ec.com.avila.emision.web.beans.RamoBuenUsoAnticipoBean;
@@ -34,11 +49,12 @@ import ec.com.avila.hiperion.servicio.RamoService;
 import ec.com.avila.hiperion.web.beans.RamoBean;
 import ec.com.avila.hiperion.web.beans.UsuarioBean;
 import ec.com.avila.hiperion.web.model.AnexosDataModel;
+import ec.com.avila.hiperion.web.resources.Utils;
 import ec.com.avila.hiperion.web.util.HiperionMensajes;
 import ec.com.avila.hiperion.web.util.MessagesController;
 
 /**
- * <b>Clase Baking que permite gestionar la informaci&oacute;n que se maneje en las p&acute;ginas web que utilicen el Ramo Buen Uso de Anticipo.</p>
+ * <b>Clase Backing que permite gestionar la informaci&oacute;n que se maneje en las p&acute;ginas web que utilicen el Ramo Buen Uso de Anticipo.</p>
  * 
  * @author Dario Vinueza
  * @version 1.0,16/02/2014
@@ -54,7 +70,7 @@ public class BuenUsoAnticipoBacking implements Serializable {
 
 	@ManagedProperty(value = "#{ramoBean}")
 	private RamoBean ramoBean;
-	
+
 	@ManagedProperty(value = "#{usuarioBean}")
 	private UsuarioBean usuarioBean;
 
@@ -143,6 +159,74 @@ public class BuenUsoAnticipoBacking implements Serializable {
 		return sectorItems;
 	}
 
+	public void createPdf() throws FileNotFoundException {
+
+		FileOutputStream archivo = new FileOutputStream("C:\\Docs\\hola.pdf");
+		/*
+		 * Declaramos documento como un objeto Document asignamos el tamaño de hoja y los margenes
+		 */
+		Document documento = new Document(PageSize.LETTER, 80, 80, 75, 75);
+
+		// writer es declarado como el método utilizado para escribir en el archivo
+		PdfWriter writer = null;
+
+		try {
+			// Obtenemos la instancia del archivo a utilizar
+			writer = PdfWriter.getInstance(documento, archivo);
+		} catch (DocumentException ex) {
+			ex.getMessage();
+		}
+
+		// Agregamos un titulo al archivo
+		documento.addTitle("Archivo pdf generado desde Java");
+
+		// Agregamos el autor del archivo
+		documento.addAuthor("paul");
+
+		// Abrimos el documento para edición
+		documento.open();
+		HttpServletRequest req = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+		String url = Utils.getInstancia().obtenerPathCompleto(req);
+
+		try {
+			// Obtenemos la instancia de la imagen
+			Image imagen = Image.getInstance(url + "//resources//img//avila.jpg");
+			// Alineamos la imagen al centro
+			imagen.setAlignment(Image.ALIGN_CENTER);
+			// Escalamos la imagen al 50%
+			imagen.scalePercent(50);
+			// Agregamos la imagen al documento
+			documento.add(imagen);
+		} catch (IOException | DocumentException e) {
+			e.getMessage();
+		}
+
+		// Declaramos un texto como Paragraph
+		// Le podemos dar formado como alineación, tamaño y color a la fuente.
+		Paragraph parrafo = new Paragraph();
+		parrafo.setAlignment(Paragraph.ALIGN_CENTER);
+		parrafo.setFont(FontFactory.getFont("Sans", 20, Font.BOLD, BaseColor.BLUE));
+		parrafo.add("PDF GENERADO DESDE JAVA");
+
+		try {
+			// Agregamos el texto al documento
+			documento.add(parrafo);
+		} catch (DocumentException ex) {
+			ex.getMessage();
+		}
+
+		documento.newPage(); // Podemos agregar una nueva página
+		try {
+			// Agregamos texto al documento
+			documento.add(new Paragraph("Segunda página"));
+		} catch (DocumentException ex) {
+			ex.getMessage();
+		}
+
+		documento.close(); // Cerramos el documento
+		writer.close(); // Cerramos writer
+	}
+
 	/**
 	 * @param sectorItems
 	 *            the sectorItems to set
@@ -176,14 +260,14 @@ public class BuenUsoAnticipoBacking implements Serializable {
 	 * @throws HiperionException
 	 */
 	public void guardarRamo() throws HiperionException {
-		Usuario usuario =usuarioBean.getSessionUser();
+		Usuario usuario = usuarioBean.getSessionUser();
 		RamoBuenUsoAnt buenUsoAnt = new RamoBuenUsoAnt();
 
 		buenUsoAnt.setSectorAnticipo(ramoBuenUsoAnticipoBean.getSector());
 		buenUsoAnt.setObjAsegAnticipo(ramoBuenUsoAnticipoBean.getObjetoAsegurado());
 		buenUsoAnt.setValorContratoAnticipo(ramoBuenUsoAnticipoBean.getValorContrato());
 		buenUsoAnt.setValorPolizaAnticipo(ramoBuenUsoAnticipoBean.getValorPoliza());
-		
+
 		buenUsoAnt.setIdUsuarioCreacion(usuario.getIdUsuario());
 		buenUsoAnt.setFechaCreacion(new Date());
 		buenUsoAnt.setEstado(EstadoEnum.A);
@@ -199,8 +283,6 @@ public class BuenUsoAnticipoBacking implements Serializable {
 		}
 
 	}
-	
-	
 
 	/**
 	 * @return the usuarioBean
@@ -210,7 +292,8 @@ public class BuenUsoAnticipoBacking implements Serializable {
 	}
 
 	/**
-	 * @param usuarioBean the usuarioBean to set
+	 * @param usuarioBean
+	 *            the usuarioBean to set
 	 */
 	public void setUsuarioBean(UsuarioBean usuarioBean) {
 		this.usuarioBean = usuarioBean;
