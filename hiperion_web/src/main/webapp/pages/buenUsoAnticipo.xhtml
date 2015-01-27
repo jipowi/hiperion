@@ -29,19 +29,23 @@
 													<h:panelGrid columns="2">
 														<p:outputLabel for="sectorId" value="#{emision['anticipo.sector']}" styleClass="negrita" />
 
-														<p:selectOneMenu id="sectorId" value="#{ramoBuenUsoAnticipoBean.sector}" effect="drop" required="true"  requiredMessage="#{emision['anticipo.sector.msn']}">
-															<f:selectItem itemLabel="Seleccione" noSelectionOption="true"  />
-															<f:selectItems value="#{buenUsoAnticipoBacking.sectorItems}"  />
+														<p:selectOneMenu id="sectorId" value="#{ramoBuenUsoAnticipoBean.sector}" effect="drop" required="true"
+															requiredMessage="#{emision['anticipo.sector.msn']}">
+															<f:selectItem itemLabel="Seleccione" noSelectionOption="true" />
+															<f:selectItems value="#{buenUsoAnticipoBacking.sectorItems}" />
 														</p:selectOneMenu>
 
 														<p:outputLabel for="valorContrato" value="#{emision['anticipo.valorContrato']}" styleClass="negrita" />
-														<p:inputText id="valorContrato" value="#{ramoBuenUsoAnticipoBean.valorContrato}" required="true"  requiredMessage="#{emision['anticipo.valorContrato.msn']}"/>
+														<p:inputText id="valorContrato" value="#{ramoBuenUsoAnticipoBean.valorContrato}" required="true"
+															requiredMessage="#{emision['anticipo.valorContrato.msn']}" />
 
 														<p:outputLabel for="valorPoliza" value="#{emision['anticipo.valorPoliza']}" styleClass="negrita" />
-														<p:inputText id="valorPoliza" value="#{ramoBuenUsoAnticipoBean.valorPoliza}" required="true"  requiredMessage="#{emision['anticipo.valorPoliza.msn']}"   />
+														<p:inputText id="valorPoliza" value="#{ramoBuenUsoAnticipoBean.valorPoliza}" required="true"
+															requiredMessage="#{emision['anticipo.valorPoliza.msn']}" />
 
 														<p:outputLabel for="objetoAsegurado" value="#{emision['anticipo.objetoAsegurado']}" styleClass="negrita" />
-														<p:inputTextarea id="objetoAsegurado" cols="50" rows="2" value="#{ramoBuenUsoAnticipoBean.objetoAsegurado}" required="true"  requiredMessage="#{emision['anticipo.objetoAsegurado.msn']}" />
+														<p:inputTextarea id="objetoAsegurado" cols="50" rows="2" value="#{ramoBuenUsoAnticipoBean.objetoAsegurado}" required="true"
+															requiredMessage="#{emision['anticipo.objetoAsegurado.msn']}" />
 													</h:panelGrid>
 													<h:panelGrid columns="1" cellpadding="3">
 														<p:outputLabel value="#{emision['anticipo.contrato']}" styleClass="negrita" />
@@ -49,6 +53,9 @@
 														<p:outputLabel value="#{emision['anticipo.polizaVigente']}" styleClass="negrita" />
 														<p:fileUpload fileLimit="1" />
 													</h:panelGrid>
+													<p:commandLink title="Buscar clientes" action="#{buenUsoAnticipoBacking.createPdf()}" >
+														<h:graphicImage name="search.png" library="img/icon" />
+													</p:commandLink>
 												</p:panel>
 											</h:panelGrid>
 											<p:spacer height="30px;" />
