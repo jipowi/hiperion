@@ -53,19 +53,32 @@
 		<p:spacer height="15px;" />
 		<!-- PAGO -->
 		<div id="content">
-			<h:form id="formPago">
-				<p:growl id="msgs" showDetail="true" />
-				<p:accordionPanel dynamic="true" cache="true" activeIndex="null">
-					<p:tab title="#{emision['poliza.titulo.infoPago']}">
+			<p:growl id="msgs" showDetail="true" />
+			<p:accordionPanel dynamic="true" cache="true" activeIndex="null">
+				<p:tab title="#{emision['poliza.titulo.infoPago']}">
+					<h:form id="formPago">
 						<div align="center">
-							<p:panel>								
-								<h:panelGrid columns="4" cellpadding="3">
+							<p:panel>
+								<h:panelGrid columns="2" cellpadding="3">
+									<p:outputLabel value="#{emision['poliza.financiacion.atributo.formaPago']}" styleClass="negrita" />
+									<p:selectOneMenu id="formaPagoId" value="#{polizaBean.idFormaPago}" required="true" effect="drop">
+										<f:selectItem itemLabel="Seleccionar" noSelectionOption="true" />
+										<f:selectItems value="#{polizaBacking.formasPagoItems}" />
+										<p:ajax listener="#{polizaBacking.selectFormaDePago()}" update="pagoContadoId, pagoFinanciadoId, pagoTarjetaCreditoId, pagoDebitoBancarioId" />
+									</p:selectOneMenu>
+								</h:panelGrid>
+
+								<h:panelGrid columns="6" cellpadding="3">
 									<p:outputLabel value="#{emision['poliza.atributo.numeroPoliza']}" styleClass="negrita" />
 									<p:inputText value="#{polizaBean.numeroPoliza}" />
 
 									<p:outputLabel value="#{emision['poliza.atributo.numeroAnexo']}" styleClass="negrita" />
 									<p:inputText value="#{polizaBean.numeroAnexo}" />
 
+									<p:outputLabel value="#{emision['poliza.atributo.factura']}" styleClass="negrita" />
+									<p:inputText value="#{polizaBean.numeroFactura}" />
+								</h:panelGrid>
+								<h:panelGrid columns="4" cellpadding="3">
 									<p:outputLabel value="#{emision['poliza.atributo.vigenciaDesde']}" styleClass="negrita" />
 									<p:calendar value="#{polizaBean.vigenciaDesde}" pattern="dd/MM/yyyy HH:mm" locale="es" navigator="true" />
 
@@ -92,42 +105,25 @@
 									<p:outputLabel value="#{emision['poliza.atributo.seguroCampesino']}" styleClass="negrita" />
 									<p:inputText id="idSeguro" value="#{polizaBean.seguroCampesino}" disabled="true" />
 
+									<p:outputLabel value="#{emision['poliza.financiacion.atributo.financiacion']}" styleClass="negrita" />
+									<p:inputText value="#{polizaBean.financiacion}" />
+
+									<p:outputLabel value="#{emision['poliza.financiacion.atributo.subtotal']}" styleClass="negrita" />
+									<p:inputText value="#{polizaBean.subtotal}" />
+
+									<p:outputLabel value="#{emision['poliza.financiacion.atributo.adicionalSegCampesino']}" styleClass="negrita" />
+									<p:inputText value="#{polizaBean.adicionalSegCampesino}" />
+
+									<p:outputLabel value="#{emision['poliza.financiacion.atributo.iva']}" styleClass="negrita" />
+									<p:inputText value="#{polizaBean.iva}" />
+
+									<p:outputLabel value="#{emision['poliza.financiacion.atributo.total']}" styleClass="negrita" />
+									<p:inputText value="#{polizaBean.total}" />
 								</h:panelGrid>
 							</p:panel>
 
-							<h:panelGrid columns="2" cellpadding="3">
-								<p:outputLabel value="#{emision['poliza.atributo.factura']}" styleClass="negrita" />
-								<p:inputText value="#{polizaBean.numeroFactura}" />
-
-								<p:outputLabel value="#{emision['poliza.financiacion.atributo.formaPago']}" styleClass="negrita" />
-								<p:selectOneMenu id="formaPagoId" value="#{polizaBean.idFormaPago}" required="true" effect="drop">
-									<f:selectItem itemLabel="Seleccionar" noSelectionOption="true" />
-									<f:selectItems value="#{polizaBacking.formasPagoItems}" />
-									<p:ajax listener="#{polizaBacking.selectFormaDePago()}" update="pagoContadoId, pagoFinanciadoId, pagoTarjetaCreditoId, pagoDebitoBancarioId" />
-								</p:selectOneMenu>
-							</h:panelGrid>
-							<p:separator id="customSeparator" style="width:auto;height:3px" />
-
 							<h:panelGrid columns="1" cellpadding="3">
-								<!-- PANEL COMUN -->
-								<p:panel>
-									<h:panelGrid columns="2" cellpadding="3">
-										<p:outputLabel value="#{emision['poliza.financiacion.atributo.financiacion']}" styleClass="negrita" />
-										<p:inputText value="#{polizaBean.financiacion}" />
 
-										<p:outputLabel value="#{emision['poliza.financiacion.atributo.subtotal']}" styleClass="negrita" />
-										<p:inputText value="#{polizaBean.subtotal}" />
-
-										<p:outputLabel value="#{emision['poliza.financiacion.atributo.adicionalSegCampesino']}" styleClass="negrita" />
-										<p:inputText value="#{polizaBean.adicionalSegCampesino}" />
-
-										<p:outputLabel value="#{emision['poliza.financiacion.atributo.iva']}" styleClass="negrita" />
-										<p:inputText value="#{polizaBean.iva}" />
-
-										<p:outputLabel value="#{emision['poliza.financiacion.atributo.total']}" styleClass="negrita" />
-										<p:inputText value="#{polizaBean.total}" />
-									</h:panelGrid>
-								</p:panel>
 
 								<!-- CONTADO -->
 								<p:panel id="pagoContadoId" visible="#{polizaBacking.activarPanelPagoContado}">
@@ -266,9 +262,9 @@
 								</p:column>
 							</p:dataTable>
 						</div>
-					</p:tab>
-				</p:accordionPanel>
-			</h:form>
+					</h:form>
+				</p:tab>
+			</p:accordionPanel>
 		</div>
 		<p:spacer height="15px;" />
 		<!-- POLIZA -->
