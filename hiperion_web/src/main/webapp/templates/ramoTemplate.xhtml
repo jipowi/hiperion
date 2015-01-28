@@ -13,11 +13,11 @@
 			</h:panelGrid>
 		</div>
 		<div id="ramoHeader" class="template_top">
-			<h:form id="formPoliza">
-				<p:growl id="msgs" showDetail="true" />
-				<p:accordionPanel dynamic="true" cache="true" activeIndex="null">
-					<!-- CLIENTE -->
-					<p:tab title="#{emision['poliza.titulo.infoCliente']}">
+			<p:growl id="msgsCliente" showDetail="true" />
+			<p:accordionPanel dynamic="true" cache="true" activeIndex="null">
+				<!-- CLIENTE -->
+				<p:tab title="#{emision['poliza.titulo.infoCliente']}">
+					<h:form id="formCliente">
 						<div align="center">
 							<p:panel>
 								<h:panelGrid columns="2" cellpadding="3">
@@ -44,16 +44,15 @@
 									</p:panel>
 								</h:panelGrid>
 							</p:panel>
-
 						</div>
-					</p:tab>
-				</p:accordionPanel>
-			</h:form>
+					</h:form>
+				</p:tab>
+			</p:accordionPanel>
 		</div>
 		<p:spacer height="15px;" />
 		<!-- PAGO -->
 		<div id="content">
-			<p:growl id="msgs" showDetail="true" />
+			<p:growl id="msgsPago" showDetail="true" />
 			<p:accordionPanel dynamic="true" cache="true" activeIndex="null">
 				<p:tab title="#{emision['poliza.titulo.infoPago']}">
 					<h:form id="formPago">
@@ -123,7 +122,6 @@
 							</p:panel>
 
 							<h:panelGrid columns="1" cellpadding="3">
-
 
 								<!-- CONTADO -->
 								<p:panel id="pagoContadoId" visible="#{polizaBacking.activarPanelPagoContado}">
@@ -269,14 +267,14 @@
 		<p:spacer height="15px;" />
 		<!-- POLIZA -->
 		<div id="content">
-			<h:form id="formBody">
-				<p:growl id="msgs" showDetail="true" />
-				<p:accordionPanel dynamic="true" cache="true" activeIndex="null">
-					<p:tab title="#{emision['poliza.titulo.infoPoliza']}">
+			<p:growl id="msgBody" showDetail="true" />
+			<p:accordionPanel dynamic="true" cache="true" activeIndex="null">
+				<p:tab title="#{emision['poliza.titulo.infoPoliza']}">
+					<h:form id="formPoliza">
 						<ui:insert name="ramoContent">BODY</ui:insert>
-					</p:tab>
-				</p:accordionPanel>
-			</h:form>
+					</h:form>
+				</p:tab>
+			</p:accordionPanel>
 		</div>
 	</div>
 </h:body>
