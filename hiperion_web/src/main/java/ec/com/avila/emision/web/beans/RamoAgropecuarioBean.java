@@ -39,6 +39,8 @@ public class RamoAgropecuarioBean implements Serializable {
 	private BigDecimal valorAsegurado;
 	private String detalle;
 	private String ubicacion;
+	//Tipo de Objeto Asegurado 
+	private String tipoObjeto;
 
 	// Tabla Objeto Asegurado
 	private Integer item;
@@ -418,4 +420,20 @@ public class RamoAgropecuarioBean implements Serializable {
 		FacesContext.getCurrentInstance().addMessage(null, msg);
 		objetoAseguradoList.remove((ObjetoAseguradoAgropecuarioDTO) event.getObject());
 	}
+
+	/**
+	 * @return the tipoObjeto
+	 */
+	public String getTipoObjeto() {
+		return tipoObjeto;
+	}
+
+	/**
+	 * @param tipoObjeto the tipoObjeto to set
+	 */
+	public void setTipoObjeto(String tipoObjeto) {
+		this.tipoObjeto = tipoObjeto;
+	}
+	
+	
 }

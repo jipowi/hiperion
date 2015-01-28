@@ -87,6 +87,7 @@ public class AgropecuarioBacking implements Serializable {
 	private DetalleAnexoBean[] selectCoberturasVida;
 	private UploadedFile file;
 	private List<SelectItem> sexoItems;
+	private List<SelectItem> tipoObjetoItems;
 
 	Logger log = Logger.getLogger(AgropecuarioBacking.class);
 
@@ -331,6 +332,37 @@ public class AgropecuarioBacking implements Serializable {
 	}
 
 	/**
+	 * 
+	 * <b>
+	 * Permite obtener la lista de del los objetos asegurados
+	 * </b>
+	 * <p>[Author: Franklin Pozo, Date: 27/01/2015]</p>
+	 *
+	 * @return
+	 * @throws HiperionException
+	 */
+	public List<SelectItem> getTipoObjetoItems() throws HiperionException {
+		this.tipoObjetoItems = new ArrayList<SelectItem>();
+		Catalogo catalogo = catalogoService.consultarCatalogoById(HiperionMensajes.getInstancia().getLong(
+				"ec.gob.avila.hiperion.recursos.catalogoTipoObjetoAgropecuario"));
+		List<DetalleCatalogo> sexos = catalogo.getDetalleCatalogos();
+
+		for (DetalleCatalogo detalle : sexos) {
+			SelectItem selectItem = new SelectItem(detalle.getCodDetalleCatalogo(), detalle.getDescDetCatalogo());
+			tipoObjetoItems.add(selectItem);
+		}
+		return tipoObjetoItems;
+	}
+
+	/**
+	 * @param tipoObjetoItems
+	 *            the tipoObjetoItems to set
+	 */
+	public void setTipoObjetoItems(List<SelectItem> tipoObjetoItems) {
+		this.tipoObjetoItems = tipoObjetoItems;
+	}
+
+	/**
 	 * @return the ramoBean
 	 */
 	public RamoBean getRamoBean() {
@@ -434,4 +466,6 @@ public class AgropecuarioBacking implements Serializable {
 	public void setUsuarioBean(UsuarioBean usuarioBean) {
 		this.usuarioBean = usuarioBean;
 	}
+	
+	
 }
