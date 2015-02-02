@@ -17,6 +17,8 @@ import org.apache.log4j.Logger;
 import ec.com.avila.emision.web.beans.ClienteBean;
 import ec.com.avila.emision.web.beans.ContactoBean;
 import ec.com.avila.emision.web.beans.DireccionBean;
+import ec.com.avila.emision.web.validator.ValidatorCedula;
+import ec.com.avila.emision.web.validator.ValidatorRuc;
 import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.dto.DireccionDTO;
 import ec.com.avila.hiperion.emision.entities.Catalogo;
@@ -86,7 +88,7 @@ public class ClienteBacking implements Serializable {
 
 	@PostConstruct
 	public void inicializar() throws HiperionException {
-		clienteBean.setActivarIdentificacion(true);
+		obtenerTipoIdentificacion();
 	}
 
 	/**
@@ -138,42 +140,16 @@ public class ClienteBacking implements Serializable {
 	 * 
 	 * @return - Lista de Tipos de Identificaci&oacute;n.
 	 */
-	public List<SelectItem> obtenerTipoIdentificacionNattural() {
+	public List<SelectItem> obtenerTipoIdentificacion() {
 		try {
 			this.tipoIdentificacionItems = new ArrayList<SelectItem>();
-			Catalogo catalogo = catalogoService.consultarCatalogoById(new Long(2));
+			Catalogo catalogo = catalogoService.consultarCatalogoById(HiperionMensajes.getInstancia().getLong(
+					"ec.gob.avila.hiperion.recursos.catalogoTipoIdentificacion"));
 			List<DetalleCatalogo> tiposPersona = catalogo.getDetalleCatalogos();
 
 			for (DetalleCatalogo detalle : tiposPersona) {
 				SelectItem selectItem = new SelectItem(detalle.getCodDetalleCatalogo(), detalle.getDescDetCatalogo());
 				tipoIdentificacionItems.add(selectItem);
-			}
-		} catch (HiperionException ex) {
-			ex.printStackTrace();
-		}
-
-		return tipoIdentificacionItems;
-	}
-
-	/**
-	 * 
-	 * <b> Permite obtener los tipos de Identificacion de una persona Juridica. </b>
-	 * <p>
-	 * [Author: Dario Vinueza, Date: 13/09/2014]
-	 * </p>
-	 * 
-	 * @return - Lista de tipos de Identificaci&oacute;n
-	 */
-	public List<SelectItem> obtenerTipoIdentificacionJuridica() {
-		try {
-			this.tipoIdentificacionItems = new ArrayList<SelectItem>();
-			Catalogo catalogo = catalogoService.consultarCatalogoById(new Long(2));
-			List<DetalleCatalogo> tiposPersona = catalogo.getDetalleCatalogos();
-			for (DetalleCatalogo detalle : tiposPersona) {
-				if (detalle.getDescDetCatalogo().equals("RUC")) {
-					SelectItem selectItem = new SelectItem(detalle.getCodDetalleCatalogo(), detalle.getDescDetCatalogo());
-					tipoIdentificacionItems.add(selectItem);
-				}
 			}
 		} catch (HiperionException ex) {
 			ex.printStackTrace();
@@ -193,20 +169,15 @@ public class ClienteBacking implements Serializable {
 	 *            - Tipo de Persona: Natural o Juridica
 	 */
 	public void selectTipoPersona(Integer tipoPersona) {
-		clienteBean.setActivarIdentificacion(false);
+
 		// Persona Natural
 		if (tipoPersona == 1) {
-			clienteBean.setTipoIdentificacion("1");
-			clienteBean.setLongitudIdentificacion(10);
-			obtenerTipoIdentificacionNattural();
 			setActivarPanelPersonaNatural(true);
 			setActivarPanelPersonaJuridica(false);
 			clienteBean.setIdentificacion("");
 			// Persona Juridica
 		} else if (tipoPersona == 2) {
 			clienteBean.setTipoIdentificacion("2");
-			obtenerTipoIdentificacionJuridica();
-			clienteBean.setLongitudIdentificacion(13);
 			setActivarPanelPersonaJuridica(true);
 			setActivarPanelPersonaNatural(false);
 		}
@@ -257,64 +228,104 @@ public class ClienteBacking implements Serializable {
 	 */
 	public void guardarCliente() {
 		try {
-			// Direccion del Cliente
-			if (direccionBean.getDireccionesRegistradas() != null && direccionBean.getDireccionesRegistradas().size() > 0) {
-				Cliente cliente = new Cliente();
-				cliente.setCodigoCliente(clienteBean.getCodigoCliente());
 
-				cliente.setTipoIdentificacion(clienteBean.getTipoIdentificacion());
-				cliente.setIdentificacionPersona(clienteBean.getIdentificacion());
-				// Tipo de Persona
-				int tipoPersona = clienteBean.getTipoPersona();
-				if (tipoPersona == 1) {
-					// Persona Natural
-					cliente.setIdentificacionPersona(clienteBean.getIdentificacion());
-					cliente.setNombrePersona(clienteBean.getNombre());
-					cliente.setApellidoPaterno(clienteBean.getApePaterno());
-					cliente.setApellidoMaterno(clienteBean.getApeMaterno());
-					cliente.setActividadProfesion(clienteBean.getActividadProfecion());
-					cliente.setFechaNacimiento(clienteBean.getFechaNacimiento());
-				} else {
-					// Persona Juridica
-					cliente.setRazonSocial(clienteBean.getRazonSocial());
-				}
-				cliente.setTipoPersona(clienteBean.getTipoPersona().toString());
-				// Direcciones del Cliente
-				List<Direccion> direcciones = new ArrayList<Direccion>();
-				for (DireccionDTO direccionDto : direccionBean.getDireccionesRegistradas()) {
-					Direccion direccion = new Direccion();
-					direccion.setCliente(cliente);
-					// Tipo Direccion
-					TipoDireccion tipoDireccion = tipoDireccionService.consultarTipoDireccionByDescripcion(direccionDto.getTipoDireccion());
-					direccion.setTipoDireccion(tipoDireccion);
+			Integer tipoIdentificacion = Integer.parseInt(clienteBean.getTipoIdentificacion());
 
-					// Provincia
-					Provincia provincia = provinciaService.consultarProvinciaPorCodigo(direccionDto.getProvinciaDTO().getCodProvincia());
-					direccion.setProvincia(provincia);
-
-					// Calles y Numeracion
-					direccion.setCallePrincipal(direccionDto.getCallePrincipal());
-					direccion.setNumeracion(direccionDto.getNumeracion());
-					direccion.setCalleSecundaria(direccionDto.getCalleSecundaria());
-					direccion.setReferencia(direccionDto.getReferencia());
-
-					direcciones.add(direccion);
-				}
-
-				cliente.setDireccions(direcciones);
-				// Guardamos al Cliente
-				Usuario usuario = usuarioBean.getSessionUser();
-				cliente.setIdUsuarioCreacion(usuario.getIdUsuario());
-				cliente.setFechaCreacion(new Date());
-				cliente.setEstado(EstadoEnum.A);
-				clienteService.guardarCliente(cliente);
-				MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensage.exito.cliente"));
+			if (tipoIdentificacion == 2 && clienteBean.getIdentificacion().length() != 13) {
+				MessagesController.addError(null, HiperionMensajes.getInstancia().getString("hiperion.mensage.error.tamanioRuc"));
 			} else {
 
+				if (validarDocumentos(clienteBean.getIdentificacion(), tipoIdentificacion)) {
+					// Direccion del Cliente
+					if (direccionBean.getDireccionesRegistradas() != null && direccionBean.getDireccionesRegistradas().size() > 0) {
+						Cliente cliente = new Cliente();
+						cliente.setCodigoCliente(clienteBean.getCodigoCliente());
+
+						cliente.setTipoIdentificacion(clienteBean.getTipoIdentificacion());
+						cliente.setIdentificacionPersona(clienteBean.getIdentificacion());
+						// Tipo de Persona
+						int tipoPersona = clienteBean.getTipoPersona();
+						if (tipoPersona == 1) {
+							// Persona Natural
+							cliente.setIdentificacionPersona(clienteBean.getIdentificacion());
+							cliente.setNombrePersona(clienteBean.getNombre());
+							cliente.setApellidoPaterno(clienteBean.getApePaterno());
+							cliente.setApellidoMaterno(clienteBean.getApeMaterno());
+							cliente.setActividadProfesion(clienteBean.getActividadProfecion());
+							cliente.setFechaNacimiento(clienteBean.getFechaNacimiento());
+						} else {
+							// Persona Juridica
+							cliente.setRazonSocial(clienteBean.getRazonSocial());
+						}
+						cliente.setTipoPersona(clienteBean.getTipoPersona().toString());
+						// Direcciones del Cliente
+						List<Direccion> direcciones = new ArrayList<Direccion>();
+						for (DireccionDTO direccionDto : direccionBean.getDireccionesRegistradas()) {
+							Direccion direccion = new Direccion();
+							direccion.setCliente(cliente);
+							// Tipo Direccion
+							TipoDireccion tipoDireccion = tipoDireccionService.consultarTipoDireccionByDescripcion(direccionDto.getTipoDireccion());
+							direccion.setTipoDireccion(tipoDireccion);
+
+							// Provincia
+							Provincia provincia = provinciaService.consultarProvinciaPorCodigo(direccionDto.getProvinciaDTO().getCodProvincia());
+							direccion.setProvincia(provincia);
+
+							// Calles y Numeracion
+							direccion.setCallePrincipal(direccionDto.getCallePrincipal());
+							direccion.setNumeracion(direccionDto.getNumeracion());
+							direccion.setCalleSecundaria(direccionDto.getCalleSecundaria());
+							direccion.setReferencia(direccionDto.getReferencia());
+
+							direcciones.add(direccion);
+						}
+
+						cliente.setDireccions(direcciones);
+						// Guardamos al Cliente
+						Usuario usuario = usuarioBean.getSessionUser();
+						cliente.setIdUsuarioCreacion(usuario.getIdUsuario());
+						cliente.setFechaCreacion(new Date());
+						cliente.setEstado(EstadoEnum.A);
+						clienteService.guardarCliente(cliente);
+						MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.cliente"));
+					} else {
+						MessagesController.addWarn(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.warn.direccion"));
+					}
+				} else {
+					MessagesController.addError(null, HiperionMensajes.getInstancia().getString("hiperion.mensage.error.identificacionNoValido"));
+				}
 			}
+
 		} catch (HiperionException e) {
 			e.printStackTrace();
 		}
+	}
+
+	/**
+	 * 
+	 * <b> Permite validar el numero de identificacion tanto para cedula como ruc </b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: 02/02/2015]
+	 * </p>
+	 * 
+	 * @param identificacion
+	 * @param tipoIdentificacion
+	 * @return
+	 */
+	public Boolean validarDocumentos(String identificacion, Integer tipoIdentificacion) {
+		Boolean pasaValidacion = false;
+
+		if (clienteBean.getTipoPersona() == 1) {
+			if (tipoIdentificacion == 1) {
+				pasaValidacion = ValidatorCedula.getInstancia().validateCedula(identificacion);
+			} else if (tipoIdentificacion == 2) {
+				pasaValidacion = ValidatorRuc.getInstancia().validateRUC(identificacion);
+			}
+		}else{
+			pasaValidacion = ValidatorRuc.getInstancia().validateRUC(identificacion);
+		}
+
+		return pasaValidacion;
 	}
 
 	public ClienteBean getClienteBean() {

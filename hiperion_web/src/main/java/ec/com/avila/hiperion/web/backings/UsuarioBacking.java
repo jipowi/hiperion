@@ -268,9 +268,7 @@ public class UsuarioBacking implements Serializable {
 	public void guardarUsuario() throws HiperionException {
 		try {
 
-			ValidatorCedula validar = new ValidatorCedula();
-
-			if (validar.validateCedula(usuarioBean.getIdentificacion())) {
+			if (ValidatorCedula.getInstancia().validateCedula(usuarioBean.getIdentificacion())) {
 				// Usuario
 				Usuario usuario = new Usuario();
 				usuario.setUsuario(usuarioBean.getNickname());

@@ -20,6 +20,13 @@ import ec.com.avila.hiperion.web.util.StringField;
 @FacesValidator("validatorRUC")
 public class ValidatorRuc implements javax.faces.validator.Validator {
 
+	// Unica instancia de la clase
+	private static final ValidatorRuc INSTANCIA = new ValidatorRuc();
+
+	public static ValidatorRuc getInstancia() {
+		return INSTANCIA;
+	}
+
 	/**
 	 * Funcion q permite validar un ruc en ecuador
 	 * 

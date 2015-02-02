@@ -36,8 +36,6 @@ public class ClienteBean implements Serializable {
 	private Integer tipoPersona;
 	private Integer longitudIdentificacion;
 
-	private Boolean activarIdentificacion;
-
 	private Date fechaNacimiento;
 
 	public Integer getTipoPersona() {
@@ -181,18 +179,5 @@ public class ClienteBean implements Serializable {
 		this.longitudIdentificacion = longitudIdentificacion;
 	}
 
-	/**
-	 * @return the activarIdentificacion
-	 */
-	public Boolean getActivarIdentificacion() {
-		return activarIdentificacion;
-	}
-
-	/**
-	 * @param activarIdentificacion
-	 *            the activarIdentificacion to set
-	 */
-	public void setActivarIdentificacion(Boolean activarIdentificacion) {
-		this.activarIdentificacion = activarIdentificacion;
-	}
+	
 }
