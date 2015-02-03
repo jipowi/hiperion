@@ -30,16 +30,30 @@
 												<p:outputLabel value="#{emision['cliente.identificacion']}:" styleClass="negrita" />
 												<p:inputText value="#{polizaBean.identificacion}" />
 											</h:panelGrid>
-											<p:commandLink title="Buscar clientes" action="#{polizaBacking.buscarCliente}">
+											<p:commandLink title="Buscar clientes" action="#{polizaBacking.buscarCliente}" update="idDatosCliente">
 												<h:graphicImage name="search.png" library="img/icon" />
 											</p:commandLink>
 										</h:panelGrid>
 									</p:panel>
 								</h:panelGrid>
-								<h:panelGrid columns="2" cellpadding="3">
-									<p:outputLabel value="#{emision['poliza.atributo.ejecutivo']}" styleClass="negrita" />
-									<p:outputLabel value="#{polizaBacking.ejecutivo.nombreUsuario}" style="color:green;" />
-								</h:panelGrid>
+								<h:panelGroup id="idDatosCliente">
+									<h:panelGrid columns="2" cellpadding="3" rendered="#{polizaBacking.activarDatosCliente}">
+										<p:outputLabel value="#{emision['poliza.atributo.ejecutivo']}:" styleClass="negrita" />
+										<p:outputLabel value="#{polizaBacking.ejecutivo.nombreUsuario}" style="color:green;" />
+
+										<p:outputLabel value="#{emision['cliente.nombre']}:" styleClass="negrita" />
+										<p:outputLabel value="#{polizaBean.nombreCliente}" />
+
+										<p:outputLabel value="#{emision['cliente.tabla.identificacion']}:" styleClass="negrita" />
+										<p:outputLabel value="#{polizaBean.identificacion}" />
+
+										<p:outputLabel value="#{emision['aseguradora.aseguradora']}" styleClass="negrita" />
+										<p:selectOneMenu id="idAseguradora" value="#{polizaBean.aseguradora}" effect="drop">
+											<f:selectItem itemLabel="Seleccione Aseguradora" noSelectionOption="true" />
+											<f:selectItems value="#{aseguradoraBacking.aseguradorasItems}" itemValue="" />
+										</p:selectOneMenu>
+									</h:panelGrid>
+								</h:panelGroup>
 							</p:panel>
 						</div>
 					</h:form>
@@ -50,7 +64,7 @@
 		<!-- PAGO -->
 		<div id="content">
 			<p:growl id="msgsPago" showDetail="true" />
-			<p:accordionPanel dynamic="true" cache="true" activeIndex="null" rendered="false">
+			<p:accordionPanel dynamic="true" cache="true" activeIndex="null">
 				<p:tab title="#{emision['poliza.titulo.infoPago']}">
 					<h:form id="formPago">
 						<div align="center">
@@ -261,11 +275,12 @@
 				</p:tab>
 			</p:accordionPanel>
 		</div>
+
 		<p:spacer height="15px;" />
 		<!-- POLIZA -->
 		<div id="content">
 			<p:growl id="msgBody" showDetail="true" />
-			<p:accordionPanel dynamic="true" cache="true" activeIndex="null" rendered="false">
+			<p:accordionPanel dynamic="true" cache="true" activeIndex="null">
 				<p:tab title="#{emision['poliza.titulo.infoPoliza']}">
 					<h:form id="formPoliza">
 						<ui:insert name="ramoContent">BODY</ui:insert>
