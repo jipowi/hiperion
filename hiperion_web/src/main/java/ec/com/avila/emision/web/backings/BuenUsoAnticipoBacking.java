@@ -3,7 +3,6 @@
  */
 package ec.com.avila.emision.web.backings;
 
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
@@ -168,13 +167,13 @@ public class BuenUsoAnticipoBacking implements Serializable {
 	 * 
 	 * @throws IOException
 	 */
-	public void createPdf() throws IOException {
+	public void createPdfCotizacion() throws IOException {
 
 		Usuario usuario = usuarioBean.getSessionUser();
 		String fechaActual = FechasUtil.getInstancia().dateFormated(new Date());
 		String path = "cotizacion_" + usuario.getNombreUsuario() + " " + fechaActual + ".pdf";
 
-		FileOutputStream archivo = new FileOutputStream("C:\\Docs\\" + path);
+		FileOutputStream archivo = new FileOutputStream("C:\\Cotizaciones\\" + path);
 		/*
 		 * Declaramos documento como un objeto Document asignamos el tamaño de hoja y los margenes
 		 */
@@ -255,8 +254,9 @@ public class BuenUsoAnticipoBacking implements Serializable {
 	 * </p>
 	 * 
 	 * @throws HiperionException
+	 * @throws IOException 
 	 */
-	public void guardarRamo() throws HiperionException {
+	public void guardarRamo() throws HiperionException, IOException {
 		Usuario usuario = usuarioBean.getSessionUser();
 		RamoBuenUsoAnt buenUsoAnt = new RamoBuenUsoAnt();
 
@@ -271,6 +271,7 @@ public class BuenUsoAnticipoBacking implements Serializable {
 
 		try {
 			ramoBuenUsoAnticipoService.guardarRamoBuenUsoAnticipo(buenUsoAnt);
+			createPdfCotizacion();
 			MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.save.sOjeto"));
 
 		} catch (HiperionException e) {
