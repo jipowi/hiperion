@@ -78,6 +78,7 @@ public class PolizaBean implements Serializable {
 
 	private String identificacion;
 	private String aseguradora;
+	private String nombreCliente;
 
 	public Double getDerechoEmision() {
 		return derechoEmision;
@@ -562,6 +563,21 @@ public class PolizaBean implements Serializable {
 	 */
 	public void setAseguradora(String aseguradora) {
 		this.aseguradora = aseguradora;
+	}
+
+	/**
+	 * @return the nombreCliente
+	 */
+	public String getNombreCliente() {
+		return nombreCliente;
+	}
+
+	/**
+	 * @param nombreCliente
+	 *            the nombreCliente to set
+	 */
+	public void setNombreCliente(String nombreCliente) {
+		this.nombreCliente = nombreCliente;
 	}
 
 }

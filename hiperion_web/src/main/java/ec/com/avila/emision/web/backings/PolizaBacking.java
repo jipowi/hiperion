@@ -27,6 +27,7 @@ import ec.com.avila.hiperion.emision.entities.Catalogo;
 import ec.com.avila.hiperion.emision.entities.Cliente;
 import ec.com.avila.hiperion.emision.entities.DetalleCatalogo;
 import ec.com.avila.hiperion.emision.entities.Usuario;
+import ec.com.avila.hiperion.servicio.AseguradoraService;
 import ec.com.avila.hiperion.servicio.CatalogoService;
 import ec.com.avila.hiperion.servicio.ClienteService;
 import ec.com.avila.hiperion.servicio.PolizaService;
@@ -60,6 +61,8 @@ public class PolizaBacking implements Serializable {
 	private UsuarioService usuarioService;
 	@EJB
 	private ClienteService clienteService;
+	@EJB
+	private AseguradoraService aseguradoraService;
 
 	private List<SelectItem> formasPagoItems;
 	private List<SelectItem> tarjetasCreditoItems;
@@ -69,6 +72,8 @@ public class PolizaBacking implements Serializable {
 	private List<SelectItem> bancoItems;
 	private List<SelectItem> cuentaBancoItems;
 	private List<SelectItem> pagoFinanciadoItems;
+	private List<SelectItem> aseguradorasItems;
+
 	private Usuario ejecutivo;
 
 	private List<TablaAmortizacionDTO> tablaAmortizacionList = new ArrayList<TablaAmortizacionDTO>();
@@ -76,6 +81,7 @@ public class PolizaBacking implements Serializable {
 	private Boolean activarPanelPagoFinanciado = false;
 	private Boolean activarPanelPagoTarjetaCredito = false;
 	private Boolean activarPanelPagoDebitoBancario = false;
+	private Boolean activarDatosCliente = false;
 
 	@ManagedProperty(value = "#{usuarioBean}")
 	private UsuarioBean usuarioBean;
@@ -113,6 +119,9 @@ public class PolizaBacking implements Serializable {
 				cliente = clienteService.consultarClienteByIdentificacion(polizaBean.getIdentificacion());
 				if (cliente == null) {
 					MessagesController.addWarn(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.warn.buscar"));
+				} else {
+					activarDatosCliente = true;
+					polizaBean.setNombreCliente(cliente.getApellidoPaterno() + " " + cliente.getApellidoMaterno() + " " + cliente.getNombrePersona());
 				}
 			}
 
@@ -545,6 +554,49 @@ public class PolizaBacking implements Serializable {
 	 */
 	public void setTablaAmortizacionList(List<TablaAmortizacionDTO> tablaAmortizacionList) {
 		this.tablaAmortizacionList = tablaAmortizacionList;
+	}
+
+	/**
+	 * @return the aseguradorasItems
+	 */
+	public List<SelectItem> getAseguradorasItems() throws HiperionException {
+
+		this.aseguradorasItems = new ArrayList<SelectItem>();
+
+		Catalogo catalogo = catalogoService.consultarCatalogoById(HiperionMensajes.getInstancia().getLong(
+				"ec.gob.avila.hiperion.recursos.catalogoAseguradoras"));
+
+		List<DetalleCatalogo> aseguradoras = catalogo.getDetalleCatalogos();
+
+		for (DetalleCatalogo detalle : aseguradoras) {
+			SelectItem selectItem = new SelectItem(detalle.getCodDetalleCatalogo(), detalle.getDescDetCatalogo());
+			aseguradorasItems.add(selectItem);
+		}
+
+		return aseguradorasItems;
+	}
+
+	/**
+	 * @param aseguradorasItems
+	 *            the aseguradorasItems to set
+	 */
+	public void setAseguradorasItems(List<SelectItem> aseguradorasItems) {
+		this.aseguradorasItems = aseguradorasItems;
+	}
+
+	/**
+	 * @return the activarDatosCliente
+	 */
+	public Boolean getActivarDatosCliente() {
+		return activarDatosCliente;
+	}
+
+	/**
+	 * @param activarDatosCliente
+	 *            the activarDatosCliente to set
+	 */
+	public void setActivarDatosCliente(Boolean activarDatosCliente) {
+		this.activarDatosCliente = activarDatosCliente;
 	}
 
 }
