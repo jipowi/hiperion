@@ -6,6 +6,7 @@ package ec.com.avila.hiperion.web.util;
 
 import java.io.Serializable;
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
@@ -24,6 +25,7 @@ public class FechasUtil implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private static FechasUtil INSTANCIA = new FechasUtil();
+	private static final String FORMATO_FECHA = "dd-MM-yyyy";
 
 	// Devuelve la unica instancia de la clase
 	public static FechasUtil getInstancia() {
@@ -36,13 +38,33 @@ public class FechasUtil implements Serializable {
 	 * <p>
 	 * [Author: Paul Jimenez, Date: Oct 12, 2014]
 	 * </p>
-	 *
+	 * 
 	 * @param fecha
 	 * @return
 	 */
 	public String dateForStringFull(Date fecha) {
 		DateFormat formato = DateFormat.getDateInstance(DateFormat.FULL, new Locale("es"));
 		return formato.format(fecha);
+	}
+
+	/**
+	 * 
+	 * <b> Permite pasar una fecha tipo string a un Date con formato </b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: 02/02/2015]
+	 * </p>
+	 * 
+	 * @param fecha
+	 * @return
+	 */
+	public String dateFormated(Date fecha) {
+
+		SimpleDateFormat formato = new SimpleDateFormat(FORMATO_FECHA);
+		String fechaDate = null;
+
+		fechaDate = formato.format(fecha);
+
+		return fechaDate;
 	}
 
 }

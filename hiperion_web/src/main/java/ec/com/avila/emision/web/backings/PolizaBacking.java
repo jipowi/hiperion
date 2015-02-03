@@ -17,19 +17,23 @@ import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
+import org.apache.log4j.Logger;
 import org.primefaces.event.RowEditEvent;
 
 import ec.com.avila.emision.web.beans.PolizaBean;
 import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.dto.TablaAmortizacionDTO;
 import ec.com.avila.hiperion.emision.entities.Catalogo;
+import ec.com.avila.hiperion.emision.entities.Cliente;
 import ec.com.avila.hiperion.emision.entities.DetalleCatalogo;
 import ec.com.avila.hiperion.emision.entities.Usuario;
 import ec.com.avila.hiperion.servicio.CatalogoService;
+import ec.com.avila.hiperion.servicio.ClienteService;
 import ec.com.avila.hiperion.servicio.PolizaService;
 import ec.com.avila.hiperion.servicio.UsuarioService;
 import ec.com.avila.hiperion.web.beans.UsuarioBean;
 import ec.com.avila.hiperion.web.util.HiperionMensajes;
+import ec.com.avila.hiperion.web.util.MessagesController;
 
 /**
  * <b> Clase que�sirve�de�soporte�para�un�objeto manejado�dentro�de�la�aplicacion se�codifican�los�comportamientos
@@ -54,6 +58,8 @@ public class PolizaBacking implements Serializable {
 	private CatalogoService catalogoService;
 	@EJB
 	private UsuarioService usuarioService;
+	@EJB
+	private ClienteService clienteService;
 
 	private List<SelectItem> formasPagoItems;
 	private List<SelectItem> tarjetasCreditoItems;
@@ -74,6 +80,8 @@ public class PolizaBacking implements Serializable {
 	@ManagedProperty(value = "#{usuarioBean}")
 	private UsuarioBean usuarioBean;
 
+	Logger log = Logger.getLogger(PolizaBacking.class);
+
 	/**
 	 * 
 	 * <b> Permite visualizar el nombre del ejecutivo </b>
@@ -87,6 +95,31 @@ public class PolizaBacking implements Serializable {
 	public void inicializar() throws HiperionException {
 		Usuario usuario = usuarioBean.getSessionUser();
 		ejecutivo = usuario;
+	}
+
+	/**
+	 * 
+	 * <b> Permite buscar un cliente por medi ode la cedula de identidad. </b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: 02/02/2015]
+	 * </p>
+	 * 
+	 * @throws HiperionException
+	 */
+	public void buscarCliente() throws HiperionException {
+		try {
+			Cliente cliente = new Cliente();
+			if (!polizaBean.getIdentificacion().equals("")) {
+				cliente = clienteService.consultarClienteByIdentificacion(polizaBean.getIdentificacion());
+				if (cliente == null) {
+					MessagesController.addWarn(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.warn.buscar"));
+				}
+			}
+
+		} catch (HiperionException e) {
+			log.error("Error al momento de buscar clientes", e);
+			throw new HiperionException(e);
+		}
 	}
 
 	/**

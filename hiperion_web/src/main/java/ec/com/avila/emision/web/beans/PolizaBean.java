@@ -76,6 +76,9 @@ public class PolizaBean implements Serializable {
 	private Date fechaCaducidad;
 	private BigDecimal interes;
 
+	private String identificacion;
+	private String aseguradora;
+
 	public Double getDerechoEmision() {
 		return derechoEmision;
 	}
@@ -282,7 +285,6 @@ public class PolizaBean implements Serializable {
 		this.fechaVencimiento = fechaVencimiento;
 	}
 
-
 	public Integer getIdFormaPago() {
 		return idFormaPago;
 	}
@@ -290,7 +292,6 @@ public class PolizaBean implements Serializable {
 	public void setIdFormaPago(Integer idFormaPago) {
 		this.idFormaPago = idFormaPago;
 	}
-
 
 	public String getFormaPago() {
 		return formaPago;
@@ -443,7 +444,6 @@ public class PolizaBean implements Serializable {
 		this.fechaDebito = fechaDebito;
 	}
 
-
 	/**
 	 * @return the interes
 	 */
@@ -452,7 +452,8 @@ public class PolizaBean implements Serializable {
 	}
 
 	/**
-	 * @param interes the interes to set
+	 * @param interes
+	 *            the interes to set
 	 */
 	public void setInteres(BigDecimal interes) {
 		this.interes = interes;
@@ -466,7 +467,8 @@ public class PolizaBean implements Serializable {
 	}
 
 	/**
-	 * @param numeroTarjeta the numeroTarjeta to set
+	 * @param numeroTarjeta
+	 *            the numeroTarjeta to set
 	 */
 	public void setNumeroTarjeta(String numeroTarjeta) {
 		this.numeroTarjeta = numeroTarjeta;
@@ -480,7 +482,8 @@ public class PolizaBean implements Serializable {
 	}
 
 	/**
-	 * @param fechaCaducidad the fechaCaducidad to set
+	 * @param fechaCaducidad
+	 *            the fechaCaducidad to set
 	 */
 	public void setFechaCaducidad(Date fechaCaducidad) {
 		this.fechaCaducidad = fechaCaducidad;
@@ -494,7 +497,8 @@ public class PolizaBean implements Serializable {
 	}
 
 	/**
-	 * @param numeroCuenta the numeroCuenta to set
+	 * @param numeroCuenta
+	 *            the numeroCuenta to set
 	 */
 	public void setNumeroCuenta(String numeroCuenta) {
 		this.numeroCuenta = numeroCuenta;
@@ -508,7 +512,8 @@ public class PolizaBean implements Serializable {
 	}
 
 	/**
-	 * @param numeroPagos the numeroPagos to set
+	 * @param numeroPagos
+	 *            the numeroPagos to set
 	 */
 	public void setNumeroPagos(Integer numeroPagos) {
 		this.numeroPagos = numeroPagos;
@@ -522,12 +527,41 @@ public class PolizaBean implements Serializable {
 	}
 
 	/**
-	 * @param porcentajeFinanciamiento the porcentajeFinanciamiento to set
+	 * @param porcentajeFinanciamiento
+	 *            the porcentajeFinanciamiento to set
 	 */
 	public void setPorcentajeFinanciamiento(BigDecimal porcentajeFinanciamiento) {
 		this.porcentajeFinanciamiento = porcentajeFinanciamiento;
 	}
-	
-	
+
+	/**
+	 * @return the identificacion
+	 */
+	public String getIdentificacion() {
+		return identificacion;
+	}
+
+	/**
+	 * @param identificacion
+	 *            the identificacion to set
+	 */
+	public void setIdentificacion(String identificacion) {
+		this.identificacion = identificacion;
+	}
+
+	/**
+	 * @return the aseguradora
+	 */
+	public String getAseguradora() {
+		return aseguradora;
+	}
+
+	/**
+	 * @param aseguradora
+	 *            the aseguradora to set
+	 */
+	public void setAseguradora(String aseguradora) {
+		this.aseguradora = aseguradora;
+	}
 
 }
