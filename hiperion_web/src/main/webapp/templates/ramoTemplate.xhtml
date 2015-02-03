@@ -20,10 +20,6 @@
 					<h:form id="formCliente">
 						<div align="center">
 							<p:panel>
-								<h:panelGrid columns="2" cellpadding="3">
-									<p:outputLabel value="#{emision['poliza.atributo.ejecutivo']}" styleClass="negrita" />
-									<p:outputLabel value="#{polizaBacking.ejecutivo.nombreUsuario}" style="color:green;" />
-								</h:panelGrid>
 								<h:panelGrid columns="1">
 									<p:panel>
 										<f:facet name="header">
@@ -32,16 +28,17 @@
 										<h:panelGrid columns="2">
 											<h:panelGrid columns="2">
 												<p:outputLabel value="#{emision['cliente.identificacion']}:" styleClass="negrita" />
-												<p:inputText value="#{clienteBean.identificacion}" />
-
-												<p:outputLabel value="#{emision['cliente.nombre']}:" styleClass="negrita" />
-												<p:inputText value="#{clienteBean.nombre}" />
+												<p:inputText value="#{polizaBean.identificacion}" />
 											</h:panelGrid>
-											<p:commandLink title="Buscar clientes" action="#{clienteBacking.buscarCliente}">
+											<p:commandLink title="Buscar clientes" action="#{polizaBacking.buscarCliente}">
 												<h:graphicImage name="search.png" library="img/icon" />
 											</p:commandLink>
 										</h:panelGrid>
 									</p:panel>
+								</h:panelGrid>
+								<h:panelGrid columns="2" cellpadding="3">
+									<p:outputLabel value="#{emision['poliza.atributo.ejecutivo']}" styleClass="negrita" />
+									<p:outputLabel value="#{polizaBacking.ejecutivo.nombreUsuario}" style="color:green;" />
 								</h:panelGrid>
 							</p:panel>
 						</div>
@@ -53,7 +50,7 @@
 		<!-- PAGO -->
 		<div id="content">
 			<p:growl id="msgsPago" showDetail="true" />
-			<p:accordionPanel dynamic="true" cache="true" activeIndex="null">
+			<p:accordionPanel dynamic="true" cache="true" activeIndex="null" rendered="false">
 				<p:tab title="#{emision['poliza.titulo.infoPago']}">
 					<h:form id="formPago">
 						<div align="center">
@@ -268,7 +265,7 @@
 		<!-- POLIZA -->
 		<div id="content">
 			<p:growl id="msgBody" showDetail="true" />
-			<p:accordionPanel dynamic="true" cache="true" activeIndex="null">
+			<p:accordionPanel dynamic="true" cache="true" activeIndex="null" rendered="false">
 				<p:tab title="#{emision['poliza.titulo.infoPoliza']}">
 					<h:form id="formPoliza">
 						<ui:insert name="ramoContent">BODY</ui:insert>
