@@ -73,6 +73,7 @@ public class PolizaBacking implements Serializable {
 	private List<SelectItem> cuentaBancoItems;
 	private List<SelectItem> pagoFinanciadoItems;
 	private List<SelectItem> aseguradorasItems;
+	private List<SelectItem> tarjetaCreditoItems;
 
 	private Usuario ejecutivo;
 
@@ -554,6 +555,37 @@ public class PolizaBacking implements Serializable {
 	 */
 	public void setTablaAmortizacionList(List<TablaAmortizacionDTO> tablaAmortizacionList) {
 		this.tablaAmortizacionList = tablaAmortizacionList;
+	}
+
+	/**
+	 * 
+	 * <b> Metodo que me permite generar el combo de tarjetas de credito. </b>
+	 * <p>
+	 * [Author: Franklin Pozo, Date: 03/02/2015]
+	 * </p>
+	 * 
+	 * @return
+	 * @throws HiperionException
+	 */
+	public List<SelectItem> getTarjetaCreditoItems() throws HiperionException {
+		this.tarjetaCreditoItems = new ArrayList<SelectItem>();
+		Catalogo catalogo = catalogoService.consultarCatalogoById(HiperionMensajes.getInstancia().getLong(
+				"ec.gob.avila.hiperion.recursos.catalogoTipoTarjetaCredito"));
+
+		List<DetalleCatalogo> tarjetaCredito = catalogo.getDetalleCatalogos();
+		for (DetalleCatalogo detalle : tarjetaCredito) {
+			SelectItem selectItem = new SelectItem(detalle.getCodDetalleCatalogo(), detalle.getDescDetCatalogo());
+			tarjetaCreditoItems.add(selectItem);
+		}
+		return tarjetaCreditoItems;
+	}
+
+	/**
+	 * @param tarjetaCreditoItems
+	 *            the tarjetaCreditoItems to set
+	 */
+	public void setTarjetaCreditoItems(List<SelectItem> tarjetaCreditoItems) {
+		this.tarjetaCreditoItems = tarjetaCreditoItems;
 	}
 
 	/**

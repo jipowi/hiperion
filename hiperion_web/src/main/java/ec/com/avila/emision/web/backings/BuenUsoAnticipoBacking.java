@@ -273,6 +273,7 @@ public class BuenUsoAnticipoBacking implements Serializable {
 			ramoBuenUsoAnticipoService.guardarRamoBuenUsoAnticipo(buenUsoAnt);
 			createPdfCotizacion();
 			MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.save.sOjeto"));
+			MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.save.generate"));
 
 		} catch (HiperionException e) {
 			log.error("Error al momento de guardar el ramo Buen Uso de Anticipo", e);
