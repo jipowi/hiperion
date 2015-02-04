@@ -72,6 +72,7 @@ public class PolizaBean implements Serializable {
 	private Integer numeroPagos;
 
 	// Tarjeta de credito
+	private String tarjetaCredito;
 	private String numeroTarjeta;
 	private Date fechaCaducidad;
 	private BigDecimal interes;
@@ -579,5 +580,21 @@ public class PolizaBean implements Serializable {
 	public void setNombreCliente(String nombreCliente) {
 		this.nombreCliente = nombreCliente;
 	}
+
+	/**
+	 * @return the tarjetaCredito
+	 */
+	public String getTarjetaCredito() {
+		return tarjetaCredito;
+	}
+
+	/**
+	 * @param tarjetaCredito the tarjetaCredito to set
+	 */
+	public void setTarjetaCredito(String tarjetaCredito) {
+		this.tarjetaCredito = tarjetaCredito;
+	}
+	
+	
 
 }
