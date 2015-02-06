@@ -46,12 +46,6 @@
 
 										<p:outputLabel value="#{emision['cliente.tabla.identificacion']}:" styleClass="negrita" />
 										<p:outputLabel value="#{polizaBean.identificacion}" />
-
-										<p:outputLabel value="#{emision['aseguradora.aseguradora']}" styleClass="negrita" />
-										<p:selectOneMenu id="idAseguradora" value="#{polizaBean.aseguradora}" effect="drop">
-											<f:selectItem itemLabel="Seleccione Aseguradora" noSelectionOption="true" />
-											<f:selectItems value="#{aseguradoraBacking.aseguradorasItems}" itemValue="" />
-										</p:selectOneMenu>
 									</h:panelGrid>
 								</h:panelGroup>
 							</p:panel>
@@ -103,7 +97,7 @@
 
 									<p:outputLabel value="#{emision['poliza.atributo.prima']}" styleClass="negrita" />
 									<p:inputText value="#{polizaBean.primaNeta}">
-										<p:ajax event="blur" update="idSuperBancos, idSeguro" listener="#{polizaBacking.calcularValoresPago()}" />
+										<p:ajax event="blur" process="@this" update="idSuperBancos, idSeguro" listener="#{polizaBacking.calcularValoresPago()}" />
 									</p:inputText>
 
 									<p:outputLabel value="#{emision['poliza.atributo.derechosEmision']}" styleClass="negrita" />
