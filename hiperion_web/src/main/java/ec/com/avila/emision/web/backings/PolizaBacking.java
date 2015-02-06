@@ -104,6 +104,8 @@ public class PolizaBacking implements Serializable {
 		ejecutivo = usuario;
 	}
 
+	
+
 	/**
 	 * 
 	 * <b> Permite buscar un cliente por medi ode la cedula de identidad. </b>
@@ -630,5 +632,7 @@ public class PolizaBacking implements Serializable {
 	public void setActivarDatosCliente(Boolean activarDatosCliente) {
 		this.activarDatosCliente = activarDatosCliente;
 	}
+
+	
 
 }

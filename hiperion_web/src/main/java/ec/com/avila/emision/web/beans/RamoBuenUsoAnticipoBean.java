@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
+import javax.faces.bean.SessionScoped;
 
 /**
  * <b> <b> Permite encapsular varios objetos en un unico objeto, para hacer uso de un solo objeto en lugar de varios mas simples </b> </b>
@@ -17,7 +17,7 @@ import javax.faces.bean.ViewScoped;
  * @since JDK1.6
  */
 @ManagedBean
-@ViewScoped
+@SessionScoped
 public class RamoBuenUsoAnticipoBean implements Serializable {
 
 	/**

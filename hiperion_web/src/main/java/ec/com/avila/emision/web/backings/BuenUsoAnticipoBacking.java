@@ -15,7 +15,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.ViewScoped;
+import javax.faces.bean.SessionScoped;
 import javax.faces.model.SelectItem;
 
 import org.apache.log4j.Logger;
@@ -31,6 +31,7 @@ import com.itextpdf.text.html.simpleparser.HTMLWorker;
 import com.itextpdf.text.pdf.PdfWriter;
 
 import ec.com.avila.emision.web.beans.DetalleAnexoBean;
+import ec.com.avila.emision.web.beans.PolizaBean;
 import ec.com.avila.emision.web.beans.RamoBuenUsoAnticipoBean;
 import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.emision.entities.Catalogo;
@@ -60,18 +61,24 @@ import ec.com.avila.hiperion.web.util.MessagesController;
  * @since JDK1.6
  */
 @ManagedBean
-@ViewScoped
+@SessionScoped
 public class BuenUsoAnticipoBacking implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	private List<SelectItem> sectorItems;
 
+	@ManagedProperty(value = "#{ramoBuenUsoAnticipoBean}")
+	private RamoBuenUsoAnticipoBean ramoBuenUsoAnticipoBean;
+	
 	@ManagedProperty(value = "#{ramoBean}")
 	private RamoBean ramoBean;
 
 	@ManagedProperty(value = "#{usuarioBean}")
 	private UsuarioBean usuarioBean;
+	
+	@ManagedProperty(value = "#{polizaBean}")
+	private PolizaBean polizaBean;
 
 	@EJB
 	private RamoService ramoService;
@@ -87,9 +94,7 @@ public class BuenUsoAnticipoBacking implements Serializable {
 
 	private List<DetalleAnexoBean> coberturas;
 	private DetalleAnexoBean[] selectCoberturas;
-
-	@ManagedProperty(value = "#{ramoBuenUsoAnticipoBean}")
-	private RamoBuenUsoAnticipoBean ramoBuenUsoAnticipoBean;
+	private List<SelectItem> aseguradorasItems;
 
 	Logger log = Logger.getLogger(BuenUsoAnticipoBacking.class);
 
@@ -98,6 +103,7 @@ public class BuenUsoAnticipoBacking implements Serializable {
 		try {
 			Ramo ramo = ramoService.consultarRamoPorCodigo("BUA");
 			anexos = ramo.getDetalleAnexos();
+			
 		} catch (HiperionException e) {
 			e.printStackTrace();
 		}
@@ -157,6 +163,7 @@ public class BuenUsoAnticipoBacking implements Serializable {
 
 		return sectorItems;
 	}
+	
 
 	/**
 	 * 
@@ -224,6 +231,29 @@ public class BuenUsoAnticipoBacking implements Serializable {
 	}
 
 	/**
+	 * @return the aseguradorasItems
+	 * @throws HiperionException
+	 */
+	public List<SelectItem> getAseguradorasItems() throws HiperionException {
+
+		if (this.aseguradorasItems == null) {
+			this.aseguradorasItems = new ArrayList<SelectItem>();
+		}
+
+		Catalogo catalogo = catalogoService.consultarCatalogoById(HiperionMensajes.getInstancia().getLong(
+				"ec.gob.avila.hiperion.recursos.catalogoAseguradoras"));
+
+		List<DetalleCatalogo> aseguradoras = catalogo.getDetalleCatalogos();
+
+		for (DetalleCatalogo detalle : aseguradoras) {
+			SelectItem selectItem = new SelectItem(detalle.getCodDetalleCatalogo(), detalle.getDescDetCatalogo());
+			aseguradorasItems.add(selectItem);
+		}
+
+		return aseguradorasItems;
+	}
+
+	/**
 	 * @param sectorItems
 	 *            the sectorItems to set
 	 */
@@ -259,6 +289,8 @@ public class BuenUsoAnticipoBacking implements Serializable {
 	public void guardarRamo() throws HiperionException, IOException {
 		Usuario usuario = usuarioBean.getSessionUser();
 		RamoBuenUsoAnt buenUsoAnt = new RamoBuenUsoAnt();
+		
+		polizaBean.getAseguradora();
 
 		buenUsoAnt.setSectorAnticipo(ramoBuenUsoAnticipoBean.getSector());
 		buenUsoAnt.setObjAsegAnticipo(ramoBuenUsoAnticipoBean.getObjetoAsegurado());
@@ -311,6 +343,20 @@ public class BuenUsoAnticipoBacking implements Serializable {
 	 */
 	public void setRamoBuenUsoAnticipoBean(RamoBuenUsoAnticipoBean ramoBuenUsoAnticipoBean) {
 		this.ramoBuenUsoAnticipoBean = ramoBuenUsoAnticipoBean;
+	}
+
+	/**
+	 * @return the polizaBean
+	 */
+	public PolizaBean getPolizaBean() {
+		return polizaBean;
+	}
+
+	/**
+	 * @param polizaBean the polizaBean to set
+	 */
+	public void setPolizaBean(PolizaBean polizaBean) {
+		this.polizaBean = polizaBean;
 	}
 
 }

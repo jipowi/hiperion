@@ -83,7 +83,8 @@ public class AseguradoraBacking implements Serializable {
 	 * <p>
 	 * [Author: Paul Jimenez, Date: Dec 1, 2014]
 	 * </p>
-	 * @throws SQLException 
+	 * 
+	 * @throws SQLException
 	 * 
 	 */
 	public void cargarReporte(String tipoReporte) throws SQLException {
@@ -224,7 +225,9 @@ public class AseguradoraBacking implements Serializable {
 	 */
 	public List<SelectItem> getAseguradorasItems() throws HiperionException {
 
-		this.aseguradorasItems = new ArrayList<SelectItem>();
+		if (this.aseguradorasItems == null) {
+			this.aseguradorasItems = new ArrayList<SelectItem>();
+		}
 
 		Catalogo catalogo = catalogoService.consultarCatalogoById(HiperionMensajes.getInstancia().getLong(
 				"ec.gob.avila.hiperion.recursos.catalogoAseguradoras"));

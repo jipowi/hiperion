@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
+import javax.faces.bean.SessionScoped;
 
 import ec.com.avila.hiperion.emision.entities.Usuario;
 
@@ -20,7 +20,7 @@ import ec.com.avila.hiperion.emision.entities.Usuario;
  * @since JDK1.6
  */
 @ManagedBean
-@RequestScoped
+@SessionScoped
 public class PolizaBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
