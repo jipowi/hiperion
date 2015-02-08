@@ -96,9 +96,7 @@
 									<p:inputText value="#{polizaBean.sumaAsegurada}" />
 
 									<p:outputLabel value="#{emision['poliza.atributo.prima']}" styleClass="negrita" />
-									<p:inputText value="#{polizaBean.primaNeta}">
-										<p:ajax event="blur" process="@this" update="idSuperBancos, idSeguro" listener="#{polizaBacking.calcularValoresPago()}" />
-									</p:inputText>
+									<p:inputText value="#{polizaBean.primaNeta}" />
 
 									<p:outputLabel value="#{emision['poliza.atributo.derechosEmision']}" styleClass="negrita" />
 									<p:inputText value="#{polizaBean.derechoEmision}" />
@@ -113,19 +111,22 @@
 									<p:inputText value="#{polizaBean.financiacion}" />
 
 									<p:outputLabel value="#{emision['poliza.financiacion.atributo.subtotal']}" styleClass="negrita" />
-									<p:inputText value="#{polizaBean.subtotal}" />
+									<p:inputText value="#{polizaBean.subtotal}" disabled="true"/>
 
 									<p:outputLabel value="#{emision['poliza.financiacion.atributo.adicionalSegCampesino']}" styleClass="negrita" />
 									<p:inputText value="#{polizaBean.adicionalSegCampesino}" />
 
 									<p:outputLabel value="#{emision['poliza.financiacion.atributo.iva']}" styleClass="negrita" />
-									<p:inputText value="#{polizaBean.iva}" />
+									<p:inputText value="#{polizaBean.iva}" disabled="true" />
 
 									<p:outputLabel value="#{emision['poliza.financiacion.atributo.total']}" styleClass="negrita" />
-									<p:inputText value="#{polizaBean.total}" />
+									<p:inputText value="#{polizaBean.total}" disabled="true"/>
 								</h:panelGrid>
-							</p:panel>
 
+							</p:panel>
+							<p:commandLink title="Calcular valores de pago" update="formPago" actionListener="#{polizaBacking.calcularValoresPago()}">
+								<h:graphicImage name="boton_calcular.png" library="img" />
+							</p:commandLink>
 							<h:panelGrid columns="1" cellpadding="3">
 
 								<!-- CONTADO -->
