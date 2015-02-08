@@ -345,4 +345,19 @@ public class BuenUsoAnticipoBacking implements Serializable {
 		this.ramoBuenUsoAnticipoBean = ramoBuenUsoAnticipoBean;
 	}
 
+	/**
+	 * @return the polizaBean
+	 */
+	public PolizaBean getPolizaBean() {
+		return polizaBean;
+	}
+
+	/**
+	 * @param polizaBean
+	 *            the polizaBean to set
+	 */
+	public void setPolizaBean(PolizaBean polizaBean) {
+		this.polizaBean = polizaBean;
+	}
+
 }
