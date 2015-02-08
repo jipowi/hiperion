@@ -104,8 +104,6 @@ public class PolizaBacking implements Serializable {
 		ejecutivo = usuario;
 	}
 
-	
-
 	/**
 	 * 
 	 * <b> Permite buscar un cliente por medi ode la cedula de identidad. </b>
@@ -284,9 +282,15 @@ public class PolizaBacking implements Serializable {
 		if (polizaBean.getPrimaNeta() != null) {
 			Double valorSuperBan = redondear((polizaBean.getPrimaNeta() * 0.035), 2);
 			Double seguroCampesino = redondear((polizaBean.getPrimaNeta() * 0.005), 2);
+			Double subtotal = redondear((valorSuperBan + seguroCampesino + polizaBean.getDerechoEmision()), 2);
+			Double iva = redondear((subtotal * 0.12), 2);
+			Double total = subtotal+iva;
 
 			polizaBean.setSuperBanSeguros(BigDecimal.valueOf(valorSuperBan));
 			polizaBean.setSeguroCampesino(seguroCampesino);
+			polizaBean.setSubtotal(BigDecimal.valueOf(subtotal));
+			polizaBean.setIva(BigDecimal.valueOf(iva));
+			polizaBean.setTotal(BigDecimal.valueOf(total));
 		}
 	}
 
@@ -632,7 +636,5 @@ public class PolizaBacking implements Serializable {
 	public void setActivarDatosCliente(Boolean activarDatosCliente) {
 		this.activarDatosCliente = activarDatosCliente;
 	}
-
-	
 
 }
