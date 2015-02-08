@@ -68,15 +68,12 @@ public class BuenUsoAnticipoBacking implements Serializable {
 
 	private List<SelectItem> sectorItems;
 
-	@ManagedProperty(value = "#{ramoBuenUsoAnticipoBean}")
-	private RamoBuenUsoAnticipoBean ramoBuenUsoAnticipoBean;
-	
 	@ManagedProperty(value = "#{ramoBean}")
 	private RamoBean ramoBean;
 
 	@ManagedProperty(value = "#{usuarioBean}")
 	private UsuarioBean usuarioBean;
-	
+
 	@ManagedProperty(value = "#{polizaBean}")
 	private PolizaBean polizaBean;
 
@@ -96,6 +93,9 @@ public class BuenUsoAnticipoBacking implements Serializable {
 	private DetalleAnexoBean[] selectCoberturas;
 	private List<SelectItem> aseguradorasItems;
 
+	@ManagedProperty(value = "#{ramoBuenUsoAnticipoBean}")
+	private RamoBuenUsoAnticipoBean ramoBuenUsoAnticipoBean;
+
 	Logger log = Logger.getLogger(BuenUsoAnticipoBacking.class);
 
 	@PostConstruct
@@ -103,7 +103,6 @@ public class BuenUsoAnticipoBacking implements Serializable {
 		try {
 			Ramo ramo = ramoService.consultarRamoPorCodigo("BUA");
 			anexos = ramo.getDetalleAnexos();
-			
 		} catch (HiperionException e) {
 			e.printStackTrace();
 		}
@@ -163,7 +162,6 @@ public class BuenUsoAnticipoBacking implements Serializable {
 
 		return sectorItems;
 	}
-	
 
 	/**
 	 * 
@@ -174,11 +172,11 @@ public class BuenUsoAnticipoBacking implements Serializable {
 	 * 
 	 * @throws IOException
 	 */
-	public void createPdfCotizacion() throws IOException {
+	public void createPdfCotizacion(String idRamo) throws IOException {
 
 		Usuario usuario = usuarioBean.getSessionUser();
 		String fechaActual = FechasUtil.getInstancia().dateFormated(new Date());
-		String path = "cotizacion_" + usuario.getNombreUsuario() + " " + fechaActual + ".pdf";
+		String path = "cotizacion_" + usuario.getNombreUsuario() + " " + fechaActual + "_" + idRamo + ".pdf";
 
 		FileOutputStream archivo = new FileOutputStream("C:\\Cotizaciones\\" + path);
 		/*
@@ -197,8 +195,9 @@ public class BuenUsoAnticipoBacking implements Serializable {
 		}
 
 		String fechaDocumento = FechasUtil.getInstancia().dateForStringFull(new Date());
-		String mensaje = UtilsHtml.getInstancia().obtenerContenidoHTML("formatoCotizacionAseguradora.html").replace("#{FechaActual}", fechaDocumento);
-
+		String mensajeCabecera = UtilsHtml.getInstancia().obtenerContenidoHTML("formatoCotizacionAseguradoraCab.html")
+				.replace("#{FechaActual}", fechaDocumento);
+		String mensajeDetalle = UtilsHtml.getInstancia().obtenerContenidoHTML("formatoCotAgropecuarioAseg.html").replace("#{tasa}", fechaDocumento);
 		// Agregamos un titulo al archivo
 		documento.addTitle("Archivo pdf generado desde Java");
 
@@ -225,7 +224,10 @@ public class BuenUsoAnticipoBacking implements Serializable {
 		documento.newPage(); // Podemos agregar una nueva página
 
 		HTMLWorker htmlWorker = new HTMLWorker(documento);
-		htmlWorker.parse(new StringReader(mensaje));
+		htmlWorker.parse(new StringReader(mensajeCabecera));
+
+		documento.newPage(); // Podemos agregar una nueva página
+		htmlWorker.parse(new StringReader(mensajeDetalle));
 		documento.close(); // Cerramos el documento
 		writer.close(); // Cerramos writer
 	}
@@ -284,13 +286,11 @@ public class BuenUsoAnticipoBacking implements Serializable {
 	 * </p>
 	 * 
 	 * @throws HiperionException
-	 * @throws IOException 
+	 * @throws IOException
 	 */
 	public void guardarRamo() throws HiperionException, IOException {
 		Usuario usuario = usuarioBean.getSessionUser();
 		RamoBuenUsoAnt buenUsoAnt = new RamoBuenUsoAnt();
-		
-		polizaBean.getAseguradora();
 
 		buenUsoAnt.setSectorAnticipo(ramoBuenUsoAnticipoBean.getSector());
 		buenUsoAnt.setObjAsegAnticipo(ramoBuenUsoAnticipoBean.getObjetoAsegurado());
@@ -303,7 +303,7 @@ public class BuenUsoAnticipoBacking implements Serializable {
 
 		try {
 			ramoBuenUsoAnticipoService.guardarRamoBuenUsoAnticipo(buenUsoAnt);
-			createPdfCotizacion();
+			createPdfCotizacion(buenUsoAnt.getIndBuenUsoAnt().toString());
 			MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.save.sOjeto"));
 			MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.save.generate"));
 
@@ -343,20 +343,6 @@ public class BuenUsoAnticipoBacking implements Serializable {
 	 */
 	public void setRamoBuenUsoAnticipoBean(RamoBuenUsoAnticipoBean ramoBuenUsoAnticipoBean) {
 		this.ramoBuenUsoAnticipoBean = ramoBuenUsoAnticipoBean;
-	}
-
-	/**
-	 * @return the polizaBean
-	 */
-	public PolizaBean getPolizaBean() {
-		return polizaBean;
-	}
-
-	/**
-	 * @param polizaBean the polizaBean to set
-	 */
-	public void setPolizaBean(PolizaBean polizaBean) {
-		this.polizaBean = polizaBean;
 	}
 
 }
