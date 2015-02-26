@@ -282,9 +282,10 @@ public class PolizaBacking implements Serializable {
 		if (polizaBean.getPrimaNeta() != null) {
 			Double valorSuperBan = redondear((polizaBean.getPrimaNeta() * 0.035), 2);
 			Double seguroCampesino = redondear((polizaBean.getPrimaNeta() * 0.005), 2);
-			Double subtotal = redondear((valorSuperBan + seguroCampesino + polizaBean.getDerechoEmision()), 2);
+			Double emision = redondear((polizaBean.getPrimaNeta() * 0.005), 2);
+			Double subtotal = redondear((valorSuperBan + seguroCampesino + emision + polizaBean.getPrimaNeta()), 2);
 			Double iva = redondear((subtotal * 0.12), 2);
-			Double total = subtotal+iva;
+			Double total = redondear((subtotal+iva),2);
 
 			polizaBean.setSuperBanSeguros(BigDecimal.valueOf(valorSuperBan));
 			polizaBean.setSeguroCampesino(seguroCampesino);
