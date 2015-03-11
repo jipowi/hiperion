@@ -95,13 +95,16 @@
 												<p:separator id="customSeparator" style="width:auto;height:1px" />
 												<p:growl id="messages" showDetail="true" />
 												<p:panelGrid columns="4">
-													<h:outputLabel value="#{emision['equipoMaquinaria.objeto.item']}" styleClass="negrita" />
-													<p:inputText value="#{ramoEquipoMaquinaraBean.item}" />
-													<h:outputLabel value="#{emision['equipoMaquinaria.objeto.marca']}" styleClass="negrita" />
-													<p:inputText value="#{ramoEquipoMaquinaraBean.marca}" />
+													<h:outputLabel for="idItem" value="#{emision['equipoMaquinaria.objeto.item']}" styleClass="negrita" />
+													<p:inputText id="idItem" value="#{ramoEquipoMaquinaraBean.item}" required="true"
+															requiredMessage="#{emision['equipoMaquinaria.objeto.item.msn']}"/>
+													<h:outputLabel for="idMarca" value="#{emision['equipoMaquinaria.objeto.marca']}" styleClass="negrita" />
+													<p:inputText id="idMarca" value="#{ramoEquipoMaquinaraBean.marca}" required="true"
+															requiredMessage="#{emision['equipoMaquinaria.objeto.marca.msn']}" />
 
-													<h:outputLabel value="#{emision['equipoMaquinaria.objeto.modelo']}" styleClass="negrita" />
-													<p:inputText value="#{ramoEquipoMaquinaraBean.modelo}" />
+													<h:outputLabel for="idModelo" value="#{emision['equipoMaquinaria.objeto.modelo']}" styleClass="negrita" />
+													<p:inputText id="idModelo" value="#{ramoEquipoMaquinaraBean.modelo}" required="true"
+															requiredMessage="#{emision['equipoMaquinaria.objeto.modelo.msn']}"  />
 													<h:outputLabel value="#{emision['equipoMaquinaria.objeto.anio']}" styleClass="negrita" />
 													<p:inputText value="#{ramoEquipoMaquinaraBean.anio}" />
 
