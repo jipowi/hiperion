@@ -125,6 +125,13 @@
 												value="#{emision['boton.aceptar']}" update="ramo, formPrincipal" title="Guardar" />
 											<p:commandButton id="cancelarBtnId" icon="icon-cancel" value="#{emision['boton.cancelar']}" title="Cancelar" />
 
+											<!-- DESCARGAR DOCUMENTOS -->
+											<h:panelGrid columns="2">
+												<p:commandLink title="Descargar syllabus" actionListener="#{agropecuarioBacking.descargarAgropecurioPDF()}">
+													<h:graphicImage name="pdf.png" library="img" />
+												</p:commandLink>
+											</h:panelGrid>
+
 										</div>
 									</h:form>
 								</p:tab>
