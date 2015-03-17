@@ -89,7 +89,7 @@ public class XSLUtil {
 	public String obtenerHtmlAgropecuario(RamoAgropecuario agropecuario) {
 		String html = null;
 		try {
-			InputStream in = XSLHelper.class.getResourceAsStream("HojaVidaHTML.xsl");
+			InputStream in = XSLHelper.class.getResourceAsStream("AgropecuarioHTML.xsl");
 			InputStreamReader is = new InputStreamReader(in);
 			StringBuilder sb = new StringBuilder();
 			BufferedReader br = new BufferedReader(is);

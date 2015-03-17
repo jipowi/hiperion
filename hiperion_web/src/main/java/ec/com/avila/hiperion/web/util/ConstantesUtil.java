@@ -31,4 +31,8 @@ public class ConstantesUtil {
 	public static final String PARAM_ACEPTABLE = "aceptable";
 	public static final String SLASH = "/";
 	public final static String DESCARGADOR_SERVLET = "/descargador.jsf";
+	public final static String CONTENT_DISPOSITION = "content-disposition";
+	public final static String CONTENT_ATTACHMENT_FILE_NAME = "attachment; filename=";
+	public final static String CONTENT_LENGTH = "content-length";
+	public final static String TIPO_PDF = ".pdf";
 }
