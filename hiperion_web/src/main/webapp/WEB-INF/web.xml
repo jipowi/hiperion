@@ -20,6 +20,14 @@
 		<servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
+	<servlet>
+		<servlet-name>descargador</servlet-name>
+		<servlet-class>ec.com.avila.hiperion.web.servlet.Descargador</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>descargador</servlet-name>
+		<url-pattern>/descargador.jsf</url-pattern>
+	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>Faces Servlet</servlet-name>
 		<url-pattern>*.jsf</url-pattern>
