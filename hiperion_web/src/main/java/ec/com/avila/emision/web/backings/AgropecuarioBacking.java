@@ -481,16 +481,14 @@ public class AgropecuarioBacking implements Serializable {
 	 * 
 	 * @throws DioneException
 	 */
-	public void descargarAgropecurioPDF() throws HiperionException {
+	public void descargarAgropecuarioPDF() throws HiperionException {
 		try {
 			Map<String, Object> parametrosReporte = new HashMap<String, Object>();
 
 			parametrosReporte.put(ConstantesUtil.CONTENT_TYPE_IDENTIFICADOR, ConstantesUtil.CONTENT_TYPE_PDF);
 			parametrosReporte.put(ConstantesUtil.NOMBRE_ARCHIVO_IDENTIFICADOR, usuarioBean.getSessionUser().getIdentificacionUsuario());
 
-			parametrosReporte
-					.put(ConstantesUtil.CONTENIDO_BYTES_IDENTIFICADOR,
-							GenerarPdfUtil.generarAchivoPDFAgropecuario(agropecuario));
+			parametrosReporte.put(ConstantesUtil.CONTENIDO_BYTES_IDENTIFICADOR,GenerarPdfUtil.generarAchivoPDFAgropecuario(agropecuario));
 
 			JsfUtil.setSessionAttribute(ConstantesUtil.PARAMETROS_DESCARGADOR_IDENTIFICADOR, parametrosReporte);
 			JsfUtil.downloadFile();

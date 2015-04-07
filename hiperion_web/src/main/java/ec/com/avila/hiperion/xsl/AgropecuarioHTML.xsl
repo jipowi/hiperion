@@ -29,6 +29,16 @@
 							</td>
 						</tr>
 						<tr>
+							<td>
+
+								<br />
+								<xsl:text>Deducible: </xsl:text>
+								<xsl:value-of select="documento/deducible" />
+								<br />
+
+							</td>
+						</tr>
+						<tr>
 							<td style="height:0.8cm;"></td>
 						</tr>
 					</tbody>

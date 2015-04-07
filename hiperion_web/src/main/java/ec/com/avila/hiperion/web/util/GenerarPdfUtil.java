@@ -32,9 +32,9 @@ public class GenerarPdfUtil implements Serializable {
 	 * @throws Exception
 	 */
 	public static byte[] generarAchivoPDFAgropecuario(RamoAgropecuario agropecuario) throws Exception {
-		String pHtml = XSLUtil.getInstancia().obtenerHtmlAgropecuario(agropecuario);
+		String HTML = XSLUtil.getInstancia().obtenerHtmlAgropecuario(agropecuario);
 
-		byte[] contenido = obtenerCadenaBytes(pHtml);
+		byte[] contenido = obtenerCadenaBytes(HTML);
 
 		// Agregar marca de agua al Pdf
 		return ConcatenadorPdf.numerarMarcar(contenido, Boolean.TRUE, Boolean.TRUE, ConstantesUtil.PATH_MARCA_AGUA_PDF);
