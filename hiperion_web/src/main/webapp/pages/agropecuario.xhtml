@@ -66,21 +66,95 @@
 													<p:inputTextarea id="ubicacion" value="#{ramoAgropecuarioBean.ubicacion}" cols="50" rows="2" required="true"
 														requiredMessage="#{emision['agropecuario.ubicacion.msn']}" />
 												</h:panelGrid>
-											</h:panelGrid>
-											<p:spacer height="15px;" />
 
+												<p:spacer height="15px;" />
 
-											<h:panelGrid columns="2">
-												<h:outputLabel style="color : #F4751B;" value="#{emision['agropecuario.titulo.ganadero']}" styleClass="negrita" />
-												<p:spacer height="10px;" />
-
-												<h:outputLabel value="#{emision['agropecuario.tituloPlantacion']}" />
-												<h:graphicImage name="ganadero.png" library="img" />
-											</h:panelGrid>
-											<h:panelGrid columns="1">
 												<h:panelGrid columns="2">
+													<h:outputLabel style="color : #F4751B;" value="#{emision['agropecuario.titulo.ganadero']}" styleClass="negrita" />
+													<p:spacer height="10px;" />
+
+													<h:outputLabel value="#{emision['agropecuario.tituloPlantacion']}" />
+													<h:graphicImage name="ganadero.png" library="img" />
+												</h:panelGrid>
+
+											</h:panelGrid>
+											<h:panelGrid columns="1" cellpadding="3">
+												<h:panelGrid columns="2">
+													<p:outputLabel for="polizaVigente" value="#{emision['agropecuario.lbl.polizaVigente']}" />
+													<h:graphicImage name="pdf.png" library="img" />
+												</h:panelGrid>
+
+												<p:fileUpload id="polizaVigente" fileUploadListener="#{agropecuarioBacking.cargarArchivoPoliza}" mode="advanced" dragDropSupport="false"
+													update="messages" sizeLimit="2000000" fileLimit="3" allowTypes="/(\.|\/)(pdf)$/" required="true"
+													requiredMessage="#{emision['agropecuario.file.msn']}" />
+												<p:growl id="messages" showDetail="true" />
+											</h:panelGrid>
+											<p:spacer height="30px;" />
+											<p:commandButton id="guardarAgropecuarioBtnId" actionListener="#{agropecuarioBacking.setearRamo()}" icon="icon-save"
+												value="#{emision['boton.aceptar']}" update="ramo, formPrincipal" title="Guardar" />
+											<p:commandButton id="cancelarBtnId" icon="icon-cancel" value="#{emision['boton.cancelar']}" title="Cancelar" />
+
+											<!-- DESCARGAR DOCUMENTOS -->
+											<h:panelGrid columns="2">
+												<p:commandLink title="Descargar syllabus" actionListener="#{agropecuarioBacking.descargarAgropecuarioPDF()}">
+													<h:graphicImage name="pdf.png" library="img" />
+												</p:commandLink>
+											</h:panelGrid>
+
+										</div>
+									</h:form>
+								</p:tab>
+								<!-- CLAUSULAS ADICIONALES -->
+								<p:tab title="#{emision['ap.tab.clausulasAdicionales']}">
+									<h:form id="caAPFormId">
+										<p:dataTable id="caAPTblId" var="clausula" value="#{agropecuarioBacking.obtenerClausulasAdicionales()}" paginator="true" rows="4"
+											selection="#{agropecuarioBacking.selectClausulasAdicionales}">
+											<f:facet name="header">#{emision['anexo.titulo.cad']}</f:facet>
+											<p:column selectionMode="multiple" style="width:2%" />
+											<p:column headerText="#{emision['anexo.ca.nombre']}">#{clausula.nombreDetalleAnexo}</p:column>
+										</p:dataTable>
+									</h:form>
+								</p:tab>
+								<!-- COBERTURAS -->
+								<p:tab title="#{emision['ap.tab.coberturas']}">
+									<p:accordionPanel dynamic="true" cache="true" activeIndex="null">
+										<!-- Para Transporte -->
+										<p:tab title="Para Transporte">
+											<h:form id="cobTrpAGPFormId">
+												<p:dataTable id="caAPTblId" var="clausula" value="#{agropecuarioBacking.obtenerCoberturasTransporte()}" paginator="true" rows="4"
+													selection="#{agropecuarioBacking.selectCoberturasTransporte}">
+													<f:facet name="header">Transporte</f:facet>
+													<p:column selectionMode="multiple" style="width:2%" />
+													<p:column headerText="#{emision['anexo.ca.nombre']}">#{clausula.nombreDetalleAnexo}</p:column>
+												</p:dataTable>
+											</h:form>
+										</p:tab>
+										<!-- Para Vida -->
+										<p:tab title="Para Vida">
+											<h:form id="cobVidAGPFormId">
+												<p:dataTable id="caAPTblId" var="clausula" value="#{agropecuarioBacking.obtenerCoberturasVida()}" paginator="true" rows="4"
+													selection="#{agropecuarioBacking.selectCoberturasVida}">
+													<f:facet name="header">Vida</f:facet>
+													<p:column selectionMode="multiple" style="width:2%" />
+													<p:column headerText="#{emision['anexo.ca.nombre']}">#{clausula.nombreDetalleAnexo}</p:column>
+												</p:dataTable>
+											</h:form>
+										</p:tab>
+									</p:accordionPanel>
+								</p:tab>
+								<!-- OBJETO ASEGURADO -->
+								<p:tab title="#{emision['agropecuario.tab.objetoAsegurado']}">
+									<div align="center">
+										<h:form id="formObjeto">
+											<h:panelGrid columns="1">
+												<f:facet name="header">
+													<p:outputLabel value="#{emision['agropecuario.objeto.tituloPantalla']}" styleClass="negrita" />
+												</f:facet>
+												<p:separator id="customSeparator" style="width:auto;height:1px" />
+												<p:growl id="messages" showDetail="true" />
+												<p:panelGrid columns="2">
 													<h:outputLabel for="idItem" value="#{emision['agropecuario.objeto.item']}" styleClass="negrita" />
-													<p:inputText id="idItem" value="#{ramoAgropecuarioBean.item}" />
+													<p:inputText id="idItem" value="#{ramoAgropecuarioBean.item}"  />
 
 													<h:outputLabel for="idNombre" value="#{emision['agropecuario.objeto.nombre']}" styleClass="negrita" />
 													<p:inputText id="idNombre" value="#{ramoAgropecuarioBean.nombre}" />
@@ -92,7 +166,7 @@
 													</p:selectOneMenu>
 
 													<h:outputLabel for="idRaza" value="#{emision['agropecuario.objeto.raza']}" styleClass="negrita" />
-													<p:inputText id="idRaza" value="#{ramoAgropecuarioBean.raza}" />
+													<p:inputText id="IdRaza" value="#{ramoAgropecuarioBean.raza}" />
 
 													<h:outputLabel for="idColor" value="#{emision['agropecuario.objeto.color']}" styleClass="negrita" />
 													<p:inputText id="idColor" value="#{ramoAgropecuarioBean.color}" />
@@ -102,14 +176,16 @@
 
 													<h:outputLabel for="idMontoAsegurado" value="#{emision['agropecuario.objeto.montoAsegurado']}" styleClass="negrita" />
 													<p:inputText id="idMontoAsegurado" value="#{ramoAgropecuarioBean.montoAsegurado}" />
-												</h:panelGrid>
-												<div align="center">
-													<p:commandButton id="agregarObjeto" update="formPrincipal, tablaGanadero" icon="icon-add" value="#{emision['boton.agregar']}"
-														actionListener="#{ramoAgropecuarioBean.addAction}" title="Agregar" />
-												</div>
+												</p:panelGrid>
+												<f:facet name="footer">
+													<div align="center">
+														<p:commandButton id="agregarObjeto" update="formObjeto, messages" icon="icon-add" value="#{emision['boton.agregar']}"
+															actionListener="#{ramoAgropecuarioBean.addAction}" title="Agregar" />
+													</div>
+												</f:facet>
 											</h:panelGrid>
-											<p:dataTable id="tablaGanadero" value="#{ramoAgropecuarioBean.objetoAseguradoList}" var="obj" widgetVar="50" style="width: 60%;"
-												editable="true">
+											<p:spacer height="30px;" />
+											<p:dataTable id="tabla" value="#{ramoAgropecuarioBean.objetoAseguradoList}" var="obj" widgetVar="50" style="width: 60%;" editable="true">
 												<p:ajax event="rowEdit" listener="#{ramoAgropecuarioBean.onEdit}" />
 												<p:ajax event="rowEditCancel" listener="#{ramoAgropecuarioBean.onCancel}" />
 												<p:column>
@@ -214,69 +290,12 @@
 													<p:rowEditor />
 												</p:column>
 											</p:dataTable>
-
-											<h:panelGrid columns="1" cellpadding="3">
-												<h:panelGrid columns="2">
-													<p:outputLabel for="polizaVigente" value="#{emision['agropecuario.lbl.polizaVigente']}" />
-													<h:graphicImage name="pdf.png" library="img" />
-												</h:panelGrid>
-
-												<p:fileUpload id="polizaVigente" fileUploadListener="#{agropecuarioBacking.cargarArchivoPoliza}" mode="advanced" dragDropSupport="false"
-													update="messages" sizeLimit="2000000" fileLimit="3" allowTypes="/(\.|\/)(pdf)$/" required="true"
-													requiredMessage="#{emision['agropecuario.file.msn']}" />
-												<p:growl id="messages" showDetail="true" />
-											</h:panelGrid>
 											<p:spacer height="30px;" />
-											<p:commandButton id="guardarAgropecuarioBtnId" actionListener="#{agropecuarioBacking.setearRamo()}" icon="icon-save"
-												value="#{emision['boton.aceptar']}" update="ramo, formPrincipal" title="Guardar" />
+											<p:commandButton id="guardarObjAseguradoBtnId" actionListener="#{agropecuarioBacking.guardarRamo()}" icon="icon-save"
+												value="#{emision['boton.guardar']}" update="formObjeto" title="Guardar" />
 											<p:commandButton id="cancelarBtnId" icon="icon-cancel" value="#{emision['boton.cancelar']}" title="Cancelar" />
-
-											<!-- DESCARGAR DOCUMENTOS -->
-											<h:panelGrid columns="2">
-												<p:commandLink title="Descargar syllabus" actionListener="#{agropecuarioBacking.descargarAgropecuarioPDF()}">
-													<h:graphicImage name="pdf.png" library="img" />
-												</p:commandLink>
-											</h:panelGrid>
-										</div>
-									</h:form>
-								</p:tab>
-								<!-- CLAUSULAS ADICIONALES -->
-								<p:tab title="#{emision['ap.tab.clausulasAdicionales']}">
-									<h:form id="caAPFormId">
-										<p:dataTable id="caAPTblId" var="clausula" value="#{agropecuarioBacking.obtenerClausulasAdicionales()}" paginator="true" rows="4"
-											selection="#{agropecuarioBacking.selectClausulasAdicionales}">
-											<f:facet name="header">#{emision['anexo.titulo.cad']}</f:facet>
-											<p:column selectionMode="multiple" style="width:2%" />
-											<p:column headerText="#{emision['anexo.ca.nombre']}">#{clausula.nombreDetalleAnexo}</p:column>
-										</p:dataTable>
-									</h:form>
-								</p:tab>
-								<!-- COBERTURAS -->
-								<p:tab title="#{emision['ap.tab.coberturas']}">
-									<p:accordionPanel dynamic="true" cache="true" activeIndex="null">
-										<!-- Para Transporte -->
-										<p:tab title="Para Transporte">
-											<h:form id="cobTrpAGPFormId">
-												<p:dataTable id="caAPTblId" var="clausula" value="#{agropecuarioBacking.obtenerCoberturasTransporte()}" paginator="true" rows="4"
-													selection="#{agropecuarioBacking.selectCoberturasTransporte}">
-													<f:facet name="header">Transporte</f:facet>
-													<p:column selectionMode="multiple" style="width:2%" />
-													<p:column headerText="#{emision['anexo.ca.nombre']}">#{clausula.nombreDetalleAnexo}</p:column>
-												</p:dataTable>
-											</h:form>
-										</p:tab>
-										<!-- Para Vida -->
-										<p:tab title="Para Vida">
-											<h:form id="cobVidAGPFormId">
-												<p:dataTable id="caAPTblId" var="clausula" value="#{agropecuarioBacking.obtenerCoberturasVida()}" paginator="true" rows="4"
-													selection="#{agropecuarioBacking.selectCoberturasVida}">
-													<f:facet name="header">Vida</f:facet>
-													<p:column selectionMode="multiple" style="width:2%" />
-													<p:column headerText="#{emision['anexo.ca.nombre']}">#{clausula.nombreDetalleAnexo}</p:column>
-												</p:dataTable>
-											</h:form>
-										</p:tab>
-									</p:accordionPanel>
+										</h:form>
+									</div>
 								</p:tab>
 							</p:tabView>
 						</p:panel>
