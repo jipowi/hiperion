@@ -27,7 +27,7 @@
 									<h:form id="formPrincipal">
 										<div align="center">
 											<h:panelGrid columns="1" id="ramoMateriales">
-												<p:panel> 
+												<p:panel>
 													<h:panelGrid columns="2" cellpadding="3">
 														<p:outputLabel value="#{emision['calidadMateriales.sector']}" styleClass="negrita" />
 														<p:selectOneMenu id="sectorId" value="#{ramoBuenaCalMatBean.sector}" effect="drop" required="true"
@@ -58,10 +58,17 @@
 												</p:panel>
 											</h:panelGrid>
 											<p:spacer height="30px;" />
-											<p:commandButton id="guardarBtnId"  actionListener="#{buenaCalidadMaterialesBacking.guardarRamo}"
-												icon="icon-save" value="#{emision['boton.guardar']}" title="Guardar" update="ramoMateriales, formPrincipal"/>
+											<p:commandButton id="guardarBtnId" actionListener="#{buenaCalidadMaterialesBacking.guardarRamo}" icon="icon-save"
+												value="#{emision['boton.guardar']}" title="Guardar" update="ramoMateriales, formPrincipal" />
 											<p:commandButton id="cancelarBtnId" oncomplete="materialesDlg.hide();" icon="icon-cancel" value="#{emision['boton.cancelar']}"
 												process="@this" title="Cancelar" />
+
+											<!-- DESCARGAR DOCUMENTOS -->
+											<h:panelGrid columns="2">
+												<p:commandLink title="Descargar syllabus" actionListener="#{buenaCalidadMaterialesBacking.descargarBuenaCalidadMaterialesPDF()}">
+													<h:graphicImage name="pdf.png" library="img" />
+												</p:commandLink>
+											</h:panelGrid>
 										</div>
 									</h:form>
 								</p:tab>

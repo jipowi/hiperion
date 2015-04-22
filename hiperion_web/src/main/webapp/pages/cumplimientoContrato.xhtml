@@ -54,6 +54,13 @@
 												icon="icon-save" value="#{emision['boton.guardar']}" title="Guardar" udate="ramoCumpContrato, formPrincipal" />
 											<p:commandButton id="cancelarBtnId" oncomplete="cumplimientoDlg.hide();" icon="icon-cancel" value="#{emision['boton.cancelar']}"
 												process="@this" title="Cancelar" />
+												
+												<!-- DESCARGAR DOCUMENTOS -->
+											<h:panelGrid columns="2">
+												<p:commandLink title="Descargar syllabus" actionListener="#{cumplimientoContratoBacking.descargarCumplimientoContratoPDF()}">
+													<h:graphicImage name="pdf.png" library="img" />
+												</p:commandLink>
+											</h:panelGrid>
 										</div>
 									</h:form>
 								</p:tab>

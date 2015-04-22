@@ -62,6 +62,13 @@
 												value="#{emision['boton.guardar']}" update="formPrincipal, ramoBuenUsoAnticipo" title="Guardar" />
 											<p:commandButton id="cancelarBtnId" icon="icon-cancel" value="#{emision['boton.cancelar']}" title="Cancelar" />
 
+											<!-- DESCARGAR DOCUMENTOS -->
+											<h:panelGrid columns="2">
+												<p:commandLink title="Descargar syllabus" actionListener="#{buenUsoAnticipoBacking.descargaBuenUsoAnticipoPDF()}">
+													<h:graphicImage name="pdf.png" library="img" />
+												</p:commandLink>
+											</h:panelGrid>
+
 										</div>
 									</h:form>
 								</p:tab>
