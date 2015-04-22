@@ -30,6 +30,6 @@ public interface GenerarDocCascoMaritimo {
 	 * @throws HiperionException
 	 */
 
-	String generarXmlCascoMaritimo(RamoCascoMaritimo cascoMaritimo) throws HiperionException;
+	public String generarXmlCascoMaritimo(RamoCascoMaritimo cascoMaritimo) throws HiperionException;
 
 }
