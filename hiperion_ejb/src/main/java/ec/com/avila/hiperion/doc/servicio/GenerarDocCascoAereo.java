@@ -30,6 +30,6 @@ public interface GenerarDocCascoAereo {
 	 * @throws HiperionException
 	 */
 
-	String generarXmlCascoAereo(RamoCascoAereo cascoAereo) throws HiperionException;
+	public String generarXmlCascoAereo(RamoCascoAereo cascoAereo) throws HiperionException;
 
 }
