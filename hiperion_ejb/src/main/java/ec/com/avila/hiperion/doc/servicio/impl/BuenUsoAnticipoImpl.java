@@ -3,10 +3,15 @@
  */
 package ec.com.avila.hiperion.doc.servicio.impl;
 
+import java.util.List;
+
 import javax.ejb.Stateless;
+
+import org.apache.commons.lang.StringEscapeUtils;
 
 import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.doc.servicio.GenerarDocBuenUsoAnticipo;
+import ec.com.avila.hiperion.emision.entities.CobertBuenUsoAnt;
 import ec.com.avila.hiperion.emision.entities.RamoBuenUsoAnt;
 
 /**
@@ -21,6 +26,7 @@ public class BuenUsoAnticipoImpl implements GenerarDocBuenUsoAnticipo {
 
 	private static String tagInicioSector = "<sector>";
 	private static String tagFinSector = "</sector>";
+
 	private static String tagInicioValorContrato = "<valorContrato>";
 	private static String tagFinValorContrato = "</valorContrato>";
 	private static String tagInicioValorPoliza = "<valorPoliza>";
@@ -29,6 +35,8 @@ public class BuenUsoAnticipoImpl implements GenerarDocBuenUsoAnticipo {
 	private static String tagFinObjetoAsegurado = "</objetoAsegurado>";
 	private static String tagInicioCoberturas = "<coberturas>";
 	private static String tagFinCoberturas = "</coberturas>";
+	private static String tagInicioNomCobertura = "<nomCobertura>";
+	private static String tagFinNomCobertura = "</nomCobertura>";
 
 	/*
 	 * (non-Javadoc)
@@ -37,8 +45,23 @@ public class BuenUsoAnticipoImpl implements GenerarDocBuenUsoAnticipo {
 	 */
 	@Override
 	public String generarXmlBuenUsoAnticipo(RamoBuenUsoAnt buenUsoAnt) throws HiperionException {
-		// TODO Auto-generated method stub
-		return null;
+
+		StringBuffer buffer = new StringBuffer();
+		buffer.append(tagInicioSector).append(StringEscapeUtils.escapeXml(buenUsoAnt.getSectorAnticipo().toString())).append(tagFinSector);
+		buffer.append(tagInicioValorContrato).append(StringEscapeUtils.escapeXml(buenUsoAnt.getValorContratoAnticipo().toString())).append(tagFinValorContrato);
+		buffer.append(tagInicioValorPoliza).append(StringEscapeUtils.escapeXml(buenUsoAnt.getValorPolizaAnticipo().toString())).append(tagFinValorPoliza);
+		buffer.append(tagInicioObjetoAsegurado).append(StringEscapeUtils.escapeXml(buenUsoAnt.getObjAsegAnticipo().toString())).append(tagFinObjetoAsegurado);
+		//buffer.append(tagInicioCoberturas).append(StringEscapeUtils.escapeXml(buenUsoAnt.getCobertBuenUsoAnts().toString())).append(tagFinCoberturas);
+
+		/*
+		for (CobertBuenUsoAnt cobertura : coberturas) {
+			buffer.append(tagInicioNomCobertura);
+			buffer.append(tagInicioNomCobertura).append(StringEscapeUtils.escapeXml(cobertura.getCoberturaAnticipo())).append(tagFinNomCobertura);
+			buffer.append(tagFinNomCobertura);
+		}
+		*/
+
+		return buffer.toString();
 	}
 
 }

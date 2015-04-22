@@ -5,8 +5,11 @@ package ec.com.avila.hiperion.doc.servicio.impl;
 
 import javax.ejb.Stateless;
 
+import org.apache.commons.lang.StringEscapeUtils;
+
 import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.doc.servicio.GenerarDocBuenaCalidadMateriales;
+import ec.com.avila.hiperion.emision.entities.CobertMateriale;
 import ec.com.avila.hiperion.emision.entities.RamoBuenaCalMat;
 
 /**
@@ -29,6 +32,8 @@ public class BuenaCalidadMaterialesImpl implements GenerarDocBuenaCalidadMateria
 	private static String tagFinObjetoAsegurado = "</objetoAsegurado>";
 	private static String tagInicioCoberturas = "<coberturas>";
 	private static String tagFinCoberturas = "</coberturas>";
+	private static String tagInicioNomCobertura = "<nomCobertura>";
+	private static String tagFinNomCobertura = "</nomCobertura>";
 
 	/*
 	 * (non-Javadoc)
@@ -37,8 +42,21 @@ public class BuenaCalidadMaterialesImpl implements GenerarDocBuenaCalidadMateria
 	 */
 	@Override
 	public String generarXmlBuenaCalidadMateriales(RamoBuenaCalMat buenaCalMat) throws HiperionException {
-		// TODO Auto-generated method stub
-		return null;
+
+		StringBuffer buffer = new StringBuffer();
+		buffer.append(tagInicioSector).append(StringEscapeUtils.escapeXml(buenaCalMat.getSectorCalMat().toString())).append(tagFinSector);
+		buffer.append(tagInicioValorContrato).append(StringEscapeUtils.escapeXml(buenaCalMat.getValorContratoMateriales().toString())).append(tagFinValorContrato);
+		buffer.append(tagInicioValorPoliza).append(StringEscapeUtils.escapeXml(buenaCalMat.getValorPolizaMateriales().toString())).append(tagFinValorPoliza);
+		buffer.append(tagInicioObjetoAsegurado).append(StringEscapeUtils.escapeXml(buenaCalMat.getObjAsegCalMat().toString())).append(tagFinObjetoAsegurado);
+
+//		for (CobertMateriale cobertura : buenaCalMat.getCobertMateriales()) {
+//			buffer.append(tagInicioCoberturas);
+//			buffer.append(tagInicioNomCobertura).append(StringEscapeUtils.escapeXml(cobertura.getCoberturaMateriales())).append(tagFinNomCobertura);
+//			buffer.append(tagFinCoberturas);
+//
+//		}
+
+		return buffer.toString();
 	}
 
 }
