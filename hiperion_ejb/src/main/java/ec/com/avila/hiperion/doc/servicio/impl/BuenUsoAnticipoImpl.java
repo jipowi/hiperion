@@ -33,10 +33,10 @@ public class BuenUsoAnticipoImpl implements GenerarDocBuenUsoAnticipo {
 	private static String tagFinValorPoliza = "</valorPoliza>";
 	private static String tagInicioObjetoAsegurado = "<objetoAsegurado>";
 	private static String tagFinObjetoAsegurado = "</objetoAsegurado>";
-	private static String tagInicioCoberturas = "<coberturas>";
-	private static String tagFinCoberturas = "</coberturas>";
-	private static String tagInicioNomCobertura = "<nomCobertura>";
-	private static String tagFinNomCobertura = "</nomCobertura>";
+	//private static String tagInicioCoberturas = "<coberturas>";
+	//private static String tagFinCoberturas = "</coberturas>";
+	//private static String tagInicioNomCobertura = "<nomCobertura>";
+	//private static String tagFinNomCobertura = "</nomCobertura>";
 
 	/*
 	 * (non-Javadoc)
