@@ -27,7 +27,6 @@ public class AgropecuarioImpl implements GenerarDocAgropecuario {
 	private static String tagFinObjetoAsegurado = "</objetoAsegurado>";
 	private static String tagInicioValorAseguradoPlantacion = "<valorAsegurado>";
 	private static String tagFinValorAseguradoPlantacion = "</valorAsegurado>";
-	private static String tagInicioDetallePlantacion = "<detalle>";
 	private static String tagFinDetallePlantacion = "</detalle>";
 	private static String tagInicioUbicacion = "<ubicacion>";
 	private static String tagFinUbicacion = "</ubicacion>";
@@ -49,6 +48,7 @@ public class AgropecuarioImpl implements GenerarDocAgropecuario {
 	private static String tagFinClausulasAdicionales = "</clausulasAdicionales>";
 	private static String tagInicioCoberturas = "<coberturas>";
 	private static String tagFinCoberturas = "</coberturas>";
+	
 
 	/*
 	 * (non-Javadoc)
@@ -59,6 +59,7 @@ public class AgropecuarioImpl implements GenerarDocAgropecuario {
 	public String generarXmlAgropecuario(RamoAgropecuario agropecuario) throws HiperionException {
 		StringBuffer buffer = new StringBuffer();
 		buffer.append(tagInicioTasa).append(StringEscapeUtils.escapeXml(agropecuario.getTasaAgro().toString())).append(tagFinTasa);
+		buffer.append(tagInicioDeducible).append(StringEscapeUtils.escapeXml(agropecuario.getDeducAgro().toString())).append(tagFinDeducible);
 		return buffer.toString();
 	}
 }
