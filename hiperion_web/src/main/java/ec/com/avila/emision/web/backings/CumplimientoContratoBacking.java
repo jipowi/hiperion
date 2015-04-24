@@ -7,7 +7,9 @@ package ec.com.avila.emision.web.backings;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -30,7 +32,10 @@ import ec.com.avila.hiperion.servicio.RamoService;
 import ec.com.avila.hiperion.web.beans.RamoBean;
 import ec.com.avila.hiperion.web.beans.UsuarioBean;
 import ec.com.avila.hiperion.web.model.AnexosDataModel;
+import ec.com.avila.hiperion.web.util.ConstantesUtil;
+import ec.com.avila.hiperion.web.util.GenerarPdfUtil;
 import ec.com.avila.hiperion.web.util.HiperionMensajes;
+import ec.com.avila.hiperion.web.util.JsfUtil;
 import ec.com.avila.hiperion.web.util.MessagesController;
 
 /**
@@ -61,6 +66,7 @@ public class CumplimientoContratoBacking implements Serializable {
 	private UsuarioBean usuarioBean;
 
 	Logger log = Logger.getLogger(CumplimientoContratoBacking.class);
+	RamoCumplimientoContrato cumplimientoContrato = new RamoCumplimientoContrato();
 
 	private AnexosDataModel anexosDataModel;
 	private List<DetalleAnexo> anexos;
@@ -113,7 +119,7 @@ public class CumplimientoContratoBacking implements Serializable {
 	public void guardarRamo() throws HiperionException {
 		Usuario usuario=usuarioBean.getSessionUser();
 		
-		RamoCumplimientoContrato cumplimientoContrato = new RamoCumplimientoContrato();
+		
 
 		cumplimientoContrato.setObjetoAsegContrato(ramoCumplimientoContratoBean.getObjetoAsegurado());
 		cumplimientoContrato.setValorContrato(ramoCumplimientoContratoBean.getValorContrato());
@@ -187,5 +193,31 @@ public class CumplimientoContratoBacking implements Serializable {
 	 */
 	public void setSelectCoberturas(DetalleAnexoBean[] selectCoberturas) {
 		this.selectCoberturas = selectCoberturas;
+	}
+	
+	/**
+	 * 
+	 * <b>
+	 * Permite generar y descargar el documento en PDF
+	 * </b>
+	 * <p>[Author: Franklin Pozo B, Date: 22/04/2015]</p>
+	 *
+	 * @throws HiperionException
+	 */
+	public void descargarCumplimientoContratoPDF()throws HiperionException{
+		try {
+			Map<String, Object> parametrosReporte = new HashMap<String, Object>();
+
+			parametrosReporte.put(ConstantesUtil.CONTENT_TYPE_IDENTIFICADOR, ConstantesUtil.CONTENT_TYPE_PDF);
+			parametrosReporte.put(ConstantesUtil.NOMBRE_ARCHIVO_IDENTIFICADOR, usuarioBean.getSessionUser().getIdentificacionUsuario());
+
+			parametrosReporte.put(ConstantesUtil.CONTENIDO_BYTES_IDENTIFICADOR, GenerarPdfUtil.generarArchivoPDFCumplimientoContrato(cumplimientoContrato));
+
+			JsfUtil.setSessionAttribute(ConstantesUtil.PARAMETROS_DESCARGADOR_IDENTIFICADOR, parametrosReporte);
+			JsfUtil.downloadFile();
+		}catch (Exception e) {
+			log.error("Error al momento generar el documento Casco Aereo en PDF", e);
+			throw new HiperionException(e);
+		}
 	}
 }
