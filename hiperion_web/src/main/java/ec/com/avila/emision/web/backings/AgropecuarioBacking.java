@@ -210,6 +210,7 @@ public class AgropecuarioBacking implements Serializable {
 		agropecuario.setIdUsuarioCreacion(usuario.getIdUsuario());
 		agropecuario.setFechaCreacion(new Date());
 		agropecuario.setEstado(EstadoEnum.A);
+		
 
 		MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.setearInformacion"));
 	}
@@ -252,16 +253,16 @@ public class AgropecuarioBacking implements Serializable {
 				MessagesController.addError(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.error.save.Obj"));
 			}
 
-			// if (ramoAgropecuarioBean.getFilePolizaVigente() != null) {
-			// ramoAgropecuarioService.guardarArchivoPoliza(ramoAgropecuarioBean.getFilePolizaVigente());
-			ramoAgropecuarioService.guardarAgropecuario(agropecuario);
+			if (ramoAgropecuarioBean.getFilePolizaVigente() != null) {
+				ramoAgropecuarioService.guardarArchivoPoliza(ramoAgropecuarioBean.getFilePolizaVigente());
+				ramoAgropecuarioService.guardarAgropecuario(agropecuario);
 
-			MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.save"));
-			agropecuario = new RamoAgropecuario();
-			ramoAgropecuarioBean.getObjetoAseguradoList().clear();
-			// } else {
-			// MessagesController.addError(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.error.agropecuario"));
-			// }
+				MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.save"));
+				agropecuario = new RamoAgropecuario();
+				ramoAgropecuarioBean.getObjetoAseguradoList().clear();
+			} else {
+				MessagesController.addError(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.error.agropecuario"));
+			}
 
 		} catch (HiperionException e) {
 			log.error("Error al momento de guardar el ramo agropecuario", e);
@@ -338,11 +339,11 @@ public class AgropecuarioBacking implements Serializable {
 
 	/**
 	 * 
-	 * <b>
-	 * Permite obtener la lista de del los objetos asegurados
-	 * </b>
-	 * <p>[Author: Franklin Pozo, Date: 27/01/2015]</p>
-	 *
+	 * <b> Permite obtener la lista de del los objetos asegurados </b>
+	 * <p>
+	 * [Author: Franklin Pozo, Date: 27/01/2015]
+	 * </p>
+	 * 
 	 * @return
 	 * @throws HiperionException
 	 */
@@ -471,7 +472,7 @@ public class AgropecuarioBacking implements Serializable {
 	public void setUsuarioBean(UsuarioBean usuarioBean) {
 		this.usuarioBean = usuarioBean;
 	}
-	
+
 	/**
 	 * 
 	 * <b> Permite generar y descargar la hoja de vida en formato PDF. </b>
@@ -488,7 +489,7 @@ public class AgropecuarioBacking implements Serializable {
 			parametrosReporte.put(ConstantesUtil.CONTENT_TYPE_IDENTIFICADOR, ConstantesUtil.CONTENT_TYPE_PDF);
 			parametrosReporte.put(ConstantesUtil.NOMBRE_ARCHIVO_IDENTIFICADOR, usuarioBean.getSessionUser().getIdentificacionUsuario());
 
-			parametrosReporte.put(ConstantesUtil.CONTENIDO_BYTES_IDENTIFICADOR,GenerarPdfUtil.generarAchivoPDFAgropecuario(agropecuario));
+			parametrosReporte.put(ConstantesUtil.CONTENIDO_BYTES_IDENTIFICADOR, GenerarPdfUtil.generarAchivoPDFAgropecuario(agropecuario));
 
 			JsfUtil.setSessionAttribute(ConstantesUtil.PARAMETROS_DESCARGADOR_IDENTIFICADOR, parametrosReporte);
 			JsfUtil.downloadFile();
@@ -499,5 +500,5 @@ public class AgropecuarioBacking implements Serializable {
 		}
 
 	}
-	
+
 }
