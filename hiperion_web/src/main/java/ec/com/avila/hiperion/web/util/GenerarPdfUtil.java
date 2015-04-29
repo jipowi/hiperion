@@ -16,6 +16,7 @@ import ec.com.avila.hiperion.emision.entities.RamoBuenaCalMat;
 import ec.com.avila.hiperion.emision.entities.RamoCascoAereo;
 import ec.com.avila.hiperion.emision.entities.RamoCascoMaritimo;
 import ec.com.avila.hiperion.emision.entities.RamoCumplimientoContrato;
+import ec.com.avila.hiperion.emision.entities.RamoDineroValore;
 import ec.com.kruger.framework.common.util.pdf.HtmltoPDF;
 
 public class GenerarPdfUtil implements Serializable {
@@ -135,6 +136,15 @@ public class GenerarPdfUtil implements Serializable {
 	 */
 	public static byte[] generarArchivoPDFCumplimientoContrato(RamoCumplimientoContrato cumplimientoContrato) throws Exception {
 		String pHtml = XSLUtil.getInstancia().obtenerHtmlCumplimientoContrato(cumplimientoContrato);
+		byte[] contenido = obtenerCadenaBytes(pHtml);
+
+		// Agregar marca de agua al pdf
+		return ConcatenadorPdf.numerarMarcar(contenido, Boolean.TRUE, Boolean.TRUE, ConstantesUtil.PATH_MARCA_AGUA_PDF);
+	}
+	
+	public static byte[] generarAchivoPDFDineroValores(RamoDineroValore dineroValore)throws Exception{
+		
+		String pHtml = XSLUtil.getInstancia().obtenerHtmlDineroValores(dineroValore);
 		byte[] contenido = obtenerCadenaBytes(pHtml);
 
 		// Agregar marca de agua al pdf
