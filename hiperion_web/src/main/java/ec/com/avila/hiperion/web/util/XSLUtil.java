@@ -21,12 +21,14 @@ import ec.com.avila.hiperion.doc.servicio.GenerarDocBuenaCalidadMateriales;
 import ec.com.avila.hiperion.doc.servicio.GenerarDocCascoAereo;
 import ec.com.avila.hiperion.doc.servicio.GenerarDocCascoMaritimo;
 import ec.com.avila.hiperion.doc.servicio.GenerarDocCumplimientoContrato;
+import ec.com.avila.hiperion.doc.servicio.GenerarDocDineroValores;
 import ec.com.avila.hiperion.emision.entities.RamoAgropecuario;
 import ec.com.avila.hiperion.emision.entities.RamoBuenUsoAnt;
 import ec.com.avila.hiperion.emision.entities.RamoBuenaCalMat;
 import ec.com.avila.hiperion.emision.entities.RamoCascoAereo;
 import ec.com.avila.hiperion.emision.entities.RamoCascoMaritimo;
 import ec.com.avila.hiperion.emision.entities.RamoCumplimientoContrato;
+import ec.com.avila.hiperion.emision.entities.RamoDineroValore;
 import ec.com.avila.hiperion.xsl.XSLHelper;
 import ec.com.kruger.framework.common.util.TransformerUtil;
 
@@ -215,6 +217,23 @@ public class XSLUtil {
 		return xml.toString();
 	}
 
+	public String generarXmlDineroValores(RamoDineroValore dineroValore) {
+		StringBuilder xml = new StringBuilder();
+		try{
+			xml.append(tagInicioDocumento);
+			try{
+				String nombreClase = "java:app/hiperion_web/DineroValoresImpl";
+				GenerarDocDineroValores generarDocumento = (GenerarDocDineroValores) getObjectByJndi(nombreClase);
+				xml.append(generarDocumento.generarXmlDineroValores(dineroValore));
+			}catch(Exception e){
+				log.error("Error", e);
+			}
+			xml.append(tagFinDocumento);
+		}catch(Exception e){
+			
+		}
+		return xml.toString();
+	}
 	/**
 	 * 
 	 * <b> Permite generar el HTML del ramo Agropecuario. </b>
@@ -456,6 +475,47 @@ public class XSLUtil {
 
 		return html;
 
+	}
+	
+	/**
+	 * 
+	 * <b>
+	 * Permite generar el HTML del ramo Cumplimiento Contrato.
+	 * </b>
+	 * <p>[Author: Avila Sistemas, Date: 27/04/2015]</p>
+	 *
+	 * @param cumplimientoContrato
+	 * @return
+	 */
+	public String obtenerHtmlDineroValores(RamoDineroValore cumplimientoContrato){
+		
+		String html = null;
+		
+		try {
+			InputStream in = XSLHelper.class.getResourceAsStream("CascoMaritimoHTML.xsl");
+			InputStreamReader is = new InputStreamReader(in);
+			StringBuilder sb = new StringBuilder();
+			BufferedReader br = new BufferedReader(is);
+			String read = br.readLine();
+
+			while (read != null) {
+				sb.append(read);
+				read = br.readLine();
+			}
+			String contenidoXSL = sb.toString();
+			// Se genera el XML con los datos del documento
+			String contenidoXml = generarXmlDineroValores(cumplimientoContrato);
+			Document docXML = TransformerUtil.stringToXMLDocument(contenidoXml.toString());
+			Document docXSL = TransformerUtil.stringToXML(contenidoXSL);
+			Document result = TransformerUtil.transformar(docXML, docXSL);
+			html = TransformerUtil.xmlToString(result);
+			html = html.replaceAll("&lt;", "<").replaceAll("&gt;", ">").replaceAll("&amp;", "&").replace("UTF-8", "ISO-8859-1");
+
+		}catch(Exception e){
+			log.error("Error ", e);
+		}
+		
+		return html;
 	}
 
 	/**
