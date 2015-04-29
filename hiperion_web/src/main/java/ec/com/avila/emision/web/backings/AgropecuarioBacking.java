@@ -475,7 +475,7 @@ public class AgropecuarioBacking implements Serializable {
 
 	/**
 	 * 
-	 * <b> Permite generar y descargar la hoja de vida en formato PDF. </b>
+	 * <b> Permite generar y descargar informacion Ramo Agropecuario PDF. </b>
 	 * <p>
 	 * [Author: Paul Jimenez, Date: 01/03/2015]
 	 * </p>
