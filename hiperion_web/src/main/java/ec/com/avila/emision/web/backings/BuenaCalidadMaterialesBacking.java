@@ -7,7 +7,9 @@ package ec.com.avila.emision.web.backings;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -35,7 +37,10 @@ import ec.com.avila.hiperion.servicio.RamoService;
 import ec.com.avila.hiperion.web.beans.RamoBean;
 import ec.com.avila.hiperion.web.beans.UsuarioBean;
 import ec.com.avila.hiperion.web.model.AnexosDataModel;
+import ec.com.avila.hiperion.web.util.ConstantesUtil;
+import ec.com.avila.hiperion.web.util.GenerarPdfUtil;
 import ec.com.avila.hiperion.web.util.HiperionMensajes;
+import ec.com.avila.hiperion.web.util.JsfUtil;
 import ec.com.avila.hiperion.web.util.MessagesController;
 
 /**
@@ -74,11 +79,13 @@ public class BuenaCalidadMaterialesBacking implements Serializable {
 
 	@ManagedProperty(value = "#{ramoBuenaCalMatBean}")
 	private RamoBuenaCalMatBean ramoBuenaCalMatBean;
-	
+
 	@ManagedProperty(value = "#{usuarioBean}")
 	private UsuarioBean usuarioBean;
 
 	Logger log = Logger.getLogger(BuenaCalidadMaterialesBacking.class);
+
+	RamoBuenaCalMat buenaCalidadMateriales = new RamoBuenaCalMat();
 
 	@PostConstruct
 	public void inicializar() {
@@ -172,14 +179,13 @@ public class BuenaCalidadMaterialesBacking implements Serializable {
 	 */
 	public void guardarRamo() throws HiperionException {
 
-		Usuario usuario =usuarioBean.getSessionUser();
-		RamoBuenaCalMat buenaCalidadMateriales = new RamoBuenaCalMat();
+		Usuario usuario = usuarioBean.getSessionUser();
 
 		buenaCalidadMateriales.setSectorCalMat(ramoBuenaCalMatBean.getSector());
 		buenaCalidadMateriales.setObjAsegCalMat(ramoBuenaCalMatBean.getObjetoAsegurado());
 		buenaCalidadMateriales.setValorContratoMateriales(ramoBuenaCalMatBean.getValorContrato());
 		buenaCalidadMateriales.setValorPolizaMateriales(ramoBuenaCalMatBean.getValorPoliza());
-		
+
 		buenaCalidadMateriales.setIdUsuarioCreacion(usuario.getIdUsuario());
 		buenaCalidadMateriales.setFechaCreacion(new Date());
 		buenaCalidadMateriales.setEstado(EstadoEnum.A);
@@ -198,7 +204,6 @@ public class BuenaCalidadMaterialesBacking implements Serializable {
 		}
 	}
 
-	
 	/**
 	 * @return the usuarioBean
 	 */
@@ -207,7 +212,8 @@ public class BuenaCalidadMaterialesBacking implements Serializable {
 	}
 
 	/**
-	 * @param usuarioBean the usuarioBean to set
+	 * @param usuarioBean
+	 *            the usuarioBean to set
 	 */
 	public void setUsuarioBean(UsuarioBean usuarioBean) {
 		this.usuarioBean = usuarioBean;
@@ -227,5 +233,33 @@ public class BuenaCalidadMaterialesBacking implements Serializable {
 	public void setRamoBuenaCalMatBean(RamoBuenaCalMatBean ramoBuenaCalMatBean) {
 		this.ramoBuenaCalMatBean = ramoBuenaCalMatBean;
 	}
+	
+	
+	/**
+	 * 
+	 * <b>
+	 * Permite generar y descargar informacion Ramo Buena Calidad Materiales PDF
+	 * </b>
+	 * <p>[Author: Franklin Pozo, Date: 28/04/2015]</p>
+	 *
+	 * @throws HiperionException
+	 */
+	public void descargarBuenaCalidadMaterialesPDF() throws HiperionException {
+		try {
+			Map<String, Object> parametrosReporte = new HashMap<String, Object>();
 
+			parametrosReporte.put(ConstantesUtil.CONTENT_TYPE_IDENTIFICADOR, ConstantesUtil.CONTENT_TYPE_PDF);
+			parametrosReporte.put(ConstantesUtil.NOMBRE_ARCHIVO_IDENTIFICADOR, usuarioBean.getSessionUser().getIdentificacionUsuario());
+
+			parametrosReporte.put(ConstantesUtil.CONTENIDO_BYTES_IDENTIFICADOR,
+					GenerarPdfUtil.generarAchivoPDFBuenaCalidadMat(buenaCalidadMateriales));
+
+			JsfUtil.setSessionAttribute(ConstantesUtil.PARAMETROS_DESCARGADOR_IDENTIFICADOR, parametrosReporte);
+			JsfUtil.downloadFile();
+
+		} catch (Exception e) {
+			log.error("Error al momento generar el docuento PDF", e);
+			throw new HiperionException(e);
+		}
+	}
 }
