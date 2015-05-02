@@ -26,7 +26,7 @@ import ec.com.avila.hiperion.emision.entities.RamoAgropecuario;
 @Stateless
 public class RamoAgropecuarioDaoImpl extends GenericDAOImpl<RamoAgropecuario, Long> implements RamoAgropecuarioDao {
 
-	Logger log = Logger.getLogger(RamoAccidentesPersonalesDaoImpl.class);
+	Logger log = Logger.getLogger(RamoAgropecuarioDaoImpl.class);
 
 	@PersistenceContext(unitName = "sgs_pu")
 	protected EntityManager em;
