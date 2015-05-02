@@ -32,9 +32,9 @@
 		</div>
 		<p:spacer height="15px;" />
 		<div align="center">
-			<h:panelGrid columns="2">
+			<h:panelGrid columns="3">
 				<h:panelGrid columns="1">
-					<div id="left">
+					<div id="left" >
 						<h:form>
 							<p:panelMenu model="#{usuarioBacking.menumodel}">
 
@@ -47,6 +47,12 @@
 						<ui:insert name="content">Content</ui:insert>
 					</div>
 				</h:panelGrid>
+				<h:panelGrid columns="1">
+					<div id="buttons" class="right_content">
+						<ui:insert name="buttons"> </ui:insert>
+					</div>
+				</h:panelGrid>
+				
 			</h:panelGrid>
 		</div>
 	</div>

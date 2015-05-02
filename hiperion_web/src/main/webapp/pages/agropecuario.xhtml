@@ -294,5 +294,19 @@
 			</ui:define>
 		</ui:decorate>
 	</ui:define>
+	<ui:define name="buttons">
+		<h:form>
+			<h:panelGrid columns="1">
+				<h:commandLink action="hiperion.xhtml">
+					<h:graphicImage name="home.png" library="img" />
+				</h:commandLink>
+				<p:commandLink title="Guardar Informacion poliza" actionListener="#{agropecuarioBacking.setearRamo()}">
+					<h:graphicImage name="save.png" library="img" />
+				</p:commandLink>
+
+				<h:graphicImage name="helpII.png" library="img" />
+			</h:panelGrid>
+		</h:form>
+	</ui:define>
 </ui:composition>
 </html>
