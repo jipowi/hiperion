@@ -3,14 +3,9 @@
  */
 package ec.com.avila.hiperion.doc.servicio;
 
-import java.util.List;
-
 import javax.ejb.Local;
 
 import ec.com.avila.hiperion.comun.HiperionException;
-import ec.com.avila.hiperion.emision.entities.ClausulasAddDinero;
-import ec.com.avila.hiperion.emision.entities.CobertDineroVal;
-import ec.com.avila.hiperion.emision.entities.ObjAsegDineroVal;
 import ec.com.avila.hiperion.emision.entities.RamoDineroValore;
 
 /**
@@ -34,6 +29,6 @@ public interface GenerarDocDineroValores {
 	 * @return
 	 * @throws HiperionException
 	 */
-	public String generarXmlAgropecuario(RamoDineroValore dineroValore, List<ObjAsegDineroVal> objetoAseg, List<CobertDineroVal> coberura, List<ClausulasAddDinero> clausulasAdd) throws HiperionException;
+	public String generarXmlDineroValores(RamoDineroValore dineroValore) throws HiperionException;
 
 }

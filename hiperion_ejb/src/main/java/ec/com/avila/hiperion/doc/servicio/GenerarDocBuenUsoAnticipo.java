@@ -3,12 +3,9 @@
  */
 package ec.com.avila.hiperion.doc.servicio;
 
-import java.util.List;
-
 import javax.ejb.Local;
 
 import ec.com.avila.hiperion.comun.HiperionException;
-import ec.com.avila.hiperion.emision.entities.CobertBuenUsoAnt;
 import ec.com.avila.hiperion.emision.entities.RamoBuenUsoAnt;
 
 /** 

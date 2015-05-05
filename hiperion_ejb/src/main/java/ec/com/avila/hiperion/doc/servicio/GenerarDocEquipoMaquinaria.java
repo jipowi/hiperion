@@ -3,14 +3,9 @@
  */
 package ec.com.avila.hiperion.doc.servicio;
 
-import java.util.List;
-
 import javax.ejb.Local;
 
 import ec.com.avila.hiperion.comun.HiperionException;
-import ec.com.avila.hiperion.emision.entities.CobertAddEqMaq;
-import ec.com.avila.hiperion.emision.entities.CobertEqMaq;
-import ec.com.avila.hiperion.emision.entities.ObjAsegEquipoMaq;
 import ec.com.avila.hiperion.emision.entities.RamoEquipoMaquinaria;
 
 /**
@@ -34,7 +29,6 @@ public interface GenerarDocEquipoMaquinaria {
 	 * @return
 	 * @throws HiperionException
 	 */
-	public String generarXmlEquipoMaquinaria(RamoEquipoMaquinaria equipoMaquinaria, List<ObjAsegEquipoMaq> obAsegEquipos, List<CobertEqMaq> cobertEqMaqs,
-			List<CobertAddEqMaq> cobertAddEqMaqs) throws HiperionException;
+	public String generarXmlEquipoMaquinaria(RamoEquipoMaquinaria equipoMaquinaria) throws HiperionException;
 
 }
