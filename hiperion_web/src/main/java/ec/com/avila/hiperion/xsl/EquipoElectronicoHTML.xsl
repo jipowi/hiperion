@@ -11,7 +11,7 @@
 						<tr>
 							<td align="center" colspan="2" style="font-weight: bold;">
 								<h3>
-									<xsl:text>Cotizacion Equipo Electrico</xsl:text>
+									<xsl:text>Cotizacion Equipo Electr&#243;nico</xsl:text>
 								</h3>
 							</td>
 						</tr>
