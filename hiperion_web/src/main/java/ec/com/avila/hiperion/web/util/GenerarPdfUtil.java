@@ -17,6 +17,8 @@ import ec.com.avila.hiperion.emision.entities.RamoCascoAereo;
 import ec.com.avila.hiperion.emision.entities.RamoCascoMaritimo;
 import ec.com.avila.hiperion.emision.entities.RamoCumplimientoContrato;
 import ec.com.avila.hiperion.emision.entities.RamoDineroValore;
+import ec.com.avila.hiperion.emision.entities.RamoEquipoElectronico;
+import ec.com.avila.hiperion.emision.entities.RamoEquipoMaquinaria;
 import ec.com.kruger.framework.common.util.pdf.HtmltoPDF;
 
 public class GenerarPdfUtil implements Serializable {
@@ -44,6 +46,48 @@ public class GenerarPdfUtil implements Serializable {
 
 		// Agregar marca de agua al Pdf
 		return ConcatenadorPdf.numerarMarcar(contenido, Boolean.TRUE, Boolean.TRUE, ConstantesUtil.PATH_MARCA_AGUA_PDF);
+	}
+
+	/**
+	 * 
+	 * <b> Permite generar el documento ramo equipo electronico PDF. </b>
+	 * <p>
+	 * [Author: Franklin Pozo B, Date: 29/04/2015]
+	 * </p>
+	 * 
+	 * @param equipoElectronico
+	 * @return
+	 * @throws Exception
+	 */
+	public static byte[] generarAchivoPDFEquipoElectronico(RamoEquipoElectronico equipoElectronico) throws Exception {
+		String HTML = XSLUtil.getInstancia().obtenerHtmlEquipoElectronico(equipoElectronico);
+
+		byte[] contenido = obtenerCadenaBytes(HTML);
+
+		// Agregar marca de agua al Pdf
+		return ConcatenadorPdf.numerarMarcar(contenido, Boolean.TRUE, Boolean.TRUE, ConstantesUtil.PATH_MARCA_AGUA_PDF);
+
+	}
+
+	/**
+	 * 
+	 * <b> Permite generar el documento ramo equipo maquinaria PDF. </b>
+	 * <p>
+	 * [Author: Franklin Pozo B, Date: 29/04/2015]
+	 * </p>
+	 * 
+	 * @param equipoMaquinaria
+	 * @return
+	 * @throws Exception
+	 */
+	public static byte[] generarAchivoPDFEquipoMaquinaria(RamoEquipoMaquinaria equipoMaquinaria) throws Exception {
+		String HTML = XSLUtil.getInstancia().obtenerHtmlEquipoMaquinaria(equipoMaquinaria);
+
+		byte[] contenido = obtenerCadenaBytes(HTML);
+
+		// Agregar marca de agua al Pdf
+		return ConcatenadorPdf.numerarMarcar(contenido, Boolean.TRUE, Boolean.TRUE, ConstantesUtil.PATH_MARCA_AGUA_PDF);
+
 	}
 
 	/**
@@ -141,9 +185,20 @@ public class GenerarPdfUtil implements Serializable {
 		// Agregar marca de agua al pdf
 		return ConcatenadorPdf.numerarMarcar(contenido, Boolean.TRUE, Boolean.TRUE, ConstantesUtil.PATH_MARCA_AGUA_PDF);
 	}
-	
-	public static byte[] generarAchivoPDFDineroValores(RamoDineroValore dineroValore)throws Exception{
-		
+
+	/**
+	 * 
+	 * <b> Permite generar el documento del ramo Dinero y valores </b>
+	 * <p>
+	 * [Author: Franklin Pozo, Date: 29/04/2015]
+	 * </p>
+	 * 
+	 * @param dineroValore
+	 * @return
+	 * @throws Exception
+	 */
+	public static byte[] generarAchivoPDFDineroValores(RamoDineroValore dineroValore) throws Exception {
+
 		String pHtml = XSLUtil.getInstancia().obtenerHtmlDineroValores(dineroValore);
 		byte[] contenido = obtenerCadenaBytes(pHtml);
 

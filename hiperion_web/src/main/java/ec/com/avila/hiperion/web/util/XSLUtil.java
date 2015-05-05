@@ -22,6 +22,8 @@ import ec.com.avila.hiperion.doc.servicio.GenerarDocCascoAereo;
 import ec.com.avila.hiperion.doc.servicio.GenerarDocCascoMaritimo;
 import ec.com.avila.hiperion.doc.servicio.GenerarDocCumplimientoContrato;
 import ec.com.avila.hiperion.doc.servicio.GenerarDocDineroValores;
+import ec.com.avila.hiperion.doc.servicio.GenerarDocEquipoElectronico;
+import ec.com.avila.hiperion.doc.servicio.GenerarDocEquipoMaquinaria;
 import ec.com.avila.hiperion.emision.entities.RamoAgropecuario;
 import ec.com.avila.hiperion.emision.entities.RamoBuenUsoAnt;
 import ec.com.avila.hiperion.emision.entities.RamoBuenaCalMat;
@@ -29,6 +31,8 @@ import ec.com.avila.hiperion.emision.entities.RamoCascoAereo;
 import ec.com.avila.hiperion.emision.entities.RamoCascoMaritimo;
 import ec.com.avila.hiperion.emision.entities.RamoCumplimientoContrato;
 import ec.com.avila.hiperion.emision.entities.RamoDineroValore;
+import ec.com.avila.hiperion.emision.entities.RamoEquipoElectronico;
+import ec.com.avila.hiperion.emision.entities.RamoEquipoMaquinaria;
 import ec.com.avila.hiperion.xsl.XSLHelper;
 import ec.com.kruger.framework.common.util.TransformerUtil;
 
@@ -81,6 +85,68 @@ public class XSLUtil {
 			log.error("Error", e);
 
 		}
+		return xml.toString();
+	}
+
+	/**
+	 * 
+	 * <b> Pc </b>
+	 * <p>
+	 * [Author: Franklin Pozo B, Date: 29/04/2015]
+	 * </p>
+	 * 
+	 * @param equipoElectronico
+	 * @return
+	 */
+	public String generarXmlEquipoElectronico(RamoEquipoElectronico equipoElectronico) {
+		StringBuilder xml = new StringBuilder();
+		try {
+			xml.append(tagInicioDocumento);
+
+			try {
+				String nombreClase = "java:app/hiperion_web/EquipoElectronicoImpl";
+				GenerarDocEquipoElectronico generarDocumento = (GenerarDocEquipoElectronico) getObjectByJndi(nombreClase);
+				xml.append(generarDocumento.generarXmlEquipoElectronico(equipoElectronico));
+
+			} catch (Exception e) {
+				log.error("Error, generacion xml reporte, e{}", e);
+			}
+			xml.append(tagFinDocumento);
+		} catch (Exception e) {
+			log.error("Error", e);
+		}
+
+		return xml.toString();
+	}
+
+	/**
+	 * 
+	 * <b> generarXmlEquipoMaquinaria </b>
+	 * <p>
+	 * [Author: Franklin Pozo B, Date: 29/04/2015]
+	 * </p>
+	 * 
+	 * @param equipoMaquinaria
+	 * @return
+	 */
+	public String generarXmlEquipoMaquinaria(RamoEquipoMaquinaria equipoMaquinaria) {
+		StringBuilder xml = new StringBuilder();
+		try {
+			xml.append(tagInicioDocumento);
+
+			try {
+				String nombreClase = "java:app/hiperion_web/EquipoMaquinariaImpl";
+				GenerarDocEquipoMaquinaria generarDocumento = (GenerarDocEquipoMaquinaria) getObjectByJndi(nombreClase);
+				xml.append(generarDocumento.generarXmlEquipoMaquinaria(equipoMaquinaria));
+
+			} catch (Exception e) {
+				log.error("Error, generacion xml reporte, e{}", e);
+			}
+			xml.append(tagFinDocumento);
+		} catch (Exception e) {
+			log.error("Error", e);
+		}
+
 		return xml.toString();
 	}
 
@@ -198,42 +264,43 @@ public class XSLUtil {
 		return xml.toString();
 
 	}
-	
-	public String generarXmlCumplimientoContrato(RamoCumplimientoContrato cumplimientoContrato){
+
+	public String generarXmlCumplimientoContrato(RamoCumplimientoContrato cumplimientoContrato) {
 		StringBuilder xml = new StringBuilder();
-		try{
+		try {
 			xml.append(tagInicioDocumento);
-			try{
+			try {
 				String nombreClase = "java:app/hiperion_web/CumplimientoContratoImpl";
 				GenerarDocCumplimientoContrato generarDocumento = (GenerarDocCumplimientoContrato) getObjectByJndi(nombreClase);
 				xml.append(generarDocumento.generarXmlCumplimientoContrato(cumplimientoContrato));
-			}catch(Exception e){
+			} catch (Exception e) {
 				log.error("Error", e);
 			}
 			xml.append(tagFinDocumento);
-		}catch(Exception e){
-			
+		} catch (Exception e) {
+
 		}
 		return xml.toString();
 	}
 
 	public String generarXmlDineroValores(RamoDineroValore dineroValore) {
 		StringBuilder xml = new StringBuilder();
-		try{
+		try {
 			xml.append(tagInicioDocumento);
-			try{
+			try {
 				String nombreClase = "java:app/hiperion_web/DineroValoresImpl";
 				GenerarDocDineroValores generarDocumento = (GenerarDocDineroValores) getObjectByJndi(nombreClase);
 				xml.append(generarDocumento.generarXmlDineroValores(dineroValore));
-			}catch(Exception e){
+			} catch (Exception e) {
 				log.error("Error", e);
 			}
 			xml.append(tagFinDocumento);
-		}catch(Exception e){
-			
+		} catch (Exception e) {
+
 		}
 		return xml.toString();
 	}
+
 	/**
 	 * 
 	 * <b> Permite generar el HTML del ramo Agropecuario. </b>
@@ -276,6 +343,91 @@ public class XSLUtil {
 
 		}
 
+		return html;
+	}
+
+	/**
+	 * 
+	 * <b> Permite generar el HTML del ramo Equipo Electronico </b>
+	 * <p>
+	 * [Author: Franklin Pozo B, Date: 29/04/2015]
+	 * </p>
+	 * 
+	 * @param equipoElectronico
+	 * @return
+	 */
+	public String obtenerHtmlEquipoElectronico(RamoEquipoElectronico equipoElectronico) {
+
+		String html = null;
+
+		try {
+			InputStream in = XSLHelper.class.getResourceAsStream("EquipoElectronicoHTML.xsl");
+			InputStreamReader is = new InputStreamReader(in);
+			StringBuilder sb = new StringBuilder();
+			BufferedReader br = new BufferedReader(is);
+			String read = br.readLine();
+
+			while (read != null) {
+				sb.append(read);
+				read = br.readLine();
+
+			}
+
+			String contenidoXSL = sb.toString();
+
+			// Se genera el XML con los datos del documento
+			String contenidoXml = generarXmlEquipoElectronico(equipoElectronico);
+			Document docXML = TransformerUtil.stringToXMLDocument(contenidoXml.toString());
+			Document docXSL = TransformerUtil.stringToXML(contenidoXSL);
+			Document result = TransformerUtil.transformar(docXML, docXSL);
+			html = TransformerUtil.xmlToString(result);
+			html = html.replaceAll("&lt;", "<").replaceAll("&gt;", ">").replaceAll("&amp;", "&").replace("UTF-8", "ISO-8859-1");
+
+		} catch (Exception e) {
+			log.error("Error ", e);
+		}
+		return html;
+	}
+
+	/**
+	 * 
+	 * <b> Permite generar el HTML del ramo Equipo Maquinaria </b>
+	 * <p>
+	 * [Author: Franklin Pozo B, Date: 29/04/2015]
+	 * </p>
+	 * 
+	 * @param equipoMaquinaria
+	 * @return
+	 */
+	public String obtenerHtmlEquipoMaquinaria(RamoEquipoMaquinaria equipoMaquinaria) {
+		String html = null;
+
+		try {
+			InputStream in = XSLHelper.class.getResourceAsStream("EquipoElectronicoHTML.xsl");
+			InputStreamReader is = new InputStreamReader(in);
+			StringBuilder sb = new StringBuilder();
+			BufferedReader br = new BufferedReader(is);
+			String read = br.readLine();
+
+			while (read != null) {
+				sb.append(read);
+				read = br.readLine();
+
+			}
+
+			String contenidoXSL = sb.toString();
+
+			// Se genera el XML con los datos del documento
+			String contenidoXml = generarXmlEquipoMaquinaria(equipoMaquinaria);
+			Document docXML = TransformerUtil.stringToXMLDocument(contenidoXml.toString());
+			Document docXSL = TransformerUtil.stringToXML(contenidoXSL);
+			Document result = TransformerUtil.transformar(docXML, docXSL);
+			html = TransformerUtil.xmlToString(result);
+			html = html.replaceAll("&lt;", "<").replaceAll("&gt;", ">").replaceAll("&amp;", "&").replace("UTF-8", "ISO-8859-1");
+
+		} catch (Exception e) {
+			log.error("Error ", e);
+		}
 		return html;
 	}
 
@@ -450,7 +602,7 @@ public class XSLUtil {
 	public String obtenerHtmlCumplimientoContrato(RamoCumplimientoContrato cumplimientoContrato) {
 		String html = null;
 		try {
-			InputStream in = XSLHelper.class.getResourceAsStream("CascoMaritimoHTML.xsl");
+			InputStream in = XSLHelper.class.getResourceAsStream("CumplimientoContratoHTML.xsl");
 			InputStreamReader is = new InputStreamReader(in);
 			StringBuilder sb = new StringBuilder();
 			BufferedReader br = new BufferedReader(is);
@@ -476,23 +628,23 @@ public class XSLUtil {
 		return html;
 
 	}
-	
+
 	/**
 	 * 
-	 * <b>
-	 * Permite generar el HTML del ramo Cumplimiento Contrato.
-	 * </b>
-	 * <p>[Author: Avila Sistemas, Date: 27/04/2015]</p>
-	 *
+	 * <b> Permite generar el HTML del ramo Cumplimiento Contrato. </b>
+	 * <p>
+	 * [Author: Avila Sistemas, Date: 27/04/2015]
+	 * </p>
+	 * 
 	 * @param cumplimientoContrato
 	 * @return
 	 */
-	public String obtenerHtmlDineroValores(RamoDineroValore cumplimientoContrato){
-		
+	public String obtenerHtmlDineroValores(RamoDineroValore dineroValore) {
+
 		String html = null;
-		
+
 		try {
-			InputStream in = XSLHelper.class.getResourceAsStream("CascoMaritimoHTML.xsl");
+			InputStream in = XSLHelper.class.getResourceAsStream("DineroValoresHTML.xsl");
 			InputStreamReader is = new InputStreamReader(in);
 			StringBuilder sb = new StringBuilder();
 			BufferedReader br = new BufferedReader(is);
@@ -504,17 +656,17 @@ public class XSLUtil {
 			}
 			String contenidoXSL = sb.toString();
 			// Se genera el XML con los datos del documento
-			String contenidoXml = generarXmlDineroValores(cumplimientoContrato);
+			String contenidoXml = generarXmlDineroValores(dineroValore);
 			Document docXML = TransformerUtil.stringToXMLDocument(contenidoXml.toString());
 			Document docXSL = TransformerUtil.stringToXML(contenidoXSL);
 			Document result = TransformerUtil.transformar(docXML, docXSL);
 			html = TransformerUtil.xmlToString(result);
 			html = html.replaceAll("&lt;", "<").replaceAll("&gt;", ">").replaceAll("&amp;", "&").replace("UTF-8", "ISO-8859-1");
 
-		}catch(Exception e){
+		} catch (Exception e) {
 			log.error("Error ", e);
 		}
-		
+
 		return html;
 	}
 
@@ -549,7 +701,5 @@ public class XSLUtil {
 	public Context getContext() throws NamingException {
 		return new InitialContext();
 	}
-	
-
 
 }
