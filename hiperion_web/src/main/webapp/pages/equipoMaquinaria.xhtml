@@ -97,14 +97,14 @@
 												<p:panelGrid columns="4">
 													<h:outputLabel for="idItem" value="#{emision['equipoMaquinaria.objeto.item']}" styleClass="negrita" />
 													<p:inputText id="idItem" value="#{ramoEquipoMaquinaraBean.item}" required="true"
-															requiredMessage="#{emision['equipoMaquinaria.objeto.item.msn']}"/>
+														requiredMessage="#{emision['equipoMaquinaria.objeto.item.msn']}" />
 													<h:outputLabel for="idMarca" value="#{emision['equipoMaquinaria.objeto.marca']}" styleClass="negrita" />
 													<p:inputText id="idMarca" value="#{ramoEquipoMaquinaraBean.marca}" required="true"
-															requiredMessage="#{emision['equipoMaquinaria.objeto.marca.msn']}" />
+														requiredMessage="#{emision['equipoMaquinaria.objeto.marca.msn']}" />
 
 													<h:outputLabel for="idModelo" value="#{emision['equipoMaquinaria.objeto.modelo']}" styleClass="negrita" />
 													<p:inputText id="idModelo" value="#{ramoEquipoMaquinaraBean.modelo}" required="true"
-															requiredMessage="#{emision['equipoMaquinaria.objeto.modelo.msn']}"  />
+														requiredMessage="#{emision['equipoMaquinaria.objeto.modelo.msn']}" />
 													<h:outputLabel value="#{emision['equipoMaquinaria.objeto.anio']}" styleClass="negrita" />
 													<p:inputText value="#{ramoEquipoMaquinaraBean.anio}" />
 
@@ -261,6 +261,13 @@
 											.guardarRamo()}" icon="icon-save"
 												value="#{emision['boton.guardar']}" update="form1" title="Guardar" />
 											<p:commandButton id="cancelarBtnId" icon="icon-cancel" value="#{emision['boton.cancelar']}" title="Cancelar" />
+
+											<!-- DESCARGAR DOCUMENTOS -->
+											<h:panelGrid columns="2">
+												<p:commandLink title="Descargar syllabus" actionListener="#{equipoMaquinariaBacking.descargarEquipoMaquinariaPDF()}">
+													<h:graphicImage name="pdf.png" library="img" />
+												</p:commandLink>
+											</h:panelGrid>
 										</h:form>
 									</div>
 
