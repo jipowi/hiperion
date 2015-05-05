@@ -3,15 +3,12 @@
  */
 package ec.com.avila.hiperion.doc.servicio.impl;
 
-import java.util.List;
-
 import javax.ejb.Stateless;
 
 import org.apache.commons.lang.StringEscapeUtils;
 
 import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.doc.servicio.GenerarDocCumplimientoContrato;
-import ec.com.avila.hiperion.emision.entities.CobertContrato;
 import ec.com.avila.hiperion.emision.entities.RamoCumplimientoContrato;
 
 /**
