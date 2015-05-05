@@ -197,6 +197,13 @@
 												<p:commandButton id="guardarBtnId" actionListener="#{dineroValoresBacking.guardarRamo()}" icon="icon-save"
 													value="#{emision['boton.guardar']}" title="Guardar" update="form1" />
 												<p:commandButton id="cancelarBtnId" icon="icon-cancel" value="#{emision['boton.cancelar']}" process="@this" title="Cancelar" />
+
+												<!-- DESCARGAR DOCUMENTOS -->
+												<h:panelGrid columns="2">
+													<p:commandLink title="Descargar syllabus" actionListener="#{dineroValoresBacking.descargarDineroValoresPDF()}">
+														<h:graphicImage name="pdf.png" library="img" />
+													</p:commandLink>
+												</h:panelGrid>
 											</div>
 										</h:form>
 									</div>
