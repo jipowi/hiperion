@@ -24,6 +24,8 @@ import ec.com.avila.hiperion.doc.servicio.GenerarDocCumplimientoContrato;
 import ec.com.avila.hiperion.doc.servicio.GenerarDocDineroValores;
 import ec.com.avila.hiperion.doc.servicio.GenerarDocEquipoElectronico;
 import ec.com.avila.hiperion.doc.servicio.GenerarDocEquipoMaquinaria;
+import ec.com.avila.hiperion.doc.servicio.GenerarDocFidelidad;
+import ec.com.avila.hiperion.doc.servicio.GenerarDocGarantiaAduanera;
 import ec.com.avila.hiperion.emision.entities.RamoAgropecuario;
 import ec.com.avila.hiperion.emision.entities.RamoBuenUsoAnt;
 import ec.com.avila.hiperion.emision.entities.RamoBuenaCalMat;
@@ -33,6 +35,8 @@ import ec.com.avila.hiperion.emision.entities.RamoCumplimientoContrato;
 import ec.com.avila.hiperion.emision.entities.RamoDineroValore;
 import ec.com.avila.hiperion.emision.entities.RamoEquipoElectronico;
 import ec.com.avila.hiperion.emision.entities.RamoEquipoMaquinaria;
+import ec.com.avila.hiperion.emision.entities.RamoFidelidad;
+import ec.com.avila.hiperion.emision.entities.RamoGarantiaAduanera;
 import ec.com.avila.hiperion.xsl.XSLHelper;
 import ec.com.kruger.framework.common.util.TransformerUtil;
 
@@ -76,6 +80,60 @@ public class XSLUtil {
 				String nombreClase = "java:app/hiperion_web/AgropecuarioImpl";
 				GenerarDocAgropecuario generarDocumento = (GenerarDocAgropecuario) getObjectByJndi(nombreClase);
 				xml.append(generarDocumento.generarXmlAgropecuario(agropecuario));
+
+			} catch (Exception e) {
+				log.error("Error, generacion xml reporte, e{}", e);
+			}
+			xml.append(tagFinDocumento);
+		} catch (Exception e) {
+			log.error("Error", e);
+
+		}
+		return xml.toString();
+	}
+
+	public String generarXmlGarantiaAduanera(RamoGarantiaAduanera garantiaAduanera) {
+		StringBuilder xml = new StringBuilder();
+		try {
+			xml.append(tagInicioDocumento);
+
+			try {
+				String nombreClase = "java:app/hiperion_web/AgropecuarioImpl";
+				GenerarDocGarantiaAduanera generarDocumento = (GenerarDocGarantiaAduanera) getObjectByJndi(nombreClase);
+				xml.append(generarDocumento.generarXmlGarantiaAduanera(garantiaAduanera));
+
+			} catch (Exception e) {
+				log.error("Error, generacion xml reporte, e{}", e);
+			}
+			xml.append(tagFinDocumento);
+		} catch (Exception e) {
+			log.error("Error", e);
+		}
+
+		return xml.toString();
+	}
+
+	/**
+	 * 
+	 * <b> Permite guardar un contenido XML </b>
+	 * <p>
+	 * [Author: Franklin Pozo B, Date: 08/05/2015]
+	 * </p>
+	 * 
+	 * @param fidelidad
+	 * @return
+	 */
+
+	public String generarXmlFidelidad(RamoFidelidad fidelidad) {
+		StringBuilder xml = new StringBuilder();
+
+		try {
+			xml.append(tagInicioDocumento);
+
+			try {
+				String nombreClase = "java:app/hiperion_web/FidelidadImpl";
+				GenerarDocFidelidad generarDocumento = (GenerarDocFidelidad) getObjectByJndi(nombreClase);
+				xml.append(generarDocumento.generarXmlFidelidad(fidelidad));
 
 			} catch (Exception e) {
 				log.error("Error, generacion xml reporte, e{}", e);
@@ -343,6 +401,91 @@ public class XSLUtil {
 
 		}
 
+		return html;
+	}
+
+	/**
+	 * 
+	 * <b> Permite Obtener el HTML del ramo Garantia aduanera </b>
+	 * <p>
+	 * [Author: Franklin Pozo B, Date: 08/05/2015]
+	 * </p>
+	 * 
+	 * @param garantiaAduanera
+	 * @return
+	 */
+	public String obtenerHtmlGarantiaAduanera(RamoGarantiaAduanera garantiaAduanera) {
+		String html = null;
+
+		try {
+			InputStream in = XSLHelper.class.getResourceAsStream("GarantiaAduaneraHTML.xsl");
+			InputStreamReader is = new InputStreamReader(in);
+			StringBuilder sb = new StringBuilder();
+			BufferedReader br = new BufferedReader(is);
+			String read = br.readLine();
+
+			while (read != null) {
+				sb.append(read);
+				read = br.readLine();
+
+			}
+
+			String contenidoXSL = sb.toString();
+
+			// Se genera el XML con los datos del documento
+			String contenidoXml = generarXmlGarantiaAduanera(garantiaAduanera);
+			Document docXML = TransformerUtil.stringToXMLDocument(contenidoXml.toString());
+			Document docXSL = TransformerUtil.stringToXML(contenidoXSL);
+			Document result = TransformerUtil.transformar(docXML, docXSL);
+			html = TransformerUtil.xmlToString(result);
+			html = html.replaceAll("&lt;", "<").replaceAll("&gt;", ">").replaceAll("&amp;", "&").replace("UTF-8", "ISO-8859-1");
+
+		} catch (Exception e) {
+			log.error("Error ", e);
+		}
+
+		return html;
+	}
+
+	/**
+	 * 
+	 * <b> ermite generar el HTML del Fidelidad </b>
+	 * <p>
+	 * [Author: Franklin Pozo B., Date: 08/05/2015]
+	 * </p>
+	 * 
+	 * @param fidelidad
+	 * @return
+	 */
+	public String obtenerHtmlFidelidad(RamoFidelidad fidelidad) {
+		String html = null;
+		try {
+			InputStream in = XSLHelper.class.getResourceAsStream("FidelidadHTML.xsl");
+			InputStreamReader is = new InputStreamReader(in);
+			StringBuilder sb = new StringBuilder();
+			BufferedReader br = new BufferedReader(is);
+			String read = br.readLine();
+
+			while (read != null) {
+				sb.append(read);
+				read = br.readLine();
+
+			}
+
+			String contenidoXSL = sb.toString();
+
+			// Se genera el XML con los datos del documento
+			String contenidoXml = generarXmlFidelidad(fidelidad);
+			Document docXML = TransformerUtil.stringToXMLDocument(contenidoXml.toString());
+			Document docXSL = TransformerUtil.stringToXML(contenidoXSL);
+			Document result = TransformerUtil.transformar(docXML, docXSL);
+			html = TransformerUtil.xmlToString(result);
+			html = html.replaceAll("&lt;", "<").replaceAll("&gt;", ">").replaceAll("&amp;", "&").replace("UTF-8", "ISO-8859-1");
+
+		} catch (Exception e) {
+			log.error("Error ", e);
+
+		}
 		return html;
 	}
 

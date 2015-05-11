@@ -19,6 +19,8 @@ import ec.com.avila.hiperion.emision.entities.RamoCumplimientoContrato;
 import ec.com.avila.hiperion.emision.entities.RamoDineroValore;
 import ec.com.avila.hiperion.emision.entities.RamoEquipoElectronico;
 import ec.com.avila.hiperion.emision.entities.RamoEquipoMaquinaria;
+import ec.com.avila.hiperion.emision.entities.RamoFidelidad;
+import ec.com.avila.hiperion.emision.entities.RamoGarantiaAduanera;
 import ec.com.kruger.framework.common.util.pdf.HtmltoPDF;
 
 public class GenerarPdfUtil implements Serializable {
@@ -46,6 +48,47 @@ public class GenerarPdfUtil implements Serializable {
 
 		// Agregar marca de agua al Pdf
 		return ConcatenadorPdf.numerarMarcar(contenido, Boolean.TRUE, Boolean.TRUE, ConstantesUtil.PATH_MARCA_AGUA_PDF);
+	}
+
+	/**
+	 * 
+	 * <b>
+	 * Permite generar el documento ramo Garantia Aduanera PDF
+	 * </b>
+	 * <p>[Author: Franklin Pozo , Date: 08/05/2015]</p>
+	 *
+	 * @param garantiaAduanera
+	 * @return
+	 * @throws Exception
+	 */
+	public static byte[]generarAchivoPDFGarantiaAduanera(RamoGarantiaAduanera garantiaAduanera)throws Exception{
+		String HTML = XSLUtil.getInstancia().obtenerHtmlGarantiaAduanera(garantiaAduanera);
+
+		byte[] contenido = obtenerCadenaBytes(HTML);
+
+		// Agregar marca de agua al Pdf
+		return ConcatenadorPdf.numerarMarcar(contenido, Boolean.TRUE, Boolean.TRUE, ConstantesUtil.PATH_MARCA_AGUA_PDF);
+	}
+	
+	/**
+	 * 
+	 * <b> Permite generar el documento ramo Fidelidad PDF. </b>
+	 * <p>
+	 * [Author: Franklin PozoB, Date: 04/05/2015]
+	 * </p>
+	 * 
+	 * @param fidelidad
+	 * @return
+	 * @throws Exception
+	 */
+	public static byte[] generarAchivoPDFFidelidad(RamoFidelidad fidelidad) throws Exception {
+		String HTML = XSLUtil.getInstancia().obtenerHtmlFidelidad(fidelidad);
+
+		byte[] contenido = obtenerCadenaBytes(HTML);
+
+		// Agregar marca de agua al Pdf
+		return ConcatenadorPdf.numerarMarcar(contenido, Boolean.TRUE, Boolean.TRUE, ConstantesUtil.PATH_MARCA_AGUA_PDF);
+
 	}
 
 	/**
