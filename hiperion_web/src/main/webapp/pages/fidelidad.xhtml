@@ -75,6 +75,13 @@
 															value="#{emision['boton.guardar']}" title="Guardar" update="formPrincipal, ramoFidelidad" />
 														<p:commandButton id="cancelarBtnId" icon="icon-cancel" value="#{emision['boton.cancelar']}" process="@this" title="Cancelar"
 															update="formPrincipal, ramoFidelidad" />
+
+														<!-- DESCARGAR DOCUMENTOS -->
+														<h:panelGrid columns="2">
+															<p:commandLink title="Descargar syllabus" actionListener="#{fidelidadBacking.descargarFidelidadPDF()}">
+																<h:graphicImage name="pdf.png" library="img" />
+															</p:commandLink>
+														</h:panelGrid>
 													</div>
 												</f:facet>
 											</h:panelGrid>

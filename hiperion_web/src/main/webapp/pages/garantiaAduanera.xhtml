@@ -34,7 +34,7 @@
 															requiredMessage="#{emision['garantiaAduanera.objetoAsegurado.msn']}" />
 														<p:outputLabel for="valorContrato" value="#{emision['garantiaAduanera.valorContrato']}" styleClass="negrita" />
 														<p:inputText id="valorContrato" value="#{ramoGarantiaAduaneraBean.valorContrato}" required="true"
-															requiredMessage="#{emision['garantiaAduanera.valorContrato.msn']}"/>
+															requiredMessage="#{emision['garantiaAduanera.valorContrato.msn']}" />
 
 														<p:outputLabel for="valorPoliza" value="#{emision['garantiaAduanera.valorPoliza']}" styleClass="negrita" />
 														<p:inputText id="valorPoliza" value="#{ramoGarantiaAduaneraBean.valorPoliza}" required="true"
@@ -65,6 +65,13 @@
 												icon="icon-save" value="#{emision['boton.guardar']}" title="Guardar" update="garantiaAduanera, formPrincipal" />
 											<p:commandButton id="cancelarBtnId" oncomplete="garantiaAduaneraDlg.hide();" icon="icon-cancel" value="#{emision['boton.cancelar']}"
 												process="@this" title="Cancelar" />
+
+											<!-- DESCARGAR DOCUMENTOS -->
+											<h:panelGrid columns="2">
+												<p:commandLink title="Descargar syllabus" actionListener="#{garantiaAduaneraBacking.descargarGarantiaAduaneraPDF()}">
+													<h:graphicImage name="pdf.png" library="img" />
+												</p:commandLink>
+											</h:panelGrid>
 
 										</div>
 									</h:form>
