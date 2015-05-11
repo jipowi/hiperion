@@ -7,7 +7,9 @@ package ec.com.avila.emision.web.backings;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -34,7 +36,10 @@ import ec.com.avila.hiperion.servicio.RamoService;
 import ec.com.avila.hiperion.web.beans.RamoBean;
 import ec.com.avila.hiperion.web.beans.UsuarioBean;
 import ec.com.avila.hiperion.web.model.AnexosDataModel;
+import ec.com.avila.hiperion.web.util.ConstantesUtil;
+import ec.com.avila.hiperion.web.util.GenerarPdfUtil;
 import ec.com.avila.hiperion.web.util.HiperionMensajes;
+import ec.com.avila.hiperion.web.util.JsfUtil;
 import ec.com.avila.hiperion.web.util.MessagesController;
 
 /**
@@ -63,11 +68,12 @@ public class GarantiaAduaneraBacking implements Serializable {
 
 	@ManagedProperty(value = "#{ramoGarantiaAduaneraBean}")
 	private RamoGarantiaAduaneraBean ramoGarantiaAduaneraBean;
-	
+
 	@ManagedProperty(value = "#{usuarioBean}")
 	private UsuarioBean usuarioBean;
 
 	Logger log = Logger.getLogger(GarantiaAduaneraBacking.class);
+	RamoGarantiaAduanera ramoGarantiaAduanera = new RamoGarantiaAduanera();
 
 	private List<SelectItem> sectorItems;
 
@@ -112,14 +118,13 @@ public class GarantiaAduaneraBacking implements Serializable {
 
 	public void guardarRamo() throws HiperionException {
 
-		Usuario usuario =usuarioBean.getSessionUser();
-		RamoGarantiaAduanera ramoGarantiaAduanera = new RamoGarantiaAduanera();
+		Usuario usuario = usuarioBean.getSessionUser();
 
 		ramoGarantiaAduanera.setObjAsgAduanera(ramoGarantiaAduaneraBean.getObjetoAsegurado());
 		ramoGarantiaAduanera.setValorContratoAduanera(ramoGarantiaAduaneraBean.getValorContrato());
 		ramoGarantiaAduanera.setValorPolizaAduanera(ramoGarantiaAduaneraBean.getValorPoliza());
 		ramoGarantiaAduanera.setTipoContragarantiaAduanera(ramoGarantiaAduaneraBean.getTipoContragarantia());
-		
+
 		ramoGarantiaAduanera.setIdUsuarioCreacion(usuario.getIdUsuario());
 		ramoGarantiaAduanera.setFechaCreacion(new Date());
 		ramoGarantiaAduanera.setEstado(EstadoEnum.A);
@@ -133,8 +138,6 @@ public class GarantiaAduaneraBacking implements Serializable {
 			throw new HiperionException(e);
 		}
 	}
-	
-	
 
 	/**
 	 * @return the usuarioBean
@@ -144,7 +147,8 @@ public class GarantiaAduaneraBacking implements Serializable {
 	}
 
 	/**
-	 * @param usuarioBean the usuarioBean to set
+	 * @param usuarioBean
+	 *            the usuarioBean to set
 	 */
 	public void setUsuarioBean(UsuarioBean usuarioBean) {
 		this.usuarioBean = usuarioBean;
@@ -219,5 +223,33 @@ public class GarantiaAduaneraBacking implements Serializable {
 		}
 
 		return sectorItems;
+	}
+
+	/**
+	 * 
+	 * <b>
+	 * Permite generar y descargar informacion Ramo Garantia Aduanera PDF
+	 * </b>
+	 * <p>[Author: Franklin Pozo, Date: 08/05/2015]</p>
+	 *
+	 * @throws HiperionException
+	 */
+	public void descargarGarantiaAduaneraPDF() throws HiperionException {
+		try {
+			Map<String, Object> parametrosReporte = new HashMap<String, Object>();
+
+			parametrosReporte.put(ConstantesUtil.CONTENT_TYPE_IDENTIFICADOR, ConstantesUtil.CONTENT_TYPE_PDF);
+			parametrosReporte.put(ConstantesUtil.NOMBRE_ARCHIVO_IDENTIFICADOR, usuarioBean.getSessionUser().getIdentificacionUsuario());
+
+			parametrosReporte
+					.put(ConstantesUtil.CONTENIDO_BYTES_IDENTIFICADOR, GenerarPdfUtil.generarAchivoPDFGarantiaAduanera(ramoGarantiaAduanera));
+
+			JsfUtil.setSessionAttribute(ConstantesUtil.PARAMETROS_DESCARGADOR_IDENTIFICADOR, parametrosReporte);
+			JsfUtil.downloadFile();
+
+		} catch (Exception e) {
+			log.error("Error al momento generar la informacion del Ramo Garantia Aduanera  PDF", e);
+			throw new HiperionException(e);
+		}
 	}
 }
