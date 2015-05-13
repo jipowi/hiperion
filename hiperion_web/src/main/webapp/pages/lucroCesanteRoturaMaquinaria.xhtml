@@ -12,8 +12,7 @@
 							<p:separator id="customSeparator" style="width:auto;height:1px" />
 							<p:spacer height="5px;" />
 							<h:panelGroup style="display:block; text-align:center">
-								<h:graphicImage name="banner_lucroCesanteRoturaMaquinaria.jpg" library="img/ramos/lucro_cesante_rotura_maquinaria" width="728px"
-									height="90px" />
+								<h:graphicImage name="banner_lucroCesanteRoturaMaquinaria.jpg" library="img/ramos/lucro_cesante_rotura_maquinaria" width="728px" height="90px" />
 							</h:panelGroup>
 							<p:spacer height="15px;" />
 						</div>
@@ -73,6 +72,14 @@
 														<p:commandButton id="guardarBtnId" actionListener="#{lucroCesanteRoturaMaquinariaBacking.setearInfRamo()}" icon="icon-save"
 															value="#{emision['boton.aceptar']}" title="Guardar" update="formPrincipal, ramoLucroCesanteRoturMaquinaria " />
 														<p:commandButton id="cancelarBtnId" icon="icon-cancel" value="#{emision['boton.cancelar']}" process="@this" title="Cancelar" />
+
+														<!-- DESCARGAR DOCUMENTOS -->
+														<h:panelGrid columns="2">
+															<p:commandLink title="Descargar syllabus"
+																actionListener="#{lucroCesanteRoturaMaquinariaBacking.descargarLucroCesanteRoturaMaquinariaPDF()}">
+																<h:graphicImage name="pdf.png" library="img" />
+															</p:commandLink>
+														</h:panelGrid>
 													</div>
 												</f:facet>
 
@@ -171,7 +178,7 @@
 													<p:rowEditor />
 												</p:column>
 											</p:dataTable>
-											
+
 											<p:spacer height="30px;" />
 											<p:commandButton id="guardarObjAseguradoBtnId" actionListener="#{lucroCesanteRoturaMaquinariaBacking.guardarRamo()}" icon="icon-save"
 												value="#{emision['boton.guardar']}" update="form1" title="Guardar" />

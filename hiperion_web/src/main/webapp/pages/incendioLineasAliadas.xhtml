@@ -123,6 +123,13 @@
 											<p:commandButton id="guardarBtnId" actionListener="#{incendioLineasAliadasBacking.setearInfRamo}" icon="icon-save"
 												value="#{emision['boton.aceptar']}" title="Guardar" update="formPricipal, ramoIncendioLineasAliadas" />
 											<p:commandButton id="cancelarBtnId" icon="icon-cancel" value="#{emision['boton.cancelar']}" process="@this" title="Cancelar" />
+
+											<!-- DESCARGAR DOCUMENTOS -->
+											<h:panelGrid columns="2">
+												<p:commandLink title="Descargar syllabus" actionListener="#{incendioLineasAliadasBacking.descargarIncendioLineasAliadasPDF()}">
+													<h:graphicImage name="pdf.png" library="img" />
+												</p:commandLink>
+											</h:panelGrid>
 										</div>
 									</h:form>
 								</p:tab>
