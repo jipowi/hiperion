@@ -26,6 +26,8 @@ import ec.com.avila.hiperion.doc.servicio.GenerarDocEquipoElectronico;
 import ec.com.avila.hiperion.doc.servicio.GenerarDocEquipoMaquinaria;
 import ec.com.avila.hiperion.doc.servicio.GenerarDocFidelidad;
 import ec.com.avila.hiperion.doc.servicio.GenerarDocGarantiaAduanera;
+import ec.com.avila.hiperion.doc.servicio.GenerarDocIncendiLineasAliadas;
+import ec.com.avila.hiperion.doc.servicio.GenerarDocLucroCesanteRoturaMaquinaria;
 import ec.com.avila.hiperion.emision.entities.RamoAgropecuario;
 import ec.com.avila.hiperion.emision.entities.RamoBuenUsoAnt;
 import ec.com.avila.hiperion.emision.entities.RamoBuenaCalMat;
@@ -37,6 +39,8 @@ import ec.com.avila.hiperion.emision.entities.RamoEquipoElectronico;
 import ec.com.avila.hiperion.emision.entities.RamoEquipoMaquinaria;
 import ec.com.avila.hiperion.emision.entities.RamoFidelidad;
 import ec.com.avila.hiperion.emision.entities.RamoGarantiaAduanera;
+import ec.com.avila.hiperion.emision.entities.RamoIncendioLineasAliada;
+import ec.com.avila.hiperion.emision.entities.RamoLcRotMaq;
 import ec.com.avila.hiperion.xsl.XSLHelper;
 import ec.com.kruger.framework.common.util.TransformerUtil;
 
@@ -323,6 +327,16 @@ public class XSLUtil {
 
 	}
 
+	/**
+	 * 
+	 * <b> Permite generar un contenedor XML. </b>
+	 * <p>
+	 * [Author: Franklin Pozo B, Date: 11/05/2015]
+	 * </p>
+	 * 
+	 * @param cumplimientoContrato
+	 * @return
+	 */
 	public String generarXmlCumplimientoContrato(RamoCumplimientoContrato cumplimientoContrato) {
 		StringBuilder xml = new StringBuilder();
 		try {
@@ -338,6 +352,63 @@ public class XSLUtil {
 		} catch (Exception e) {
 
 		}
+		return xml.toString();
+	}
+
+	/**
+	 * 
+	 * <b> Permite generar un contenedor XML. </b>
+	 * <p>
+	 * [Author: Franklin Pozo B, Date: 12/05/2015]
+	 * </p>
+	 * 
+	 * @param ramoLcRotMaq
+	 * @return
+	 */
+	public String generarXmlLucroCesanteRoturaMaquinaria(RamoLcRotMaq ramoLcRotMaq) {
+		StringBuilder xml = new StringBuilder();
+		try {
+			xml.append(tagInicioDocumento);
+			try {
+				String nombreClase = "java:app/hiperion_web/CumplimientoContratoImpl";
+				GenerarDocLucroCesanteRoturaMaquinaria generarDocumento = (GenerarDocLucroCesanteRoturaMaquinaria) getObjectByJndi(nombreClase);
+				xml.append(generarDocumento.generarXmlLucroCesanteRoturaMaquinaria(ramoLcRotMaq));
+			} catch (Exception e) {
+				log.error("Error", e);
+			}
+			xml.append(tagFinDocumento);
+		} catch (Exception e) {
+
+		}
+		return xml.toString();
+	}
+
+	/**
+	 * 
+	 * <b> Permite generar un contenedor XML. </b>
+	 * <p>
+	 * [Author: Franklin Pozo B, Date: 11/05/2015]
+	 * </p>
+	 * 
+	 * @param incendioLineasAliada
+	 */
+	public String generarXmlIncendioLineasAliada(RamoIncendioLineasAliada incendioLineasAliada) {
+
+		StringBuilder xml = new StringBuilder();
+		try {
+			xml.append(tagInicioDocumento);
+			try {
+				String nombreClase = "java:app/hiperion_web/IncendioLineasAliadasImpl";
+				GenerarDocIncendiLineasAliadas generarDocumento = (GenerarDocIncendiLineasAliadas) getObjectByJndi(nombreClase);
+				xml.append(generarDocumento.generarXmlIncendioLineasAliadas(incendioLineasAliada));
+			} catch (Exception e) {
+				log.error("Error", e);
+			}
+			xml.append(tagFinDocumento);
+		} catch (Exception e) {
+
+		}
+
 		return xml.toString();
 	}
 
@@ -770,6 +841,87 @@ public class XSLUtil {
 
 		return html;
 
+	}
+
+	/**
+	 * 
+	 * <b> Permite generar el HTML del ramo Lucro Cesante Rotura de maquinaria </b>
+	 * <p>
+	 * [Author: Franklin Pozo, Date: 12/05/2015]
+	 * </p>
+	 * 
+	 * @param ramoLcRotMaq
+	 * @return
+	 */
+	public String obtenerHtmlLucroCesanteRoturaMaquinaria(RamoLcRotMaq ramoLcRotMaq) {
+
+		String html = null;
+
+		try {
+			InputStream in = XSLHelper.class.getResourceAsStream("LucroCesanteRoturaMaquinariaHTML.xsl");
+			InputStreamReader is = new InputStreamReader(in);
+			StringBuilder sb = new StringBuilder();
+			BufferedReader br = new BufferedReader(is);
+			String read = br.readLine();
+
+			while (read != null) {
+				sb.append(read);
+				read = br.readLine();
+			}
+			String contenidoXSL = sb.toString();
+			// Se genera el XML con los datos del documento
+			String contenidoXml = generarXmlLucroCesanteRoturaMaquinaria(ramoLcRotMaq);
+			Document docXML = TransformerUtil.stringToXMLDocument(contenidoXml.toString());
+			Document docXSL = TransformerUtil.stringToXML(contenidoXSL);
+			Document result = TransformerUtil.transformar(docXML, docXSL);
+			html = TransformerUtil.xmlToString(result);
+			html = html.replaceAll("&lt;", "<").replaceAll("&gt;", ">").replaceAll("&amp;", "&").replace("UTF-8", "ISO-8859-1");
+
+		} catch (Exception e) {
+			log.error("Error ", e);
+		}
+
+		return html;
+	}
+
+	/**
+	 * 
+	 * <b> Permite generar el HTML del ramo Incendio Lineas Aliadas </b>
+	 * <p>
+	 * [Author: Franklin Pozo B, Date: 11/05/2015]
+	 * </p>
+	 * 
+	 * @param incendioLineasAliada
+	 * @return
+	 */
+	public String obtenerHtmlIncendioLineasAliadas(RamoIncendioLineasAliada incendioLineasAliada) {
+		String html = null;
+
+		try {
+			InputStream in = XSLHelper.class.getResourceAsStream("IncendioLineasAliadasHTML.xsl");
+			InputStreamReader is = new InputStreamReader(in);
+			StringBuilder sb = new StringBuilder();
+			BufferedReader br = new BufferedReader(is);
+			String read = br.readLine();
+
+			while (read != null) {
+				sb.append(read);
+				read = br.readLine();
+			}
+			String contenidoXSL = sb.toString();
+			// Se genera el XML con los datos del documento
+			String contenidoXml = generarXmlIncendioLineasAliada(incendioLineasAliada);
+			Document docXML = TransformerUtil.stringToXMLDocument(contenidoXml.toString());
+			Document docXSL = TransformerUtil.stringToXML(contenidoXSL);
+			Document result = TransformerUtil.transformar(docXML, docXSL);
+			html = TransformerUtil.xmlToString(result);
+			html = html.replaceAll("&lt;", "<").replaceAll("&gt;", ">").replaceAll("&amp;", "&").replace("UTF-8", "ISO-8859-1");
+
+		} catch (Exception e) {
+			log.error("Error ", e);
+		}
+
+		return html;
 	}
 
 	/**

@@ -21,6 +21,8 @@ import ec.com.avila.hiperion.emision.entities.RamoEquipoElectronico;
 import ec.com.avila.hiperion.emision.entities.RamoEquipoMaquinaria;
 import ec.com.avila.hiperion.emision.entities.RamoFidelidad;
 import ec.com.avila.hiperion.emision.entities.RamoGarantiaAduanera;
+import ec.com.avila.hiperion.emision.entities.RamoIncendioLineasAliada;
+import ec.com.avila.hiperion.emision.entities.RamoLcRotMaq;
 import ec.com.kruger.framework.common.util.pdf.HtmltoPDF;
 
 public class GenerarPdfUtil implements Serializable {
@@ -52,16 +54,16 @@ public class GenerarPdfUtil implements Serializable {
 
 	/**
 	 * 
-	 * <b>
-	 * Permite generar el documento ramo Garantia Aduanera PDF
-	 * </b>
-	 * <p>[Author: Franklin Pozo , Date: 08/05/2015]</p>
-	 *
+	 * <b> Permite generar el documento ramo Garantia Aduanera PDF </b>
+	 * <p>
+	 * [Author: Franklin Pozo , Date: 08/05/2015]
+	 * </p>
+	 * 
 	 * @param garantiaAduanera
 	 * @return
 	 * @throws Exception
 	 */
-	public static byte[]generarAchivoPDFGarantiaAduanera(RamoGarantiaAduanera garantiaAduanera)throws Exception{
+	public static byte[] generarAchivoPDFGarantiaAduanera(RamoGarantiaAduanera garantiaAduanera) throws Exception {
 		String HTML = XSLUtil.getInstancia().obtenerHtmlGarantiaAduanera(garantiaAduanera);
 
 		byte[] contenido = obtenerCadenaBytes(HTML);
@@ -69,7 +71,7 @@ public class GenerarPdfUtil implements Serializable {
 		// Agregar marca de agua al Pdf
 		return ConcatenadorPdf.numerarMarcar(contenido, Boolean.TRUE, Boolean.TRUE, ConstantesUtil.PATH_MARCA_AGUA_PDF);
 	}
-	
+
 	/**
 	 * 
 	 * <b> Permite generar el documento ramo Fidelidad PDF. </b>
@@ -227,6 +229,47 @@ public class GenerarPdfUtil implements Serializable {
 
 		// Agregar marca de agua al pdf
 		return ConcatenadorPdf.numerarMarcar(contenido, Boolean.TRUE, Boolean.TRUE, ConstantesUtil.PATH_MARCA_AGUA_PDF);
+	}
+
+	/**
+	 * 
+	 * <b>
+	 * Permite generar el documento del ramo Lucro Cesante Rotura de maquinaria
+	 * </b>
+	 * <p>[Author: Franklin Pozo B., Date: 12/05/2015]</p>
+	 *
+	 * @param ramoLcRotMaq
+	 * @return
+	 * @throws Exception
+	 */
+	public static byte[] generarArchivoPDFLucroCesanteRoturaMaquinaria(RamoLcRotMaq ramoLcRotMaq) throws Exception {
+
+		String pHtml = XSLUtil.getInstancia().obtenerHtmlLucroCesanteRoturaMaquinaria(ramoLcRotMaq);
+		byte[] contenido = obtenerCadenaBytes(pHtml);
+
+		// Agregar marca de agua al pdf
+		return ConcatenadorPdf.numerarMarcar(contenido, Boolean.TRUE, Boolean.TRUE, ConstantesUtil.PATH_MARCA_AGUA_PDF);
+	}
+
+	/**
+	 * 
+	 * <b> Permite generar el documento del ramo Cumplimiento Contrato </b>
+	 * <p>
+	 * [Author: Franklin Pozo B, Date: 11/05/2015]
+	 * </p>
+	 * 
+	 * @param incendioLineasAliada
+	 * @return
+	 * @throws Exception
+	 */
+	public static byte[] generarArchivoPDFIncendioLineaAliada(RamoIncendioLineasAliada incendioLineasAliada) throws Exception {
+
+		String pHtml = XSLUtil.getInstancia().obtenerHtmlIncendioLineasAliadas(incendioLineasAliada);
+		byte[] contenido = obtenerCadenaBytes(pHtml);
+
+		// Agregar marca de agua al pdf
+		return ConcatenadorPdf.numerarMarcar(contenido, Boolean.TRUE, Boolean.TRUE, ConstantesUtil.PATH_MARCA_AGUA_PDF);
+
 	}
 
 	/**
