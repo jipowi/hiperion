@@ -8,7 +8,9 @@ package ec.com.avila.emision.web.backings;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -33,7 +35,10 @@ import ec.com.avila.hiperion.servicio.RamoService;
 import ec.com.avila.hiperion.web.beans.RamoBean;
 import ec.com.avila.hiperion.web.beans.UsuarioBean;
 import ec.com.avila.hiperion.web.model.AnexosDataModel;
+import ec.com.avila.hiperion.web.util.ConstantesUtil;
+import ec.com.avila.hiperion.web.util.GenerarPdfUtil;
 import ec.com.avila.hiperion.web.util.HiperionMensajes;
+import ec.com.avila.hiperion.web.util.JsfUtil;
 import ec.com.avila.hiperion.web.util.MessagesController;
 
 /**
@@ -307,5 +312,25 @@ public class LucroCesanteRoturaMaquinariaBacking implements Serializable {
 	 */
 	public void setSelectCoberturasAdicionales(DetalleAnexoBean[] selectCoberturasAdicionales) {
 		this.selectCoberturasAdicionales = selectCoberturasAdicionales;
+	}
+
+	public void descargarLucroCesanteRoturaMaquinariaPDF() throws HiperionException {
+
+		try {
+			Map<String, Object> parametrosReporte = new HashMap<String, Object>();
+
+			parametrosReporte.put(ConstantesUtil.CONTENT_TYPE_IDENTIFICADOR, ConstantesUtil.CONTENT_TYPE_PDF);
+			parametrosReporte.put(ConstantesUtil.NOMBRE_ARCHIVO_IDENTIFICADOR, usuarioBean.getSessionUser().getIdentificacionUsuario());
+
+			parametrosReporte.put(ConstantesUtil.CONTENIDO_BYTES_IDENTIFICADOR,
+					GenerarPdfUtil.generarArchivoPDFLucroCesanteRoturaMaquinaria(ramoCesanteRoturaMaq));
+
+			JsfUtil.setSessionAttribute(ConstantesUtil.PARAMETROS_DESCARGADOR_IDENTIFICADOR, parametrosReporte);
+			JsfUtil.downloadFile();
+		} catch (Exception e) {
+			log.error("Error al momento generar el documento Lucro Cesante Rotura Maquinaria en PDF", e);
+			throw new HiperionException(e);
+
+		}
 	}
 }

@@ -6,7 +6,9 @@ package ec.com.avila.emision.web.backings;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -31,7 +33,10 @@ import ec.com.avila.hiperion.servicio.RamoService;
 import ec.com.avila.hiperion.web.beans.RamoBean;
 import ec.com.avila.hiperion.web.beans.UsuarioBean;
 import ec.com.avila.hiperion.web.model.AnexosDataModel;
+import ec.com.avila.hiperion.web.util.ConstantesUtil;
+import ec.com.avila.hiperion.web.util.GenerarPdfUtil;
 import ec.com.avila.hiperion.web.util.HiperionMensajes;
+import ec.com.avila.hiperion.web.util.JsfUtil;
 import ec.com.avila.hiperion.web.util.MessagesController;
 
 /**
@@ -68,7 +73,7 @@ public class IncendioLineasAliadasBacking implements Serializable {
 
 	@ManagedProperty(value = "#{ramoIncendioLineasAliadaBean}")
 	private RamoIncendioLineasAliadaBean ramoIncendioLineasAliadaBean;
-	
+
 	@ManagedProperty(value = "#{usuarioBean}")
 	private UsuarioBean usuarioBean;
 
@@ -315,8 +320,8 @@ public class IncendioLineasAliadasBacking implements Serializable {
 					objAsegIncendio.setUbicacionIncendio(objeto.getUbicacionRiesgo());
 					objAsegIncendio.setDetalleIncendio(objeto.getDetalle());
 					objAsegIncendio.setValorObjAsegIncendio(objeto.getValor());
-					
-					Usuario usuario =usuarioBean.getSessionUser();
+
+					Usuario usuario = usuarioBean.getSessionUser();
 					objAsegIncendio.setIdUsuarioCreacion(usuario.getIdUsuario());
 					objAsegIncendio.setFechaCreacion(new Date());
 					objAsegIncendio.setEstado(EstadoEnum.A);
@@ -348,12 +353,12 @@ public class IncendioLineasAliadasBacking implements Serializable {
 	 * <p>
 	 * [Author: Paul Jimenez, Date: Oct 25, 2014]
 	 * </p>
-	 *
+	 * 
 	 */
 	public void setearInfRamo() {
 
-		Usuario usuario =usuarioBean.getSessionUser();
-		
+		Usuario usuario = usuarioBean.getSessionUser();
+
 		ramoIncendioLineasAliada.setValorItemsIncendio(ramoIncendioLineasAliadaBean.getValorItems());
 		ramoIncendioLineasAliada.setConsideracionesImpIncendio(ramoIncendioLineasAliadaBean.getConsideracionesImp());
 		ramoIncendioLineasAliada.setDeducTerremoto(ramoIncendioLineasAliadaBean.getMinimoTerremoto());
@@ -379,8 +384,6 @@ public class IncendioLineasAliadasBacking implements Serializable {
 
 	}
 
-	
-	
 	/**
 	 * @return the usuarioBean
 	 */
@@ -389,7 +392,8 @@ public class IncendioLineasAliadasBacking implements Serializable {
 	}
 
 	/**
-	 * @param usuarioBean the usuarioBean to set
+	 * @param usuarioBean
+	 *            the usuarioBean to set
 	 */
 	public void setUsuarioBean(UsuarioBean usuarioBean) {
 		this.usuarioBean = usuarioBean;
@@ -521,5 +525,33 @@ public class IncendioLineasAliadasBacking implements Serializable {
 	 */
 	public void setSelectCondicionesMueblesEnseres(DetalleAnexoBean[] selectCondicionesMueblesEnseres) {
 		this.selectCondicionesMueblesEnseres = selectCondicionesMueblesEnseres;
+	}
+
+	/**
+	 * 
+	 * <b> Permite generar y descargar el documento en PDF </b>
+	 * <p>
+	 * [Author: Franklin Pozo B, Date: 11/05/2015]
+	 * </p>
+	 * 
+	 * @throws HiperionException
+	 */
+	public void descargarIncendioLineasAliadasPDF() throws HiperionException {
+
+		try {
+			Map<String, Object> parametrosReporte = new HashMap<String, Object>();
+
+			parametrosReporte.put(ConstantesUtil.CONTENT_TYPE_IDENTIFICADOR, ConstantesUtil.CONTENT_TYPE_PDF);
+			parametrosReporte.put(ConstantesUtil.NOMBRE_ARCHIVO_IDENTIFICADOR, usuarioBean.getSessionUser().getIdentificacionUsuario());
+
+			parametrosReporte.put(ConstantesUtil.CONTENIDO_BYTES_IDENTIFICADOR,
+					GenerarPdfUtil.generarArchivoPDFIncendioLineaAliada(ramoIncendioLineasAliada));
+
+			JsfUtil.setSessionAttribute(ConstantesUtil.PARAMETROS_DESCARGADOR_IDENTIFICADOR, parametrosReporte);
+			JsfUtil.downloadFile();
+		} catch (Exception e) {
+			log.error("Error al momento generar el documento Incendio Lineas Aliadas en PDF", e);
+			throw new HiperionException(e);
+		}
 	}
 }

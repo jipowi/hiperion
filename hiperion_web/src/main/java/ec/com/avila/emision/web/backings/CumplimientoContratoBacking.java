@@ -61,7 +61,7 @@ public class CumplimientoContratoBacking implements Serializable {
 
 	@ManagedProperty(value = "#{ramoCumplimientoContratoBean}")
 	private RamoCumplimientoContratoBean ramoCumplimientoContratoBean;
-	
+
 	@ManagedProperty(value = "#{usuarioBean}")
 	private UsuarioBean usuarioBean;
 
@@ -117,19 +117,16 @@ public class CumplimientoContratoBacking implements Serializable {
 	 * @throws HiperionException
 	 */
 	public void guardarRamo() throws HiperionException {
-		Usuario usuario=usuarioBean.getSessionUser();
-		
-		
+		Usuario usuario = usuarioBean.getSessionUser();
 
 		cumplimientoContrato.setObjetoAsegContrato(ramoCumplimientoContratoBean.getObjetoAsegurado());
 		cumplimientoContrato.setValorContrato(ramoCumplimientoContratoBean.getValorContrato());
 		cumplimientoContrato.setValorAseguradoContrato(ramoCumplimientoContratoBean.getValorAsegurado());
 		cumplimientoContrato.setTipoContragarantiaContrato(ramoCumplimientoContratoBean.getTipoContragarantia());
-		
+
 		cumplimientoContrato.setIdUsuarioCreacion(usuario.getIdUsuario());
 		cumplimientoContrato.setFechaCreacion(new Date());
 		cumplimientoContrato.setEstado(EstadoEnum.A);
-		
 
 		try {
 			ramoCumplimientoContratoService.guardarRamoCumplimientoContrato(cumplimientoContrato);
@@ -140,8 +137,6 @@ public class CumplimientoContratoBacking implements Serializable {
 			throw new HiperionException(e);
 		}
 	}
-	
-	
 
 	/**
 	 * @return the usuarioBean
@@ -151,7 +146,8 @@ public class CumplimientoContratoBacking implements Serializable {
 	}
 
 	/**
-	 * @param usuarioBean the usuarioBean to set
+	 * @param usuarioBean
+	 *            the usuarioBean to set
 	 */
 	public void setUsuarioBean(UsuarioBean usuarioBean) {
 		this.usuarioBean = usuarioBean;
@@ -194,29 +190,30 @@ public class CumplimientoContratoBacking implements Serializable {
 	public void setSelectCoberturas(DetalleAnexoBean[] selectCoberturas) {
 		this.selectCoberturas = selectCoberturas;
 	}
-	
+
 	/**
 	 * 
-	 * <b>
-	 * Permite generar y descargar el documento en PDF
-	 * </b>
-	 * <p>[Author: Franklin Pozo B, Date: 22/04/2015]</p>
-	 *
+	 * <b> Permite generar y descargar el documento en PDF </b>
+	 * <p>
+	 * [Author: Franklin Pozo B, Date: 22/04/2015]
+	 * </p>
+	 * 
 	 * @throws HiperionException
 	 */
-	public void descargarCumplimientoContratoPDF()throws HiperionException{
+	public void descargarCumplimientoContratoPDF() throws HiperionException {
 		try {
 			Map<String, Object> parametrosReporte = new HashMap<String, Object>();
 
 			parametrosReporte.put(ConstantesUtil.CONTENT_TYPE_IDENTIFICADOR, ConstantesUtil.CONTENT_TYPE_PDF);
 			parametrosReporte.put(ConstantesUtil.NOMBRE_ARCHIVO_IDENTIFICADOR, usuarioBean.getSessionUser().getIdentificacionUsuario());
 
-			parametrosReporte.put(ConstantesUtil.CONTENIDO_BYTES_IDENTIFICADOR, GenerarPdfUtil.generarArchivoPDFCumplimientoContrato(cumplimientoContrato));
+			parametrosReporte.put(ConstantesUtil.CONTENIDO_BYTES_IDENTIFICADOR,
+					GenerarPdfUtil.generarArchivoPDFCumplimientoContrato(cumplimientoContrato));
 
 			JsfUtil.setSessionAttribute(ConstantesUtil.PARAMETROS_DESCARGADOR_IDENTIFICADOR, parametrosReporte);
 			JsfUtil.downloadFile();
-		}catch (Exception e) {
-			log.error("Error al momento generar el documento Casco Aereo en PDF", e);
+		} catch (Exception e) {
+			log.error("Error al momento generar el documento Cumplimiento Contrato en PDF", e);
 			throw new HiperionException(e);
 		}
 	}
