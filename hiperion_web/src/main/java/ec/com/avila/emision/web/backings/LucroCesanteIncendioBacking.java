@@ -6,7 +6,9 @@ package ec.com.avila.emision.web.backings;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -31,7 +33,10 @@ import ec.com.avila.hiperion.servicio.RamoLucroCesanteIncendioService;
 import ec.com.avila.hiperion.servicio.RamoService;
 import ec.com.avila.hiperion.web.beans.RamoBean;
 import ec.com.avila.hiperion.web.beans.UsuarioBean;
+import ec.com.avila.hiperion.web.util.ConstantesUtil;
+import ec.com.avila.hiperion.web.util.GenerarPdfUtil;
 import ec.com.avila.hiperion.web.util.HiperionMensajes;
+import ec.com.avila.hiperion.web.util.JsfUtil;
 import ec.com.avila.hiperion.web.util.MessagesController;
 
 /**
@@ -212,6 +217,24 @@ public class LucroCesanteIncendioBacking implements Serializable {
 	 */
 	public void setUsuarioBean(UsuarioBean usuarioBean) {
 		this.usuarioBean = usuarioBean;
+	}
+	
+	public void descargarLucCesIncendioLineasAliadasPDF()throws HiperionException{
+		try {
+			Map<String, Object> parametrosReporte = new HashMap<String, Object>();
+
+			parametrosReporte.put(ConstantesUtil.CONTENT_TYPE_IDENTIFICADOR, ConstantesUtil.CONTENT_TYPE_PDF);
+			parametrosReporte.put(ConstantesUtil.NOMBRE_ARCHIVO_IDENTIFICADOR, usuarioBean.getSessionUser().getIdentificacionUsuario());
+
+			parametrosReporte.put(ConstantesUtil.CONTENIDO_BYTES_IDENTIFICADOR,
+					GenerarPdfUtil.generarArchivoPDFLucCesIncendioLineasAliadas(ramoLucroCesanteIncendio));
+
+			JsfUtil.setSessionAttribute(ConstantesUtil.PARAMETROS_DESCARGADOR_IDENTIFICADOR, parametrosReporte);
+			JsfUtil.downloadFile();
+		} catch (Exception e) {
+			log.error("Error al momento generar el documento Cumplimiento Contrato en PDF", e);
+			throw new HiperionException(e);
+		}
 	}
 
 }
