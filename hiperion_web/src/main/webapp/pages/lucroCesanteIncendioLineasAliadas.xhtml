@@ -59,6 +59,13 @@
 													<p:commandButton id="guardarBtnId" actionListener="#{lucroCesanteIncendioBacking.setearInfRamo()}" icon="icon-save"
 														value="#{emision['boton.aceptar']}" title="Guardar" update="formPrincipal, ramoLucroCesanteIncendioLineasAliada" />
 													<p:commandButton id="cancelarBtnId" icon="icon-cancel" value="#{emision['boton.cancelar']}" process="@this" title="Cancelar" />
+
+													<!-- DESCARGAR DOCUMENTOS -->
+													<h:panelGrid columns="2">
+														<p:commandLink title="Descargar syllabus" actionListener="#{lucroCesanteIncendioBacking.descargarLucCesIncendioLineasAliadasPDF()}">
+															<h:graphicImage name="pdf.png" library="img" />
+														</p:commandLink>
+													</h:panelGrid>
 												</div>
 											</f:facet>
 										</h:panelGrid>
@@ -70,7 +77,7 @@
 							<p:tab title="#{emision['emision.ramo.lcila.objetoasegurado']}">
 								<div align="center">
 									<h:form id="form1">
-									<p:messages id="messageObjLucroCesanteIncendio" showDetail="true" autoUpdate="true" closable="true" />
+										<p:messages id="messageObjLucroCesanteIncendio" showDetail="true" autoUpdate="true" closable="true" />
 										<h:panelGrid columns="1">
 											<f:facet name="header">
 												<p:outputLabel value="#{emision['emision.ramo.lcila.objeto.tituloPantalla']}" styleClass="negrita" />
