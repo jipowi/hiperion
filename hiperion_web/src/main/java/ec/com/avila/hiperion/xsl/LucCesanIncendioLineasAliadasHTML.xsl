@@ -11,7 +11,7 @@
 						<tr>
 							<td align="center" colspan="2" style="font-weight: bold;">
 								<h3>
-									<xsl:text>Cotizaci&#243;n Lucro Cesante Rotura Maquinaria </xsl:text>
+									<xsl:text>Cotizaci&#243;n Lucro Cesante Incendio Lineas Aliadas </xsl:text>
 								</h3>
 							</td>
 						</tr>
@@ -22,14 +22,20 @@
 							<td>
 
 								<br />
-								<xsl:text>Utilidad bruta estimada anual: </xsl:text>
-								<xsl:value-of select="documento/utilidadBrutaEstimadaAnual" />
-								<br />
-								<xsl:text>Tasa: </xsl:text>
-								<xsl:value-of select="documento/tasa" />
+								<xsl:text>Valor &#205;tems: </xsl:text>
+								<xsl:value-of select="documento/valorItems" />
 								<br />
 								<xsl:text>Perido de Indemnizaci&#243;n: </xsl:text>
-								<xsl:value-of select="documento/periodoIndemnizacion" />
+								<xsl:value-of select="documento/peridoIndemnizacion" />
+								<br />
+								<xsl:text>Tasa Comprensiva: </xsl:text>
+								<xsl:value-of select="documento/tasaComprensiva" />
+								<br />
+								<xsl:text> Deducible Catastrofico: </xsl:text>
+								<xsl:value-of select="documento/deducibleCatastrofico" />
+								<br />
+								<xsl:text> Deducible otros eventos: </xsl:text>
+								<xsl:value-of select="documento/deducibleOtrosEventos" />
 								<br />
 
 							</td>
