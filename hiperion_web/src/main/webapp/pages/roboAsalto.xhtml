@@ -76,6 +76,13 @@
 											value="#{emision['boton.aceptar']}" title="Guardar" />
 										<p:commandButton id="cancelarBtnId" oncomplete="asmDlg.hide();" icon="icon-cancel" value="#{emision['boton.cancelar']}" process="@this"
 											title="Cancelar" />
+
+										<!-- DESCARGAR DOCUMENTOS -->
+										<h:panelGrid columns="2">
+											<p:commandLink title="Descargar syllabus" actionListener="#{roboAsaltoBacking.descargarRoboAsPDF()}">
+												<h:graphicImage name="pdf.png" library="img" />
+											</p:commandLink>
+										</h:panelGrid>
 									</div>
 								</h:form>
 								<p:spacer height="30px;" />

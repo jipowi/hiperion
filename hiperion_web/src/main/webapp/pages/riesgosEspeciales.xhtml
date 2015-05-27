@@ -52,14 +52,20 @@
 												<div align="center">
 													<p:commandButton id="guardarBtnId" actionListener="#{riesgosEspecialesBacking.guardarRamo()}" icon="icon-save"
 														value="#{emision['boton.guardar']}" title="Guardar" update="formPrincipal, ramoRiesgosEspeciales" />
-													<p:commandButton id="cancelarBtnId" icon="icon-cancel" value="#{emision['boton.cancelar']}"
-														process="@this" title="Cancelar" />
+													<p:commandButton id="cancelarBtnId" icon="icon-cancel" value="#{emision['boton.cancelar']}" process="@this" title="Cancelar" />
+
+													<!-- DESCARGAR DOCUMENTOS -->
+													<h:panelGrid columns="2">
+														<p:commandLink title="Descargar syllabus" actionListener="#{riesgosEspecialesBacking.descargarRiesgosEspecialesPDF()}">
+															<h:graphicImage name="pdf.png" library="img" />
+														</p:commandLink>
+													</h:panelGrid>
 												</div>
 											</f:facet>
 										</h:panelGrid>
-											</div>
+									</div>
 								</h:form>
-							
+
 							</p:tab>
 							<p:tab title="#{emision['riesgos.tab.objetoAsegurado']}">
 								<div align="center">
