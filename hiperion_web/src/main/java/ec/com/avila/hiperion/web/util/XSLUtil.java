@@ -29,6 +29,9 @@ import ec.com.avila.hiperion.doc.servicio.GenerarDocGarantiaAduanera;
 import ec.com.avila.hiperion.doc.servicio.GenerarDocIncendiLineasAliadas;
 import ec.com.avila.hiperion.doc.servicio.GenerarDocLuCesanIncendioLineasAliadas;
 import ec.com.avila.hiperion.doc.servicio.GenerarDocLucroCesanteRoturaMaquinaria;
+import ec.com.avila.hiperion.doc.servicio.GenerarDocResponsabilidadCivil;
+import ec.com.avila.hiperion.doc.servicio.GenerarDocRiesgosEspeciales;
+import ec.com.avila.hiperion.doc.servicio.GenerarDocRoboAsalto;
 import ec.com.avila.hiperion.emision.entities.RamoAgropecuario;
 import ec.com.avila.hiperion.emision.entities.RamoBuenUsoAnt;
 import ec.com.avila.hiperion.emision.entities.RamoBuenaCalMat;
@@ -43,6 +46,9 @@ import ec.com.avila.hiperion.emision.entities.RamoGarantiaAduanera;
 import ec.com.avila.hiperion.emision.entities.RamoIncendioLineasAliada;
 import ec.com.avila.hiperion.emision.entities.RamoLcIncendio;
 import ec.com.avila.hiperion.emision.entities.RamoLcRotMaq;
+import ec.com.avila.hiperion.emision.entities.RamoResponsabilidadCivil;
+import ec.com.avila.hiperion.emision.entities.RamoRiesgosEsp;
+import ec.com.avila.hiperion.emision.entities.RamoRoboAsalto;
 import ec.com.avila.hiperion.xsl.XSLHelper;
 import ec.com.kruger.framework.common.util.TransformerUtil;
 
@@ -274,6 +280,67 @@ public class XSLUtil {
 
 	/**
 	 * 
+	 * <b> Permite generar el contenedor XML </b>
+	 * <p>
+	 * [Author: Franklin Pozo B, Date: 25/05/2015]
+	 * </p>
+	 * 
+	 * @param ramoRiesgosEsp
+	 * @return
+	 */
+	public String generarXmlRiesgosEspeciales(RamoRiesgosEsp ramoRiesgosEsp) {
+		StringBuilder xml = new StringBuilder();
+
+		try {
+			xml.append(tagInicioDocumento);
+			try {
+				String nombreClase = "java:app/hiperion_web/RiesgosEspecialesImpl";
+				GenerarDocRiesgosEspeciales generarDocumento = (GenerarDocRiesgosEspeciales) getObjectByJndi(nombreClase);
+				xml.append(generarDocumento.generarXmlRiesgosEspeciales(ramoRiesgosEsp));
+			} catch (Exception e) {
+				log.error("Error", e);
+			}
+			xml.append(tagFinDocumento);
+		} catch (Exception e) {
+
+		}
+
+		return xml.toString();
+	}
+
+	/**
+	 * 
+	 * <b> Permite generar el contenedor XML </b>
+	 * <p>
+	 * [Author: Franklin Pozo B, Date: 25/05/2015]
+	 * </p>
+	 * 
+	 * @param ramoRoboAsalto
+	 * @return
+	 */
+	public String generarXmlRoboAsalto(RamoRoboAsalto ramoRoboAsalto) {
+
+		StringBuilder xml = new StringBuilder();
+
+		try {
+			xml.append(tagInicioDocumento);
+			try {
+				String nombreClase = "java:app/hiperion_web/RoboAsaltoImpl";
+				GenerarDocRoboAsalto generarDocumento = (GenerarDocRoboAsalto) getObjectByJndi(nombreClase);
+				xml.append(generarDocumento.generarXmlRoboAsalto(ramoRoboAsalto));
+			} catch (Exception e) {
+				log.error("Error", e);
+			}
+			xml.append(tagFinDocumento);
+		} catch (Exception e) {
+
+		}
+
+		return xml.toString();
+	}
+
+	/**
+	 * 
 	 * <b> Permite generar un contenedor XML.. </b>
 	 * <p>
 	 * [Author: Franklin Pozo, Date: 15/04/2015]
@@ -354,6 +421,26 @@ public class XSLUtil {
 		} catch (Exception e) {
 
 		}
+		return xml.toString();
+	}
+
+	public String generarXmlResponsabilidadCivil(RamoResponsabilidadCivil ramoResponsabilidadCivil) {
+
+		StringBuilder xml = new StringBuilder();
+		try {
+			xml.append(tagInicioDocumento);
+			try {
+				String nombreClase = "java:app/hiperion_web/CumplimientoContratoImpl";
+				GenerarDocResponsabilidadCivil generarDocumento = (GenerarDocResponsabilidadCivil) getObjectByJndi(nombreClase);
+				xml.append(generarDocumento.generarXmlResponsabilidadCivil(ramoResponsabilidadCivil));
+			} catch (Exception e) {
+				log.error("Error", e);
+			}
+			xml.append(tagFinDocumento);
+		} catch (Exception e) {
+
+		}
+
 		return xml.toString();
 	}
 
@@ -759,6 +846,83 @@ public class XSLUtil {
 
 	/**
 	 * 
+	 * <b> Permite generar el HTML del ramo Riesgos Especiales. </b>
+	 * <p>
+	 * [Author: Franklin Pozo B, Date: 25/05/2015]
+	 * </p>
+	 * 
+	 * @param ramoRiesgosEsp
+	 * @return
+	 */
+	public String obtenerHtmlRiesgosEspeciales(RamoRiesgosEsp ramoRiesgosEsp) {
+		String html = null;
+		try {
+			InputStream in = XSLHelper.class.getResourceAsStream("RiesgosEspecialesHTML.xsl");
+			InputStreamReader is = new InputStreamReader(in);
+			StringBuilder sb = new StringBuilder();
+			BufferedReader br = new BufferedReader(is);
+			String read = br.readLine();
+
+			while (read != null) {
+				sb.append(read);
+				read = br.readLine();
+			}
+			String contenidoXSL = sb.toString();
+			// Se genera el XML con los datos del documento
+			String contenidoXml = generarXmlRiesgosEspeciales(ramoRiesgosEsp);
+			Document docXML = TransformerUtil.stringToXMLDocument(contenidoXml.toString());
+			Document docXSL = TransformerUtil.stringToXML(contenidoXSL);
+			Document result = TransformerUtil.transformar(docXML, docXSL);
+			html = TransformerUtil.xmlToString(result);
+			html = html.replaceAll("&lt;", "<").replaceAll("&gt;", ">").replaceAll("&amp;", "&").replace("UTF-8", "ISO-8859-1");
+		} catch (Exception e) {
+			log.error("Error ", e);
+		}
+		return html;
+	}
+
+	/**
+	 * 
+	 * <b> Permite generar el HTML del ramo Robo y/o Asalto </b>
+	 * <p>
+	 * [Author: Avila Sistemas, Date: 25/05/2015]
+	 * </p>
+	 * 
+	 * @param ramoRoboAsalto
+	 * @return
+	 */
+	public String obtenerHtmlRoboAsalto(RamoRoboAsalto ramoRoboAsalto) {
+
+		String html = null;
+
+		try {
+			InputStream in = XSLHelper.class.getResourceAsStream("RoboAsaltoHTML.xsl");
+			InputStreamReader is = new InputStreamReader(in);
+			StringBuilder sb = new StringBuilder();
+			BufferedReader br = new BufferedReader(is);
+			String read = br.readLine();
+
+			while (read != null) {
+				sb.append(read);
+				read = br.readLine();
+			}
+			String contenidoXSL = sb.toString();
+			// Se genera el XML con los datos del documento
+			String contenidoXml = generarXmlRoboAsalto(ramoRoboAsalto);
+			Document docXML = TransformerUtil.stringToXMLDocument(contenidoXml.toString());
+			Document docXSL = TransformerUtil.stringToXML(contenidoXSL);
+			Document result = TransformerUtil.transformar(docXML, docXSL);
+			html = TransformerUtil.xmlToString(result);
+			html = html.replaceAll("&lt;", "<").replaceAll("&gt;", ">").replaceAll("&amp;", "&").replace("UTF-8", "ISO-8859-1");
+		} catch (Exception e) {
+			log.error("Error ", e);
+		}
+
+		return html;
+	}
+
+	/**
+	 * 
 	 * <b> Permite generar el HTML del ramo Casco Aereo. </b>
 	 * <p>
 	 * [Author: Franklin Pozo, Date: 20/04/2015]
@@ -873,6 +1037,45 @@ public class XSLUtil {
 
 		return html;
 
+	}
+
+	/**
+	 * 
+	 * <b> Permite generar el HTML del ramo Responsabilidad Civil </b>
+	 * <p>
+	 * [Author: Franklin Pozo B, Date: 21/05/2015]
+	 * </p>
+	 * 
+	 * @param ramoResponsabilidadCivil
+	 * @return
+	 */
+	public String obtenerHtmlResponsabilidadCivil(RamoResponsabilidadCivil ramoResponsabilidadCivil) {
+
+		String html = null;
+		try {
+			InputStream in = XSLHelper.class.getResourceAsStream("ResponsabilidadCivilHTML.xsl");
+			InputStreamReader is = new InputStreamReader(in);
+			StringBuilder sb = new StringBuilder();
+			BufferedReader br = new BufferedReader(is);
+			String read = br.readLine();
+
+			while (read != null) {
+				sb.append(read);
+				read = br.readLine();
+			}
+			String contenidoXSL = sb.toString();
+			// Se genera el XML con los datos del documento
+			String contenidoXml = generarXmlResponsabilidadCivil(ramoResponsabilidadCivil);
+			Document docXML = TransformerUtil.stringToXMLDocument(contenidoXml.toString());
+			Document docXSL = TransformerUtil.stringToXML(contenidoXSL);
+			Document result = TransformerUtil.transformar(docXML, docXSL);
+			html = TransformerUtil.xmlToString(result);
+			html = html.replaceAll("&lt;", "<").replaceAll("&gt;", ">").replaceAll("&amp;", "&").replace("UTF-8", "ISO-8859-1");
+
+		} catch (Exception e) {
+			log.error("Error ", e);
+		}
+		return html;
 	}
 
 	/**

@@ -24,6 +24,9 @@ import ec.com.avila.hiperion.emision.entities.RamoGarantiaAduanera;
 import ec.com.avila.hiperion.emision.entities.RamoIncendioLineasAliada;
 import ec.com.avila.hiperion.emision.entities.RamoLcIncendio;
 import ec.com.avila.hiperion.emision.entities.RamoLcRotMaq;
+import ec.com.avila.hiperion.emision.entities.RamoResponsabilidadCivil;
+import ec.com.avila.hiperion.emision.entities.RamoRiesgosEsp;
+import ec.com.avila.hiperion.emision.entities.RamoRoboAsalto;
 import ec.com.kruger.framework.common.util.pdf.HtmltoPDF;
 
 public class GenerarPdfUtil implements Serializable {
@@ -176,6 +179,46 @@ public class GenerarPdfUtil implements Serializable {
 
 	/**
 	 * 
+	 * <b> Permite generar el documento del ramo Riesgos especiales </b>
+	 * <p>
+	 * [Author: Franklin Pozo B., Date: 25/05/2015]
+	 * </p>
+	 * 
+	 * @param ramoRiesgosEsp
+	 * @return
+	 * @throws Exception
+	 */
+	public static byte[] generarArchivoPDFRiesgosEspeciales(RamoRiesgosEsp ramoRiesgosEsp) throws Exception {
+
+		String pHtml = XSLUtil.getInstancia().obtenerHtmlRiesgosEspeciales(ramoRiesgosEsp);
+		byte[] contenido = obtenerCadenaBytes(pHtml);
+
+		// Agregar marca de agua al pdf
+		return ConcatenadorPdf.numerarMarcar(contenido, Boolean.TRUE, Boolean.TRUE, ConstantesUtil.PATH_MARCA_AGUA_PDF);
+	}
+
+	/**
+	 * 
+	 * <b> Permite generar el documento del ramo Robo y/o Asalto </b>
+	 * <p>
+	 * [Author: Franklin Pozo B, Date: 25/05/2015]
+	 * </p>
+	 * 
+	 * @param ramoRoboAsalto
+	 * @return
+	 * @throws Exception
+	 */
+	public static byte[] generarArchivoPDFRoboAsalto(RamoRoboAsalto ramoRoboAsalto) throws Exception {
+
+		String pHtml = XSLUtil.getInstancia().obtenerHtmlRoboAsalto(ramoRoboAsalto);
+		byte[] contenido = obtenerCadenaBytes(pHtml);
+
+		// Agregar marca de agua al pdf
+		return ConcatenadorPdf.numerarMarcar(contenido, Boolean.TRUE, Boolean.TRUE, ConstantesUtil.PATH_MARCA_AGUA_PDF);
+	}
+
+	/**
+	 * 
 	 * <b> Permite generar el documento del ramo Casco Aereo </b>
 	 * <p>
 	 * [Author: Franklin Pozo, Date: 20/04/2015]
@@ -226,6 +269,25 @@ public class GenerarPdfUtil implements Serializable {
 	 */
 	public static byte[] generarArchivoPDFCumplimientoContrato(RamoCumplimientoContrato cumplimientoContrato) throws Exception {
 		String pHtml = XSLUtil.getInstancia().obtenerHtmlCumplimientoContrato(cumplimientoContrato);
+		byte[] contenido = obtenerCadenaBytes(pHtml);
+
+		// Agregar marca de agua al pdf
+		return ConcatenadorPdf.numerarMarcar(contenido, Boolean.TRUE, Boolean.TRUE, ConstantesUtil.PATH_MARCA_AGUA_PDF);
+	}
+
+	/**
+	 * 
+	 * <b> Permite generar el documento del ramo Responsabilidad Civil </b>
+	 * <p>
+	 * [Author: Franklin Pozo B, Date: 21/05/2015]
+	 * </p>
+	 * 
+	 * @param ramoResponsabilidadCivil
+	 * @return
+	 * @throws Exception
+	 */
+	public static byte[] generarArchivoPDFResponsabilidadCivil(RamoResponsabilidadCivil ramoResponsabilidadCivil) throws Exception {
+		String pHtml = XSLUtil.getInstancia().obtenerHtmlResponsabilidadCivil(ramoResponsabilidadCivil);
 		byte[] contenido = obtenerCadenaBytes(pHtml);
 
 		// Agregar marca de agua al pdf
