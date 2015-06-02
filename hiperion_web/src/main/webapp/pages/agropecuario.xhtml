@@ -98,8 +98,8 @@
 														<f:selectItems value="#{agropecuarioBacking.sexoItems}" />
 													</p:selectOneMenu>
 
-													<h:outputLabel for="idRaza" value="#{emision['agropecuario.objeto.raza']}" styleClass="negrita" />
-													<p:inputText id="IdRaza" value="#{ramoAgropecuarioBean.raza}" />
+													<h:outputLabel value="#{emision['agropecuario.objeto.raza']}" styleClass="negrita" />
+													<p:inputText value="#{ramoAgropecuarioBean.raza}" />
 
 													<h:outputLabel for="idColor" value="#{emision['agropecuario.objeto.color']}" styleClass="negrita" />
 													<p:inputText id="idColor" value="#{ramoAgropecuarioBean.color}" />
@@ -251,12 +251,20 @@
 								</p:tab>
 								<!-- CLAUSULAS ADICIONALES -->
 								<p:tab title="#{emision['ap.tab.clausulasAdicionales']}">
-									<h:form id="caAPFormId">
-										<p:dataTable id="caAPTblId" var="clausula" value="#{agropecuarioBacking.obtenerClausulasAdicionales()}" paginator="true" rows="4"
-											selection="#{agropecuarioBacking.selectClausulasAdicionales}">
-											<f:facet name="header">#{emision['anexo.titulo.cad']}</f:facet>
-											<p:column selectionMode="multiple" style="width:2%" />
-											<p:column headerText="#{emision['anexo.ca.nombre']}">#{clausula.nombreDetalleAnexo}</p:column>
+									<h:form id="clausulaAddForm">
+										<p:dataTable var="clausula" value="#{agropecuarioBacking.clausulasAdicionalesDTO}" paginator="true" rows="4">
+											<p:column>
+												<f:facet name="header">
+													<h:outputLabel value="#{emision['anexo.titulo.cad']}" />
+												</f:facet>
+												<h:outputText value="#{clausula.clausula}" />
+											</p:column>
+											<p:column headerText="#{emision['anexo.ca.nombre']}">
+												<f:facet name="header">
+													<h:outputLabel value="#{emision['lbl.seleccion']}" />
+												</f:facet>
+												<p:selectBooleanCheckbox value="#{clausula.seleccion}" />
+											</p:column>
 										</p:dataTable>
 									</h:form>
 								</p:tab>
@@ -265,23 +273,39 @@
 									<p:accordionPanel dynamic="true" cache="true" activeIndex="null">
 										<!-- Para Transporte -->
 										<p:tab title="Para Transporte">
-											<h:form id="cobTrpAGPFormId">
-												<p:dataTable id="caAPTblId" var="clausula" value="#{agropecuarioBacking.obtenerCoberturasTransporte()}" paginator="true" rows="4"
-													selection="#{agropecuarioBacking.selectCoberturasTransporte}">
-													<f:facet name="header">Transporte</f:facet>
-													<p:column selectionMode="multiple" style="width:2%" />
-													<p:column headerText="#{emision['anexo.ca.nombre']}">#{clausula.nombreDetalleAnexo}</p:column>
+											<h:form id="coberturaTransporteForm">
+												<p:dataTable var="cobertura" value="#{agropecuarioBacking.coberturasTransporteDTO}" paginator="true" rows="4">
+													<p:column>
+														<f:facet name="header">
+															<h:outputLabel value="#{emision['anexo.titulo.cob']}" />
+														</f:facet>
+														<h:outputText value="#{cobertura.cobertura}" />
+													</p:column>
+													<p:column headerText="#{emision['anexo.titulo.cob']}">
+														<f:facet name="header">
+															<h:outputLabel value="#{emision['lbl.seleccion']}" />
+														</f:facet>
+														<p:selectBooleanCheckbox value="#{cobertura.seleccion}" />
+													</p:column>
 												</p:dataTable>
 											</h:form>
 										</p:tab>
 										<!-- Para Vida -->
 										<p:tab title="Para Vida">
-											<h:form id="cobVidAGPFormId">
-												<p:dataTable id="caAPTblId" var="clausula" value="#{agropecuarioBacking.obtenerCoberturasVida()}" paginator="true" rows="4"
-													selection="#{agropecuarioBacking.selectCoberturasVida}">
-													<f:facet name="header">Vida</f:facet>
-													<p:column selectionMode="multiple" style="width:2%" />
-													<p:column headerText="#{emision['anexo.ca.nombre']}">#{clausula.nombreDetalleAnexo}</p:column>
+											<h:form id="coberturaVidaForm">
+												<p:dataTable var="cobertura" value="#{agropecuarioBacking.coberturasVidaDTO}" paginator="true" rows="4">
+													<p:column>
+														<f:facet name="header">
+															<h:outputLabel value="#{emision['anexo.titulo.cad']}" />
+														</f:facet>
+														<h:outputText value="#{cobertura.cobertura}" />
+													</p:column>
+													<p:column headerText="#{emision['anexo.ca.nombre']}">
+														<f:facet name="header">
+															<h:outputLabel value="#{emision['lbl.seleccion']}" />
+														</f:facet>
+														<p:selectBooleanCheckbox value="#{cobertura.seleccion}" />
+													</p:column>
 												</p:dataTable>
 											</h:form>
 										</p:tab>
