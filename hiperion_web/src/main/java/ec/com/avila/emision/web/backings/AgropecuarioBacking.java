@@ -28,9 +28,12 @@ import org.primefaces.model.UploadedFile;
 import ec.com.avila.emision.web.beans.DetalleAnexoBean;
 import ec.com.avila.emision.web.beans.RamoAgropecuarioBean;
 import ec.com.avila.hiperion.comun.HiperionException;
+import ec.com.avila.hiperion.dto.ClausulaAdicionalDTO;
+import ec.com.avila.hiperion.dto.CoberturaDTO;
 import ec.com.avila.hiperion.dto.ObjetoAseguradoAgropecuarioDTO;
 import ec.com.avila.hiperion.emision.entities.ArchivoBase;
 import ec.com.avila.hiperion.emision.entities.Catalogo;
+import ec.com.avila.hiperion.emision.entities.ClausulasAddAgro;
 import ec.com.avila.hiperion.emision.entities.DetalleAnexo;
 import ec.com.avila.hiperion.emision.entities.DetalleCatalogo;
 import ec.com.avila.hiperion.emision.entities.ObjAsegAgropecuario;
@@ -43,7 +46,6 @@ import ec.com.avila.hiperion.servicio.RamoAgropecuarioService;
 import ec.com.avila.hiperion.servicio.RamoService;
 import ec.com.avila.hiperion.web.beans.RamoBean;
 import ec.com.avila.hiperion.web.beans.UsuarioBean;
-import ec.com.avila.hiperion.web.model.AnexosDataModel;
 import ec.com.avila.hiperion.web.util.ArchivoUtil;
 import ec.com.avila.hiperion.web.util.ConstantesUtil;
 import ec.com.avila.hiperion.web.util.GenerarPdfUtil;
@@ -82,14 +84,14 @@ public class AgropecuarioBacking implements Serializable {
 	@ManagedProperty(value = "#{usuarioBean}")
 	private UsuarioBean usuarioBean;
 
-	private AnexosDataModel anexosDataModel;
 	private List<DetalleAnexo> anexos;
 	private List<DetalleAnexoBean> clausulasAdicionales;
+	private List<ClausulaAdicionalDTO> clausulasAdicionalesDTO = new ArrayList<>();
 	private List<DetalleAnexoBean> coberturasTransporte;
+	private List<CoberturaDTO> coberturasTransporteDTO = new ArrayList<>();
+	private List<CoberturaDTO> coberturasVidaDTO = new ArrayList<>();
 	private List<DetalleAnexoBean> coberturasVida;
-	private DetalleAnexoBean[] selectClausulasAdicionales;
-	private DetalleAnexoBean[] selectCoberturasTransporte;
-	private DetalleAnexoBean[] selectCoberturasVida;
+
 	private UploadedFile file;
 	private List<SelectItem> sexoItems;
 	private List<SelectItem> tipoObjetoItems;
@@ -101,8 +103,15 @@ public class AgropecuarioBacking implements Serializable {
 	@PostConstruct
 	public void inicializar() {
 		try {
+
 			Ramo ramo = ramoService.consultarRamoPorCodigo("AGP");
+
 			anexos = ramo.getDetalleAnexos();
+
+			obtenerClausulasAdicionales();
+			obtenerCoberturasTransporte();
+			obtenerCoberturasVida();
+
 		} catch (HiperionException e) {
 			e.printStackTrace();
 		}
@@ -117,7 +126,7 @@ public class AgropecuarioBacking implements Serializable {
 	 * 
 	 * @return
 	 */
-	public AnexosDataModel obtenerClausulasAdicionales() {
+	public void obtenerClausulasAdicionales() {
 		clausulasAdicionales = new ArrayList<DetalleAnexoBean>();
 		if (anexos != null && anexos.size() > 0) {
 			for (DetalleAnexo anexo : anexos) {
@@ -126,10 +135,15 @@ public class AgropecuarioBacking implements Serializable {
 					clausulasAdicionales.add(new DetalleAnexoBean(anexo.getIdDetalleAnexo(), anexo.getNombreDetalleAnexo()));
 			}
 
-			anexosDataModel = new AnexosDataModel(clausulasAdicionales);
 		}
 
-		return anexosDataModel;
+		for (DetalleAnexoBean clausula : clausulasAdicionales) {
+			ClausulaAdicionalDTO clausulaDTO = new ClausulaAdicionalDTO();
+			clausulaDTO.setClausula(clausula.getNombreDetalleAnexo());
+			clausulaDTO.setSeleccion(false);
+
+			clausulasAdicionalesDTO.add(clausulaDTO);
+		}
 	}
 
 	/**
@@ -142,7 +156,7 @@ public class AgropecuarioBacking implements Serializable {
 	 * @return
 	 * @throws HiperionException
 	 */
-	public AnexosDataModel obtenerCoberturasTransporte() throws HiperionException {
+	public void obtenerCoberturasTransporte() throws HiperionException {
 
 		coberturasTransporte = new ArrayList<DetalleAnexoBean>();
 
@@ -156,10 +170,16 @@ public class AgropecuarioBacking implements Serializable {
 			for (DetalleAnexo detalle : detallesTransporte) {
 				coberturasTransporte.add(new DetalleAnexoBean(detalle.getIdDetalleAnexo(), detalle.getNombreDetalleAnexo()));
 			}
-			anexosDataModel = new AnexosDataModel(coberturasTransporte);
+
 		}
 
-		return anexosDataModel;
+		for (DetalleAnexoBean cobertura : coberturasTransporte) {
+			CoberturaDTO coberturaDTO = new CoberturaDTO();
+			coberturaDTO.setCobertura(cobertura.getNombreDetalleAnexo());
+			coberturaDTO.setSeleccion(false);
+
+			coberturasTransporteDTO.add(coberturaDTO);
+		}
 	}
 
 	/**
@@ -172,7 +192,7 @@ public class AgropecuarioBacking implements Serializable {
 	 * @return
 	 * @throws HiperionException
 	 */
-	public AnexosDataModel obtenerCoberturasVida() throws HiperionException {
+	public void obtenerCoberturasVida() throws HiperionException {
 		coberturasVida = new ArrayList<DetalleAnexoBean>();
 
 		if (anexos != null && anexos.size() > 0) {
@@ -185,10 +205,16 @@ public class AgropecuarioBacking implements Serializable {
 			for (DetalleAnexo detalle : detallesVida) {
 				coberturasVida.add(new DetalleAnexoBean(detalle.getIdDetalleAnexo(), detalle.getNombreDetalleAnexo()));
 			}
-			anexosDataModel = new AnexosDataModel(coberturasVida);
+
 		}
 
-		return anexosDataModel;
+		for (DetalleAnexoBean cobertura : coberturasVida) {
+			CoberturaDTO coberturaDTO = new CoberturaDTO();
+			coberturaDTO.setCobertura(cobertura.getNombreDetalleAnexo());
+			coberturaDTO.setSeleccion(false);
+
+			coberturasVidaDTO.add(coberturaDTO);
+		}
 	}
 
 	/**
@@ -210,7 +236,20 @@ public class AgropecuarioBacking implements Serializable {
 		agropecuario.setIdUsuarioCreacion(usuario.getIdUsuario());
 		agropecuario.setFechaCreacion(new Date());
 		agropecuario.setEstado(EstadoEnum.A);
-		
+
+		List<ClausulasAddAgro> clausulasAgropecuario = new ArrayList<>();
+		for (ClausulaAdicionalDTO clausualaDTO : clausulasAdicionalesDTO) {
+			if (clausualaDTO.getSeleccion()) {
+				
+				ClausulasAddAgro clausulaAgropecuario = new ClausulasAddAgro();
+				clausulaAgropecuario.setClausulaAddAgro(clausualaDTO.getClausula());
+				clausulaAgropecuario.setEstado(EstadoEnum.A);
+				clausulaAgropecuario.setFechaCreacion(new Date());
+				clausulaAgropecuario.setIdUsuarioCreacion(usuario.getIdUsuario());
+			
+				clausulasAgropecuario.add(clausulaAgropecuario);
+			}
+		}
 
 		MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.setearInformacion"));
 	}
@@ -399,51 +438,6 @@ public class AgropecuarioBacking implements Serializable {
 	}
 
 	/**
-	 * @return the selectClausulasAdicionales
-	 */
-	public DetalleAnexoBean[] getSelectClausulasAdicionales() {
-		return selectClausulasAdicionales;
-	}
-
-	/**
-	 * @param selectClausulasAdicionales
-	 *            the selectClausulasAdicionales to set
-	 */
-	public void setSelectClausulasAdicionales(DetalleAnexoBean[] selectClausulasAdicionales) {
-		this.selectClausulasAdicionales = selectClausulasAdicionales;
-	}
-
-	/**
-	 * @return the selectCoberturasTransporte
-	 */
-	public DetalleAnexoBean[] getSelectCoberturasTransporte() {
-		return selectCoberturasTransporte;
-	}
-
-	/**
-	 * @param selectCoberturasTransporte
-	 *            the selectCoberturasTransporte to set
-	 */
-	public void setSelectCoberturasTransporte(DetalleAnexoBean[] selectCoberturasTransporte) {
-		this.selectCoberturasTransporte = selectCoberturasTransporte;
-	}
-
-	/**
-	 * @return the selectCoberturasVida
-	 */
-	public DetalleAnexoBean[] getSelectCoberturasVida() {
-		return selectCoberturasVida;
-	}
-
-	/**
-	 * @param selectCoberturasVida
-	 *            the selectCoberturasVida to set
-	 */
-	public void setSelectCoberturasVida(DetalleAnexoBean[] selectCoberturasVida) {
-		this.selectCoberturasVida = selectCoberturasVida;
-	}
-
-	/**
 	 * @return the file
 	 */
 	public UploadedFile getFile() {
@@ -499,6 +493,51 @@ public class AgropecuarioBacking implements Serializable {
 			throw new HiperionException(e);
 		}
 
+	}
+
+	/**
+	 * @return the clausulasAdicionalesDTO
+	 */
+	public List<ClausulaAdicionalDTO> getClausulasAdicionalesDTO() {
+		return clausulasAdicionalesDTO;
+	}
+
+	/**
+	 * @param clausulasAdicionalesDTO
+	 *            the clausulasAdicionalesDTO to set
+	 */
+	public void setClausulasAdicionalesDTO(List<ClausulaAdicionalDTO> clausulasAdicionalesDTO) {
+		this.clausulasAdicionalesDTO = clausulasAdicionalesDTO;
+	}
+
+	/**
+	 * @return the coberturasTransporteDTO
+	 */
+	public List<CoberturaDTO> getCoberturasTransporteDTO() {
+		return coberturasTransporteDTO;
+	}
+
+	/**
+	 * @param coberturasTransporteDTO
+	 *            the coberturasTransporteDTO to set
+	 */
+	public void setCoberturasTransporteDTO(List<CoberturaDTO> coberturasTransporteDTO) {
+		this.coberturasTransporteDTO = coberturasTransporteDTO;
+	}
+
+	/**
+	 * @return the coberturasVidaDTO
+	 */
+	public List<CoberturaDTO> getCoberturasVidaDTO() {
+		return coberturasVidaDTO;
+	}
+
+	/**
+	 * @param coberturasVidaDTO
+	 *            the coberturasVidaDTO to set
+	 */
+	public void setCoberturasVidaDTO(List<CoberturaDTO> coberturasVidaDTO) {
+		this.coberturasVidaDTO = coberturasVidaDTO;
 	}
 
 }
