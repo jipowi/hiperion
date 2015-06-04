@@ -127,6 +127,13 @@
 													<p:commandButton id="guardarBtnId" actionListener="#{soatBacking.guardarRamo}" icon="icon-save" value="#{emision['boton.guardar']}"
 														title="Guardar" update="formSoat, idPnlSoat" />
 													<p:commandButton id="cancelarBtnId" icon="icon-cancel" value="#{emision['boton.cancelar']}" process="@this" title="Cancelar" />
+													
+													<!-- DESCARGAR DOCUMENTOS -->
+													<h:panelGrid columns="2">
+														<p:commandLink title="Descargar syllabus" actionListener="#{soatBacking.descargarSoatPDF()}">
+															<h:graphicImage name="pdf.png" library="img" />
+														</p:commandLink>
+													</h:panelGrid>
 												</div>
 											</f:facet>
 										</h:panelGrid>

@@ -30,14 +30,17 @@
 											<p:spacer height="15px;" />
 											<p:panel>
 												<h:panelGrid columns="2" cellpadding="3">
-													<p:outputLabel for="idTasa" value="#{emision['contratista.tasaPeriodo']}" styleClass="negrita"/>
-													<p:inputText id="idTasa" value="#{ramoRiesgoContratistaBean.tasa}" required="true" requiredMessage="#{emision['contratista.tasaPeriodo.msn']}"/>
-													
-													<p:outputLabel  for="idPerdiodoContruccion" value="#{emision['contratista.periodoConstruccion']}" styleClass="negrita" />
-													<p:inputText id="idPerdiodoContruccion" value="#{ramoRiesgoContratistaBean.periodoConstruccion}" required="true" requiredMessage="#{emision['contratista.periodoConstruccion.msn']}"/>
+													<p:outputLabel for="idTasa" value="#{emision['contratista.tasaPeriodo']}" styleClass="negrita" />
+													<p:inputText id="idTasa" value="#{ramoRiesgoContratistaBean.tasa}" required="true"
+														requiredMessage="#{emision['contratista.tasaPeriodo.msn']}" />
+
+													<p:outputLabel for="idPerdiodoContruccion" value="#{emision['contratista.periodoConstruccion']}" styleClass="negrita" />
+													<p:inputText id="idPerdiodoContruccion" value="#{ramoRiesgoContratistaBean.periodoConstruccion}" required="true"
+														requiredMessage="#{emision['contratista.periodoConstruccion.msn']}" />
 
 													<p:outputLabel for="idPeriodoMantenimiento" value="#{emision['contratista.periodoMantenimiento']}" styleClass="negrita" />
-													<p:inputText id="idPeriodoMantenimiento" value="#{ramoRiesgoContratistaBean.periodoMantenimiento}" required="true" requiredMessage="#{emision['contratista.periodoMantenimiento.msn']}"/>
+													<p:inputText id="idPeriodoMantenimiento" value="#{ramoRiesgoContratistaBean.periodoMantenimiento}" required="true"
+														requiredMessage="#{emision['contratista.periodoMantenimiento.msn']}" />
 
 													<p:outputLabel value="#{emision['contratista.objeto.detalleObjetoAsegurado']}" styleClass="negrita" />
 													<p:inputTextarea value="#{ramoRiesgoContratistaBean.detalleObjeto}" cols="50" rows="2" />
@@ -126,6 +129,14 @@
 											<p:commandButton id="guardarBtnId" actionListener="#{riesgosContratistaBacking.guardarRamo}" icon="icon-save"
 												value="#{emision['boton.guardar']}" title="Guardar" update="todoRiesgoContratista, formPrincipal" />
 											<p:commandButton id="cancelarBtnId" icon="icon-cancel" value="#{emision['boton.cancelar']}" process="@this" title="Cancelar" />
+										</h:panelGrid>
+
+
+										<!-- DESCARGAR DOCUMENTOS -->
+										<h:panelGrid columns="2">
+											<p:commandLink title="Descargar syllabus" actionListener="#{riesgosContratistaBacking.descargarTodoRiesgosContratistaPDF()}">
+												<h:graphicImage name="pdf.png" library="img" />
+											</p:commandLink>
 										</h:panelGrid>
 									</div>
 								</h:form>

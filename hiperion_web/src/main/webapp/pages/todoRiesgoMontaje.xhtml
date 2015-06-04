@@ -20,9 +20,9 @@
 					<ui:define name="ramoContent">
 						<p:tabView id="tabGeneral">
 							<p:tab id="tabRamo" title="#{emision['montaje.tab.principal']}">
-							<p:outputPanel>
-							<p:messages id="messageTodoRiesgoMontaje" showDetail="true" autoUpdate="true" clossable="true" />
-							</p:outputPanel>
+								<p:outputPanel>
+									<p:messages id="messageTodoRiesgoMontaje" showDetail="true" autoUpdate="true" clossable="true" />
+								</p:outputPanel>
 								<div align="center">
 									<h:form id="formPrincipal">
 										<h:panelGrid columns="1" id="todoRiesgoMontaje">
@@ -33,10 +33,12 @@
 													<p:inputText id="tasa" value="#{ramoTodoRiesgoMontajeBean.tasa}" required="true" requiredMessage="#{emision['montaje.tasa.msn']}" />
 
 													<p:outputLabel for="periodoConstruccion" value="#{emision['montaje.periodoConstruccion']}" styleClass="negrita" />
-													<p:inputText id="periodoConstruccion" value="#{ramoTodoRiesgoMontajeBean.periodoConstruccion}"  required="true" requiredMessage="#{emision['montaje.periodoConstruccion.msn']}"/>
+													<p:inputText id="periodoConstruccion" value="#{ramoTodoRiesgoMontajeBean.periodoConstruccion}" required="true"
+														requiredMessage="#{emision['montaje.periodoConstruccion.msn']}" />
 
 													<p:outputLabel for="periodoMantenimiento" value="#{emision['montaje.periodoMantenimiento']}" styleClass="negrita" />
-													<p:inputText id="periodoMantenimiento" value="#{ramoTodoRiesgoMontajeBean.periodoMantenimiento}" required="true" requiredMessage="#{emision['montaje.periodoMantenimiento.msn']}" />
+													<p:inputText id="periodoMantenimiento" value="#{ramoTodoRiesgoMontajeBean.periodoMantenimiento}" required="true"
+														requiredMessage="#{emision['montaje.periodoMantenimiento.msn']}" />
 												</h:panelGrid>
 
 												<p:spacer height="15px;" />
@@ -96,7 +98,7 @@
 													</h:panelGrid>
 												</h:panelGrid>
 												<p:spacer height="30px;" />
-												
+
 												<h:panelGrid columns="2">
 													<h:outputLabel value="#{emision['emision.checkDocumentos']}" />
 													<h:graphicImage name="checkbox.png" library="img" />
@@ -126,10 +128,17 @@
 											<!-- Footer del Formulario -->
 											<f:facet name="footer">
 												<div align="center">
-													<p:commandButton id="guardarBtnId" oncomplete="montajeDlg.hide();" actionListener="#{todoRiesgoMontajeBacking.guardarRamo}" icon="icon-save"
-														value="#{emision['boton.guardar']}" title="Guardar" update="formPrincipal,todoRiesgoMontaje"/>
+													<p:commandButton id="guardarBtnId" oncomplete="montajeDlg.hide();" actionListener="#{todoRiesgoMontajeBacking.guardarRamo}"
+														icon="icon-save" value="#{emision['boton.guardar']}" title="Guardar" update="formPrincipal,todoRiesgoMontaje" />
 													<p:commandButton id="cancelarBtnId" oncomplete="montajeDlg.hide();" icon="icon-cancel" value="#{emision['boton.cancelar']}"
 														process="@this" title="Cancelar" />
+
+													<!-- DESCARGAR DOCUMENTOS -->
+													<h:panelGrid columns="2">
+														<p:commandLink title="Descargar syllabus" actionListener="#{todoRiesgoMontajeBacking.descargarTodoRiesgoMontajePDF()}">
+															<h:graphicImage name="pdf.png" library="img" />
+														</p:commandLink>
+													</h:panelGrid>
 												</div>
 											</f:facet>
 										</h:panelGrid>
