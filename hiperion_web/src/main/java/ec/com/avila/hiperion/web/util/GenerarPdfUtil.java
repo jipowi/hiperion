@@ -25,8 +25,12 @@ import ec.com.avila.hiperion.emision.entities.RamoIncendioLineasAliada;
 import ec.com.avila.hiperion.emision.entities.RamoLcIncendio;
 import ec.com.avila.hiperion.emision.entities.RamoLcRotMaq;
 import ec.com.avila.hiperion.emision.entities.RamoResponsabilidadCivil;
+import ec.com.avila.hiperion.emision.entities.RamoRiesgoContratista;
+import ec.com.avila.hiperion.emision.entities.RamoRiesgoMontaje;
 import ec.com.avila.hiperion.emision.entities.RamoRiesgosEsp;
 import ec.com.avila.hiperion.emision.entities.RamoRoboAsalto;
+import ec.com.avila.hiperion.emision.entities.RamoRoturaMaquinaria;
+import ec.com.avila.hiperion.emision.entities.RamoSoat;
 import ec.com.kruger.framework.common.util.pdf.HtmltoPDF;
 
 public class GenerarPdfUtil implements Serializable {
@@ -195,6 +199,86 @@ public class GenerarPdfUtil implements Serializable {
 
 		// Agregar marca de agua al pdf
 		return ConcatenadorPdf.numerarMarcar(contenido, Boolean.TRUE, Boolean.TRUE, ConstantesUtil.PATH_MARCA_AGUA_PDF);
+	}
+
+	/**
+	 * 
+	 * <b> Permite generar el documento Ramo Todo Riesgo Contratista </b>
+	 * <p>
+	 * [Author: Franklin Pozo B, Date: 02/06/2015]
+	 * </p>
+	 * 
+	 * @param ramoRiesgoContratista
+	 * @return
+	 * @throws Exception
+	 */
+	public static byte[] generarArchivoPDFRiesgosContratista(RamoRiesgoContratista ramoRiesgoContratista) throws Exception{
+		String pHtml = XSLUtil.getInstancia().obtenerHtmlRiesgoContratista(ramoRiesgoContratista);
+		byte[] contenido = obtenerCadenaBytes(pHtml);
+
+		// Agregar marca de agua al pdf
+		return ConcatenadorPdf.numerarMarcar(contenido, Boolean.TRUE, Boolean.TRUE, ConstantesUtil.PATH_MARCA_AGUA_PDF);
+
+	}
+	
+	/**
+	 * 
+	 * <b>
+	 * Permite generar el documento Ramo Todo Riesgo Montaje
+	 * </b>
+	 * <p>[Author: Franklin Pozo B, Date: 02/06/2015]</p>
+	 *
+	 * @param ramoRiesgoMontaje
+	 * @return
+	 * @throws Exception
+	 */
+	public static byte[]generarArchivoPDFTodoRiesgoMontaje(RamoRiesgoMontaje ramoRiesgoMontaje)throws Exception{
+		String pHtml = XSLUtil.getInstancia().obtenerHtmlRiesgoMontaje(ramoRiesgoMontaje);
+		byte[] contenido = obtenerCadenaBytes(pHtml);
+
+		// Agregar marca de agua al pdf
+		return ConcatenadorPdf.numerarMarcar(contenido, Boolean.TRUE, Boolean.TRUE, ConstantesUtil.PATH_MARCA_AGUA_PDF);
+		
+	}
+
+	/**
+	 * 
+	 * <b> Permite generar el documento del ramo Soat </b>
+	 * <p>
+	 * [Author: Franklin Pozo B, Date: 28/05/2015]
+	 * </p>
+	 * 
+	 * @param ramoSoat
+	 * @return
+	 * @throws Exception
+	 */
+	public static byte[] generarArchivoPDFSoat(RamoSoat ramoSoat) throws Exception {
+		String pHtml = XSLUtil.getInstancia().obtenerHtmlSoat(ramoSoat);
+		byte[] contenido = obtenerCadenaBytes(pHtml);
+
+		// Agregar marca de agua al pdf
+		return ConcatenadorPdf.numerarMarcar(contenido, Boolean.TRUE, Boolean.TRUE, ConstantesUtil.PATH_MARCA_AGUA_PDF);
+
+	}
+
+	/**
+	 * 
+	 * <b> Permite generar el documento del ramo Rotura de Maquinaria </b>
+	 * <p>
+	 * [Author: Franklin Pozo B, Date: 27/05/2015]
+	 * </p>
+	 * 
+	 * @param ramoRoturaMaquinaria
+	 * @return
+	 * @throws Exception
+	 */
+	public static byte[] generarArchivoPDFRoturaMaquinaria(RamoRoturaMaquinaria ramoRoturaMaquinaria) throws Exception {
+		String pHtml = XSLUtil.getInstancia().obtenerHtmlRoturaMaquinaria(ramoRoturaMaquinaria);
+		byte[] contenido = obtenerCadenaBytes(pHtml);
+
+		// Agregar marca de agua al pdf
+		return ConcatenadorPdf.numerarMarcar(contenido, Boolean.TRUE, Boolean.TRUE, ConstantesUtil.PATH_MARCA_AGUA_PDF);
+
 	}
 
 	/**

@@ -32,6 +32,10 @@ import ec.com.avila.hiperion.doc.servicio.GenerarDocLucroCesanteRoturaMaquinaria
 import ec.com.avila.hiperion.doc.servicio.GenerarDocResponsabilidadCivil;
 import ec.com.avila.hiperion.doc.servicio.GenerarDocRiesgosEspeciales;
 import ec.com.avila.hiperion.doc.servicio.GenerarDocRoboAsalto;
+import ec.com.avila.hiperion.doc.servicio.GenerarDocRoturaMaquinaria;
+import ec.com.avila.hiperion.doc.servicio.GenerarDocSoat;
+import ec.com.avila.hiperion.doc.servicio.GenerarDocTodoRiesgoContratista;
+import ec.com.avila.hiperion.doc.servicio.GenerarDocTodoRiesgoMontaje;
 import ec.com.avila.hiperion.emision.entities.RamoAgropecuario;
 import ec.com.avila.hiperion.emision.entities.RamoBuenUsoAnt;
 import ec.com.avila.hiperion.emision.entities.RamoBuenaCalMat;
@@ -47,8 +51,12 @@ import ec.com.avila.hiperion.emision.entities.RamoIncendioLineasAliada;
 import ec.com.avila.hiperion.emision.entities.RamoLcIncendio;
 import ec.com.avila.hiperion.emision.entities.RamoLcRotMaq;
 import ec.com.avila.hiperion.emision.entities.RamoResponsabilidadCivil;
+import ec.com.avila.hiperion.emision.entities.RamoRiesgoContratista;
+import ec.com.avila.hiperion.emision.entities.RamoRiesgoMontaje;
 import ec.com.avila.hiperion.emision.entities.RamoRiesgosEsp;
 import ec.com.avila.hiperion.emision.entities.RamoRoboAsalto;
+import ec.com.avila.hiperion.emision.entities.RamoRoturaMaquinaria;
+import ec.com.avila.hiperion.emision.entities.RamoSoat;
 import ec.com.avila.hiperion.xsl.XSLHelper;
 import ec.com.kruger.framework.common.util.TransformerUtil;
 
@@ -312,6 +320,129 @@ public class XSLUtil {
 	 * 
 	 * <b> Permite generar el contenedor XML </b>
 	 * <p>
+	 * [Author: Franklin Pozo B, Date: 02/06/2015]
+	 * </p>
+	 * 
+	 * @param ramoRiesgoContratista
+	 * @return
+	 */
+	public String generarXmlTodoRiesgoContratista(RamoRiesgoContratista ramoRiesgoContratista) {
+
+		StringBuilder xml = new StringBuilder();
+
+		try {
+			xml.append(tagInicioDocumento);
+			try {
+				String nombreClase = "java:app/hiperion_web/RiesgosEspecialesImpl";
+				GenerarDocTodoRiesgoContratista generarDocumento = (GenerarDocTodoRiesgoContratista) getObjectByJndi(nombreClase);
+				xml.append(generarDocumento.generarXmlTodoRiesgoContratista(ramoRiesgoContratista));
+			} catch (Exception e) {
+				log.error("Error", e);
+			}
+			xml.append(tagFinDocumento);
+		} catch (Exception e) {
+
+		}
+
+		return xml.toString();
+	}
+
+	/**
+	 * 
+	 * <b> Permite generar el contenedor XML </b>
+	 * <p>
+	 * [Author: Franklin Pozo B, Date: 02/06/2015]
+	 * </p>
+	 * 
+	 * @param ramoRiesgoMontaje
+	 * @return
+	 */
+	public String generarXmlTodoRiesgoMontaje(RamoRiesgoMontaje ramoRiesgoMontaje) {
+
+		StringBuilder xml = new StringBuilder();
+		try {
+			xml.append(tagInicioDocumento);
+			try {
+				String nombreClase = "java:app/hiperion_web/TodoRiesgoMontajeImpl";
+				GenerarDocTodoRiesgoMontaje generarDocumento = (GenerarDocTodoRiesgoMontaje) getObjectByJndi(nombreClase);
+				xml.append(generarDocumento.generarXmlTodoRiesgoMontaje(ramoRiesgoMontaje));
+			} catch (Exception e) {
+				log.error("Error", e);
+			}
+			xml.append(tagFinDocumento);
+		} catch (Exception e) {
+
+		}
+
+		return xml.toString();
+
+	}
+
+	/**
+	 * 
+	 * <b> Permite generar el contenedor XML </b>
+	 * <p>
+	 * [Author: Franklin Pozo B, Date: 28/05/2015]
+	 * </p>
+	 * 
+	 * @param ramoSoat
+	 * @return
+	 */
+	public String generarXmlSoat(RamoSoat ramoSoat) {
+		StringBuilder xml = new StringBuilder();
+		try {
+			xml.append(tagInicioDocumento);
+			try {
+				String nombreClase = "java:app/hiperion_web/RiesgosEspecialesImpl";
+				GenerarDocSoat generarDocumento = (GenerarDocSoat) getObjectByJndi(nombreClase);
+				xml.append(generarDocumento.generarXmlSoat(ramoSoat));
+			} catch (Exception e) {
+				log.error("Error", e);
+			}
+			xml.append(tagFinDocumento);
+		} catch (Exception e) {
+
+		}
+
+		return xml.toString();
+
+	}
+
+	/**
+	 * 
+	 * <b> Permite generar el contenedor XML </b>
+	 * <p>
+	 * [Author: Franklin Pozo B, Date: 27/05/2015]
+	 * </p>
+	 * 
+	 * @param ramoRoturaMaquinaria
+	 * @return
+	 */
+	public String generarXmlRoturaMaquinaria(RamoRoturaMaquinaria ramoRoturaMaquinaria) {
+		StringBuilder xml = new StringBuilder();
+
+		try {
+			xml.append(tagInicioDocumento);
+			try {
+				String nombreClase = "java:app/hiperion_web/RiesgosEspecialesImpl";
+				GenerarDocRoturaMaquinaria generarDocumento = (GenerarDocRoturaMaquinaria) getObjectByJndi(nombreClase);
+				xml.append(generarDocumento.generarXmlRoturaMaquinaria(ramoRoturaMaquinaria));
+			} catch (Exception e) {
+				log.error("Error", e);
+			}
+			xml.append(tagFinDocumento);
+		} catch (Exception e) {
+
+		}
+
+		return xml.toString();
+
+	}
+
+	/**
+	 * 
+	 * <b> Permite generar el contenedor XML </b>
+	 * <p>
 	 * [Author: Franklin Pozo B, Date: 25/05/2015]
 	 * </p>
 	 * 
@@ -531,6 +662,16 @@ public class XSLUtil {
 		return xml.toString();
 	}
 
+	/**
+	 * 
+	 * <b> Incluir aqui­ la descripcion del metodo. </b>
+	 * <p>
+	 * [Author: Avila Sistemas, Date: 02/06/2015]
+	 * </p>
+	 * 
+	 * @param dineroValore
+	 * @return
+	 */
 	public String generarXmlDineroValores(RamoDineroValore dineroValore) {
 		StringBuilder xml = new StringBuilder();
 		try {
@@ -878,6 +1019,161 @@ public class XSLUtil {
 		} catch (Exception e) {
 			log.error("Error ", e);
 		}
+		return html;
+	}
+
+	/**
+	 * 
+	 * <b> Permite generar el HTML del ramo Todo Riesgo Contratista </b>
+	 * <p>
+	 * [Author: Franklin Pozo B, Date: 02/06/2015]
+	 * </p>
+	 * 
+	 * @param ramoRiesgoContratista
+	 * @return
+	 */
+	public String obtenerHtmlRiesgoContratista(RamoRiesgoContratista ramoRiesgoContratista) {
+		String html = null;
+
+		try {
+			InputStream in = XSLHelper.class.getResourceAsStream("TodoRiesgoContratistaHTML.xsl");
+			InputStreamReader is = new InputStreamReader(in);
+			StringBuilder sb = new StringBuilder();
+			BufferedReader br = new BufferedReader(is);
+			String read = br.readLine();
+
+			while (read != null) {
+				sb.append(read);
+				read = br.readLine();
+			}
+			String contenidoXSL = sb.toString();
+			// Se genera el XML con los datos del documento
+			String contenidoXml = generarXmlTodoRiesgoContratista(ramoRiesgoContratista);
+			Document docXML = TransformerUtil.stringToXMLDocument(contenidoXml.toString());
+			Document docXSL = TransformerUtil.stringToXML(contenidoXSL);
+			Document result = TransformerUtil.transformar(docXML, docXSL);
+			html = TransformerUtil.xmlToString(result);
+			html = html.replaceAll("&lt;", "<").replaceAll("&gt;", ">").replaceAll("&amp;", "&").replace("UTF-8", "ISO-8859-1");
+		} catch (Exception e) {
+			log.error("Error ", e);
+		}
+
+		return html;
+	}
+
+	/**
+	 * 
+	 * <b> Permite generar el HTML del ramo Todo Riesgo Montaje </b>
+	 * <p>
+	 * [Author: Franklin Pozo B, Date: 02/06/2015]
+	 * </p>
+	 * 
+	 * @param ramoRiesgoMontaje
+	 * @return
+	 */
+	public String obtenerHtmlRiesgoMontaje(RamoRiesgoMontaje ramoRiesgoMontaje) {
+		String html = null;
+		try {
+			InputStream in = XSLHelper.class.getResourceAsStream("TodoRiesgoMontajeHTML.xsl");
+			InputStreamReader is = new InputStreamReader(in);
+			StringBuilder sb = new StringBuilder();
+			BufferedReader br = new BufferedReader(is);
+			String read = br.readLine();
+
+			while (read != null) {
+				sb.append(read);
+				read = br.readLine();
+			}
+			String contenidoXSL = sb.toString();
+			// Se genera el XML con los datos del documento
+			String contenidoXml = generarXmlTodoRiesgoMontaje(ramoRiesgoMontaje);
+			Document docXML = TransformerUtil.stringToXMLDocument(contenidoXml.toString());
+			Document docXSL = TransformerUtil.stringToXML(contenidoXSL);
+			Document result = TransformerUtil.transformar(docXML, docXSL);
+			html = TransformerUtil.xmlToString(result);
+			html = html.replaceAll("&lt;", "<").replaceAll("&gt;", ">").replaceAll("&amp;", "&").replace("UTF-8", "ISO-8859-1");
+		} catch (Exception e) {
+			log.error("Error ", e);
+		}
+
+		return html;
+
+	}
+
+	/**
+	 * 
+	 * <b> ermite generar el HTML del ramo Soat </b>
+	 * <p>
+	 * [Author: Franklin Pozo B, Date: 28/05/2015]
+	 * </p>
+	 * 
+	 * @param ramoSoat
+	 * @return
+	 */
+	public String obtenerHtmlSoat(RamoSoat ramoSoat) {
+		String html = null;
+		try {
+			InputStream in = XSLHelper.class.getResourceAsStream("SoatHTML.xsl");
+			InputStreamReader is = new InputStreamReader(in);
+			StringBuilder sb = new StringBuilder();
+			BufferedReader br = new BufferedReader(is);
+			String read = br.readLine();
+
+			while (read != null) {
+				sb.append(read);
+				read = br.readLine();
+			}
+			String contenidoXSL = sb.toString();
+			// Se genera el XML con los datos del documento
+			String contenidoXml = generarXmlSoat(ramoSoat);
+			Document docXML = TransformerUtil.stringToXMLDocument(contenidoXml.toString());
+			Document docXSL = TransformerUtil.stringToXML(contenidoXSL);
+			Document result = TransformerUtil.transformar(docXML, docXSL);
+			html = TransformerUtil.xmlToString(result);
+			html = html.replaceAll("&lt;", "<").replaceAll("&gt;", ">").replaceAll("&amp;", "&").replace("UTF-8", "ISO-8859-1");
+		} catch (Exception e) {
+			log.error("Error ", e);
+		}
+
+		return html;
+	}
+
+	/**
+	 * 
+	 * <b> Permite generar el HTML del ramo Rotura de Maquinaria </b>
+	 * <p>
+	 * [Author: Franklin Pozo B., Date: 27/05/2015]
+	 * </p>
+	 * 
+	 * @param ramoRoturaMaquinaria
+	 * @return
+	 */
+	public String obtenerHtmlRoturaMaquinaria(RamoRoturaMaquinaria ramoRoturaMaquinaria) {
+
+		String html = null;
+		try {
+			InputStream in = XSLHelper.class.getResourceAsStream("RoturaMaquinariaHTML.xsl");
+			InputStreamReader is = new InputStreamReader(in);
+			StringBuilder sb = new StringBuilder();
+			BufferedReader br = new BufferedReader(is);
+			String read = br.readLine();
+
+			while (read != null) {
+				sb.append(read);
+				read = br.readLine();
+			}
+			String contenidoXSL = sb.toString();
+			// Se genera el XML con los datos del documento
+			String contenidoXml = generarXmlRoturaMaquinaria(ramoRoturaMaquinaria);
+			Document docXML = TransformerUtil.stringToXMLDocument(contenidoXml.toString());
+			Document docXSL = TransformerUtil.stringToXML(contenidoXSL);
+			Document result = TransformerUtil.transformar(docXML, docXSL);
+			html = TransformerUtil.xmlToString(result);
+			html = html.replaceAll("&lt;", "<").replaceAll("&gt;", ">").replaceAll("&amp;", "&").replace("UTF-8", "ISO-8859-1");
+		} catch (Exception e) {
+			log.error("Error ", e);
+		}
+
 		return html;
 	}
 
