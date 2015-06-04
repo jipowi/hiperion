@@ -7,7 +7,9 @@ package ec.com.avila.emision.web.backings;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -31,7 +33,10 @@ import ec.com.avila.hiperion.servicio.RamoSoatService;
 import ec.com.avila.hiperion.web.beans.MarcasDto;
 import ec.com.avila.hiperion.web.beans.RamoBean;
 import ec.com.avila.hiperion.web.beans.UsuarioBean;
+import ec.com.avila.hiperion.web.util.ConstantesUtil;
+import ec.com.avila.hiperion.web.util.GenerarPdfUtil;
 import ec.com.avila.hiperion.web.util.HiperionMensajes;
+import ec.com.avila.hiperion.web.util.JsfUtil;
 import ec.com.avila.hiperion.web.util.MessagesController;
 
 /**
@@ -73,6 +78,7 @@ public class SoatBacking implements Serializable {
 	private RamoSoatBean ramoSoatBean;
 
 	Logger log = Logger.getLogger(SoatBacking.class);
+	RamoSoat ramoSoat = new RamoSoat();
 
 	private Boolean activarMarcaAuto;
 	private Boolean activarMarcaPesado;
@@ -81,7 +87,6 @@ public class SoatBacking implements Serializable {
 	public void guardarRamo() throws HiperionException {
 
 		Usuario usuario = usuarioBean.getSessionUser();
-		RamoSoat ramoSoat = new RamoSoat();
 
 		ramoSoat.setAsegurado(ramoSoatBean.getAsegurado());
 		ramoSoat.setColorSoat(ramoSoatBean.getColor());
@@ -336,5 +341,31 @@ public class SoatBacking implements Serializable {
 			modeloItems.add(selectItem);
 		}
 
+	}
+
+	/**
+	 * 
+	 * <b> Permite generar y descargar el documento en PDF. </b>
+	 * <p>
+	 * [Author: Franklin Pozo B, Date: 28/05/2015]
+	 * </p>
+	 * 
+	 * @throws HiperionException
+	 */
+	public void descargarSoatPDF() throws HiperionException {
+		try {
+			Map<String, Object> parametrosReporte = new HashMap<String, Object>();
+
+			parametrosReporte.put(ConstantesUtil.CONTENT_TYPE_IDENTIFICADOR, ConstantesUtil.CONTENT_TYPE_PDF);
+			parametrosReporte.put(ConstantesUtil.NOMBRE_ARCHIVO_IDENTIFICADOR, usuarioBean.getSessionUser().getIdentificacionUsuario());
+
+			parametrosReporte.put(ConstantesUtil.CONTENIDO_BYTES_IDENTIFICADOR, GenerarPdfUtil.generarArchivoPDFSoat(ramoSoat));
+
+			JsfUtil.setSessionAttribute(ConstantesUtil.PARAMETROS_DESCARGADOR_IDENTIFICADOR, parametrosReporte);
+			JsfUtil.downloadFile();
+		} catch (Exception e) {
+			log.error("Error al momento generar el documento Soat en PDF", e);
+			throw new HiperionException(e);
+		}
 	}
 }

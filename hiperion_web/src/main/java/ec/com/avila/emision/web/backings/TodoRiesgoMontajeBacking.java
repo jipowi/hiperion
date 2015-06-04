@@ -6,6 +6,8 @@ package ec.com.avila.emision.web.backings;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -23,7 +25,10 @@ import ec.com.avila.hiperion.servicio.RamoRiesgoMontajeService;
 import ec.com.avila.hiperion.servicio.RamoService;
 import ec.com.avila.hiperion.web.beans.RamoBean;
 import ec.com.avila.hiperion.web.beans.UsuarioBean;
+import ec.com.avila.hiperion.web.util.ConstantesUtil;
+import ec.com.avila.hiperion.web.util.GenerarPdfUtil;
 import ec.com.avila.hiperion.web.util.HiperionMensajes;
+import ec.com.avila.hiperion.web.util.JsfUtil;
 import ec.com.avila.hiperion.web.util.MessagesController;
 
 /**
@@ -50,6 +55,8 @@ public class TodoRiesgoMontajeBacking implements Serializable {
 
 	Logger log = Logger.getLogger(TodoRiesgoMontajeBacking.class);
 
+	RamoRiesgoMontaje ramoRiesgoMontaje = new RamoRiesgoMontaje();
+
 	@EJB
 	private RamoService ramoService;
 	@EJB
@@ -66,7 +73,6 @@ public class TodoRiesgoMontajeBacking implements Serializable {
 	public void guardarRamo() throws HiperionException {
 
 		Usuario usuario = usuarioBean.getSessionUser();
-		RamoRiesgoMontaje ramoRiesgoMontaje = new RamoRiesgoMontaje();
 
 		ramoRiesgoMontaje.setTasaMontaje(ramoTodoRiesgoMontajeBean.getTasa());
 		ramoRiesgoMontaje.setPeriodoConstrucMontaje(ramoTodoRiesgoMontajeBean.getPeriodoConstruccion());
@@ -95,8 +101,6 @@ public class TodoRiesgoMontajeBacking implements Serializable {
 		}
 
 	}
-	
-	
 
 	/**
 	 * @return the usuarioBean
@@ -105,16 +109,13 @@ public class TodoRiesgoMontajeBacking implements Serializable {
 		return usuarioBean;
 	}
 
-
-
 	/**
-	 * @param usuarioBean the usuarioBean to set
+	 * @param usuarioBean
+	 *            the usuarioBean to set
 	 */
 	public void setUsuarioBean(UsuarioBean usuarioBean) {
 		this.usuarioBean = usuarioBean;
 	}
-
-
 
 	/**
 	 * @return the ramoBean
@@ -144,6 +145,33 @@ public class TodoRiesgoMontajeBacking implements Serializable {
 	 */
 	public void setRamoTodoRiesgoMontajeBean(RamoTodoRiesgoMontajeBean ramoTodoRiesgoMontajeBean) {
 		this.ramoTodoRiesgoMontajeBean = ramoTodoRiesgoMontajeBean;
+	}
+	
+	/**
+	 * 
+	 * <b>
+	 * Permite generar y descargar el documento PDF
+	 * </b>
+	 * <p>[Author: Franklin Pozo B, Date: 29/05/2015]</p>
+	 *
+	 * @throws HiperionException
+	 */
+	public void descargarTodoRiesgoMontajePDF()throws HiperionException{
+		
+		try {
+			Map<String, Object> parametrosReporte = new HashMap<String, Object>();
+
+			parametrosReporte.put(ConstantesUtil.CONTENT_TYPE_IDENTIFICADOR, ConstantesUtil.CONTENT_TYPE_PDF);
+			parametrosReporte.put(ConstantesUtil.NOMBRE_ARCHIVO_IDENTIFICADOR, usuarioBean.getSessionUser().getIdentificacionUsuario());
+
+			parametrosReporte.put(ConstantesUtil.CONTENIDO_BYTES_IDENTIFICADOR, GenerarPdfUtil.generarArchivoPDFTodoRiesgoMontaje(ramoRiesgoMontaje));
+
+			JsfUtil.setSessionAttribute(ConstantesUtil.PARAMETROS_DESCARGADOR_IDENTIFICADOR, parametrosReporte);
+			JsfUtil.downloadFile();
+		}catch(Exception e){
+			log.error("Error al momento generar el documento Todo Riesgo Montaje en PDF", e);
+			throw new HiperionException(e);
+		}
 	}
 
 }
