@@ -36,6 +36,8 @@ import ec.com.avila.hiperion.doc.servicio.GenerarDocRoturaMaquinaria;
 import ec.com.avila.hiperion.doc.servicio.GenerarDocSoat;
 import ec.com.avila.hiperion.doc.servicio.GenerarDocTodoRiesgoContratista;
 import ec.com.avila.hiperion.doc.servicio.GenerarDocTodoRiesgoMontaje;
+import ec.com.avila.hiperion.doc.servicio.GenerarDocTransporte;
+import ec.com.avila.hiperion.doc.servicio.GenerarDocVehiculos;
 import ec.com.avila.hiperion.emision.entities.RamoAgropecuario;
 import ec.com.avila.hiperion.emision.entities.RamoBuenUsoAnt;
 import ec.com.avila.hiperion.emision.entities.RamoBuenaCalMat;
@@ -57,6 +59,8 @@ import ec.com.avila.hiperion.emision.entities.RamoRiesgosEsp;
 import ec.com.avila.hiperion.emision.entities.RamoRoboAsalto;
 import ec.com.avila.hiperion.emision.entities.RamoRoturaMaquinaria;
 import ec.com.avila.hiperion.emision.entities.RamoSoat;
+import ec.com.avila.hiperion.emision.entities.RamoTransporte;
+import ec.com.avila.hiperion.emision.entities.RamoVehiculo;
 import ec.com.avila.hiperion.xsl.XSLHelper;
 import ec.com.kruger.framework.common.util.TransformerUtil;
 
@@ -376,6 +380,53 @@ public class XSLUtil {
 
 		return xml.toString();
 
+	}
+
+	public String generarXmlVehiculos(RamoVehiculo ramoVehiculo) {
+		StringBuilder xml = new StringBuilder();
+		try {
+			xml.append(tagInicioDocumento);
+			try {
+				String nombreClase = "java:app/hiperion_web/VehiculosImpl";
+				GenerarDocVehiculos generarDocumento = (GenerarDocVehiculos) getObjectByJndi(nombreClase);
+				xml.append(generarDocumento.generarXmlVehiculos(ramoVehiculo));
+			} catch (Exception e) {
+				log.error("Error", e);
+			}
+			xml.append(tagFinDocumento);
+		} catch (Exception e) {
+
+		}
+
+		return xml.toString();
+	}
+
+	/**
+	 * 
+	 * <b> Permite generar el contenedor XML </b>
+	 * <p>
+	 * [Author: Franklin Pozo B, Date: 03/06/2015]
+	 * </p>
+	 * 
+	 * @param ramoTransporte
+	 * @return
+	 */
+	public String generarXmlTransporte(RamoTransporte ramoTransporte) {
+		StringBuilder xml = new StringBuilder();
+		try {
+			xml.append(tagInicioDocumento);
+			try {
+				String nombreClase = "java:app/hiperion_web/TransporteImpl";
+				GenerarDocTransporte generarDocumento = (GenerarDocTransporte) getObjectByJndi(nombreClase);
+				xml.append(generarDocumento.generarXmlTransporte(ramoTransporte));
+			} catch (Exception e) {
+				log.error("Error", e);
+			}
+			xml.append(tagFinDocumento);
+		} catch (Exception e) {
+
+		}
+		return xml.toString();
 	}
 
 	/**
@@ -1087,6 +1138,86 @@ public class XSLUtil {
 			String contenidoXSL = sb.toString();
 			// Se genera el XML con los datos del documento
 			String contenidoXml = generarXmlTodoRiesgoMontaje(ramoRiesgoMontaje);
+			Document docXML = TransformerUtil.stringToXMLDocument(contenidoXml.toString());
+			Document docXSL = TransformerUtil.stringToXML(contenidoXSL);
+			Document result = TransformerUtil.transformar(docXML, docXSL);
+			html = TransformerUtil.xmlToString(result);
+			html = html.replaceAll("&lt;", "<").replaceAll("&gt;", ">").replaceAll("&amp;", "&").replace("UTF-8", "ISO-8859-1");
+		} catch (Exception e) {
+			log.error("Error ", e);
+		}
+
+		return html;
+
+	}
+
+	/**
+	 * 
+	 * <b> Permite generar el HTML del ramo vehiculos </b>
+	 * <p>
+	 * [Author: Franklin Pozo B, Date: 07/06/2015]
+	 * </p>
+	 * 
+	 * @param ramoVehiculo
+	 * @return
+	 */
+	public String obtenerHtmlVehiculo(RamoVehiculo ramoVehiculo) {
+
+		String html = null;
+
+		try {
+			InputStream in = XSLHelper.class.getResourceAsStream("VehiculosHTML.xsl");
+			InputStreamReader is = new InputStreamReader(in);
+			StringBuilder sb = new StringBuilder();
+			BufferedReader br = new BufferedReader(is);
+			String read = br.readLine();
+
+			while (read != null) {
+				sb.append(read);
+				read = br.readLine();
+			}
+			String contenidoXSL = sb.toString();
+			// Se genera el XML con los datos del documento
+			String contenidoXml = generarXmlVehiculos(ramoVehiculo);
+			Document docXML = TransformerUtil.stringToXMLDocument(contenidoXml.toString());
+			Document docXSL = TransformerUtil.stringToXML(contenidoXSL);
+			Document result = TransformerUtil.transformar(docXML, docXSL);
+			html = TransformerUtil.xmlToString(result);
+			html = html.replaceAll("&lt;", "<").replaceAll("&gt;", ">").replaceAll("&amp;", "&").replace("UTF-8", "ISO-8859-1");
+		} catch (Exception e) {
+			log.error("Error ", e);
+		}
+
+		return html;
+	}
+
+	/**
+	 * 
+	 * <b> Permite generar el HTML del ramo Transporte </b>
+	 * <p>
+	 * [Author: Franklin Pozo B, Date: 03/06/2015]
+	 * </p>
+	 * 
+	 * @param ramoTransporte
+	 * @return
+	 */
+	public String obtenerHtmlTransporte(RamoTransporte ramoTransporte) {
+		String html = null;
+
+		try {
+			InputStream in = XSLHelper.class.getResourceAsStream("TransporteHTML.xsl");
+			InputStreamReader is = new InputStreamReader(in);
+			StringBuilder sb = new StringBuilder();
+			BufferedReader br = new BufferedReader(is);
+			String read = br.readLine();
+
+			while (read != null) {
+				sb.append(read);
+				read = br.readLine();
+			}
+			String contenidoXSL = sb.toString();
+			// Se genera el XML con los datos del documento
+			String contenidoXml = generarXmlTransporte(ramoTransporte);
 			Document docXML = TransformerUtil.stringToXMLDocument(contenidoXml.toString());
 			Document docXSL = TransformerUtil.stringToXML(contenidoXSL);
 			Document result = TransformerUtil.transformar(docXML, docXSL);

@@ -6,7 +6,9 @@ package ec.com.avila.emision.web.backings;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -30,7 +32,10 @@ import ec.com.avila.hiperion.servicio.RamoVehiculoService;
 import ec.com.avila.hiperion.web.beans.MarcasDto;
 import ec.com.avila.hiperion.web.beans.RamoBean;
 import ec.com.avila.hiperion.web.beans.UsuarioBean;
+import ec.com.avila.hiperion.web.util.ConstantesUtil;
+import ec.com.avila.hiperion.web.util.GenerarPdfUtil;
 import ec.com.avila.hiperion.web.util.HiperionMensajes;
+import ec.com.avila.hiperion.web.util.JsfUtil;
 import ec.com.avila.hiperion.web.util.MessagesController;
 
 /**
@@ -69,6 +74,8 @@ public class VehiculosBacking implements Serializable {
 
 	Logger log = Logger.getLogger(VehiculosBacking.class);
 
+	RamoVehiculo ramoVehiculo = new RamoVehiculo();
+
 	private List<SelectItem> tipoVehiculoItems;
 	private List<SelectItem> claseVehiculoItems;
 	private List<SelectItem> usoVehiculoItems;
@@ -88,7 +95,6 @@ public class VehiculosBacking implements Serializable {
 	 */
 	public void guardarRamo() throws HiperionException {
 		Usuario usuario = usuarioBean.getSessionUser();
-		RamoVehiculo ramoVehiculo = new RamoVehiculo();
 
 		ramoVehiculo.setClaseVh(ramoVehiculoBean.getClaseVehiculo());
 		ramoVehiculo.setTipoVh(ramoVehiculoBean.getTipoVehiculo());
@@ -394,6 +400,33 @@ public class VehiculosBacking implements Serializable {
 	 */
 	public void setRamoVehiculoBean(RamoVehiculoBean ramoVehiculoBean) {
 		this.ramoVehiculoBean = ramoVehiculoBean;
+	}
+
+	/**
+	 * 
+	 * <b> Permite generar y descargar el documento PDF </b>
+	 * <p>
+	 * [Author: Franklin Poz B, Date: 07/06/2015]
+	 * </p>
+	 * 
+	 * @throws HiperionException
+	 */
+	public void descargarVehiculosPDF() throws HiperionException {
+		try {
+			Map<String, Object> parametrosReporte = new HashMap<String, Object>();
+
+			parametrosReporte.put(ConstantesUtil.CONTENT_TYPE_IDENTIFICADOR, ConstantesUtil.CONTENT_TYPE_PDF);
+			parametrosReporte.put(ConstantesUtil.NOMBRE_ARCHIVO_IDENTIFICADOR, usuarioBean.getSessionUser().getIdentificacionUsuario());
+
+			parametrosReporte.put(ConstantesUtil.CONTENIDO_BYTES_IDENTIFICADOR, GenerarPdfUtil.generarArchivoPDFVehiculos(ramoVehiculo));
+
+			JsfUtil.setSessionAttribute(ConstantesUtil.PARAMETROS_DESCARGADOR_IDENTIFICADOR, parametrosReporte);
+			JsfUtil.downloadFile();
+		} catch (Exception e) {
+			log.error("Error al momento generar el documento Vehiculos en PDF", e);
+			throw new HiperionException(e);
+		}
+
 	}
 
 }
