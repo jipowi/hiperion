@@ -5,6 +5,8 @@ package ec.com.avila.hiperion.doc.servicio.impl;
 
 import javax.ejb.Stateless;
 
+import org.apache.commons.lang.StringEscapeUtils;
+
 import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.doc.servicio.GenerarDocTransporte;
 import ec.com.avila.hiperion.emision.entities.RamoTransporte;
@@ -31,6 +33,8 @@ public class TransporteImpl implements GenerarDocTransporte {
 	public String generarXmlTransporte(RamoTransporte ramoTransporte) throws HiperionException {
 		
 		StringBuffer buffer = new StringBuffer();
+		buffer.append(tagInicioTasa).append(StringEscapeUtils.escapeXml(ramoTransporte.getTasaTransporte().toString())).append(tagFinTasa);
+		buffer.append(tagInicioCondicionesImportantes).append(StringEscapeUtils.escapeXml(ramoTransporte.getCondImportantesTransporte().toString())).append(tagFinCondicionesImportantes);
 		
 		return buffer.toString();
 	}
