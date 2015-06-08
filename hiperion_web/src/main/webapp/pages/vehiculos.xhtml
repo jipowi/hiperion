@@ -29,7 +29,8 @@
 											<p:panel>
 												<h:panelGrid columns="6" cellpadding="3">
 													<p:outputLabel for="claseVehiculoId" value="#{emision['vehiculo.claseVehiculo']}" styleClass="negrita" />
-													<p:selectOneMenu id="claseVehiculoId" value="#{ramoVehiculoBean.claseVehiculo}" effect="drop" required="true" requiredMessage="#{emision['vehiculo.claseVehiculo.msn']}">
+													<p:selectOneMenu id="claseVehiculoId" value="#{ramoVehiculoBean.claseVehiculo}" effect="drop" required="true"
+														requiredMessage="#{emision['vehiculo.claseVehiculo.msn']}">
 														<f:selectItem itemLabel="Seleccione" noSelectionOption="true" />
 														<f:selectItems value="#{vehiculosBacking.claseVehiculoItems}" />
 														<p:ajax event="change" listener="#{vehiculosBacking.selectClaseVehiculo()}"
@@ -37,13 +38,15 @@
 													</p:selectOneMenu>
 
 													<p:outputLabel for="tipoVehiculoId" value="#{emision['vehiculo.tipoVehiculo']}" styleClass="negrita" />
-													<p:selectOneMenu id="tipoVehiculoId" value="#{ramoVehiculoBean.tipoVehiculo}" effect="drop" required="true" requiredMessage="#{emision['vehiculo.tipoVehiculo.msn']}">
+													<p:selectOneMenu id="tipoVehiculoId" value="#{ramoVehiculoBean.tipoVehiculo}" effect="drop" required="true"
+														requiredMessage="#{emision['vehiculo.tipoVehiculo.msn']}">
 														<f:selectItem itemLabel="Seleccione" noSelectionOption="true" />
 														<f:selectItems value="#{vehiculosBacking.tipoVehiculoItems}" />
 													</p:selectOneMenu>
 
 													<p:outputLabel for="usoVehiculoId" value="#{emision['vehiculo.uso']}" styleClass="negrita" />
-													<p:selectOneMenu id="usoVehiculoId" value="#{ramoVehiculoBean.uso}" effect="drop" required="true" requiredMessage="#{emision['vehiculo.uso.msn']}" >
+													<p:selectOneMenu id="usoVehiculoId" value="#{ramoVehiculoBean.uso}" effect="drop" required="true"
+														requiredMessage="#{emision['vehiculo.uso.msn']}">
 														<f:selectItem itemLabel="Seleccione" noSelectionOption="true" />
 														<f:selectItems value="#{vehiculosBacking.usoVehiculoItems}" />
 													</p:selectOneMenu>
@@ -112,23 +115,26 @@
 													<p:outputLabel for="idItem" value="#{emision['vehiculo.item']}" styleClass="negrita" />
 													<p:inputText id="idItem" value="#{ramoVehiculoBean.item}" required="true" requiredMessage="#{emision['vehiculo.item.msn']}" />
 													<p:outputLabel for="idPropietario" value="#{emision['vehiculo.nombrePropietario']}" styleClass="negrita" />
-													<p:inputText id="idPropietario" value="#{ramoVehiculoBean.propietario}" required="true" requiredMessage="#{emision['vehiculo.nombrePropietario.msn']}" />
+													<p:inputText id="idPropietario" value="#{ramoVehiculoBean.propietario}" required="true"
+														requiredMessage="#{emision['vehiculo.nombrePropietario.msn']}" />
 													<p:outputLabel for="idPlaca" value="#{emision['vehiculo.placa']}" styleClass="negrita" />
 													<p:inputText id="idPlaca" value="#{ramoVehiculoBean.placa}" required="true" requiredMessage="#{emision['vehiculo.placa.msn']}" />
 
 													<p:outputLabel for="idMotor" value="#{emision['vehiculo.motor']}" styleClass="negrita" />
 													<p:inputText id="idMotor" value="#{ramoVehiculoBean.motor}" required="true" requiredMessage="#{emision['vehiculo.motor.msn']}" />
 													<p:outputLabel for="idChasis" value="#{emision['vehiculo.chasis']}" styleClass="negrita" />
-													<p:inputText id="idChasis" value="#{ramoVehiculoBean.chasis}" required="true" requiredMessage="#{emision['vehiculo.chasis.msn']}"/>
+													<p:inputText id="idChasis" value="#{ramoVehiculoBean.chasis}" required="true" requiredMessage="#{emision['vehiculo.chasis.msn']}" />
 													<p:outputLabel for="idAnioFabricacion" value="#{emision['vehiculo.anio']}" styleClass="negrita" />
-													<p:inputText id="idAnioFabricacion" value="#{ramoVehiculoBean.anio}" required="true"  requiredMessage="#{emision['vehiculo.anio.msn']}"/>
+													<p:inputText id="idAnioFabricacion" value="#{ramoVehiculoBean.anio}" required="true" requiredMessage="#{emision['vehiculo.anio.msn']}" />
 
 													<p:outputLabel for="idColor" value="#{emision['vehiculo.color']}" styleClass="negrita" />
 													<p:inputText id="idColor" value="#{ramoVehiculoBean.color}" required="true" requiredMessage="#{emision['vehiculo.color.msn']}" />
 													<p:outputLabel for="idValorAsegurado" value="#{emision['vehiculo.valorAsegurado']}" styleClass="negrita" />
-													<p:inputText id="idValorAsegurado" value="#{ramoVehiculoBean.valorAsegurado}" required="true" requiredMessage="#{emision['vehiculo.valorAsegurado.msn']}" />
+													<p:inputText id="idValorAsegurado" value="#{ramoVehiculoBean.valorAsegurado}" required="true"
+														requiredMessage="#{emision['vehiculo.valorAsegurado.msn']}" />
 													<p:outputLabel for="idValorTotalItem" value="#{emision['vehiculo.valorTotalItem']}" styleClass="negrita" />
-													<p:inputText id="idValorTotalItem" value="#{ramoVehiculoBean.valorTotalItem}" required="true" requiredMessage="#{emision['vehiculo.valorTotalItem.msn']}" />
+													<p:inputText id="idValorTotalItem" value="#{ramoVehiculoBean.valorTotalItem}" required="true"
+														requiredMessage="#{emision['vehiculo.valorTotalItem.msn']}" />
 
 													<p:outputLabel for="idTasa" value="#{emision['vehiculo.tasa']}" styleClass="negrita" />
 													<p:inputText id="idTasa" value="#{ramoVehiculoBean.tasa}" required="true" requiredMessage="#{emision['vehiculo.tasa.msn']}" />
@@ -151,10 +157,12 @@
 												</h:panelGrid>
 												<h:panelGrid columns="4" cellpadding="3">
 													<p:outputLabel for="idPorcentajeSiniestro" value="#{emision['vehiculo.porcentajeSiniesto']}" styleClass="negrita" />
-													<p:inputText id="idPorcentajeSiniestro" value="#{ramoVehiculoBean.porcentajeSiniestro}" required="true" requiredMessage="#{emision['vehiculo.porcentajeSiniesto.msn']}"/>
+													<p:inputText id="idPorcentajeSiniestro" value="#{ramoVehiculoBean.porcentajeSiniestro}" required="true"
+														requiredMessage="#{emision['vehiculo.porcentajeSiniesto.msn']}" />
 
 													<p:outputLabel for="idMinimoSiniestro" value="#{emision['vehiculo.minimoSiniestro']}" styleClass="negrita" />
-													<p:inputText id="idMinimoSiniestro" value="#{ramoVehiculoBean.minimoSiniestro}" required="true" requiredMessage="#{emision['vehiculo.minimoSiniestro.msn']}" />
+													<p:inputText id="idMinimoSiniestro" value="#{ramoVehiculoBean.minimoSiniestro}" required="true"
+														requiredMessage="#{emision['vehiculo.minimoSiniestro.msn']}" />
 													<p:outputLabel value="#{emision['vehiculo.porcentajeValorAsegurado']}" styleClass="negrita" />
 													<p:inputText value="#{ramoVehiculoBean.porcentajeValorAsegurado}" />
 												</h:panelGrid>
@@ -168,6 +176,13 @@
 										<p:commandButton id="guardarVehiculoBtnId" actionListener="#{vehiculosBacking.guardarRamo}" icon="icon-save"
 											value="#{emision['boton.guardar']}" title="Guardar" update="formVehiculos, ramoVehiculos" />
 										<p:commandButton id="cancelarVehiculoBtnId" icon="icon-cancel" value="#{emision['boton.cancelar']}" process="@this" title="Cancelar" />
+
+										<!-- DESCARGAR DOCUMENTOS -->
+										<h:panelGrid columns="2">
+											<p:commandLink title="Descargar syllabus" actionListener="#{vehiculosBacking.descargarVehiculosPDF()}">
+												<h:graphicImage name="pdf.png" library="img" />
+											</p:commandLink>
+										</h:panelGrid>
 									</div>
 								</h:form>
 							</p:tab>

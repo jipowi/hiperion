@@ -63,6 +63,13 @@
 													<p:commandButton id="guardarTransporteBtnId" actionListener="#{transporteBacking.setearInfRammo()}" icon="icon-save"
 														value="#{emision['boton.aceptar']}" title="Guardar" update="formPrincipal, ramoTransporte" />
 													<p:commandButton id="cancelarTransporteBtnId" icon="icon-cancel" value="#{emision['boton.cancelar']}" process="@this" title="Cancelar" />
+													
+													<!-- DESCARGAR DOCUMENTOS -->
+													<h:panelGrid columns="2">
+														<p:commandLink title="Descargar syllabus" actionListener="#{transporteBacking.descargarTransportePDF()}">
+															<h:graphicImage name="pdf.png" library="img" />
+														</p:commandLink>
+													</h:panelGrid>
 												</div>
 											</f:facet>
 										</h:panelGrid>
