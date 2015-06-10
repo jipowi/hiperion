@@ -36,6 +36,9 @@ public class CobertAgro extends Auditoria implements Serializable {
 	@JoinColumn(name = "id_agropecuario")
 	private RamoAgropecuario ramoAgropecuario;
 
+	@Column(name = "tipo_cobertura_agro")
+	private String tipoCoberturaAgro;
+
 	public CobertAgro() {
 	}
 
@@ -61,6 +64,21 @@ public class CobertAgro extends Auditoria implements Serializable {
 
 	public void setRamoAgropecuario(RamoAgropecuario ramoAgropecuario) {
 		this.ramoAgropecuario = ramoAgropecuario;
+	}
+
+	/**
+	 * @return the tipoCoberturaAgro
+	 */
+	public String getTipoCoberturaAgro() {
+		return tipoCoberturaAgro;
+	}
+
+	/**
+	 * @param tipoCoberturaAgro
+	 *            the tipoCoberturaAgro to set
+	 */
+	public void setTipoCoberturaAgro(String tipoCoberturaAgro) {
+		this.tipoCoberturaAgro = tipoCoberturaAgro;
 	}
 
 }

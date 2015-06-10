@@ -34,6 +34,7 @@ public class ClausulasAddAgro extends Auditoria implements Serializable {
 	@Column(name = "num_dias_agro")
 	private Integer numDiasAgro;
 
+
 	// bi-directional many-to-one association to RamoAgropecuario
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_agropecuario")
@@ -73,5 +74,7 @@ public class ClausulasAddAgro extends Auditoria implements Serializable {
 	public void setRamoAgropecuario(RamoAgropecuario ramoAgropecuario) {
 		this.ramoAgropecuario = ramoAgropecuario;
 	}
+
+	
 
 }
