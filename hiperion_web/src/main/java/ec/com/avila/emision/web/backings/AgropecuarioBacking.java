@@ -26,6 +26,7 @@ import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
 
 import ec.com.avila.emision.web.beans.DetalleAnexoBean;
+import ec.com.avila.emision.web.beans.PolizaBean;
 import ec.com.avila.emision.web.beans.RamoAgropecuarioBean;
 import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.dto.ClausulaAdicionalDTO;
@@ -34,6 +35,7 @@ import ec.com.avila.hiperion.dto.ObjetoAseguradoAgropecuarioDTO;
 import ec.com.avila.hiperion.emision.entities.ArchivoBase;
 import ec.com.avila.hiperion.emision.entities.Catalogo;
 import ec.com.avila.hiperion.emision.entities.ClausulasAddAgro;
+import ec.com.avila.hiperion.emision.entities.CobertAgro;
 import ec.com.avila.hiperion.emision.entities.DetalleAnexo;
 import ec.com.avila.hiperion.emision.entities.DetalleCatalogo;
 import ec.com.avila.hiperion.emision.entities.ObjAsegAgropecuario;
@@ -84,6 +86,9 @@ public class AgropecuarioBacking implements Serializable {
 	@ManagedProperty(value = "#{usuarioBean}")
 	private UsuarioBean usuarioBean;
 
+	@ManagedProperty(value = "#{polizaBean}")
+	private PolizaBean polizaBean;
+
 	private List<DetalleAnexo> anexos;
 	private List<DetalleAnexoBean> clausulasAdicionales;
 	private List<ClausulaAdicionalDTO> clausulasAdicionalesDTO = new ArrayList<>();
@@ -95,6 +100,7 @@ public class AgropecuarioBacking implements Serializable {
 	private UploadedFile file;
 	private List<SelectItem> sexoItems;
 	private List<SelectItem> tipoObjetoItems;
+	private Boolean activarGanadero;
 
 	Logger log = Logger.getLogger(AgropecuarioBacking.class);
 
@@ -224,48 +230,23 @@ public class AgropecuarioBacking implements Serializable {
 	 * [Author: Paul Jimenez, Date: Jul 28, 2014]
 	 * </p>
 	 * 
-	 */
-	public void setearRamo() {
-		Usuario usuario = usuarioBean.getSessionUser();
-
-		agropecuario.setTasaAgro(ramoAgropecuarioBean.getTasa());
-		agropecuario.setDeducAgro(ramoAgropecuarioBean.getDeducible());
-		agropecuario.setValorAseguradoAgro(ramoAgropecuarioBean.getValorAsegurado());
-		agropecuario.setDetalleAgro(ramoAgropecuarioBean.getDetalle());
-		agropecuario.setUbicacionAgro(ramoAgropecuarioBean.getUbicacion());
-		agropecuario.setIdUsuarioCreacion(usuario.getIdUsuario());
-		agropecuario.setFechaCreacion(new Date());
-		agropecuario.setEstado(EstadoEnum.A);
-
-		List<ClausulasAddAgro> clausulasAgropecuario = new ArrayList<>();
-		for (ClausulaAdicionalDTO clausualaDTO : clausulasAdicionalesDTO) {
-			if (clausualaDTO.getSeleccion()) {
-				
-				ClausulasAddAgro clausulaAgropecuario = new ClausulasAddAgro();
-				clausulaAgropecuario.setClausulaAddAgro(clausualaDTO.getClausula());
-				clausulaAgropecuario.setEstado(EstadoEnum.A);
-				clausulaAgropecuario.setFechaCreacion(new Date());
-				clausulaAgropecuario.setIdUsuarioCreacion(usuario.getIdUsuario());
-			
-				clausulasAgropecuario.add(clausulaAgropecuario);
-			}
-		}
-
-		MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.setearInformacion"));
-	}
-
-	/**
-	 * 
-	 * <b> Permite guardar la informacion en la base de datos </b>
-	 * <p>
-	 * [Author: Paul Jimenez, Date: Jul 15, 2014]
-	 * </p>
-	 * 
 	 * @throws HiperionException
+	 * 
 	 */
-	public void guardarRamo() throws HiperionException {
+	public void setearRamo() throws HiperionException {
 
 		try {
+			Usuario usuario = usuarioBean.getSessionUser();
+
+			agropecuario.setTasaAgro(ramoAgropecuarioBean.getTasa());
+			agropecuario.setDeducAgro(ramoAgropecuarioBean.getDeducible());
+			agropecuario.setValorAseguradoAgro(ramoAgropecuarioBean.getValorAsegurado());
+			agropecuario.setDetalleAgro(ramoAgropecuarioBean.getDetalle());
+			agropecuario.setUbicacionAgro(ramoAgropecuarioBean.getUbicacion());
+			agropecuario.setIdUsuarioCreacion(usuario.getIdUsuario());
+			agropecuario.setFechaCreacion(new Date());
+			agropecuario.setEstado(EstadoEnum.A);
+
 			if (!ramoAgropecuarioBean.getObjetoAseguradoList().isEmpty()) {
 
 				List<ObjAsegAgropecuario> listObjetos = new ArrayList<>();
@@ -280,8 +261,6 @@ public class AgropecuarioBacking implements Serializable {
 					objAsegAgropecuario.setColorObjAgro(objeto.getColor());
 					objAsegAgropecuario.setEdadObjAgro(objeto.getEdad());
 					objAsegAgropecuario.setMontoAsegObjAgro(objeto.getMontoAsegurado());
-
-					Usuario usuario = usuarioBean.getSessionUser();
 					objAsegAgropecuario.setIdUsuarioCreacion(usuario.getIdUsuario());
 					objAsegAgropecuario.setFechaCreacion(new Date());
 					objAsegAgropecuario.setEstado(EstadoEnum.A);
@@ -303,11 +282,72 @@ public class AgropecuarioBacking implements Serializable {
 				MessagesController.addError(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.error.agropecuario"));
 			}
 
+			List<ClausulasAddAgro> clausulasAgropecuario = new ArrayList<>();
+			for (ClausulaAdicionalDTO clausualaDTO : clausulasAdicionalesDTO) {
+				if (clausualaDTO.getSeleccion()) {
+
+					ClausulasAddAgro clausulaAgropecuario = new ClausulasAddAgro();
+					clausulaAgropecuario.setClausulaAddAgro(clausualaDTO.getClausula());
+					clausulaAgropecuario.setEstado(EstadoEnum.A);
+					clausulaAgropecuario.setFechaCreacion(new Date());
+					clausulaAgropecuario.setIdUsuarioCreacion(usuario.getIdUsuario());
+
+					clausulasAgropecuario.add(clausulaAgropecuario);
+				}
+			}
+
+			List<CobertAgro> coberturasAgropecuario = new ArrayList<>();
+			for (CoberturaDTO coberturaDTO : coberturasTransporteDTO) {
+				if (coberturaDTO.getSeleccion()) {
+					CobertAgro coberturaAgropecuario = new CobertAgro();
+					coberturaAgropecuario.setCoberturaAgro(coberturaDTO.getCobertura());
+					coberturaAgropecuario.setEstado(EstadoEnum.A);
+					coberturaAgropecuario.setFechaCreacion(new Date());
+					coberturaAgropecuario.setIdUsuarioCreacion(usuario.getIdUsuario());
+					coberturaAgropecuario.setTipoCoberturaAgro("T");
+
+					coberturasAgropecuario.add(coberturaAgropecuario);
+				}
+			}
+			for (CoberturaDTO coberturaDTO : coberturasVidaDTO) {
+				if (coberturaDTO.getSeleccion()) {
+					CobertAgro coberturaAgropecuario = new CobertAgro();
+					coberturaAgropecuario.setCoberturaAgro(coberturaDTO.getCobertura());
+					coberturaAgropecuario.setEstado(EstadoEnum.A);
+					coberturaAgropecuario.setFechaCreacion(new Date());
+					coberturaAgropecuario.setIdUsuarioCreacion(usuario.getIdUsuario());
+					coberturaAgropecuario.setTipoCoberturaAgro("V");
+
+					coberturasAgropecuario.add(coberturaAgropecuario);
+				}
+			}
+			agropecuario.setClausulasAddAgros(clausulasAgropecuario);
+			agropecuario.setCobertAgros(coberturasAgropecuario);
+
+			MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.setearInformacion"));
+
 		} catch (HiperionException e) {
 			log.error("Error al momento de guardar el ramo agropecuario", e);
 			MessagesController.addError(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.error.save"));
 
 			throw new HiperionException(e);
+		}
+	}
+
+	/**
+	 * 
+	 * <b> Permite controlar la obligatoriedad de los campos dependiendo el tipo de objeto asegurado. </b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: 07/06/2015]
+	 * </p>
+	 * 
+	 */
+	public void obtenerTipoObjeto() {
+
+		if (ramoAgropecuarioBean.getTipoObjeto().equals("2")) {
+			activarGanadero = true;
+		} else {
+			activarGanadero = false;
 		}
 
 	}
@@ -538,6 +578,36 @@ public class AgropecuarioBacking implements Serializable {
 	 */
 	public void setCoberturasVidaDTO(List<CoberturaDTO> coberturasVidaDTO) {
 		this.coberturasVidaDTO = coberturasVidaDTO;
+	}
+
+	/**
+	 * @return the activarGanadero
+	 */
+	public Boolean getActivarGanadero() {
+		return activarGanadero;
+	}
+
+	/**
+	 * @param activarGanadero
+	 *            the activarGanadero to set
+	 */
+	public void setActivarGanadero(Boolean activarGanadero) {
+		this.activarGanadero = activarGanadero;
+	}
+
+	/**
+	 * @return the polizaBean
+	 */
+	public PolizaBean getPolizaBean() {
+		return polizaBean;
+	}
+
+	/**
+	 * @param polizaBean
+	 *            the polizaBean to set
+	 */
+	public void setPolizaBean(PolizaBean polizaBean) {
+		this.polizaBean = polizaBean;
 	}
 
 }
