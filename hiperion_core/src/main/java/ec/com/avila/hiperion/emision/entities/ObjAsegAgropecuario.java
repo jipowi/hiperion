@@ -50,6 +50,15 @@ public class ObjAsegAgropecuario extends Auditoria implements Serializable {
 	@Column(name = "sexo_obj_agro")
 	private String sexoObjAgro;
 
+	@Column(name = "valor_asegurado_agro")
+	private BigDecimal valorAseguradoAgro;
+
+	@Column(name = "detalle_agro")
+	private String detalleAgro;
+
+	@Column(name = "ubicacion_agro")
+	private String ubicacion;
+
 	// bi-directional many-to-one association to RamoAgropecuario
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_agropecuario")
@@ -128,6 +137,51 @@ public class ObjAsegAgropecuario extends Auditoria implements Serializable {
 
 	public void setRamoAgropecuario(RamoAgropecuario ramoAgropecuario) {
 		this.ramoAgropecuario = ramoAgropecuario;
+	}
+
+	/**
+	 * @return the valorAseguradoAgro
+	 */
+	public BigDecimal getValorAseguradoAgro() {
+		return valorAseguradoAgro;
+	}
+
+	/**
+	 * @param valorAseguradoAgro
+	 *            the valorAseguradoAgro to set
+	 */
+	public void setValorAseguradoAgro(BigDecimal valorAseguradoAgro) {
+		this.valorAseguradoAgro = valorAseguradoAgro;
+	}
+
+	/**
+	 * @return the detalleAgro
+	 */
+	public String getDetalleAgro() {
+		return detalleAgro;
+	}
+
+	/**
+	 * @param detalleAgro
+	 *            the detalleAgro to set
+	 */
+	public void setDetalleAgro(String detalleAgro) {
+		this.detalleAgro = detalleAgro;
+	}
+
+	/**
+	 * @return the ubicacion
+	 */
+	public String getUbicacion() {
+		return ubicacion;
+	}
+
+	/**
+	 * @param ubicacion
+	 *            the ubicacion to set
+	 */
+	public void setUbicacion(String ubicacion) {
+		this.ubicacion = ubicacion;
 	}
 
 }

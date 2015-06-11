@@ -34,17 +34,8 @@ public class RamoAgropecuario extends Auditoria implements Serializable {
 	@Column(name = "deduc_agro")
 	private BigDecimal deducAgro;
 
-	@Column(name = "detalle_agro")
-	private String detalleAgro;
-
 	@Column(name = "tasa_agro")
 	private BigDecimal tasaAgro;
-
-	@Column(name = "ubicacion_agro")
-	private String ubicacionAgro;
-
-	@Column(name = "valor_asegurado_agro")
-	private BigDecimal valorAseguradoAgro;
 
 	// bi-directional many-to-one association to ArchivoBase
 	@OneToMany(mappedBy = "ramoAgropecuario")
@@ -86,36 +77,12 @@ public class RamoAgropecuario extends Auditoria implements Serializable {
 		this.deducAgro = deducAgro;
 	}
 
-	public String getDetalleAgro() {
-		return this.detalleAgro;
-	}
-
-	public void setDetalleAgro(String detalleAgro) {
-		this.detalleAgro = detalleAgro;
-	}
-
 	public BigDecimal getTasaAgro() {
 		return this.tasaAgro;
 	}
 
 	public void setTasaAgro(BigDecimal tasaAgro) {
 		this.tasaAgro = tasaAgro;
-	}
-
-	public String getUbicacionAgro() {
-		return this.ubicacionAgro;
-	}
-
-	public void setUbicacionAgro(String ubicacionAgro) {
-		this.ubicacionAgro = ubicacionAgro;
-	}
-
-	public BigDecimal getValorAseguradoAgro() {
-		return this.valorAseguradoAgro;
-	}
-
-	public void setValorAseguradoAgro(BigDecimal valorAseguradoAgro) {
-		this.valorAseguradoAgro = valorAseguradoAgro;
 	}
 
 	public List<ArchivoBase> getArchivoBases() {
