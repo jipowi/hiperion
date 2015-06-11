@@ -13,7 +13,7 @@ import java.math.BigDecimal;
  * @version 1.0,Mar 2, 2014
  * @since JDK1.6
  */
-public class ObjetoAseguradoAgropecuarioDTO implements Serializable {
+public class ObjetoAseguradoGanaderoAgroDTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	private Integer item;
@@ -28,12 +28,12 @@ public class ObjetoAseguradoAgropecuarioDTO implements Serializable {
 	/**
 	 * 
 	 */
-	public ObjetoAseguradoAgropecuarioDTO() {
+	public ObjetoAseguradoGanaderoAgroDTO() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public ObjetoAseguradoAgropecuarioDTO(Integer item, String nombre, String sexo, String raza, String color, Integer edad, BigDecimal montoAsegurado, BigDecimal tasa) {
+	public ObjetoAseguradoGanaderoAgroDTO(Integer item, String nombre, String sexo, String raza, String color, Integer edad, BigDecimal montoAsegurado, BigDecimal tasa) {
 		this.item = item;
 		this.nombre = nombre;
 		this.sexo = sexo;
