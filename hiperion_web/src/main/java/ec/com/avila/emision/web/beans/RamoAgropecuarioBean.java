@@ -15,7 +15,8 @@ import javax.faces.context.FacesContext;
 
 import org.primefaces.event.RowEditEvent;
 
-import ec.com.avila.hiperion.dto.ObjetoAseguradoAgropecuarioDTO;
+import ec.com.avila.hiperion.dto.ObjetoAseguradoGanaderoAgroDTO;
+import ec.com.avila.hiperion.dto.ObjetoAseguradoPlantacionAgroDTO;
 import ec.com.avila.hiperion.emision.entities.ArchivoBase;
 
 /**
@@ -39,7 +40,7 @@ public class RamoAgropecuarioBean implements Serializable {
 	private BigDecimal valorAsegurado;
 	private String detalle;
 	private String ubicacion;
-	//Tipo de Objeto Asegurado 
+	// Tipo de Objeto Asegurado
 	private String tipoObjeto;
 
 	// Tabla Objeto Asegurado
@@ -63,7 +64,8 @@ public class RamoAgropecuarioBean implements Serializable {
 
 	private ArchivoBase filePolizaVigente;
 
-	private static ArrayList<ObjetoAseguradoAgropecuarioDTO> objetoAseguradoList = new ArrayList<ObjetoAseguradoAgropecuarioDTO>();
+	private static ArrayList<ObjetoAseguradoGanaderoAgroDTO> objetoAseguradoList = new ArrayList<ObjetoAseguradoGanaderoAgroDTO>();
+	private static ArrayList<ObjetoAseguradoPlantacionAgroDTO> objetoAseguradoPlantacionList = new ArrayList<ObjetoAseguradoPlantacionAgroDTO>();
 
 	/**
 	 * @return the tasa
@@ -172,8 +174,6 @@ public class RamoAgropecuarioBean implements Serializable {
 		this.nombre = nombre;
 	}
 
-	
-
 	/**
 	 * @return the sexo
 	 */
@@ -182,7 +182,8 @@ public class RamoAgropecuarioBean implements Serializable {
 	}
 
 	/**
-	 * @param sexo the sexo to set
+	 * @param sexo
+	 *            the sexo to set
 	 */
 	public void setSexo(String sexo) {
 		this.sexo = sexo;
@@ -363,8 +364,31 @@ public class RamoAgropecuarioBean implements Serializable {
 	/**
 	 * @return the objetoAseguradoList
 	 */
-	public ArrayList<ObjetoAseguradoAgropecuarioDTO> getObjetoAseguradoList() {
+	public ArrayList<ObjetoAseguradoGanaderoAgroDTO> getObjetoAseguradoList() {
 		return objetoAseguradoList;
+	}
+
+	/**
+	 * @return the objetoAseguradoPlantacionList
+	 */
+	public ArrayList<ObjetoAseguradoPlantacionAgroDTO> getObjetoAseguradoPlantacionList() {
+		return objetoAseguradoPlantacionList;
+	}
+
+	/**
+	 * @param objetoAseguradoPlantacionList
+	 *            the objetoAseguradoPlantacionList to set
+	 */
+	public static void setObjetoAseguradoPlantacionList(ArrayList<ObjetoAseguradoPlantacionAgroDTO> objetoAseguradoPlantacionList) {
+		RamoAgropecuarioBean.objetoAseguradoPlantacionList = objetoAseguradoPlantacionList;
+	}
+
+	/**
+	 * @param objetoAseguradoList
+	 *            the objetoAseguradoList to set
+	 */
+	public static void setObjetoAseguradoList(ArrayList<ObjetoAseguradoGanaderoAgroDTO> objetoAseguradoList) {
+		RamoAgropecuarioBean.objetoAseguradoList = objetoAseguradoList;
 	}
 
 	/**
@@ -376,8 +400,8 @@ public class RamoAgropecuarioBean implements Serializable {
 	 * 
 	 * @return
 	 */
-	public String addAction() {
-		ObjetoAseguradoAgropecuarioDTO orderitem = new ObjetoAseguradoAgropecuarioDTO(this.item, this.nombre, this.sexo, this.raza, this.color,
+	public void addGanadero() {
+		ObjetoAseguradoGanaderoAgroDTO orderitem = new ObjetoAseguradoGanaderoAgroDTO(this.item, this.nombre, this.sexo, this.raza, this.color,
 				this.edad, this.montoAsegurado, this.tasa);
 		objetoAseguradoList.add(orderitem);
 
@@ -389,7 +413,26 @@ public class RamoAgropecuarioBean implements Serializable {
 		edad = 0;
 		montoAsegurado = new BigDecimal(0);
 		tasa = new BigDecimal(0);
-		return null;
+	}
+
+	/**
+	 * 
+	 * <b> Permite agregar un objeto asegurado a la tabla </b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: Mar 3, 2014]
+	 * </p>
+	 * 
+	 * @return
+	 */
+	public void addPlantacion() {
+		ObjetoAseguradoPlantacionAgroDTO plantacionItem = new ObjetoAseguradoPlantacionAgroDTO(this.detalle, this.ubicacion, this.valorAsegurado);
+		objetoAseguradoPlantacionList.add(plantacionItem);
+
+		detalle = "";
+		ubicacion = "";
+
+		valorAsegurado = new BigDecimal(0);
+
 	}
 
 	/**
@@ -401,9 +444,38 @@ public class RamoAgropecuarioBean implements Serializable {
 	 * 
 	 * @param event
 	 */
-	public void onEdit(RowEditEvent event) {
-		FacesMessage msg = new FacesMessage("Item Edited", ((ObjetoAseguradoAgropecuarioDTO) event.getObject()).getItem().toString());
+	public void onEditGanadero(RowEditEvent event) {
+		FacesMessage msg = new FacesMessage("Item Edited", ((ObjetoAseguradoGanaderoAgroDTO) event.getObject()).getItem().toString());
 		FacesContext.getCurrentInstance().addMessage(null, msg);
+	}
+
+	/**
+	 * 
+	 * <b> Permite editar un objeto asegurado </b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: Mar 3, 2014]
+	 * </p>
+	 * 
+	 * @param event
+	 */
+	public void onEditPlantacion(RowEditEvent event) {
+		FacesMessage msg = new FacesMessage("Item Edited", ((ObjetoAseguradoPlantacionAgroDTO) event.getObject()).getDetalle());
+		FacesContext.getCurrentInstance().addMessage(null, msg);
+	}
+	
+	/**
+	 * 
+	 * <b> Permite remover un objeto asegurado de la tabla </b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: Mar 3, 2014]
+	 * </p>
+	 * 
+	 * @param event
+	 */
+	public void onCancelGanadero(RowEditEvent event) {
+		FacesMessage msg = new FacesMessage("Item Cancelled");
+		FacesContext.getCurrentInstance().addMessage(null, msg);
+		objetoAseguradoList.remove((ObjetoAseguradoGanaderoAgroDTO) event.getObject());
 	}
 
 	/**
@@ -415,12 +487,12 @@ public class RamoAgropecuarioBean implements Serializable {
 	 * 
 	 * @param event
 	 */
-	public void onCancel(RowEditEvent event) {
+	public void onCancelPlantacion(RowEditEvent event) {
 		FacesMessage msg = new FacesMessage("Item Cancelled");
 		FacesContext.getCurrentInstance().addMessage(null, msg);
-		objetoAseguradoList.remove((ObjetoAseguradoAgropecuarioDTO) event.getObject());
+		objetoAseguradoPlantacionList.remove((ObjetoAseguradoPlantacionAgroDTO) event.getObject());
 	}
-
+	
 	/**
 	 * @return the tipoObjeto
 	 */
@@ -429,11 +501,11 @@ public class RamoAgropecuarioBean implements Serializable {
 	}
 
 	/**
-	 * @param tipoObjeto the tipoObjeto to set
+	 * @param tipoObjeto
+	 *            the tipoObjeto to set
 	 */
 	public void setTipoObjeto(String tipoObjeto) {
 		this.tipoObjeto = tipoObjeto;
 	}
-	
-	
+
 }

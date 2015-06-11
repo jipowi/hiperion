@@ -31,7 +31,7 @@ import ec.com.avila.emision.web.beans.RamoAgropecuarioBean;
 import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.dto.ClausulaAdicionalDTO;
 import ec.com.avila.hiperion.dto.CoberturaDTO;
-import ec.com.avila.hiperion.dto.ObjetoAseguradoAgropecuarioDTO;
+import ec.com.avila.hiperion.dto.ObjetoAseguradoGanaderoAgroDTO;
 import ec.com.avila.hiperion.emision.entities.ArchivoBase;
 import ec.com.avila.hiperion.emision.entities.Catalogo;
 import ec.com.avila.hiperion.emision.entities.ClausulasAddAgro;
@@ -250,7 +250,7 @@ public class AgropecuarioBacking implements Serializable {
 			if (!ramoAgropecuarioBean.getObjetoAseguradoList().isEmpty()) {
 
 				List<ObjAsegAgropecuario> listObjetos = new ArrayList<>();
-				for (ObjetoAseguradoAgropecuarioDTO objeto : ramoAgropecuarioBean.getObjetoAseguradoList()) {
+				for (ObjetoAseguradoGanaderoAgroDTO objeto : ramoAgropecuarioBean.getObjetoAseguradoList()) {
 					ObjAsegAgropecuario objAsegAgropecuario = new ObjAsegAgropecuario();
 
 					objAsegAgropecuario.setRamoAgropecuario(agropecuario);
@@ -323,6 +323,8 @@ public class AgropecuarioBacking implements Serializable {
 			}
 			agropecuario.setClausulasAddAgros(clausulasAgropecuario);
 			agropecuario.setCobertAgros(coberturasAgropecuario);
+			
+			ramoAgropecuarioService.guardarAgropecuario(agropecuario);
 
 			MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.setearInformacion"));
 
