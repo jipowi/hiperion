@@ -9,10 +9,14 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
 import ec.com.avila.hiperion.comun.HiperionException;
+import ec.com.avila.hiperion.dao.ClausulaAddAgroDao;
+import ec.com.avila.hiperion.dao.CoberturaAgroDao;
 import ec.com.avila.hiperion.dao.DetalleAnexoDao;
 import ec.com.avila.hiperion.dao.ObjAsegAgropecuarioDao;
 import ec.com.avila.hiperion.dao.RamoAgropecuarioDao;
 import ec.com.avila.hiperion.emision.entities.ArchivoBase;
+import ec.com.avila.hiperion.emision.entities.ClausulasAddAgro;
+import ec.com.avila.hiperion.emision.entities.CobertAgro;
 import ec.com.avila.hiperion.emision.entities.DetalleAnexo;
 import ec.com.avila.hiperion.emision.entities.ObjAsegAgropecuario;
 import ec.com.avila.hiperion.emision.entities.RamoAgropecuario;
@@ -33,6 +37,10 @@ public class RamoAgropecuarioServiceImpl implements RamoAgropecuarioService {
 	@EJB
 	private ObjAsegAgropecuarioDao objAsegAgropecuarioDao;
 	@EJB
+	private ClausulaAddAgroDao clausulaAddAgroDao;
+	@EJB
+	private CoberturaAgroDao coberturaAgroDao;
+	@EJB
 	private DetalleAnexoDao detalleAnexoDao;
 
 	/*
@@ -42,9 +50,19 @@ public class RamoAgropecuarioServiceImpl implements RamoAgropecuarioService {
 	 */
 	@Override
 	public void guardarAgropecuario(RamoAgropecuario ramoAgropecuario) throws HiperionException {
+		
 		ramoAgropecuarioDao.persist(ramoAgropecuario);
+
 		for (ObjAsegAgropecuario objeto : ramoAgropecuario.getObjAsegAgropecuarios()) {
 			objAsegAgropecuarioDao.persist(objeto);
+		}
+
+		for (ClausulasAddAgro clausula : ramoAgropecuario.getClausulasAddAgros()) {
+			clausulaAddAgroDao.persist(clausula);
+		}
+
+		for (CobertAgro cobertura : ramoAgropecuario.getCobertAgros()) {
+			coberturaAgroDao.persist(cobertura);
 		}
 
 	}
@@ -60,7 +78,9 @@ public class RamoAgropecuarioServiceImpl implements RamoAgropecuarioService {
 
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see ec.com.avila.hiperion.servicio.RamoAgropecuarioService#consultarDetalleAnexoById(java.lang.Long)
 	 */
 	@Override
@@ -68,7 +88,9 @@ public class RamoAgropecuarioServiceImpl implements RamoAgropecuarioService {
 		return detalleAnexoDao.findById(idDetalle);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see ec.com.avila.hiperion.servicio.RamoAgropecuarioService#consultarDetallesByTitulo(java.lang.Long, java.lang.Integer)
 	 */
 	@Override
