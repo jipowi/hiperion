@@ -15,6 +15,23 @@ public class ClausulaAdicionalDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private String clausula;
 	private Boolean seleccion;
+	private Integer numDias;
+	
+	
+
+	/**
+	 * @return the numDias
+	 */
+	public Integer getNumDias() {
+		return numDias;
+	}
+
+	/**
+	 * @param numDias the numDias to set
+	 */
+	public void setNumDias(Integer numDias) {
+		this.numDias = numDias;
+	}
 
 	/**
 	 * @return the clausula

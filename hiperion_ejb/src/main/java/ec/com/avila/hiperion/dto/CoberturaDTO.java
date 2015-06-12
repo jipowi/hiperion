@@ -1,6 +1,7 @@
 package ec.com.avila.hiperion.dto;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 /**
  * <b> Permite presentar las claususlas adicionales con un checkBox de seleccion. </b>
@@ -14,6 +15,22 @@ public class CoberturaDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private String cobertura;
 	private Boolean seleccion;
+	private BigDecimal valorCobertura;
+
+	/**
+	 * @return the valorCobertura
+	 */
+	public BigDecimal getValorCobertura() {
+		return valorCobertura;
+	}
+
+	/**
+	 * @param valorCobertura
+	 *            the valorCobertura to set
+	 */
+	public void setValorCobertura(BigDecimal valorCobertura) {
+		this.valorCobertura = valorCobertura;
+	}
 
 	/**
 	 * @return the cobertura
