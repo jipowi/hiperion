@@ -25,9 +25,10 @@ import org.apache.log4j.Logger;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
 
-import ec.com.avila.emision.web.beans.DetalleAnexoBean;
 import ec.com.avila.emision.web.beans.PolizaBean;
 import ec.com.avila.emision.web.beans.RamoAgropecuarioBean;
+import ec.com.avila.emision.web.domain.ClausulaAdicional;
+import ec.com.avila.emision.web.domain.Cobertura;
 import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.dto.ClausulaAdicionalDTO;
 import ec.com.avila.hiperion.dto.CoberturaDTO;
@@ -91,12 +92,12 @@ public class AgropecuarioBacking implements Serializable {
 	private PolizaBean polizaBean;
 
 	private List<DetalleAnexo> anexos;
-	private List<DetalleAnexoBean> clausulasAdicionales;
+	private List<ClausulaAdicional> clausulasAdicionales;
 	private List<ClausulaAdicionalDTO> clausulasAdicionalesDTO = new ArrayList<>();
-	private List<DetalleAnexoBean> coberturasTransporte;
+	private List<Cobertura> coberturasTransporte;
 	private List<CoberturaDTO> coberturasTransporteDTO = new ArrayList<>();
 	private List<CoberturaDTO> coberturasVidaDTO = new ArrayList<>();
-	private List<DetalleAnexoBean> coberturasVida;
+	private List<Cobertura> coberturasVida;
 
 	private UploadedFile file;
 	private List<SelectItem> sexoItems;
@@ -134,19 +135,19 @@ public class AgropecuarioBacking implements Serializable {
 	 * @return
 	 */
 	public void obtenerClausulasAdicionales() {
-		clausulasAdicionales = new ArrayList<DetalleAnexoBean>();
+		clausulasAdicionales = new ArrayList<ClausulaAdicional>();
 		if (anexos != null && anexos.size() > 0) {
 			for (DetalleAnexo anexo : anexos) {
 
 				if (anexo.getAnexo().getIdAnexo() == 1)
-					clausulasAdicionales.add(new DetalleAnexoBean(anexo.getIdDetalleAnexo(), anexo.getNombreDetalleAnexo()));
+					clausulasAdicionales.add(new ClausulaAdicional(anexo.getIdDetalleAnexo(), anexo.getNombreDetalleAnexo()));
 			}
 
 		}
 
-		for (DetalleAnexoBean clausula : clausulasAdicionales) {
+		for (ClausulaAdicional clausula : clausulasAdicionales) {
 			ClausulaAdicionalDTO clausulaDTO = new ClausulaAdicionalDTO();
-			clausulaDTO.setClausula(clausula.getNombreDetalleAnexo());
+			clausulaDTO.setClausula(clausula.getNombre());
 			clausulaDTO.setSeleccion(false);
 
 			clausulasAdicionalesDTO.add(clausulaDTO);
@@ -165,7 +166,7 @@ public class AgropecuarioBacking implements Serializable {
 	 */
 	public void obtenerCoberturasTransporte() throws HiperionException {
 
-		coberturasTransporte = new ArrayList<DetalleAnexoBean>();
+		coberturasTransporte = new ArrayList<Cobertura>();
 
 		if (anexos != null && anexos.size() > 0) {
 			List<DetalleAnexo> detallesTransporte = new ArrayList<>();
@@ -175,14 +176,14 @@ public class AgropecuarioBacking implements Serializable {
 				}
 			}
 			for (DetalleAnexo detalle : detallesTransporte) {
-				coberturasTransporte.add(new DetalleAnexoBean(detalle.getIdDetalleAnexo(), detalle.getNombreDetalleAnexo()));
+				coberturasTransporte.add(new Cobertura(detalle.getIdDetalleAnexo(), detalle.getNombreDetalleAnexo()));
 			}
 
 		}
 
-		for (DetalleAnexoBean cobertura : coberturasTransporte) {
+		for (Cobertura cobertura : coberturasTransporte) {
 			CoberturaDTO coberturaDTO = new CoberturaDTO();
-			coberturaDTO.setCobertura(cobertura.getNombreDetalleAnexo());
+			coberturaDTO.setCobertura(cobertura.getNombre());
 			coberturaDTO.setSeleccion(false);
 
 			coberturasTransporteDTO.add(coberturaDTO);
@@ -200,7 +201,7 @@ public class AgropecuarioBacking implements Serializable {
 	 * @throws HiperionException
 	 */
 	public void obtenerCoberturasVida() throws HiperionException {
-		coberturasVida = new ArrayList<DetalleAnexoBean>();
+		coberturasVida = new ArrayList<Cobertura>();
 
 		if (anexos != null && anexos.size() > 0) {
 			List<DetalleAnexo> detallesVida = new ArrayList<>();
@@ -210,14 +211,14 @@ public class AgropecuarioBacking implements Serializable {
 				}
 			}
 			for (DetalleAnexo detalle : detallesVida) {
-				coberturasVida.add(new DetalleAnexoBean(detalle.getIdDetalleAnexo(), detalle.getNombreDetalleAnexo()));
+				coberturasVida.add(new Cobertura(detalle.getIdDetalleAnexo(), detalle.getNombreDetalleAnexo()));
 			}
 
 		}
 
-		for (DetalleAnexoBean cobertura : coberturasVida) {
+		for (Cobertura cobertura : coberturasVida) {
 			CoberturaDTO coberturaDTO = new CoberturaDTO();
-			coberturaDTO.setCobertura(cobertura.getNombreDetalleAnexo());
+			coberturaDTO.setCobertura(cobertura.getNombre());
 			coberturaDTO.setSeleccion(false);
 
 			coberturasVidaDTO.add(coberturaDTO);

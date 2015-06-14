@@ -16,12 +16,14 @@ import javax.faces.model.SelectItem;
 
 import org.apache.log4j.Logger;
 
-import ec.com.avila.emision.web.beans.AnexosRamoBean;
 import ec.com.avila.emision.web.beans.RamoAccidentesPersonalesBean;
 import ec.com.avila.emision.web.domain.ClausulaAdicional;
 import ec.com.avila.emision.web.domain.Cobertura;
 import ec.com.avila.emision.web.domain.CondicionEspecial;
 import ec.com.avila.hiperion.comun.HiperionException;
+import ec.com.avila.hiperion.dto.ClausulaAdicionalDTO;
+import ec.com.avila.hiperion.dto.CoberturaDTO;
+import ec.com.avila.hiperion.dto.CondicionEspecialDTO;
 import ec.com.avila.hiperion.emision.entities.Catalogo;
 import ec.com.avila.hiperion.emision.entities.DetalleAnexo;
 import ec.com.avila.hiperion.emision.entities.DetalleCatalogo;
@@ -58,18 +60,16 @@ public class AccidentesPersonalesBacking implements Serializable {
 	@ManagedProperty(value = "#{ramoBean}")
 	private RamoBean ramoBean;
 
-	@ManagedProperty(value = "#{anexosRamoBean}")
-	private AnexosRamoBean anexosRamoBean;
-
 	@ManagedProperty(value = "#{ramoAccidentesPersonalesBean}")
 	private RamoAccidentesPersonalesBean ramoAccidentesPersonalesBean;
 
 	private List<DetalleAnexo> anexos;
+	private List<ClausulaAdicionalDTO> clausulasAdicionalesDTO = new ArrayList<>();
 	private List<ClausulaAdicional> clausulasAdicionales;
-	private List<ClausulaAdicional> selectClausulasAdicionales;
+	private List<CoberturaDTO> coberturasDTO = new ArrayList<>();
 	private List<Cobertura> coberturas;
+	private List<CondicionEspecialDTO> condicionesEspecialesDTO = new ArrayList<>();
 	private List<CondicionEspecial> condicionesEspeciales;
-	private List<CondicionEspecial> selectCondicionesEspeciales;
 	private List<SelectItem> sexoItems;
 	private List<SelectItem> parentescoItems;
 
@@ -80,13 +80,97 @@ public class AccidentesPersonalesBacking implements Serializable {
 		try {
 			Ramo ramo = ramoService.consultarRamoPorCodigo("AP");
 			anexos = ramo.getDetalleAnexos();
+
+			obtenerClausulasAdicionales(anexos);
+			obtenerCoberturas(anexos);
+
+			obtenerCondicionesEspeciales(anexos);
+
 		} catch (HiperionException e) {
 			e.printStackTrace();
 		}
+	}
 
-		clausulasAdicionales = anexosRamoBean.obtenerClausulasAdicionales(anexos);
-		coberturas = anexosRamoBean.obtenerCoberturas(anexos);
-		condicionesEspeciales = anexosRamoBean.obtenerCondicionesEspeciales(anexos);
+	/**
+	 * 
+	 * <b> Permite obtener las Condiciones Especiales del Anexo de un Ramo. </b>
+	 * <p>
+	 * [Author: Dario Vinueza, Date: 20/04/2014]
+	 * </p>
+	 * 
+	 * @return
+	 */
+	public void obtenerCondicionesEspeciales(List<DetalleAnexo> anexos) {
+		condicionesEspeciales = new ArrayList<CondicionEspecial>();
+		if (anexos != null && anexos.size() > 0) {
+			for (DetalleAnexo anexo : anexos) {
+				if (anexo.getAnexo().getIdAnexo() == 3)
+					condicionesEspeciales.add(new CondicionEspecial(anexo.getIdDetalleAnexo(), anexo.getNombreDetalleAnexo()));
+			}
+		}
+		for (CondicionEspecial condicion : condicionesEspeciales) {
+			CondicionEspecialDTO condicionDTO = new CondicionEspecialDTO();
+			condicionDTO.setCondicionEspecial(condicion.getNombre());
+			condicionDTO.setSeleccion(false);
+
+			condicionesEspecialesDTO.add(condicionDTO);
+		}
+
+	}
+
+	/**
+	 * 
+	 * <b> Permite obtener las Clausulas Adicionales del Anexo de una Ramo. </b>
+	 * <p>
+	 * [Author: Dario Vinueza, Date: 31/05/2014]
+	 * </p>
+	 * 
+	 * @return
+	 */
+	public void obtenerClausulasAdicionales(List<DetalleAnexo> anexos) {
+		clausulasAdicionales = new ArrayList<ClausulaAdicional>();
+		if (anexos != null && anexos.size() > 0) {
+			for (DetalleAnexo anexo : anexos) {
+				if (anexo.getAnexo().getIdAnexo() == 1) {
+					clausulasAdicionales.add(new ClausulaAdicional(anexo.getIdDetalleAnexo(), anexo.getNombreDetalleAnexo()));
+				}
+			}
+		}
+		for (ClausulaAdicional clausula : clausulasAdicionales) {
+			ClausulaAdicionalDTO clausulaDTO = new ClausulaAdicionalDTO();
+			clausulaDTO.setClausula(clausula.getNombre());
+			clausulaDTO.setSeleccion(false);
+
+			clausulasAdicionalesDTO.add(clausulaDTO);
+		}
+
+	}
+
+	/**
+	 * 
+	 * <b> Permite obtener las Coberturas del Anexo de un Ramo. </b>
+	 * <p>
+	 * [Author: Dario Vinueza, Date: 20/04/2014]
+	 * </p>
+	 * 
+	 * @return
+	 */
+	public void obtenerCoberturas(List<DetalleAnexo> anexos) {
+		coberturas = new ArrayList<Cobertura>();
+		if (anexos != null && anexos.size() > 0) {
+			for (DetalleAnexo anexo : anexos) {
+				if (anexo.getAnexo().getIdAnexo() == 2)
+					coberturas.add(new Cobertura(anexo.getIdDetalleAnexo(), anexo.getNombreDetalleAnexo()));
+			}
+		}
+		for (Cobertura cobertura : coberturas) {
+			CoberturaDTO coberturaDTO = new CoberturaDTO();
+			coberturaDTO.setCobertura(cobertura.getNombre());
+			coberturaDTO.setSeleccion(false);
+
+			coberturasDTO.add(coberturaDTO);
+		}
+
 	}
 
 	public void guardarRamo() throws HiperionException {
@@ -121,72 +205,6 @@ public class AccidentesPersonalesBacking implements Serializable {
 	 */
 	public void setRamoBean(RamoBean ramoBean) {
 		this.ramoBean = ramoBean;
-	}
-
-	/**
-	 * @return the anexosRamoBean
-	 */
-	public AnexosRamoBean getAnexosRamoBean() {
-		return anexosRamoBean;
-	}
-
-	/**
-	 * @param anexosRamoBean
-	 *            the anexosRamoBean to set
-	 */
-	public void setAnexosRamoBean(AnexosRamoBean anexosRamoBean) {
-		this.anexosRamoBean = anexosRamoBean;
-	}
-
-	/**
-	 * @return the clausulasAdicionales
-	 */
-	public List<ClausulaAdicional> getClausulasAdicionales() {
-		return clausulasAdicionales;
-	}
-
-	/**
-	 * @return the selectClausulasAdicionales
-	 */
-	public List<ClausulaAdicional> getSelectClausulasAdicionales() {
-		return selectClausulasAdicionales;
-	}
-
-	/**
-	 * @param selectClausulasAdicionales
-	 *            the selectClausulasAdicionales to set
-	 */
-	public void setSelectClausulasAdicionales(List<ClausulaAdicional> selectClausulasAdicionales) {
-		this.selectClausulasAdicionales = selectClausulasAdicionales;
-	}
-
-	/**
-	 * @return the coberturas
-	 */
-	public List<Cobertura> getCoberturas() {
-		return coberturas;
-	}
-
-	/**
-	 * @return the selectCondicionesEspeciales
-	 */
-	public List<CondicionEspecial> getSelectCondicionesEspeciales() {
-		return selectCondicionesEspeciales;
-	}
-
-	/**
-	 * @param selectCondicionesEspeciales
-	 *            the selectCondicionesEspeciales to set
-	 */
-	public void setSelectCondicionesEspeciales(List<CondicionEspecial> selectCondicionesEspeciales) {
-		this.selectCondicionesEspeciales = selectCondicionesEspeciales;
-	}
-
-	/**
-	 * @return the condicionesEspeciales
-	 */
-	public List<CondicionEspecial> getCondicionesEspeciales() {
-		return condicionesEspeciales;
 	}
 
 	/**
@@ -254,6 +272,96 @@ public class AccidentesPersonalesBacking implements Serializable {
 	 */
 	public void setSexoItems(List<SelectItem> sexoItems) {
 		this.sexoItems = sexoItems;
+	}
+
+	/**
+	 * @return the clausulasAdicionalesDTO
+	 */
+	public List<ClausulaAdicionalDTO> getClausulasAdicionalesDTO() {
+		return clausulasAdicionalesDTO;
+	}
+
+	/**
+	 * @param clausulasAdicionalesDTO
+	 *            the clausulasAdicionalesDTO to set
+	 */
+	public void setClausulasAdicionalesDTO(List<ClausulaAdicionalDTO> clausulasAdicionalesDTO) {
+		this.clausulasAdicionalesDTO = clausulasAdicionalesDTO;
+	}
+
+	/**
+	 * @return the clausulasAdicionales
+	 */
+	public List<ClausulaAdicional> getClausulasAdicionales() {
+		return clausulasAdicionales;
+	}
+
+	/**
+	 * @param clausulasAdicionales
+	 *            the clausulasAdicionales to set
+	 */
+	public void setClausulasAdicionales(List<ClausulaAdicional> clausulasAdicionales) {
+		this.clausulasAdicionales = clausulasAdicionales;
+	}
+
+	/**
+	 * @return the coberturasDTO
+	 */
+	public List<CoberturaDTO> getCoberturasDTO() {
+		return coberturasDTO;
+	}
+
+	/**
+	 * @param coberturasDTO
+	 *            the coberturasDTO to set
+	 */
+	public void setCoberturasDTO(List<CoberturaDTO> coberturasDTO) {
+		this.coberturasDTO = coberturasDTO;
+	}
+
+	/**
+	 * @return the coberturas
+	 */
+	public List<Cobertura> getCoberturas() {
+		return coberturas;
+	}
+
+	/**
+	 * @param coberturas
+	 *            the coberturas to set
+	 */
+	public void setCoberturas(List<Cobertura> coberturas) {
+		this.coberturas = coberturas;
+	}
+
+	/**
+	 * @return the condicionesEspecialesDTO
+	 */
+	public List<CondicionEspecialDTO> getCondicionesEspecialesDTO() {
+		return condicionesEspecialesDTO;
+	}
+
+	/**
+	 * @param condicionesEspecialesDTO
+	 *            the condicionesEspecialesDTO to set
+	 */
+	public void setCondicionesEspecialesDTO(List<CondicionEspecialDTO> condicionesEspecialesDTO) {
+		this.condicionesEspecialesDTO = condicionesEspecialesDTO;
+	}
+
+	/**
+	 * @return the condicionesEspeciales
+	 */
+	public List<CondicionEspecial> getCondicionesEspeciales() {
+		return condicionesEspeciales;
+	}
+
+	/**
+	 * @param condicionesEspeciales
+	 *            the condicionesEspeciales to set
+	 */
+	public void setCondicionesEspeciales(List<CondicionEspecial> condicionesEspeciales) {
+		this.condicionesEspeciales = condicionesEspeciales;
 	}
 
 }

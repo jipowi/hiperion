@@ -300,11 +300,13 @@
 												</f:facet>
 												<h:outputText value="#{clausula.clausula}" />
 											</p:column>
-											<p:column headerText="#{emision['anexo.ca.nombre']}">
+											<p:column>
 												<f:facet name="header">
 													<h:outputLabel value="#{emision['lbl.seleccion']}" />
 												</f:facet>
-												<p:selectBooleanCheckbox value="#{clausula.seleccion}" />
+												<div align="center">
+													<p:selectBooleanCheckbox value="#{clausula.seleccion}" />
+												</div>
 											</p:column>
 										</p:dataTable>
 									</h:form>
@@ -322,11 +324,13 @@
 														</f:facet>
 														<h:outputText value="#{cobertura.cobertura}" />
 													</p:column>
-													<p:column headerText="#{emision['anexo.titulo.cob']}">
+													<p:column>
 														<f:facet name="header">
 															<h:outputLabel value="#{emision['lbl.seleccion']}" />
 														</f:facet>
-														<p:selectBooleanCheckbox value="#{cobertura.seleccion}" />
+														<div align="center">
+															<p:selectBooleanCheckbox value="#{cobertura.seleccion}" />
+														</div>
 													</p:column>
 												</p:dataTable>
 											</h:form>
@@ -341,11 +345,14 @@
 														</f:facet>
 														<h:outputText value="#{cobertura.cobertura}" />
 													</p:column>
-													<p:column headerText="#{emision['anexo.ca.nombre']}">
+													<p:column>
+
 														<f:facet name="header">
 															<h:outputLabel value="#{emision['lbl.seleccion']}" />
 														</f:facet>
-														<p:selectBooleanCheckbox value="#{cobertura.seleccion}" />
+														<div align="center">
+															<p:selectBooleanCheckbox value="#{cobertura.seleccion}" />
+														</div>
 													</p:column>
 												</p:dataTable>
 											</h:form>

@@ -47,11 +47,8 @@
 													</h:panelGrid>
 
 													<h:panelGrid columns="2">
-
-														<p:outputLabel for="idDeducible" value="#{emision['ap.deducible']}" styleClass="negrita" />
-														<p:inputText id="idDeducible" value="#{ramoAccidentesPersonalesBean.deducible}" required="true"
-															requiredMessage="#{emision['ap.deducible.msn']}" />
-
+														<p:outputLabel value="#{emision['ap.deducible']}" styleClass="negrita" />
+														<p:inputText value="#{ramoAccidentesPersonalesBean.deducible}" />
 													</h:panelGrid>
 												</p:panel>
 											</h:panelGrid>
@@ -60,38 +57,66 @@
 								</p:tab>
 								<!-- COBERTURAS -->
 								<p:tab title="#{emision['anexo.titulo.tab.cob']}">
-									<p:dataTable id="cobAPTblId" var="cobertura" value="#{accidentesPersonalesBacking.coberturas}"
-										selection="#{accidentesPersonalesBacking.selectCoberturas}" rowKey="#{cobertura.id}" style="margin-bottom:0" paginator="true" rows="4">
-										<f:facet name="header">#{emision['anexo.titulo.cob']}</f:facet>
-										<p:column selectionMode="multiple" style="width:2px; text-align: center;" />
-										<p:column headerText="#{emision['ap.coberturas']}">#{cobertura.nombre}</p:column>
-										<p:column headerText="#{emision['ap.valor']}" style="width:60px; text-align: center;">
-											<p:inputText style="width:50px;" value="#{cobertura.valor}" />
-										</p:column>
-									</p:dataTable>
+									<h:form id="coberturaForm">
+										<p:dataTable value="#{accidentesPersonalesBacking.coberturasDTO}" var="cobertura" paginator="true" rows="4">
+											<p:column>
+												<f:facet name="header">
+													<h:outputLabel value="#{emision['anexo.titulo.cob']}" />
+												</f:facet>
+												<h:outputText value="#{cobertura.cobertura}" />
+											</p:column>
+											<p:column>
+												<f:facet name="header">
+													<h:outputLabel value="#{emision['lbl.seleccion']}" />
+												</f:facet>
+												<div align="center">
+													<p:selectBooleanCheckbox value="#{cobertura.seleccion}" />
+												</div>
+											</p:column>
+										</p:dataTable>
+									</h:form>
 								</p:tab>
 								<!-- CONDICIONES ESPECIALES -->
 								<p:tab title="#{emision['anexo.titulo.tab.cep']}">
-									<p:dataTable id="ceAPTblId" var="condespe" value="#{accidentesPersonalesBacking.condicionesEspeciales}"
-										selection="#{accidentesPersonalesBacking.selectCondicionesEspeciales}" rowKey="#{condespe.id}" style="margin-bottom:0" paginator="true"
-										rows="4">
-										<f:facet name="header">#{emision['anexo.titulo.cep']}</f:facet>
-										<p:column selectionMode="multiple" style="width:2%" />
-										<p:column headerText="#{emision['anexo.ca.nombre']}">#{condespe.nombre}</p:column>
-									</p:dataTable>
+									<h:form id="condicionEspForm">
+										<p:dataTable value="#{accidentesPersonalesBacking.condicionesEspecialesDTO}" var="condicion" paginator="true" rows="4">
+											<p:column>
+												<f:facet name="header">
+													<h:outputLabel value="#{emision['anexo.titulo.cep']}" />
+												</f:facet>
+												<h:outputText value="#{condicion.condicionEspecial}" />
+											</p:column>
+											<p:column>
+												<f:facet name="header">
+													<h:outputLabel value="#{emision['lbl.seleccion']}" />
+												</f:facet>
+												<div align="center">
+													<p:selectBooleanCheckbox value="#{condicion.seleccion}" />
+												</div>
+											</p:column>
+										</p:dataTable>
+									</h:form>
 								</p:tab>
 								<!-- CLAUSULAS ADICIONALES -->
 								<p:tab title="#{emision['ap.tab.clausulasAdicionales']}">
-									<p:dataTable id="caAPTblId" var="clausula" value="#{accidentesPersonalesBacking.clausulasAdicionales}"
-										selection="#{accidentesPersonalesBacking.selectClausulasAdicionales}" rowKey="#{clausula.id}" style="margin-bottom:0" paginator="true"
-										rows="4">
-										<f:facet name="header">#{emision['anexo.titulo.cad']}</f:facet>
-										<p:column selectionMode="multiple" style="width:2px; text-align: center;" />
-										<p:column headerText="#{emision['ap.clausulas']}">#{clausula.nombre}</p:column>
-										<p:column headerText="#{emision['ap.numeroDias']}" style="width:60px; text-align: center;">
-											<p:inputText rendered="#{clausula.id==2 or clausula.id==4}" value="#{clausula.numeroDias}" style="width:50px;" />
-										</p:column>
-									</p:dataTable>
+									<h:form id="clausulaAddEspForm">
+										<p:dataTable value="#{accidentesPersonalesBacking.clausulasAdicionalesDTO}" var="clausula" paginator="true" rows="4">
+											<p:column>
+												<f:facet name="header">
+													<h:outputLabel value="#{emision['anexo.titulo.cad']}" />
+												</f:facet>
+												<h:outputText value="#{clausula.clausula}" />
+											</p:column>
+											<p:column>
+												<f:facet name="header">
+													<h:outputLabel value="#{emision['lbl.seleccion']}" />
+												</f:facet>
+												<div align="center">
+													<p:selectBooleanCheckbox value="#{clausula.seleccion}" />
+												</div>
+											</p:column>
+										</p:dataTable>
+									</h:form>
 								</p:tab>
 
 								<!-- GRUPOS -->
@@ -254,6 +279,28 @@
 				</ui:decorate>
 			</ui:define>
 		</ui:decorate>
+	</ui:define>
+	<ui:define name="buttons">
+		<h:form>
+			<h:panelGrid columns="1">
+				<h:commandLink action="hiperion.xhtml">
+					<h:graphicImage name="home.png" library="img" />
+				</h:commandLink>
+				<p:commandLink title="Guardar Informacion poliza" actionListener="#{agropecuarioBacking.setearRamo()}">
+					<h:graphicImage name="save.png" library="img" />
+				</p:commandLink>
+				<p:commandLink onclick="help.show()">
+					<h:graphicImage name="helpII.png" library="img" />
+				</p:commandLink>
+			</h:panelGrid>
+			<p:dialog header="Ramo Agropecuario" widgetVar="help" showEffect="explode" hideEffect="bounce" height="100">
+				<h:panelGrid columns="1">
+					<h:outputText value="Seguro agricola" />
+					<h:outputText value="Para soporte en cualqueira de las funcionalidades" />
+					<h:outputText value="Por favor comuniquese con Franklin Pozo, Administradr del Sitema Hiperion" />
+				</h:panelGrid>
+			</p:dialog>
+		</h:form>
 	</ui:define>
 </ui:composition>
 </html>
