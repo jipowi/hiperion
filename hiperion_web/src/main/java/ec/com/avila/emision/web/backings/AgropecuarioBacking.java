@@ -75,7 +75,7 @@ public class AgropecuarioBacking implements Serializable {
 	@EJB
 	private RamoAgropecuarioService ramoAgropecuarioService;
 
-	@EJB
+	@EJB  
 	private CatalogoService catalogoService;
 
 	@ManagedProperty(value = "#{ramoBean}")

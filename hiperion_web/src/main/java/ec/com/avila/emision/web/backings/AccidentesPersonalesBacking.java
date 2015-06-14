@@ -68,7 +68,6 @@ public class AccidentesPersonalesBacking implements Serializable {
 	private List<ClausulaAdicional> clausulasAdicionales;
 	private List<ClausulaAdicional> selectClausulasAdicionales;
 	private List<Cobertura> coberturas;
-	private List<Cobertura> selectCoberturas;
 	private List<CondicionEspecial> condicionesEspeciales;
 	private List<CondicionEspecial> selectCondicionesEspeciales;
 	private List<SelectItem> sexoItems;
@@ -88,32 +87,6 @@ public class AccidentesPersonalesBacking implements Serializable {
 		clausulasAdicionales = anexosRamoBean.obtenerClausulasAdicionales(anexos);
 		coberturas = anexosRamoBean.obtenerCoberturas(anexos);
 		condicionesEspeciales = anexosRamoBean.obtenerCondicionesEspeciales(anexos);
-	}
-
-	public void guardar() {
-		// Clausulas Adicionales
-		if (getSelectClausulasAdicionales() != null && getSelectClausulasAdicionales().size() > 0) {
-			System.out.println("Clausulas Adicionales");
-			for (ClausulaAdicional clausula : getSelectClausulasAdicionales()) {
-				System.out.println(clausula);
-			}
-		}
-
-		// Coberturas
-		if (getSelectCoberturas() != null && getSelectCoberturas().size() > 0) {
-			System.out.println("Coberturas");
-			for (Cobertura cobertura : getSelectCoberturas()) {
-				System.out.println(cobertura);
-			}
-		}
-
-		// Condiciones Especiales
-		if (getSelectCondicionesEspeciales() != null && getSelectCondicionesEspeciales().size() > 0) {
-			System.out.println("Condiciones Especiales");
-			for (CondicionEspecial condicionEspecial : getSelectCondicionesEspeciales()) {
-				System.out.println(condicionEspecial);
-			}
-		}
 	}
 
 	public void guardarRamo() throws HiperionException {
@@ -188,21 +161,6 @@ public class AccidentesPersonalesBacking implements Serializable {
 	}
 
 	/**
-	 * @return the selectCoberturas
-	 */
-	public List<Cobertura> getSelectCoberturas() {
-		return selectCoberturas;
-	}
-
-	/**
-	 * @param selectCoberturas
-	 *            the selectCoberturas to set
-	 */
-	public void setSelectCoberturas(List<Cobertura> selectCoberturas) {
-		this.selectCoberturas = selectCoberturas;
-	}
-
-	/**
 	 * @return the coberturas
 	 */
 	public List<Cobertura> getCoberturas() {
@@ -248,17 +206,17 @@ public class AccidentesPersonalesBacking implements Serializable {
 
 	/**
 	 * @return the parentescoItems
-	 * @throws HiperionException 
+	 * @throws HiperionException
 	 */
 	public List<SelectItem> getParentescoItems() throws HiperionException {
 
 		this.parentescoItems = new ArrayList<SelectItem>();
-		Catalogo catalogo = catalogoService.consultarCatalogoById(HiperionMensajes.getInstancia().getLong(
-				"ec.gob.avila.hiperion.recursos.parentesco"));
+		Catalogo catalogo = catalogoService.consultarCatalogoById(HiperionMensajes.getInstancia()
+				.getLong("ec.gob.avila.hiperion.recursos.parentesco"));
 		List<DetalleCatalogo> parentesco = catalogo.getDetalleCatalogos();
-		
-		for(DetalleCatalogo detalle: parentesco){
-			SelectItem selectItem=new SelectItem(detalle.getCodDetalleCatalogo(),detalle.getDescDetCatalogo());
+
+		for (DetalleCatalogo detalle : parentesco) {
+			SelectItem selectItem = new SelectItem(detalle.getCodDetalleCatalogo(), detalle.getDescDetCatalogo());
 			parentescoItems.add(selectItem);
 		}
 		return parentescoItems;
@@ -297,7 +255,5 @@ public class AccidentesPersonalesBacking implements Serializable {
 	public void setSexoItems(List<SelectItem> sexoItems) {
 		this.sexoItems = sexoItems;
 	}
-
-	
 
 }
