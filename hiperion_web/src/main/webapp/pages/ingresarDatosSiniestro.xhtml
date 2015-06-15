@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<ui:composition template="/templates/menuPrincipalTemplate.xhtml">
+	<ui:define name="content">
+		<h:form id="formPricipal">
+			<p:outputPanel id="messagesingresarDatosSiniestro">
+				<p:messages></p:messages>
+			</p:outputPanel>
+			
+				<!-- PANEL DE BUSQUEDAA -->
+				<h:panelGrid columns="1">
+					<p:panel>
+						<h:panelGrid columns="2">
+							<h:outputLabel value="#{siniestros['lbl.numerico']}"
+								styleClass="negrita" />
+							<p:inputText value="#{ingresarDatosSiniestroBean.numerico}" />
+							<h:outputLabel value="#{siniestros['lbl.tipoCliente']}"
+								styleClass="negrita" />
+							<p:selectOneMenu id="tipoCliente"
+								value="#{selectOneMenuView.console}" style="width:125px">
+								
+							</p:selectOneMenu>
+							<h:outputLabel value="#{siniestros['lbl.nombreCliente']}"
+								styleClass="negrita" />
+							<p:inputText value="#{ingresarDatosSiniestroBean.nombreCliente}" />
+							<h:outputLabel value="#{siniestros['lbl.descripcionAsegurado']}"
+								styleClass="negrita" />
+							<p:inputTextarea
+								value="#{ingresarDatosSiniestroBean.descripcionAsegurado}" />
+							<h:outputLabel value="#{siniestros['lbl.aseguradora']}"
+								styleClass="negrita" />
+							<p:selectOneMenu id="aseguradora"
+								value="#{selectOneMenuView.console}" style="width:125px">								
+							</p:selectOneMenu>
+							<h:outputLabel value="#{siniestros['lbl.noReporte']}"
+								styleClass="negrita" />
+							<p:inputText value="#{ingresarDatosSiniestroBean.numeroReporte}" />
+							<h:outputLabel value="#{siniestros['lbl.noReclamo']}"
+								styleClass="negrita" />
+							<p:inputText value="#{ingresarDatosSiniestroBean.numeroReclamo}" />
+							<h:outputLabel value="#{siniestros['lbl.ramo']}"
+								styleClass="negrita" />
+							<p:inputText value="#{ingresarSiniestroBean.ramo}" />
+							<h:outputLabel value="#{siniestros['lbl.fecha']}"
+								styleClass="negrita" />
+								
+							<p:calendar id="fecha" navigator="true" effect="fold" value="#{ingresarDatosSiniestroBean.fecha}"
+								pattern="MM/dd/yyyy" styleClass="DialogFecha-fecha" />							
+							
+							<h:outputLabel value="#{siniestros['lbl.estado']}"
+								styleClass="negrita" />
+							<p:selectOneMenu id="estado" value="#{selectOneMenuView.console}"
+								style="width:125px">								
+							</p:selectOneMenu>
+
+
+						</h:panelGrid>
+					</p:panel>
+				</h:panelGrid>
+	          <p:button value="Guardar Siniestro"></p:button>
+			
+
+		</h:form>
+
+
+	</ui:define>
+</ui:composition>
+</html>

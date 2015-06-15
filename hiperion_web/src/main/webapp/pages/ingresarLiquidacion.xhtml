@@ -1,0 +1,73 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<ui:composition template="/templates/menuPrincipalTemplate.xhtml">
+	<ui:define name="content">
+		<h:form id="formPricipal">
+			<p:outputPanel id="messagesIngresarLiquidacion">
+				<p:messages></p:messages>
+			</p:outputPanel>
+			
+				<div align="center">
+					<p:outputLabel value="#{asismedica['liquidacion.titulo']}"
+						styleClass="negrita" />
+					<p:separator id="customSeparator" style="width:auto;height:1px" />
+					<p:spacer height="15px;" />
+				</div>
+				<h:panelGrid columns="1">
+					<p:panel>
+						<h:panelGrid columns="2">
+							<h:outputLabel value="#{asismedica['lbl.cliente']}:"
+								styleClass="negrita" />
+							<p:inputText value="#{ingresarLiquidacionBean.cliente}" />
+
+							<h:outputLabel value="#{asismedica['lbl.ramo']}:"
+								styleClass="negrita" />
+							<p:inputText value="#{ingresarLiquidacionBean.ramo}" />
+
+
+
+							<h:outputLabel value="#{asismedica['lbl.poliza']}:"
+								styleClass="negrita" />
+							<p:inputText value="#{ingresarLiquidacionBean.poliza}" />
+
+
+
+							<p:outputLabel value="#{asismedica['lbl.asegurado']}:"
+								styleClass="negrita" />
+							<p:selectOneMenu value="#{ingresarLiquidacionBean.asegurado}"
+								effect="drop">
+								
+								<!-- <f:selectItems value="#{usuarioBacking.rolesItems}" itemValue="" /> -->
+							</p:selectOneMenu>
+
+
+
+							<h:outputLabel value="#{asismedica['lbl.empresa']}"
+								styleClass="negrita" />
+							<p:inputText value="#{ingresarLiquidacionBean.empresa}" />
+
+
+							<h:outputLabel value="#{asismedica['lbl.fechaIncurrencia']}:"
+								styleClass="negrita" />
+							<p:inputText value="#{ingresarLiquidacionBean.fechaIncurrencia}" />
+
+
+
+							<h:outputLabel value="#{asismedica['lbl.fechaNotificacion']}:"
+								styleClass="negrita" />
+							<p:inputText value="#{ingresarLiquidacionBean.fechaNotificacion}" />
+						</h:panelGrid>
+
+					</p:panel>
+				</h:panelGrid>
+
+				<p:spacer height="30px;" />
+			
+		</h:form>
+	</ui:define>
+</ui:composition>
+</html>
