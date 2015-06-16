@@ -48,6 +48,15 @@
 										<p:outputLabel value="#{polizaBean.identificacion}" />
 									</h:panelGrid>
 								</h:panelGroup>
+								<h:panelGrid columns="1">
+									<h:panelGrid columns="2" cellpadding="3">
+										<p:outputLabel value="#{emision['aseguradora.aseguradora']}" styleClass="negrita" />
+										<p:selectOneMenu value="#{polizaBean.aseguradora}" effect="drop">
+											<f:selectItem itemLabel="Seleccione Aseguradora" noSelectionOption="true" />
+											<f:selectItems value="#{polizaBacking.aseguradorasItems}" />
+										</p:selectOneMenu>
+									</h:panelGrid>
+								</h:panelGrid>
 							</p:panel>
 						</div>
 					</h:form>
@@ -111,7 +120,7 @@
 									<p:inputText value="#{polizaBean.financiacion}" />
 
 									<p:outputLabel value="#{emision['poliza.financiacion.atributo.subtotal']}" styleClass="negrita" />
-									<p:inputText value="#{polizaBean.subtotal}" disabled="true"/>
+									<p:inputText value="#{polizaBean.subtotal}" disabled="true" />
 
 									<p:outputLabel value="#{emision['poliza.financiacion.atributo.adicionalSegCampesino']}" styleClass="negrita" />
 									<p:inputText value="#{polizaBean.adicionalSegCampesino}" />
@@ -120,7 +129,7 @@
 									<p:inputText value="#{polizaBean.iva}" disabled="true" />
 
 									<p:outputLabel value="#{emision['poliza.financiacion.atributo.total']}" styleClass="negrita" />
-									<p:inputText value="#{polizaBean.total}" disabled="true"/>
+									<p:inputText value="#{polizaBean.total}" disabled="true" />
 								</h:panelGrid>
 
 							</p:panel>
@@ -279,11 +288,11 @@
 				<p:tab title="#{emision['poliza.titulo.infoPoliza']}">
 
 					<ui:insert name="ramoContent">BODY</ui:insert>
-					
+
 				</p:tab>
 			</p:accordionPanel>
 		</div>
 	</div>
-	
+
 </h:body>
 </html>
