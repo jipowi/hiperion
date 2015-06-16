@@ -131,6 +131,29 @@ public class PolizaBacking implements Serializable {
 			throw new HiperionException(e);
 		}
 	}
+	
+	/**
+	 * @return the aseguradorasItems
+	 * @throws HiperionException
+	 */
+	public List<SelectItem> getAseguradorasItems() throws HiperionException {
+
+		if (this.aseguradorasItems == null) {
+			this.aseguradorasItems = new ArrayList<SelectItem>();
+		}
+
+		Catalogo catalogo = catalogoService.consultarCatalogoById(HiperionMensajes.getInstancia().getLong(
+				"ec.gob.avila.hiperion.recursos.catalogoAseguradoras"));
+
+		List<DetalleCatalogo> aseguradoras = catalogo.getDetalleCatalogos();
+
+		for (DetalleCatalogo detalle : aseguradoras) {
+			SelectItem selectItem = new SelectItem(detalle.getCodDetalleCatalogo(), detalle.getDescDetCatalogo());
+			aseguradorasItems.add(selectItem);
+		}
+
+		return aseguradorasItems;
+	}
 
 	/**
 	 * 
@@ -595,25 +618,7 @@ public class PolizaBacking implements Serializable {
 		this.tarjetaCreditoItems = tarjetaCreditoItems;
 	}
 
-	/**
-	 * @return the aseguradorasItems
-	 */
-	public List<SelectItem> getAseguradorasItems() throws HiperionException {
-
-		this.aseguradorasItems = new ArrayList<SelectItem>();
-
-		Catalogo catalogo = catalogoService.consultarCatalogoById(HiperionMensajes.getInstancia().getLong(
-				"ec.gob.avila.hiperion.recursos.catalogoAseguradoras"));
-
-		List<DetalleCatalogo> aseguradoras = catalogo.getDetalleCatalogos();
-
-		for (DetalleCatalogo detalle : aseguradoras) {
-			SelectItem selectItem = new SelectItem(detalle.getCodDetalleCatalogo(), detalle.getDescDetCatalogo());
-			aseguradorasItems.add(selectItem);
-		}
-
-		return aseguradorasItems;
-	}
+	
 
 	/**
 	 * @param aseguradorasItems
