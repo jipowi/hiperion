@@ -79,7 +79,7 @@
 								<!-- CONDICIONES ESPECIALES -->
 								<p:tab title="#{emision['anexo.titulo.tab.cep']}">
 									<h:form id="condicionEspForm">
-										<p:dataTable value="#{accidentesPersonalesBacking.condicionesEspecialesDTO}" var="condicion" paginator="true" rows="4">
+										<p:dataTable value="#{accidentesPersonalesBacking.condicionesEspecialesDTO}" var="condicion" paginator="true" >
 											<p:column>
 												<f:facet name="header">
 													<h:outputLabel value="#{emision['anexo.titulo.cep']}" />
@@ -100,7 +100,7 @@
 								<!-- CLAUSULAS ADICIONALES -->
 								<p:tab title="#{emision['ap.tab.clausulasAdicionales']}">
 									<h:form id="clausulaAddEspForm">
-										<p:dataTable value="#{accidentesPersonalesBacking.clausulasAdicionalesDTO}" var="clausula" paginator="true" rows="4">
+										<p:dataTable value="#{accidentesPersonalesBacking.clausulasAdicionalesDTO}" var="clausula" paginator="true" >
 											<p:column>
 												<f:facet name="header">
 													<h:outputLabel value="#{emision['anexo.titulo.cad']}" />

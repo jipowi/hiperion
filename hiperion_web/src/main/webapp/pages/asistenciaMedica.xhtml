@@ -53,36 +53,66 @@
 							<!-- LIMITES Y COSTOS -->
 							<p:tab id="tabLimites" title="#{emision['asm.tab.limitesCostos']}">
 								<p:accordionPanel dynamic="true" cache="true" activeIndex="null">
-									<!-- Beneficios -->
-									<p:tab title="BENEFICIOS">
-										<h:form id="lcASMBenFormId">
-											<p:dataTable id="lcASMBenTblId" var="limCost" value="#{asistenciaMedicaBacking.obtenerLimitesCostosBeneficios()}" paginator="true" rows="4"
-												selection="#{asistenciaMedicaBacking.selectLimitesCostosBeneficios}">
-												<f:facet name="header">Transporte</f:facet>
-												<p:column selectionMode="multiple" style="width:2%" />
-												<p:column headerText="#{emision['anexo.ca.nombre']}">#{limCost.nombreDetalleAnexo}</p:column>
+									<!-- BENEFICIOS -->
+									<p:tab title="#{emision['anexo.titulo.beneficios']}">
+										<h:form id="beneficiosForm">
+											<p:dataTable value="#{asistenciaMedicaBacking.limitesCostosBeneficiosDTO}" var="beneficio" paginator="true">
+												<p:column>
+													<f:facet name="header">
+														<h:outputLabel value="#{emision['anexo.titulo.beneficios']}" />
+													</f:facet>
+													<h:outputText value="#{beneficio.limitesCostos}" />
+												</p:column>
+												<p:column>
+													<f:facet name="header">
+														<h:outputLabel value="#{emision['lbl.seleccion']}" />
+													</f:facet>
+													<div align="center">
+														<p:selectBooleanCheckbox value="#{beneficio.seleccion}" />
+													</div>
+												</p:column>
 											</p:dataTable>
 										</h:form>
 									</p:tab>
 									<!-- Beneficios Adicionales -->
 									<p:tab title="BENEFICIOS ADICIONALES">
-										<h:form id="lcASMBenAddFormId">
-											<p:dataTable id="lcASMBenAddTblId" var="limCost" value="#{asistenciaMedicaBacking.obtenerLimitesCostosBenAdd()}" paginator="true" rows="4"
-												selection="#{asistenciaMedicaBacking.selectLimitesCostosBenAdd}">
-												<f:facet name="header">Transporte</f:facet>
-												<p:column selectionMode="multiple" style="width:2%" />
-												<p:column headerText="#{emision['anexo.ca.nombre']}">#{limCost.nombreDetalleAnexo}</p:column>
+										<h:form id="beneficiosAddForm">
+											<p:dataTable value="#{asistenciaMedicaBacking.limitesCostosBenAddDTO}" var="beneficio" paginator="true">
+												<p:column>
+													<f:facet name="header">
+														<h:outputLabel value="#{emision['anexo.titulo.beneficiosAdd']}" />
+													</f:facet>
+													<h:outputText value="#{beneficio.limitesCostos}" />
+												</p:column>
+												<p:column>
+													<f:facet name="header">
+														<h:outputLabel value="#{emision['lbl.seleccion']}" />
+													</f:facet>
+													<div align="center">
+														<p:selectBooleanCheckbox value="#{beneficio.seleccion}" />
+													</div>
+												</p:column>
 											</p:dataTable>
 										</h:form>
 									</p:tab>
 									<!-- Maternidad -->
 									<p:tab title="MATERNIDAD">
-										<h:form id="lcASMMatFormId">
-											<p:dataTable id="lcASMMatTblId" var="limCost" value="#{asistenciaMedicaBacking.obtenerLimitesCostosMaternidad()}" paginator="true" rows="4"
-												selection="#{asistenciaMedicaBacking.selectLimitesCostosMaternidad}">
-												<f:facet name="header">Transporte</f:facet>
-												<p:column selectionMode="multiple" style="width:2%" />
-												<p:column headerText="#{emision['anexo.ca.nombre']}">#{limCost.nombreDetalleAnexo}</p:column>
+										<h:form id="maternidadForm">
+											<p:dataTable value="#{asistenciaMedicaBacking.limitesCostosMaternidadDTO}" var="beneficio" paginator="true">
+												<p:column>
+													<f:facet name="header">
+														<h:outputLabel value="#{emision['anexo.titulo.maternidad']}" />
+													</f:facet>
+													<h:outputText value="#{beneficio.limitesCostos}" />
+												</p:column>
+												<p:column>
+													<f:facet name="header">
+														<h:outputLabel value="#{emision['lbl.seleccion']}" />
+													</f:facet>
+													<div align="center">
+														<p:selectBooleanCheckbox value="#{beneficio.seleccion}" />
+													</div>
+												</p:column>
 											</p:dataTable>
 										</h:form>
 									</p:tab>
@@ -448,7 +478,7 @@
 														<p:calendar value="#{ramoAsistenciaMedicaBean.fechaNacimientoDependiente}" pattern="dd/MM/yyyy HH:mm" locale="es" navigator="true" />
 
 														<h:outputLabel value="#{emision['asm.modalidad.cedula']}" styleClass="negrita" />
-														<p:inputText id="idCedula" value="#{ramoAsistenciaMedicaBean.cedulaDependiente}" validatorMessage="#{emision['msg.cedula.error']}" >
+														<p:inputText id="idCedula" value="#{ramoAsistenciaMedicaBean.cedulaDependiente}" validatorMessage="#{emision['msg.cedula.error']}">
 															<f:validateRegex pattern="#{emision['msg.cedula.ok']}" />
 														</p:inputText>
 														<h:outputLabel value="#{emision['asm.modalidad.edad']}" styleClass="negrita" />
@@ -541,7 +571,7 @@
 
 														<h:outputLabel value="#{emision['asm.modalidad.cedula']}" styleClass="negrita" />
 														<p:inputText id="idCedula" value="#{ramoAsistenciaMedicaBean.cedulaFamilia}" validatorMessage="#{emision['msg.cedula.error']}">
-														 <f:validateRegex pattern="#{emision['msg.cedula.ok']}" />
+															<f:validateRegex pattern="#{emision['msg.cedula.ok']}" />
 														</p:inputText>
 														<h:outputLabel value="#{emision['asm.modalidad.edad']}" styleClass="negrita" />
 														<p:inputText value="#{ramoAsistenciaMedicaBean.edadFamilia}" />
