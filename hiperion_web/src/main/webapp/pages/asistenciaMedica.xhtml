@@ -675,5 +675,27 @@
 			</ui:define>
 		</ui:decorate>
 	</ui:define>
+	<ui:define name="buttons">
+		<h:form>
+			<h:panelGrid columns="1">
+				<h:commandLink action="hiperion.xhtml">
+					<h:graphicImage name="home.png" library="img" />
+				</h:commandLink>
+				<p:commandLink title="Guardar Informacion poliza" actionListener="#{agropecuarioBacking.setearRamo()}">
+					<h:graphicImage name="save.png" library="img" />
+				</p:commandLink>
+				<p:commandLink onclick="help.show()">
+					<h:graphicImage name="helpII.png" library="img" />
+				</p:commandLink>
+			</h:panelGrid>
+			<p:dialog header="Ramo Agropecuario" widgetVar="help" showEffect="explode" hideEffect="bounce" height="100">
+				<h:panelGrid columns="1">
+					<h:outputText value="Seguro agricola" />
+					<h:outputText value="Para soporte en cualqueira de las funcionalidades" />
+					<h:outputText value="Por favor comuniquese con Franklin Pozo, Administradr del Sitema Hiperion" />
+				</h:panelGrid>
+			</p:dialog>
+		</h:form>
+	</ui:define>
 </ui:composition>
 </html>
