@@ -37,7 +37,7 @@ import javax.persistence.NamedQuery;
 		@NamedQuery(name = "Rol.findByUsuario", query = "SELECT r FROM Rol r WHERE r.usuario.idUsuario =:idUsuario"),
 		// DETALLE_ANEXO
 		@NamedQuery(name = "DetalleAnexo.findByRamoAndTitulo", query = "SELECT d FROM DetalleAnexo d WHERE d.ramo.idRamo=:idRamo AND d.titulo.idTitulo=:idTitulo"),
-
+		@NamedQuery(name = "Titulo.findByIdDetalleAnexo", query = "SELECT d.titulo FROM DetalleAnexo d WHERE d.idDetalleAnexo =:idDetalleAnexo"),
 		// MENU
 		@NamedQuery(name = "Menu.findByRol", query = "SELECT m FROM RolMenu m WHERE m.rol.idRol =:idRol") })
 public class Consultas implements Serializable {

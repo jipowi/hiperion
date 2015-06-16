@@ -42,6 +42,7 @@ public class LimitesCostosAsm extends Auditoria implements Serializable {
 	public LimitesCostosAsm() {
 	}
 
+	
 	public Integer getIdLimiteCostoAsm() {
 		return this.idLimiteCostoAsm;
 	}

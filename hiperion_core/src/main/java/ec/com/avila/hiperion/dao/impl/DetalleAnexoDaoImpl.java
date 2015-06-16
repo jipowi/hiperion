@@ -10,6 +10,7 @@ import javax.persistence.Query;
 import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.dao.DetalleAnexoDao;
 import ec.com.avila.hiperion.emision.entities.DetalleAnexo;
+import ec.com.avila.hiperion.emision.entities.Titulo;
 
 /**
  * 
@@ -39,6 +40,20 @@ public class DetalleAnexoDaoImpl extends GenericDAOImpl<DetalleAnexo, Long> impl
 		List<DetalleAnexo> detalles = query.getResultList();
 
 		return detalles;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see ec.com.avila.hiperion.dao.DetalleAnexoDao#consultarIdTitulo(java.lang.Long)
+	 */
+	@Override
+	public Long consultarIdTitulo(Long idDetalleAnexo) throws HiperionException {
+		Query query = em.createNamedQuery("Titulo.findByIdDetalleAnexo");
+		query.setParameter("idDetalleAnexo", idDetalleAnexo);
+		Titulo titulo = (Titulo) query.getSingleResult();
+
+		return titulo.getIdTitulo();
 	}
 
 }

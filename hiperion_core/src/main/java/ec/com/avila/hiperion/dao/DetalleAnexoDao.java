@@ -36,4 +36,17 @@ public interface DetalleAnexoDao extends GenericDAO<DetalleAnexo, Long> {
 	 */
 	public List<DetalleAnexo> consultarDetallesByTitulo(Long idRamo, Long idTitulo) throws HiperionException;
 
+	/**
+	 * 
+	 * <b> Permite consultar el id del Titulo por medio del idDetalleAnexo </b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: 16/06/2015]
+	 * </p>
+	 * 
+	 * @param idDetalleAnexo
+	 * @return
+	 * @throws HiperionException
+	 */
+	public Long consultarIdTitulo(Long idDetalleAnexo) throws HiperionException;
+
 }
