@@ -31,9 +31,6 @@ public class CobertCascoAereo extends Auditoria implements Serializable {
 	@Column(name = "cobertura_aereo")
 	private String coberturaAereo;
 
-	@Column(name = "id_casco_aereo")
-	private Integer idCascoAereo;
-
 	// bi-directional many-to-one association to RamoCascoAereo
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_casco_aereo")
@@ -73,12 +70,6 @@ public class CobertCascoAereo extends Auditoria implements Serializable {
 		this.ramoCascoAereo = ramoCascoAereo;
 	}
 
-	public Integer getIdCascoAereo() {
-		return this.idCascoAereo;
-	}
-
-	public void setIdCascoAereo(Integer idCascoAereo) {
-		this.idCascoAereo = idCascoAereo;
-	}
+	
 
 }
