@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      PostgreSQL 8                                 */
-/* Created on:     09/06/2015 21:48:39                          */
+/* Created on:     11/06/2015 15:54:48                          */
 /*==============================================================*/
 
 
@@ -2328,6 +2328,9 @@ create table OBJ_ASEG_AGROPECUARIO (
    FECHA_CREACION       DATE                 not null,
    FECHA_ACTUALIZACION  DATE                 null,
    ESTADO               TEXT                 not null,
+   VALOR_ASEGURADO_AGRO DECIMAL              null,
+   DETALLE_AGRO         TEXT                 null,
+   UBICACION_AGRO       TEXT                 null,
    constraint PK_OBJ_ASEG_AGROPECUARIO primary key (ID_OBJ_AGROPECUARIO)
 );
 
@@ -2915,9 +2918,6 @@ create table RAMO_AGROPECUARIO (
    ID_POLIZA            INT4                 null,
    TASA_AGRO            DECIMAL              null,
    DEDUC_AGRO           DECIMAL              null,
-   VALOR_ASEGURADO_AGRO DECIMAL              null,
-   DETALLE_AGRO         TEXT                 null,
-   UBICACION_AGRO       TEXT                 null,
    GANADERO_PLANTACION  INT4                 null,
    ID_USUARIO_CREACION  INT4                 not null,
    ID_USUARIO_ACTUALIZACION INT4                 null,

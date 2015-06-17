@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?><?mso-infoPathSolution solutionVersion="1.0.0.11" productVersion="15.0.0" PIVersion="1.0.0.0" href="file:///G:\Jipovi%20Solution\Formulario%20trabajo.xsn" name="urn:schemas-microsoft-com:office:infopath:Formulario-trabajo:-myXSD-2015-03-06T15-32-34" ?><?mso-application progid="InfoPath.Document" versionProgid="InfoPath.Document.4"?><my:misCampos xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:my="http://schemas.microsoft.com/office/infopath/2003/myXSD/2015-03-06T15:32:34" xmlns:xd="http://schemas.microsoft.com/office/infopath/2003" xml:lang="en-us">
+	<my:grupo1></my:grupo1>
+	<my:campo1></my:campo1>
+	<my:txtlider>Jonathan Tapia</my:txtlider>
+	<my:txttarea>Realización de pantallas en pencil</my:txttarea>
+	<my:txtdescripcion>Se realizaron las pantallas en Pencil del área de asistencia médica.</my:txtdescripcion>
+	<my:grupo2>
+		<my:grupo3>
+			<my:txttotal>6</my:txttotal>
+			<my:txtvalorh></my:txtvalorh>
+			<my:campo8></my:campo8>
+			<my:txtvrecibir>0</my:txtvrecibir>
+			<my:dateinicio>2015-04-08</my:dateinicio>
+			<my:txtinicio>08:00:00-05:00</my:txtinicio>
+			<my:datefin>2015-04-08</my:datefin>
+			<my:txtfin>14:00:00-05:00</my:txtfin>
+			<my:campo9></my:campo9>
+			<my:campo10></my:campo10>
+			<my:campo16></my:campo16>
+		</my:grupo3>
+	</my:grupo2>
+	<my:horas></my:horas>
+</my:misCampos>
