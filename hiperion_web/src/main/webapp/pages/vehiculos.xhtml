@@ -266,7 +266,7 @@
 							</p:tab>
 							<p:tab title="#{emision['vehiculo.tab.clausulasAdicionales']}">
 								<h:form id="clausulaAddForm">
-									<p:dataTable var="clausula" value="#{vehiculosBacking.clausulasAdicionalesDTO}" paginator="true" rows="4">
+									<p:dataTable value="#{vehiculosBacking.clausulasAdicionalesDTO}" var="clausula" paginator="true" rows="4">
 										<p:column>
 											<f:facet name="header">
 												<h:outputLabel value="#{emision['anexo.titulo.cad']}" />
@@ -284,7 +284,26 @@
 									</p:dataTable>
 								</h:form>
 							</p:tab>
-							<p:tab title="#{emision['vehiculo.tab.condicionesEspeciales']}"></p:tab>
+							<p:tab title="#{emision['vehiculo.tab.condicionesEspeciales']}">
+								<h:form id="condicionesForm">
+									<p:dataTable value="#{vehiculosBacking.condicionesEspecialesDTO}" var="condicion" paginator="true" rows="4">
+										<p:column>
+											<f:facet name="header">
+												<h:outputLabel value="#{emision['anexo.titulo.cep']}" />
+											</f:facet>
+											<h:outputText value="#{condicion.condicionEspecial}" />
+										</p:column>
+										<p:column>
+											<f:facet name="header">
+												<h:outputLabel value="#{emision['lbl.seleccion']}" />
+											</f:facet>
+											<div align="center">
+												<p:selectBooleanCheckbox value="#{condicion.condicionEspecial}" />
+											</div>
+										</p:column>
+									</p:dataTable>
+								</h:form>
+							</p:tab>
 						</p:tabView>
 					</ui:define>
 				</ui:decorate>

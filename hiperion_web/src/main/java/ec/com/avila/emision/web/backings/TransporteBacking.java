@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
@@ -21,10 +22,18 @@ import org.apache.log4j.Logger;
 
 import ec.com.avila.emision.web.beans.RamoTransporteBean;
 import ec.com.avila.hiperion.comun.HiperionException;
+import ec.com.avila.hiperion.dto.ClausulaAdicionalDTO;
+import ec.com.avila.hiperion.dto.CoberturaDTO;
+import ec.com.avila.hiperion.dto.CondicionEspecialDTO;
 import ec.com.avila.hiperion.dto.ObjetoAseguradoTransporteDTO;
 import ec.com.avila.hiperion.emision.entities.Catalogo;
+import ec.com.avila.hiperion.emision.entities.ClausulasAddTran;
+import ec.com.avila.hiperion.emision.entities.CobertTran;
+import ec.com.avila.hiperion.emision.entities.CondEspTran;
+import ec.com.avila.hiperion.emision.entities.DetalleAnexo;
 import ec.com.avila.hiperion.emision.entities.DetalleCatalogo;
 import ec.com.avila.hiperion.emision.entities.ObjAsegTransporte;
+import ec.com.avila.hiperion.emision.entities.Ramo;
 import ec.com.avila.hiperion.emision.entities.RamoTransporte;
 import ec.com.avila.hiperion.emision.entities.Usuario;
 import ec.com.avila.hiperion.enumeration.EstadoEnum;
@@ -61,7 +70,15 @@ public class TransporteBacking implements Serializable {
 	@ManagedProperty(value = "#{usuarioBean}")
 	private UsuarioBean usuarioBean;
 
+	private List<DetalleAnexo> anexos;
+
 	private List<SelectItem> tipoTransporteItems;
+	private List<ClausulasAddTran> clausulasAdicionales;
+	private List<ClausulaAdicionalDTO> clausulasAdicionalesDTO = new ArrayList<>();
+	private List<CobertTran> coberturas;
+	private List<CoberturaDTO> coberturasDTO = new ArrayList<>();
+	private List<CondEspTran> condicionesEspeciales;
+	private List<CondicionEspecialDTO> condicionesEspecialesDTO = new ArrayList<>();
 
 	RamoTransporte ramoTransporte = new RamoTransporte();
 
@@ -75,6 +92,121 @@ public class TransporteBacking implements Serializable {
 	private RamoTransporteService ramoTransporteService;
 
 	Logger log = Logger.getLogger(TransporteBacking.class);
+
+	@PostConstruct
+	public void inicializar() {
+		try {
+
+			Ramo ramo = ramoService.consultarRamoPorCodigo("TR");
+
+			anexos = ramo.getDetalleAnexos();
+
+			obtenerClausulasAdicionales();
+			obtenerCoberturas();
+			obtenerCondicionesEspeciales();
+
+		} catch (HiperionException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * 
+	 * <b> Permite obtener las coberturas del ramo de Transporte. </b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: 17/06/2015]
+	 * </p>
+	 * 
+	 * @param anexos
+	 */
+	public void obtenerCoberturas() {
+
+		coberturas = new ArrayList<CobertTran>();
+		if (anexos != null && anexos.size() > 0) {
+			for (DetalleAnexo anexo : anexos) {
+				if (anexo.getAnexo().getIdAnexo() == 2) {
+					CobertTran cobertura = new CobertTran();
+					cobertura.setCoberturaTransporte(anexo.getNombreDetalleAnexo());
+
+					coberturas.add(cobertura);
+				}
+
+			}
+
+			for (CobertTran cobertura : coberturas) {
+				CoberturaDTO coberturaDTO = new CoberturaDTO();
+				coberturaDTO.setCobertura(cobertura.getCoberturaTransporte());
+				coberturaDTO.setSeleccion(false);
+
+				coberturasDTO.add(coberturaDTO);
+			}
+		}
+
+	}
+
+	/**
+	 * 
+	 * <b> Permite obtener las clausulas adicionales del ramo Transporte. </b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: 17/06/2015]
+	 * </p>
+	 * 
+	 */
+	public void obtenerClausulasAdicionales() {
+		clausulasAdicionales = new ArrayList<ClausulasAddTran>();
+		if (anexos != null && anexos.size() > 0) {
+			for (DetalleAnexo anexo : anexos) {
+				if (anexo.getAnexo().getIdAnexo() == 1) {
+					ClausulasAddTran clausula = new ClausulasAddTran();
+					clausula.setClausulaTrans(anexo.getNombreDetalleAnexo());
+
+					clausulasAdicionales.add(clausula);
+				}
+
+			}
+			for (ClausulasAddTran clausula : clausulasAdicionales) {
+				ClausulaAdicionalDTO clausulaDTO = new ClausulaAdicionalDTO();
+				clausulaDTO.setClausula(clausula.getClausulaTrans());
+				clausulaDTO.setSeleccion(false);
+
+				clausulasAdicionalesDTO.add(clausulaDTO);
+			}
+
+		}
+
+	}
+
+	/**
+	 * 
+	 * <b> Permite obtener las condiciones especiales del ramo Transporte. </b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: 17/06/2015]
+	 * </p>
+	 * 
+	 */
+	public void obtenerCondicionesEspeciales() {
+		condicionesEspeciales = new ArrayList<CondEspTran>();
+		if (anexos != null && anexos.size() > 0) {
+			for (DetalleAnexo anexo : anexos) {
+				if (anexo.getAnexo().getIdAnexo() == 3) {
+					CondEspTran condicion = new CondEspTran();
+					condicion.setCondicionEspTrans(anexo.getNombreDetalleAnexo());
+
+					condicionesEspeciales.add(condicion);
+				}
+
+			}
+			for (CondEspTran condicion : condicionesEspeciales) {
+				CondicionEspecialDTO condicionDTO = new CondicionEspecialDTO();
+				condicionDTO.setCondicionEspecial(condicion.getCondicionEspTrans());
+				condicionDTO.setSeleccion(false);
+
+				condicionesEspecialesDTO.add(condicionDTO);
+			}
+
+		}
+
+	}
 
 	/**
 	 * 
@@ -218,9 +350,9 @@ public class TransporteBacking implements Serializable {
 	public void setTipoTransporteItems(List<SelectItem> tipoTransporteItems) {
 		this.tipoTransporteItems = tipoTransporteItems;
 	}
-	
-	public void descargarTransportePDF()throws HiperionException {
-		
+
+	public void descargarTransportePDF() throws HiperionException {
+
 		try {
 			Map<String, Object> parametrosReporte = new HashMap<String, Object>();
 
@@ -231,10 +363,100 @@ public class TransporteBacking implements Serializable {
 
 			JsfUtil.setSessionAttribute(ConstantesUtil.PARAMETROS_DESCARGADOR_IDENTIFICADOR, parametrosReporte);
 			JsfUtil.downloadFile();
-		}catch(Exception e){
+		} catch (Exception e) {
 			log.error("Error al momento generar el documento Ramo Transporte en PDF", e);
 			throw new HiperionException(e);
 		}
+	}
+
+	/**
+	 * @return the clausulasAdicionales
+	 */
+	public List<ClausulasAddTran> getClausulasAdicionales() {
+		return clausulasAdicionales;
+	}
+
+	/**
+	 * @param clausulasAdicionales
+	 *            the clausulasAdicionales to set
+	 */
+	public void setClausulasAdicionales(List<ClausulasAddTran> clausulasAdicionales) {
+		this.clausulasAdicionales = clausulasAdicionales;
+	}
+
+	/**
+	 * @return the clausulasAdicionalesDTO
+	 */
+	public List<ClausulaAdicionalDTO> getClausulasAdicionalesDTO() {
+		return clausulasAdicionalesDTO;
+	}
+
+	/**
+	 * @param clausulasAdicionalesDTO
+	 *            the clausulasAdicionalesDTO to set
+	 */
+	public void setClausulasAdicionalesDTO(List<ClausulaAdicionalDTO> clausulasAdicionalesDTO) {
+		this.clausulasAdicionalesDTO = clausulasAdicionalesDTO;
+	}
+
+	/**
+	 * @return the coberturas
+	 */
+	public List<CobertTran> getCoberturas() {
+		return coberturas;
+	}
+
+	/**
+	 * @param coberturas
+	 *            the coberturas to set
+	 */
+	public void setCoberturas(List<CobertTran> coberturas) {
+		this.coberturas = coberturas;
+	}
+
+	/**
+	 * @return the coberturasDTO
+	 */
+	public List<CoberturaDTO> getCoberturasDTO() {
+		return coberturasDTO;
+	}
+
+	/**
+	 * @param coberturasDTO
+	 *            the coberturasDTO to set
+	 */
+	public void setCoberturasDTO(List<CoberturaDTO> coberturasDTO) {
+		this.coberturasDTO = coberturasDTO;
+	}
+
+	/**
+	 * @return the condicionesEspeciales
+	 */
+	public List<CondEspTran> getCondicionesEspeciales() {
+		return condicionesEspeciales;
+	}
+
+	/**
+	 * @param condicionesEspeciales
+	 *            the condicionesEspeciales to set
+	 */
+	public void setCondicionesEspeciales(List<CondEspTran> condicionesEspeciales) {
+		this.condicionesEspeciales = condicionesEspeciales;
+	}
+
+	/**
+	 * @return the condicionesEspecialesDTO
+	 */
+	public List<CondicionEspecialDTO> getCondicionesEspecialesDTO() {
+		return condicionesEspecialesDTO;
+	}
+
+	/**
+	 * @param condicionesEspecialesDTO
+	 *            the condicionesEspecialesDTO to set
+	 */
+	public void setCondicionesEspecialesDTO(List<CondicionEspecialDTO> condicionesEspecialesDTO) {
+		this.condicionesEspecialesDTO = condicionesEspecialesDTO;
 	}
 
 }

@@ -63,7 +63,7 @@
 													<p:commandButton id="guardarTransporteBtnId" actionListener="#{transporteBacking.setearInfRammo()}" icon="icon-save"
 														value="#{emision['boton.aceptar']}" title="Guardar" update="formPrincipal, ramoTransporte" />
 													<p:commandButton id="cancelarTransporteBtnId" icon="icon-cancel" value="#{emision['boton.cancelar']}" process="@this" title="Cancelar" />
-													
+
 													<!-- DESCARGAR DOCUMENTOS -->
 													<h:panelGrid columns="2">
 														<p:commandLink title="Descargar syllabus" actionListener="#{transporteBacking.descargarTransportePDF()}">
@@ -243,10 +243,67 @@
 								</div>
 							</p:tab>
 							<!-- COBERTURAS -->
-							<p:tab title="#{emision['emision.ramo.transporte.coberturas']}"></p:tab>
-							<p:tab title="#{emision['emision.ramo.transporte.clausulas']}">
+							<p:tab title="#{emision['emision.ramo.transporte.coberturas']}">
+								<h:form id="coberturaForm">
+									<p:dataTable value="#{transporteBacking.coberturasDTO}" var="cobertura" paginator="true" rows="4">
+										<p:column>
+											<f:facet name="header">
+												<h:outputLabel value="#{emision['anexo.titulo.cob']}" />
+											</f:facet>
+											<h:outputText value="#{cobertura.cobertura}" />
+										</p:column>
+										<p:column>
+											<f:facet name="header">
+												<h:outputLabel value="#{emision['lbl.seleccion']}" />
+											</f:facet>
+											<div align="center">
+												<p:selectBooleanCheckbox value="#{cobertura.seleccion}" />
+											</div>
+										</p:column>
+									</p:dataTable>
+								</h:form>
 							</p:tab>
+							<!-- CLAUSULAS ADD -->
+							<p:tab title="#{emision['emision.ramo.transporte.clausulas']}">
+								<h:form id="clausulaAddForm">
+									<p:dataTable value="#{transporteBacking.clausulasAdicionalesDTO}" var="clausula" paginator="true" rows="4">
+										<p:column>
+											<f:facet name="header">
+												<h:outputLabel value="#{emision['anexo.titulo.cad']}" />
+											</f:facet>
+											<h:outputText value="#{clausula.clausula}" />
+										</p:column>
+										<p:column>
+											<f:facet name="header">
+												<h:outputLabel value="#{emision['lbl.seleccion']}" />
+											</f:facet>
+											<div align="center">
+												<p:selectBooleanCheckbox value="#{clausula.seleccion}" />
+											</div>
+										</p:column>
+									</p:dataTable>
+								</h:form>
+							</p:tab>
+							<!-- CONDICIONES ESPECIALES -->
 							<p:tab title="#{emision['emision.ramo.transporte.condiciones']}">
+								<h:form id="condicionesForm">
+									<p:dataTable value="#{transporteBacking.condicionesEspecialesDTO}" var="condicion" paginator="true" rows="4">
+										<p:column>
+											<f:facet name="header">
+												<h:outputLabel value="#{emision['anexo.titulo.cep']}" />
+											</f:facet>
+											<h:outputText value="#{condicion.condicionEspecial}" />
+										</p:column>
+										<p:column>
+											<f:facet name="header">
+												<h:outputLabel value="#{emision['lbl.seleccion']}" />
+											</f:facet>
+											<div align="center">
+												<p:selectBooleanCheckbox value="#{condicion.condicionEspecial}" />
+											</div>
+										</p:column>
+									</p:dataTable>
+								</h:form>
 							</p:tab>
 
 						</p:tabView>

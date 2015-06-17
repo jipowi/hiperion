@@ -103,6 +103,7 @@ public class VehiculosBacking implements Serializable {
 			anexos = ramo.getDetalleAnexos();
 
 			obtenerClausulasAdicionales();
+			obtenerCondicionesEspeciales();
 
 		} catch (HiperionException e) {
 			e.printStackTrace();
@@ -135,6 +136,38 @@ public class VehiculosBacking implements Serializable {
 				clausulaDTO.setSeleccion(false);
 
 				clausulasAdicionalesDTO.add(clausulaDTO);
+			}
+
+		}
+
+	}
+
+	/**
+	 * 
+	 * <b> Permite obtener las condiciones especiales del ramo Vehiculos. </b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: 17/06/2015]
+	 * </p>
+	 * 
+	 */
+	public void obtenerCondicionesEspeciales() {
+		condicionesEspeciales = new ArrayList<CondEspVh>();
+		if (anexos != null && anexos.size() > 0) {
+			for (DetalleAnexo anexo : anexos) {
+				if (anexo.getAnexo().getIdAnexo() == 3) {
+					CondEspVh condicion = new CondEspVh();
+					condicion.setCondicionEspVh(anexo.getNombreDetalleAnexo());
+
+					condicionesEspeciales.add(condicion);
+				}
+
+			}
+			for (CondEspVh condicion : condicionesEspeciales) {
+				CondicionEspecialDTO condicionDTO = new CondicionEspecialDTO();
+				condicionDTO.setCondicionEspecial(condicion.getCondicionEspVh());
+				condicionDTO.setSeleccion(false);
+
+				condicionesEspecialesDTO.add(condicionDTO);
 			}
 
 		}
