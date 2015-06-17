@@ -345,7 +345,7 @@ public class AgropecuarioBacking implements Serializable {
 
 			ramoAgropecuarioService.guardarAgropecuario(agropecuario);
 
-			MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.setearInformacion"));
+			MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.save"));
 
 		} catch (HiperionException e) {
 			log.error("Error al momento de guardar el ramo agropecuario", e);
