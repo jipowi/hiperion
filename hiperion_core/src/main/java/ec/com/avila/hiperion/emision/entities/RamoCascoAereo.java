@@ -83,6 +83,10 @@ public class RamoCascoAereo extends Auditoria implements Serializable {
 	@OneToMany(mappedBy = "ramoCascoAereo")
 	private List<CobertAddCascoAereo> cobertAddCascoAereos;
 
+	// bi-directional many-to-one association to CobertCascoAereo
+	@OneToMany(mappedBy = "ramoCascoAereo")
+	private List<CobertCascoAereo> cobertCascoAereo;
+
 	// bi-directional many-to-one association to ExtrasCascoAereo
 	@OneToMany(mappedBy = "ramoCascoAereo")
 	private List<ExtrasCascoAereo> extrasCascoAereos;
@@ -295,6 +299,21 @@ public class RamoCascoAereo extends Auditoria implements Serializable {
 
 	public void setPoliza(Poliza poliza) {
 		this.poliza = poliza;
+	}
+
+	/**
+	 * @return the cobertCascoAereo
+	 */
+	public List<CobertCascoAereo> getCobertCascoAereo() {
+		return cobertCascoAereo;
+	}
+
+	/**
+	 * @param cobertCascoAereo
+	 *            the cobertCascoAereo to set
+	 */
+	public void setCobertCascoAereo(List<CobertCascoAereo> cobertCascoAereo) {
+		this.cobertCascoAereo = cobertCascoAereo;
 	}
 
 }

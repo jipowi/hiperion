@@ -28,8 +28,8 @@ public class CobertAddCascoAereo extends Auditoria implements Serializable {
 	@Column(name = "id_cobert_ad_casco_aereo")
 	private Integer idCobertAdCascoAereo;
 
-	@Column(name = "cobertura_aereo")
-	private String coberturaAereo;
+	@Column(name = "cobertura_add_casco_ereo")
+	private String coberturaAddCascoAereo;
 
 	// bi-directional many-to-one association to RamoCascoAereo
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -47,12 +47,19 @@ public class CobertAddCascoAereo extends Auditoria implements Serializable {
 		this.idCobertAdCascoAereo = idCobertAdCascoAereo;
 	}
 
-	public String getCoberturaAereo() {
-		return this.coberturaAereo;
+	/**
+	 * @return the coberturaAddCascoAereo
+	 */
+	public String getCoberturaAddCascoAereo() {
+		return coberturaAddCascoAereo;
 	}
 
-	public void setCoberturaAereo(String coberturaAereo) {
-		this.coberturaAereo = coberturaAereo;
+	/**
+	 * @param coberturaAddCascoAereo
+	 *            the coberturaAddCascoAereo to set
+	 */
+	public void setCoberturaAddCascoAereo(String coberturaAddCascoAereo) {
+		this.coberturaAddCascoAereo = coberturaAddCascoAereo;
 	}
 
 	public RamoCascoAereo getRamoCascoAereo() {
