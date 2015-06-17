@@ -1,6 +1,3 @@
-/**
- * 
- */
 package ec.com.avila.emision.web.backings;
 
 import java.io.Serializable;
@@ -10,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
@@ -20,8 +18,14 @@ import org.apache.log4j.Logger;
 
 import ec.com.avila.emision.web.beans.RamoVehiculoBean;
 import ec.com.avila.hiperion.comun.HiperionException;
+import ec.com.avila.hiperion.dto.ClausulaAdicionalDTO;
+import ec.com.avila.hiperion.dto.CondicionEspecialDTO;
 import ec.com.avila.hiperion.emision.entities.Catalogo;
+import ec.com.avila.hiperion.emision.entities.ClausulasAddVh;
+import ec.com.avila.hiperion.emision.entities.CondEspVh;
+import ec.com.avila.hiperion.emision.entities.DetalleAnexo;
 import ec.com.avila.hiperion.emision.entities.DetalleCatalogo;
+import ec.com.avila.hiperion.emision.entities.Ramo;
 import ec.com.avila.hiperion.emision.entities.RamoVehiculo;
 import ec.com.avila.hiperion.emision.entities.Usuario;
 import ec.com.avila.hiperion.enumeration.EstadoEnum;
@@ -39,7 +43,7 @@ import ec.com.avila.hiperion.web.util.JsfUtil;
 import ec.com.avila.hiperion.web.util.MessagesController;
 
 /**
- * <b>Clase Baking que permite gestionar la informaci&oacute;n que se maneje en las p&acute;ginas web que utilicen el Ramo Vehiculo. </b>
+ * <b>Clase Baking que permite gestionar la informacion que se maneje en las paginas web que utilicen el Ramo Vehiculo. </b>
  * 
  * @author Dario Vinueza
  * @version 1.0,17/02/2014
@@ -80,10 +84,62 @@ public class VehiculosBacking implements Serializable {
 	private List<SelectItem> claseVehiculoItems;
 	private List<SelectItem> usoVehiculoItems;
 	private List<SelectItem> modeloItems;
+	private List<DetalleAnexo> anexos;
+	private List<ClausulasAddVh> clausulasAdicionales;
+	private List<ClausulaAdicionalDTO> clausulasAdicionalesDTO = new ArrayList<>();
+	private List<CondEspVh> condicionesEspeciales;
+	private List<CondicionEspecialDTO> condicionesEspecialesDTO = new ArrayList<>();
 
 	private Boolean activarMarcaAuto;
 	private Boolean activarMarcaPesado;
 	private Boolean activarMarcaMoto;
+
+	@PostConstruct
+	public void inicializar() {
+		try {
+
+			Ramo ramo = ramoService.consultarRamoPorCodigo("VH");
+
+			anexos = ramo.getDetalleAnexos();
+
+			obtenerClausulasAdicionales();
+
+		} catch (HiperionException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * 
+	 * <b> Permite obtener las clausulas adicionales del ramo Vehiculos. </b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: 17/06/2015]
+	 * </p>
+	 * 
+	 */
+	public void obtenerClausulasAdicionales() {
+		clausulasAdicionales = new ArrayList<ClausulasAddVh>();
+		if (anexos != null && anexos.size() > 0) {
+			for (DetalleAnexo anexo : anexos) {
+				if (anexo.getAnexo().getIdAnexo() == 1) {
+					ClausulasAddVh clausula = new ClausulasAddVh();
+					clausula.setClausulaAddVh(anexo.getNombreDetalleAnexo());
+
+					clausulasAdicionales.add(clausula);
+				}
+
+			}
+			for (ClausulasAddVh clausula : clausulasAdicionales) {
+				ClausulaAdicionalDTO clausulaDTO = new ClausulaAdicionalDTO();
+				clausulaDTO.setClausula(clausula.getClausulaAddVh());
+				clausulaDTO.setSeleccion(false);
+
+				clausulasAdicionalesDTO.add(clausulaDTO);
+			}
+
+		}
+
+	}
 
 	/**
 	 * 
@@ -427,6 +483,66 @@ public class VehiculosBacking implements Serializable {
 			throw new HiperionException(e);
 		}
 
+	}
+
+	/**
+	 * @return the clausulasAdicionales
+	 */
+	public List<ClausulasAddVh> getClausulasAdicionales() {
+		return clausulasAdicionales;
+	}
+
+	/**
+	 * @param clausulasAdicionales
+	 *            the clausulasAdicionales to set
+	 */
+	public void setClausulasAdicionales(List<ClausulasAddVh> clausulasAdicionales) {
+		this.clausulasAdicionales = clausulasAdicionales;
+	}
+
+	/**
+	 * @return the clausulasAdicionalesDTO
+	 */
+	public List<ClausulaAdicionalDTO> getClausulasAdicionalesDTO() {
+		return clausulasAdicionalesDTO;
+	}
+
+	/**
+	 * @param clausulasAdicionalesDTO
+	 *            the clausulasAdicionalesDTO to set
+	 */
+	public void setClausulasAdicionalesDTO(List<ClausulaAdicionalDTO> clausulasAdicionalesDTO) {
+		this.clausulasAdicionalesDTO = clausulasAdicionalesDTO;
+	}
+
+	/**
+	 * @return the condicionesEspeciales
+	 */
+	public List<CondEspVh> getCondicionesEspeciales() {
+		return condicionesEspeciales;
+	}
+
+	/**
+	 * @param condicionesEspeciales
+	 *            the condicionesEspeciales to set
+	 */
+	public void setCondicionesEspeciales(List<CondEspVh> condicionesEspeciales) {
+		this.condicionesEspeciales = condicionesEspeciales;
+	}
+
+	/**
+	 * @return the condicionesEspecialesDTO
+	 */
+	public List<CondicionEspecialDTO> getCondicionesEspecialesDTO() {
+		return condicionesEspecialesDTO;
+	}
+
+	/**
+	 * @param condicionesEspecialesDTO
+	 *            the condicionesEspecialesDTO to set
+	 */
+	public void setCondicionesEspecialesDTO(List<CondicionEspecialDTO> condicionesEspecialesDTO) {
+		this.condicionesEspecialesDTO = condicionesEspecialesDTO;
 	}
 
 }
