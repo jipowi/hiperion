@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
@@ -19,8 +20,12 @@ import org.apache.log4j.Logger;
 
 import ec.com.avila.emision.web.beans.RamoCascoMaritimoBean;
 import ec.com.avila.hiperion.comun.HiperionException;
+import ec.com.avila.hiperion.dto.CoberturaAdicionalDTO;
 import ec.com.avila.hiperion.emision.entities.Catalogo;
+import ec.com.avila.hiperion.emision.entities.CobertAddCasco;
+import ec.com.avila.hiperion.emision.entities.DetalleAnexo;
 import ec.com.avila.hiperion.emision.entities.DetalleCatalogo;
+import ec.com.avila.hiperion.emision.entities.Ramo;
 import ec.com.avila.hiperion.emision.entities.RamoCascoMaritimo;
 import ec.com.avila.hiperion.emision.entities.Usuario;
 import ec.com.avila.hiperion.enumeration.EstadoEnum;
@@ -62,6 +67,9 @@ public class CascoMaritimoBacking implements Serializable {
 
 	private List<SelectItem> embarcacionItems;
 	private List<SelectItem> zonasItems;
+	private List<CobertAddCasco> coberturasAdd;
+	private List<CoberturaAdicionalDTO> coberturasAddDTO = new ArrayList<>();
+	private List<DetalleAnexo> anexos;
 
 	@EJB
 	private CatalogoService catalogoService;
@@ -70,6 +78,46 @@ public class CascoMaritimoBacking implements Serializable {
 	private DetalleCatalogoService detalleCatalogoService;
 
 	Logger log = Logger.getLogger(CascoMaritimoBacking.class);
+
+	@PostConstruct
+	public void inicializar() {
+		try {
+			Ramo ramo = ramoService.consultarRamoPorCodigo("CM");
+			anexos = ramo.getDetalleAnexos();
+			obtenerCoberturasAdicionales();
+		} catch (HiperionException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * 
+	 * <b> Permite obtener las coberturas adicionales del ramo Casco Maritimo </b>
+	 * <p>
+	 * [Author: Franklin Pozo B., Date: 16/06/2015]
+	 * </p>
+	 * 
+	 */
+	public void obtenerCoberturasAdicionales() {
+		coberturasAdd = new ArrayList<CobertAddCasco>();
+		if (anexos != null && anexos.size() > 0) {
+			for (DetalleAnexo anexo : anexos) {
+				if (anexo.getAnexo().getIdAnexo() == 6) {
+					CobertAddCasco cobertura = new CobertAddCasco();
+					cobertura.setCoberturaCasco(anexo.getNombreDetalleAnexo());
+
+					coberturasAdd.add(cobertura);
+				}
+			}
+
+			for (CobertAddCasco coberturaAdd : coberturasAdd) {
+				CoberturaAdicionalDTO coberturaAdicionalDTO = new CoberturaAdicionalDTO();
+				coberturaAdicionalDTO.setCobertura(coberturaAdd.getCoberturaCasco());
+
+				coberturasAddDTO.add(coberturaAdicionalDTO);
+			}
+		}
+	}
 
 	/**
 	 * 
@@ -80,7 +128,7 @@ public class CascoMaritimoBacking implements Serializable {
 	 * 
 	 */
 	public void guardarRamo() throws HiperionException {
-		Usuario usuario =usuarioBean.getSessionUser();
+		Usuario usuario = usuarioBean.getSessionUser();
 		RamoCascoMaritimo cascoMaritimo = new RamoCascoMaritimo();
 
 		cascoMaritimo.setNombreNave(ramoCascoMaritimoBean.getNombreNave());
@@ -99,7 +147,7 @@ public class CascoMaritimoBacking implements Serializable {
 		cascoMaritimo.setValorRedes(ramoCascoMaritimoBean.getValorRedes());
 		cascoMaritimo.setOtrosMaritimo(ramoCascoMaritimoBean.getOtros());
 		cascoMaritimo.setTotalMaritimo(ramoCascoMaritimoBean.getOtros());
-		
+
 		cascoMaritimo.setIdUsuarioCreacion(usuario.getIdUsuario());
 		cascoMaritimo.setFechaCreacion(new Date());
 		cascoMaritimo.setEstado(EstadoEnum.A);
@@ -194,12 +242,26 @@ public class CascoMaritimoBacking implements Serializable {
 	}
 
 	/**
-	 * @param usuarioBean the usuarioBean to set
+	 * @param usuarioBean
+	 *            the usuarioBean to set
 	 */
 	public void setUsuarioBean(UsuarioBean usuarioBean) {
 		this.usuarioBean = usuarioBean;
 	}
-	
-	
+
+	/**
+	 * @return the coberturasAddDTO
+	 */
+	public List<CoberturaAdicionalDTO> getCoberturasAddDTO() {
+		return coberturasAddDTO;
+	}
+
+	/**
+	 * @param coberturasAddDTO
+	 *            the coberturasAddDTO to set
+	 */
+	public void setCoberturasAddDTO(List<CoberturaAdicionalDTO> coberturasAddDTO) {
+		this.coberturasAddDTO = coberturasAddDTO;
+	}
 
 }

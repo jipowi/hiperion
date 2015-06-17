@@ -32,11 +32,12 @@ import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.html.simpleparser.HTMLWorker;
 import com.itextpdf.text.pdf.PdfWriter;
 
-import ec.com.avila.emision.web.beans.DetalleAnexoBean;
 import ec.com.avila.emision.web.beans.PolizaBean;
 import ec.com.avila.emision.web.beans.RamoBuenUsoAnticipoBean;
 import ec.com.avila.hiperion.comun.HiperionException;
+import ec.com.avila.hiperion.dto.CoberturaDTO;
 import ec.com.avila.hiperion.emision.entities.Catalogo;
+import ec.com.avila.hiperion.emision.entities.CobertBuenUsoAnt;
 import ec.com.avila.hiperion.emision.entities.DetalleAnexo;
 import ec.com.avila.hiperion.emision.entities.DetalleCatalogo;
 import ec.com.avila.hiperion.emision.entities.Ramo;
@@ -50,7 +51,6 @@ import ec.com.avila.hiperion.servicio.RamoBuenUsoAnticipoService;
 import ec.com.avila.hiperion.servicio.RamoService;
 import ec.com.avila.hiperion.web.beans.RamoBean;
 import ec.com.avila.hiperion.web.beans.UsuarioBean;
-import ec.com.avila.hiperion.web.model.AnexosDataModel;
 import ec.com.avila.hiperion.web.util.ConstantesUtil;
 import ec.com.avila.hiperion.web.util.FechasUtil;
 import ec.com.avila.hiperion.web.util.GenerarPdfUtil;
@@ -91,11 +91,10 @@ public class BuenUsoAnticipoBacking implements Serializable {
 	@EJB
 	private RamoBuenUsoAnticipoService ramoBuenUsoAnticipoService;
 
-	private AnexosDataModel anexosDataModel;
 	private List<DetalleAnexo> anexos;
 
-	private List<DetalleAnexoBean> coberturas;
-	private DetalleAnexoBean[] selectCoberturas;
+	private List<CobertBuenUsoAnt> coberturas;
+	private List<CoberturaDTO> coberturasDTO = new ArrayList<>();
 	private List<SelectItem> aseguradorasItems;
 
 	@ManagedProperty(value = "#{ramoBuenUsoAnticipoBean}")
@@ -110,6 +109,7 @@ public class BuenUsoAnticipoBacking implements Serializable {
 		try {
 			Ramo ramo = ramoService.consultarRamoPorCodigo("BUA");
 			anexos = ramo.getDetalleAnexos();
+			obtenerCoberturas();
 		} catch (HiperionException e) {
 			e.printStackTrace();
 		}
@@ -124,18 +124,26 @@ public class BuenUsoAnticipoBacking implements Serializable {
 	 * 
 	 * @return
 	 */
-	public AnexosDataModel obtenerCoberturas() {
-		coberturas = new ArrayList<DetalleAnexoBean>();
+	public void obtenerCoberturas() {
+		coberturas = new ArrayList<CobertBuenUsoAnt>();
 		if (anexos != null && anexos.size() > 0) {
 			for (DetalleAnexo anexo : anexos) {
-				if (anexo.getAnexo().getIdAnexo() == 2)
-					coberturas.add(new DetalleAnexoBean(anexo.getIdDetalleAnexo(), anexo.getNombreDetalleAnexo()));
+				if (anexo.getAnexo().getIdAnexo() == 2) {
+					CobertBuenUsoAnt cobertura = new CobertBuenUsoAnt();
+					cobertura.setCoberturaAnticipo(anexo.getNombreDetalleAnexo());
+					
+					coberturas.add(cobertura);
+				}
+			}
+			for(CobertBuenUsoAnt cobertura:coberturas){
+				CoberturaDTO coberturaDTO = new CoberturaDTO();
+				coberturaDTO.setCobertura(cobertura.getCoberturaAnticipo());
+				
+				coberturasDTO.add(coberturaDTO);
 			}
 
-			anexosDataModel = new AnexosDataModel(coberturas);
 		}
 
-		return anexosDataModel;
 	}
 
 	public RamoBean getRamoBean() {
@@ -271,21 +279,6 @@ public class BuenUsoAnticipoBacking implements Serializable {
 	}
 
 	/**
-	 * @return the selectCoberturas
-	 */
-	public DetalleAnexoBean[] getSelectCoberturas() {
-		return selectCoberturas;
-	}
-
-	/**
-	 * @param selectCoberturas
-	 *            the selectCoberturas to set
-	 */
-	public void setSelectCoberturas(DetalleAnexoBean[] selectCoberturas) {
-		this.selectCoberturas = selectCoberturas;
-	}
-
-	/**
 	 * 
 	 * <b> Permite guardar datos en la base de datos del Ramo Buen Uso Anticipo </b>
 	 * <p>
@@ -390,6 +383,36 @@ public class BuenUsoAnticipoBacking implements Serializable {
 			log.error("Error al momento generar el documento Buen Uso de Anticipo en PDF", e);
 			throw new HiperionException(e);
 		}
+	}
+
+	/**
+	 * @return the coberturas
+	 */
+	public List<CobertBuenUsoAnt> getCoberturas() {
+		return coberturas;
+	}
+
+	/**
+	 * @param coberturas
+	 *            the coberturas to set
+	 */
+	public void setCoberturas(List<CobertBuenUsoAnt> coberturas) {
+		this.coberturas = coberturas;
+	}
+
+	/**
+	 * @return the coberturasDTO
+	 */
+	public List<CoberturaDTO> getCoberturasDTO() {
+		return coberturasDTO;
+	}
+
+	/**
+	 * @param coberturasDTO
+	 *            the coberturasDTO to set
+	 */
+	public void setCoberturasDTO(List<CoberturaDTO> coberturasDTO) {
+		this.coberturasDTO = coberturasDTO;
 	}
 
 }

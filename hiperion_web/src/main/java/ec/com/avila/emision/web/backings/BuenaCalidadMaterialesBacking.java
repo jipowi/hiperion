@@ -20,10 +20,11 @@ import javax.faces.model.SelectItem;
 
 import org.apache.log4j.Logger;
 
-import ec.com.avila.emision.web.beans.DetalleAnexoBean;
 import ec.com.avila.emision.web.beans.RamoBuenaCalMatBean;
 import ec.com.avila.hiperion.comun.HiperionException;
+import ec.com.avila.hiperion.dto.CoberturaDTO;
 import ec.com.avila.hiperion.emision.entities.Catalogo;
+import ec.com.avila.hiperion.emision.entities.CobertMateriale;
 import ec.com.avila.hiperion.emision.entities.DetalleAnexo;
 import ec.com.avila.hiperion.emision.entities.DetalleCatalogo;
 import ec.com.avila.hiperion.emision.entities.Ramo;
@@ -36,7 +37,6 @@ import ec.com.avila.hiperion.servicio.RamoBuenaCalMatService;
 import ec.com.avila.hiperion.servicio.RamoService;
 import ec.com.avila.hiperion.web.beans.RamoBean;
 import ec.com.avila.hiperion.web.beans.UsuarioBean;
-import ec.com.avila.hiperion.web.model.AnexosDataModel;
 import ec.com.avila.hiperion.web.util.ConstantesUtil;
 import ec.com.avila.hiperion.web.util.GenerarPdfUtil;
 import ec.com.avila.hiperion.web.util.HiperionMensajes;
@@ -71,11 +71,10 @@ public class BuenaCalidadMaterialesBacking implements Serializable {
 	@EJB
 	private RamoBuenaCalMatService ramoBuenaCalMatService;
 
-	private AnexosDataModel anexosDataModel;
 	private List<DetalleAnexo> anexos;
 
-	private List<DetalleAnexoBean> coberturas;
-	private DetalleAnexoBean[] selectCoberturas;
+	private List<CobertMateriale> coberturas;
+	private List<CoberturaDTO> coberturasDTO = new ArrayList<>();
 
 	@ManagedProperty(value = "#{ramoBuenaCalMatBean}")
 	private RamoBuenaCalMatBean ramoBuenaCalMatBean;
@@ -92,6 +91,7 @@ public class BuenaCalidadMaterialesBacking implements Serializable {
 		try {
 			Ramo ramo = ramoService.consultarRamoPorCodigo("BCM");
 			anexos = ramo.getDetalleAnexos();
+			obtenerCoberturas();
 		} catch (HiperionException e) {
 			e.printStackTrace();
 		}
@@ -106,18 +106,28 @@ public class BuenaCalidadMaterialesBacking implements Serializable {
 	 * 
 	 * @return
 	 */
-	public AnexosDataModel obtenerCoberturas() {
-		coberturas = new ArrayList<DetalleAnexoBean>();
+	public void obtenerCoberturas() {
+		coberturas = new ArrayList<CobertMateriale>();
 		if (anexos != null && anexos.size() > 0) {
 			for (DetalleAnexo anexo : anexos) {
-				if (anexo.getAnexo().getIdAnexo() == 2)
-					coberturas.add(new DetalleAnexoBean(anexo.getIdDetalleAnexo(), anexo.getNombreDetalleAnexo()));
+				if (anexo.getAnexo().getIdAnexo() == 2) {
+					CobertMateriale cobertura = new CobertMateriale();
+					cobertura.setCoberturaMateriales(anexo.getNombreDetalleAnexo());
+
+					coberturas.add(cobertura);
+				}
 			}
 
-			anexosDataModel = new AnexosDataModel(coberturas);
+			for (CobertMateriale cobertura : coberturas) {
+				CoberturaDTO coberturaDTO = new CoberturaDTO();
+				coberturaDTO.setCobertura(cobertura.getCoberturaMateriales());
+
+				coberturasDTO.add(coberturaDTO);
+
+			}
+
 		}
 
-		return anexosDataModel;
 	}
 
 	public RamoBean getRamoBean() {
@@ -151,21 +161,6 @@ public class BuenaCalidadMaterialesBacking implements Serializable {
 		}
 
 		return sectorItems;
-	}
-
-	/**
-	 * @return the selectCoberturas
-	 */
-	public DetalleAnexoBean[] getSelectCoberturas() {
-		return selectCoberturas;
-	}
-
-	/**
-	 * @param selectCoberturas
-	 *            the selectCoberturas to set
-	 */
-	public void setSelectCoberturas(DetalleAnexoBean[] selectCoberturas) {
-		this.selectCoberturas = selectCoberturas;
 	}
 
 	/**
@@ -233,15 +228,14 @@ public class BuenaCalidadMaterialesBacking implements Serializable {
 	public void setRamoBuenaCalMatBean(RamoBuenaCalMatBean ramoBuenaCalMatBean) {
 		this.ramoBuenaCalMatBean = ramoBuenaCalMatBean;
 	}
-	
-	
+
 	/**
 	 * 
-	 * <b>
-	 * Permite generar y descargar informacion Ramo Buena Calidad Materiales PDF
-	 * </b>
-	 * <p>[Author: Franklin Pozo, Date: 28/04/2015]</p>
-	 *
+	 * <b> Permite generar y descargar informacion Ramo Buena Calidad Materiales PDF </b>
+	 * <p>
+	 * [Author: Franklin Pozo, Date: 28/04/2015]
+	 * </p>
+	 * 
 	 * @throws HiperionException
 	 */
 	public void descargarBuenaCalidadMaterialesPDF() throws HiperionException {
@@ -262,4 +256,35 @@ public class BuenaCalidadMaterialesBacking implements Serializable {
 			throw new HiperionException(e);
 		}
 	}
+
+	/**
+	 * @return the coberturas
+	 */
+	public List<CobertMateriale> getCoberturas() {
+		return coberturas;
+	}
+
+	/**
+	 * @param coberturas
+	 *            the coberturas to set
+	 */
+	public void setCoberturas(List<CobertMateriale> coberturas) {
+		this.coberturas = coberturas;
+	}
+
+	/**
+	 * @return the coberturasDTO
+	 */
+	public List<CoberturaDTO> getCoberturasDTO() {
+		return coberturasDTO;
+	}
+
+	/**
+	 * @param coberturasDTO
+	 *            the coberturasDTO to set
+	 */
+	public void setCoberturasDTO(List<CoberturaDTO> coberturasDTO) {
+		this.coberturasDTO = coberturasDTO;
+	}
+
 }
