@@ -12,7 +12,7 @@
 			</p:outputPanel>
 			
 				<div align="center">
-					<p:outputLabel value="#{asismedica['liquidacion.titulo']}"
+					<p:outputLabel value="#{siniestros['liquidacion.titulo']}"
 						styleClass="negrita" />
 					<p:separator id="customSeparator" style="width:auto;height:1px" />
 					<p:spacer height="15px;" />
@@ -20,23 +20,23 @@
 				<h:panelGrid columns="1">
 					<p:panel>
 						<h:panelGrid columns="2">
-							<h:outputLabel value="#{asismedica['lbl.cliente']}:"
+							<h:outputLabel value="#{siniestros['lbl.cliente']}:"
 								styleClass="negrita" />
 							<p:inputText value="#{ingresarLiquidacionBean.cliente}" />
 
-							<h:outputLabel value="#{asismedica['lbl.ramo']}:"
+							<h:outputLabel value="#{siniestros['lbl.ramo']}:"
 								styleClass="negrita" />
 							<p:inputText value="#{ingresarLiquidacionBean.ramo}" />
 
 
 
-							<h:outputLabel value="#{asismedica['lbl.poliza']}:"
+							<h:outputLabel value="#{siniestros['lbl.poliza']}:"
 								styleClass="negrita" />
 							<p:inputText value="#{ingresarLiquidacionBean.poliza}" />
 
 
 
-							<p:outputLabel value="#{asismedica['lbl.asegurado']}:"
+							<p:outputLabel value="#{siniestros['lbl.asegurado']}:"
 								styleClass="negrita" />
 							<p:selectOneMenu value="#{ingresarLiquidacionBean.asegurado}"
 								effect="drop">
@@ -46,18 +46,18 @@
 
 
 
-							<h:outputLabel value="#{asismedica['lbl.empresa']}"
+							<h:outputLabel value="#{siniestros['lbl.empresa']}"
 								styleClass="negrita" />
 							<p:inputText value="#{ingresarLiquidacionBean.empresa}" />
 
 
-							<h:outputLabel value="#{asismedica['lbl.fechaIncurrencia']}:"
+							<h:outputLabel value="#{siniestros['lbl.fechaIncurrencia']}:"
 								styleClass="negrita" />
 							<p:inputText value="#{ingresarLiquidacionBean.fechaIncurrencia}" />
 
 
 
-							<h:outputLabel value="#{asismedica['lbl.fechaNotificacion']}:"
+							<h:outputLabel value="#{siniestros['lbl.fechaNotificacion']}:"
 								styleClass="negrita" />
 							<p:inputText value="#{ingresarLiquidacionBean.fechaNotificacion}" />
 						</h:panelGrid>

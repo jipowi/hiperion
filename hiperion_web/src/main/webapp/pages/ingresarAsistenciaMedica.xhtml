@@ -13,41 +13,41 @@
 				<h:panelGrid columns="1">
 					<p:panel>
 						<h:panelGrid columns="2">
-							<h:outputLabel  value="#{asismedica['lbl.cliente']}:" styleClass="negrita" />
+							<h:outputLabel  value="#{siniestros['lbl.cliente']}:" styleClass="negrita" />
 							<p:inputText value="#{ingresarAsistenciaMedicaBean.cliente}" />
 							
-							<h:outputLabel  value="#{asismedica['lbl.aseguradora']}:" styleClass="negrita" />
+							<h:outputLabel  value="#{siniestros['lbl.aseguradora']}:" styleClass="negrita" />
 							<p:inputText value="#{ingresarAsistenciaMedicaBean.aseguradora}" />
 
-							<h:outputLabel  value="#{asismedica['lbl.ramo']}:" styleClass="negrita" />
+							<h:outputLabel  value="#{siniestros['lbl.ramo']}:" styleClass="negrita" />
 							<p:inputText value="#{ingresarAsistenciaMedicaBean.ramo}" />
 								
-							<h:outputLabel  value="#{asismedica['lbl.poliza']}:" styleClass="negrita" />
+							<h:outputLabel  value="#{siniestros['lbl.poliza']}:" styleClass="negrita" />
 							<p:inputText value="#{ingresarAsistenciaMedicaBean.poliza}" />
 			
-							<h:outputLabel  value="#{asismedica['lbl.paciente']}:" styleClass="negrita" />
+							<h:outputLabel  value="#{siniestros['lbl.paciente']}:" styleClass="negrita" />
 							<p:inputText value="#{ingresarAsistenciaMedicaBean.paciente}" />
 							
-							<h:outputLabel  value="#{asismedica['lbl.parentesco']}:" styleClass="negrita" />
+							<h:outputLabel  value="#{siniestros['lbl.parentesco']}:" styleClass="negrita" />
 							<p:inputText value="#{ingresarAsistenciaMedicaBean.parentesco}" />
 							
-							<h:outputLabel  value="#{asismedica['lbl.fechaNotificacion']}:" styleClass="negrita" />
+							<h:outputLabel  value="#{siniestros['lbl.fechaNotificacion']}:" styleClass="negrita" />
 							<p:calendar id="fechaNotificacion" navigator="true" effect="fold" value="#{ingresarAsistenciaMedicaBean.fechaNotificacion}"
 								pattern="MM/dd/yyyy" styleClass="DialogFechaNoti-fechaNotificacion" />
 							
 							
-							<h:outputLabel  value="#{asismedica['lbl.fechaIncurrencia']}:" styleClass="negrita" />
+							<h:outputLabel  value="#{siniestros['lbl.fechaIncurrencia']}:" styleClass="negrita" />
 							<p:calendar id="fechaIncurrencia" navigator="true" effect="fold" value="#{ingresarAsistenciaMedicaBean.fechaIncurrencia}"
 								pattern="MM/dd/yyyy" styleClass="DialogIncurrencia-fechaIncurrencia" />						
 						</h:panelGrid>
 						<p/>
 						<h:panelGrid columns="1">
-							<h:outputLabel  value="#{asismedica['lbl.observaciones']}:" styleClass="negrita" />
+							<h:outputLabel  value="#{siniestros['lbl.observaciones']}:" styleClass="negrita" />
 							<p:inputTextarea value="#{ingresarAsistenciaMedicaBean.observaciones}" />
 						</h:panelGrid>
 						<p/>
 							<h:panelGrid columns="1">
-							<h:outputLabel  value="#{asismedica['lbl.documentosEntregados']}:" styleClass="negrita" />
+							<h:outputLabel  value="#{siniestros['lbl.documentosEntregados']}:" styleClass="negrita" />
 							<p:dataTable>
 								<p:column headerText="#"> </p:column>
 								<p:column headerText="Descripcion"> </p:column>
