@@ -2275,6 +2275,8 @@ INSERT INTO MENU VALUES (2, NULL, 'Ramos', NULL,'A');
 INSERT INTO MENU VALUES (3, NULL, 'Aseguradoras', NULL,'A');
 INSERT INTO MENU VALUES (4, NULL, 'Administracion', NULL,'A');
 INSERT INTO MENU VALUES (5, NULL, 'Correspondencia', NULL,'A');
+INSERT INTO MENU VALUES (6, NULL, 'Siniestros', NULL,'A');
+INSERT INTO MENU VALUES (7, NULL, 'Asistencia Medica', NULL,'A');
 
 
 INSERT INTO MENU VALUES (11, 2, 'Accidentes Personales', '/pages/accidentesPersonales.jsf','A');
