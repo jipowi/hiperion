@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
@@ -20,8 +21,16 @@ import org.apache.log4j.Logger;
 
 import ec.com.avila.emision.web.beans.RamoRoturaMaquinariaBean;
 import ec.com.avila.hiperion.comun.HiperionException;
+import ec.com.avila.hiperion.dto.ClausulaAdicionalDTO;
+import ec.com.avila.hiperion.dto.CoberturaAdicionalDTO;
+import ec.com.avila.hiperion.dto.CoberturaDTO;
 import ec.com.avila.hiperion.dto.ObjetoAseguradoRoturaMaqDTO;
+import ec.com.avila.hiperion.emision.entities.ClausulasAddRotura;
+import ec.com.avila.hiperion.emision.entities.CobertAddRotura;
+import ec.com.avila.hiperion.emision.entities.CobertRotura;
+import ec.com.avila.hiperion.emision.entities.DetalleAnexo;
 import ec.com.avila.hiperion.emision.entities.ObjAsegRotura;
+import ec.com.avila.hiperion.emision.entities.Ramo;
 import ec.com.avila.hiperion.emision.entities.RamoRoturaMaquinaria;
 import ec.com.avila.hiperion.emision.entities.Usuario;
 import ec.com.avila.hiperion.enumeration.EstadoEnum;
@@ -64,6 +73,129 @@ public class RoturaMaquinariaBacking implements Serializable {
 	private RamoRoturaMaquinariaService ramoRoturaMaquinariaService;
 
 	RamoRoturaMaquinaria ramoRoturaMaquinaria = new RamoRoturaMaquinaria();
+	private List<ClausulasAddRotura> clausulasAdicionales;
+	private List<ClausulaAdicionalDTO> clausulasAdicionalesDTO = new ArrayList<>();
+	private List<CobertRotura> coberturas;
+	private List<CoberturaDTO> coberturasDTO = new ArrayList<>();
+	private List<CobertAddRotura> coberturasAdd;
+	private List<CoberturaAdicionalDTO> coberturasAddDTO = new ArrayList<>();
+	private List<DetalleAnexo> anexos;
+
+	@PostConstruct
+	public void inicializar() {
+		try {
+
+			Ramo ramo = ramoService.consultarRamoPorCodigo("RM");
+
+			anexos = ramo.getDetalleAnexos();
+
+			obtenerClausulasAdicionales();
+			obtenerCoberturas();
+			obtenerCoberturasAdicionales();
+
+		} catch (HiperionException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * 
+	 * <b> Permite obtener las coberturas del ramo. </b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: 17/06/2015]
+	 * </p>
+	 * 
+	 * @param anexos
+	 */
+	public void obtenerCoberturas() {
+
+		coberturas = new ArrayList<CobertRotura>();
+		if (anexos != null && anexos.size() > 0) {
+			for (DetalleAnexo anexo : anexos) {
+				if (anexo.getAnexo().getIdAnexo() == 2) {
+					CobertRotura cobertura = new CobertRotura();
+					cobertura.setCoberturaRotura(anexo.getNombreDetalleAnexo());
+
+					coberturas.add(cobertura);
+				}
+
+			}
+
+			for (CobertRotura cobertura : coberturas) {
+				CoberturaDTO coberturaDTO = new CoberturaDTO();
+				coberturaDTO.setCobertura(cobertura.getCoberturaRotura());
+				coberturaDTO.setSeleccion(false);
+
+				coberturasDTO.add(coberturaDTO);
+			}
+		}
+
+	}
+
+	/**
+	 * 
+	 * <b> Permite obetener las coberturas adicionales del ramo. </b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: 26/06/2015]
+	 * </p>
+	 * 
+	 */
+	public void obtenerCoberturasAdicionales() {
+
+		coberturasAdd = new ArrayList<CobertAddRotura>();
+		if (anexos != null && anexos.size() > 0) {
+			for (DetalleAnexo anexo : anexos) {
+				if (anexo.getAnexo().getIdAnexo() == 2) {
+					CobertAddRotura cobertura = new CobertAddRotura();
+					cobertura.setCoberturaAddRotura(anexo.getNombreDetalleAnexo());
+
+					coberturasAdd.add(cobertura);
+				}
+
+			}
+
+			for (CobertAddRotura cobertura : coberturasAdd) {
+				CoberturaAdicionalDTO coberturaAddDTO = new CoberturaAdicionalDTO();
+				coberturaAddDTO.setCobertura(cobertura.getCoberturaAddRotura());
+				coberturaAddDTO.setSeleccion(false);
+
+				coberturasAddDTO.add(coberturaAddDTO);
+			}
+		}
+
+	}
+
+	/**
+	 * 
+	 * <b> Permite obtener las clausulas adicionales del ramo. </b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: 17/06/2015]
+	 * </p>
+	 * 
+	 */
+	public void obtenerClausulasAdicionales() {
+		clausulasAdicionales = new ArrayList<ClausulasAddRotura>();
+		if (anexos != null && anexos.size() > 0) {
+			for (DetalleAnexo anexo : anexos) {
+				if (anexo.getAnexo().getIdAnexo() == 1) {
+					ClausulasAddRotura clausula = new ClausulasAddRotura();
+					clausula.setClausulaAddRotura(anexo.getNombreDetalleAnexo());
+
+					clausulasAdicionales.add(clausula);
+				}
+
+			}
+			for (ClausulasAddRotura clausula : clausulasAdicionales) {
+				ClausulaAdicionalDTO clausulaDTO = new ClausulaAdicionalDTO();
+				clausulaDTO.setClausula(clausula.getClausulaAddRotura());
+				clausulaDTO.setSeleccion(false);
+
+				clausulasAdicionalesDTO.add(clausulaDTO);
+			}
+
+		}
+
+	}
 
 	/**
 	 * 
@@ -172,32 +304,124 @@ public class RoturaMaquinariaBacking implements Serializable {
 	public void setRamoBean(RamoBean ramoBean) {
 		this.ramoBean = ramoBean;
 	}
-	
+
 	/**
 	 * 
-	 * <b>
-	 * Permite descargar el documento en PDF
-	 * </b>
-	 * <p>[Author: Franklin Pozo B, Date: 27/05/2015]</p>
-	 *
+	 * <b> Permite descargar el documento en PDF </b>
+	 * <p>
+	 * [Author: Franklin Pozo B, Date: 27/05/2015]
+	 * </p>
+	 * 
 	 * @throws HiperionException
 	 */
-	public void descargarRoturaMaquinariaPDF()throws HiperionException{
-		
+	public void descargarRoturaMaquinariaPDF() throws HiperionException {
+
 		try {
 			Map<String, Object> parametrosReporte = new HashMap<String, Object>();
 
 			parametrosReporte.put(ConstantesUtil.CONTENT_TYPE_IDENTIFICADOR, ConstantesUtil.CONTENT_TYPE_PDF);
 			parametrosReporte.put(ConstantesUtil.NOMBRE_ARCHIVO_IDENTIFICADOR, usuarioBean.getSessionUser().getIdentificacionUsuario());
 
-			parametrosReporte.put(ConstantesUtil.CONTENIDO_BYTES_IDENTIFICADOR, GenerarPdfUtil.generarArchivoPDFRoturaMaquinaria(ramoRoturaMaquinaria));
+			parametrosReporte.put(ConstantesUtil.CONTENIDO_BYTES_IDENTIFICADOR,
+					GenerarPdfUtil.generarArchivoPDFRoturaMaquinaria(ramoRoturaMaquinaria));
 
 			JsfUtil.setSessionAttribute(ConstantesUtil.PARAMETROS_DESCARGADOR_IDENTIFICADOR, parametrosReporte);
 			JsfUtil.downloadFile();
-		}catch(Exception e){
+		} catch (Exception e) {
 			log.error("Error al momento generar el documento Rotura de Maquinaria en PDF", e);
-			throw new HiperionException(e);	
+			throw new HiperionException(e);
 		}
-		
+
 	}
+
+	/**
+	 * @return the clausulasAdicionales
+	 */
+	public List<ClausulasAddRotura> getClausulasAdicionales() {
+		return clausulasAdicionales;
+	}
+
+	/**
+	 * @param clausulasAdicionales
+	 *            the clausulasAdicionales to set
+	 */
+	public void setClausulasAdicionales(List<ClausulasAddRotura> clausulasAdicionales) {
+		this.clausulasAdicionales = clausulasAdicionales;
+	}
+
+	/**
+	 * @return the clausulasAdicionalesDTO
+	 */
+	public List<ClausulaAdicionalDTO> getClausulasAdicionalesDTO() {
+		return clausulasAdicionalesDTO;
+	}
+
+	/**
+	 * @param clausulasAdicionalesDTO
+	 *            the clausulasAdicionalesDTO to set
+	 */
+	public void setClausulasAdicionalesDTO(List<ClausulaAdicionalDTO> clausulasAdicionalesDTO) {
+		this.clausulasAdicionalesDTO = clausulasAdicionalesDTO;
+	}
+
+	/**
+	 * @return the coberturas
+	 */
+	public List<CobertRotura> getCoberturas() {
+		return coberturas;
+	}
+
+	/**
+	 * @param coberturas
+	 *            the coberturas to set
+	 */
+	public void setCoberturas(List<CobertRotura> coberturas) {
+		this.coberturas = coberturas;
+	}
+
+	/**
+	 * @return the coberturasDTO
+	 */
+	public List<CoberturaDTO> getCoberturasDTO() {
+		return coberturasDTO;
+	}
+
+	/**
+	 * @param coberturasDTO
+	 *            the coberturasDTO to set
+	 */
+	public void setCoberturasDTO(List<CoberturaDTO> coberturasDTO) {
+		this.coberturasDTO = coberturasDTO;
+	}
+
+	/**
+	 * @return the coberturasAdd
+	 */
+	public List<CobertAddRotura> getCoberturasAdd() {
+		return coberturasAdd;
+	}
+
+	/**
+	 * @param coberturasAdd
+	 *            the coberturasAdd to set
+	 */
+	public void setCoberturasAdd(List<CobertAddRotura> coberturasAdd) {
+		this.coberturasAdd = coberturasAdd;
+	}
+
+	/**
+	 * @return the coberturasAddDTO
+	 */
+	public List<CoberturaAdicionalDTO> getCoberturasAddDTO() {
+		return coberturasAddDTO;
+	}
+
+	/**
+	 * @param coberturasAddDTO
+	 *            the coberturasAddDTO to set
+	 */
+	public void setCoberturasAddDTO(List<CoberturaAdicionalDTO> coberturasAddDTO) {
+		this.coberturasAddDTO = coberturasAddDTO;
+	}
+
 }

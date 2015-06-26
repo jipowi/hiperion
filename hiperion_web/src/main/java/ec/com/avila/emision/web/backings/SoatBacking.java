@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
@@ -21,8 +22,12 @@ import org.apache.log4j.Logger;
 
 import ec.com.avila.emision.web.beans.RamoSoatBean;
 import ec.com.avila.hiperion.comun.HiperionException;
+import ec.com.avila.hiperion.dto.CoberturaDTO;
 import ec.com.avila.hiperion.emision.entities.Catalogo;
+import ec.com.avila.hiperion.emision.entities.CobertSoat;
+import ec.com.avila.hiperion.emision.entities.DetalleAnexo;
 import ec.com.avila.hiperion.emision.entities.DetalleCatalogo;
+import ec.com.avila.hiperion.emision.entities.Ramo;
 import ec.com.avila.hiperion.emision.entities.RamoSoat;
 import ec.com.avila.hiperion.emision.entities.Usuario;
 import ec.com.avila.hiperion.enumeration.EstadoEnum;
@@ -61,6 +66,12 @@ public class SoatBacking implements Serializable {
 	private List<SelectItem> tipoVehiculoItems;
 	private List<SelectItem> tipoSoatItems;
 	private List<SelectItem> modeloItems;
+	private List<CobertSoat> coberturas;
+	private List<CoberturaDTO> coberturasDTO = new ArrayList<>();
+	private List<DetalleAnexo> anexos;
+	private Boolean activarMarcaAuto;
+	private Boolean activarMarcaPesado;
+	private Boolean activarMarcaMoto;
 
 	@EJB
 	private RamoService ramoService;
@@ -80,9 +91,54 @@ public class SoatBacking implements Serializable {
 	Logger log = Logger.getLogger(SoatBacking.class);
 	RamoSoat ramoSoat = new RamoSoat();
 
-	private Boolean activarMarcaAuto;
-	private Boolean activarMarcaPesado;
-	private Boolean activarMarcaMoto;
+	@PostConstruct
+	public void inicializar() {
+		try {
+
+			Ramo ramo = ramoService.consultarRamoPorCodigo("ST");
+
+			anexos = ramo.getDetalleAnexos();
+
+			obtenerCoberturas();
+
+		} catch (HiperionException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * 
+	 * <b> Permite obtener las coberturas del ramo. </b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: 17/06/2015]
+	 * </p>
+	 * 
+	 * @param anexos
+	 */
+	public void obtenerCoberturas() {
+
+		coberturas = new ArrayList<CobertSoat>();
+		if (anexos != null && anexos.size() > 0) {
+			for (DetalleAnexo anexo : anexos) {
+				if (anexo.getAnexo().getIdAnexo() == 2) {
+					CobertSoat cobertura = new CobertSoat();
+					cobertura.setCoberturaSoat(anexo.getNombreDetalleAnexo());
+
+					coberturas.add(cobertura);
+				}
+
+			}
+
+			for (CobertSoat cobertura : coberturas) {
+				CoberturaDTO coberturaDTO = new CoberturaDTO();
+				coberturaDTO.setCobertura(cobertura.getCoberturaSoat());
+				coberturaDTO.setSeleccion(false);
+
+				coberturasDTO.add(coberturaDTO);
+			}
+		}
+
+	}
 
 	public void guardarRamo() throws HiperionException {
 
@@ -368,4 +424,35 @@ public class SoatBacking implements Serializable {
 			throw new HiperionException(e);
 		}
 	}
+
+	/**
+	 * @return the coberturas
+	 */
+	public List<CobertSoat> getCoberturas() {
+		return coberturas;
+	}
+
+	/**
+	 * @param coberturas
+	 *            the coberturas to set
+	 */
+	public void setCoberturas(List<CobertSoat> coberturas) {
+		this.coberturas = coberturas;
+	}
+
+	/**
+	 * @return the coberturasDTO
+	 */
+	public List<CoberturaDTO> getCoberturasDTO() {
+		return coberturasDTO;
+	}
+
+	/**
+	 * @param coberturasDTO
+	 *            the coberturasDTO to set
+	 */
+	public void setCoberturasDTO(List<CoberturaDTO> coberturasDTO) {
+		this.coberturasDTO = coberturasDTO;
+	}
+
 }

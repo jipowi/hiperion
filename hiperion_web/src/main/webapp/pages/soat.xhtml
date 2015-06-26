@@ -127,7 +127,7 @@
 													<p:commandButton id="guardarBtnId" actionListener="#{soatBacking.guardarRamo}" icon="icon-save" value="#{emision['boton.guardar']}"
 														title="Guardar" update="formSoat, idPnlSoat" />
 													<p:commandButton id="cancelarBtnId" icon="icon-cancel" value="#{emision['boton.cancelar']}" process="@this" title="Cancelar" />
-													
+
 													<!-- DESCARGAR DOCUMENTOS -->
 													<h:panelGrid columns="2">
 														<p:commandLink title="Descargar syllabus" actionListener="#{soatBacking.descargarSoatPDF()}">
@@ -141,7 +141,26 @@
 								</h:form>
 							</p:tab>
 							<!-- COBERTURAS -->
-							<p:tab title="#{emision['soat.tab.coberturas']}"></p:tab>
+							<p:tab title="#{emision['soat.tab.coberturas']}">
+								<h:form id="coberturaForm">
+									<p:dataTable value="#{soatBacking.coberturasDTO}" var="cobertura" paginator="true" rows="4">
+										<p:column>
+											<f:facet name="header">
+												<h:outputLabel value="#{emision['anexo.titulo.cob']}" />
+											</f:facet>
+											<h:outputText value="#{cobertura.cobertura}" />
+										</p:column>
+										<p:column>
+											<f:facet name="header">
+												<h:outputLabel value="#{emision['lbl.seleccion']}" />
+											</f:facet>
+											<div align="center">
+												<p:selectBooleanCheckbox value="#{cobertura.seleccion}" />
+											</div>
+										</p:column>
+									</p:dataTable>
+								</h:form>
+							</p:tab>
 						</p:tabView>
 					</ui:define>
 				</ui:decorate>

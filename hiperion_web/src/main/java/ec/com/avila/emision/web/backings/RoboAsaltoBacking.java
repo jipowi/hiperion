@@ -19,7 +19,16 @@ import org.apache.log4j.Logger;
 
 import ec.com.avila.emision.web.beans.RamoRoboAsaltoBean;
 import ec.com.avila.hiperion.comun.HiperionException;
+import ec.com.avila.hiperion.dto.ClausulaAdicionalDTO;
+import ec.com.avila.hiperion.dto.CoberturaAdicionalDTO;
+import ec.com.avila.hiperion.dto.CoberturaDTO;
+import ec.com.avila.hiperion.dto.CondicionEspecialDTO;
 import ec.com.avila.hiperion.dto.ObjetoAseguradoRoboDTO;
+import ec.com.avila.hiperion.emision.entities.ClausulasAddRobo;
+import ec.com.avila.hiperion.emision.entities.CobertAddRobo;
+import ec.com.avila.hiperion.emision.entities.CoberturaRobo;
+import ec.com.avila.hiperion.emision.entities.CondEspRobo;
+import ec.com.avila.hiperion.emision.entities.DetalleAnexo;
 import ec.com.avila.hiperion.emision.entities.ObjAsegRobo;
 import ec.com.avila.hiperion.emision.entities.RamoRoboAsalto;
 import ec.com.avila.hiperion.emision.entities.Usuario;
@@ -63,6 +72,15 @@ public class RoboAsaltoBacking implements Serializable {
 	Logger log = Logger.getLogger(RoboAsaltoBacking.class);
 
 	RamoRoboAsalto ramoRoboAsalto = new RamoRoboAsalto();
+	private List<ClausulasAddRobo> clausulasAdicionales;
+	private List<ClausulaAdicionalDTO> clausulasAdicionalesDTO = new ArrayList<>();
+	private List<CoberturaRobo> coberturas;
+	private List<CoberturaDTO> coberturasDTO = new ArrayList<>();
+	private List<CobertAddRobo> coberturasAdd;
+	private List<CoberturaAdicionalDTO> coberturasAddDTO = new ArrayList<>();
+	private List<CondEspRobo> condicionesEspeciales;
+	private List<CondicionEspecialDTO> condicionesEspecialesDTO = new ArrayList<>();
+	private List<DetalleAnexo> anexos;
 
 	/**
 	 * 
@@ -90,6 +108,108 @@ public class RoboAsaltoBacking implements Serializable {
 
 	}
 
+
+	/**
+	 * 
+	 * <b> Permite obtener las coberturas del ramo. </b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: 17/06/2015]
+	 * </p>
+	 * 
+	 * @param anexos
+	 */
+	public void obtenerCoberturas() {
+
+		coberturas = new ArrayList<CoberturaRobo>();
+		if (anexos != null && anexos.size() > 0) {
+			for (DetalleAnexo anexo : anexos) {
+				if (anexo.getAnexo().getIdAnexo() == 2) {
+					CoberturaRobo cobertura = new CoberturaRobo();
+					cobertura.setCoberturaRobo(anexo.getNombreDetalleAnexo());
+
+					coberturas.add(cobertura);
+				}
+
+			}
+
+			for (CoberturaRobo cobertura : coberturas) {
+				CoberturaDTO coberturaDTO = new CoberturaDTO();
+				coberturaDTO.setCobertura(cobertura.getCoberturaRobo());
+				coberturaDTO.setSeleccion(false);
+
+				coberturasDTO.add(coberturaDTO);
+			}
+		}
+
+	}
+
+	/**
+	 * 
+	 * <b> Permite obetener las coberturas adicionales del ramo. </b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: 26/06/2015]
+	 * </p>
+	 * 
+	 */
+	public void obtenerCoberturasAdicionales() {
+
+		coberturasAdd = new ArrayList<CobertAddRobo>();
+		if (anexos != null && anexos.size() > 0) {
+			for (DetalleAnexo anexo : anexos) {
+				if (anexo.getAnexo().getIdAnexo() == 2) {
+					CobertAddRobo cobertura = new CobertAddRobo();
+					cobertura.setCoberturaAddRobo(anexo.getNombreDetalleAnexo());
+
+					coberturasAdd.add(cobertura);
+				}
+
+			}
+
+			for (CobertAddRobo cobertura : coberturasAdd) {
+				CoberturaAdicionalDTO coberturaAddDTO = new CoberturaAdicionalDTO();
+				coberturaAddDTO.setCobertura(cobertura.getCoberturaAddRobo());
+				coberturaAddDTO.setSeleccion(false);
+
+				coberturasAddDTO.add(coberturaAddDTO);
+			}
+		}
+
+	}
+
+	/**
+	 * 
+	 * <b> Permite obtener las clausulas adicionales del ramo. </b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: 17/06/2015]
+	 * </p>
+	 * 
+	 */
+	public void obtenerClausulasAdicionales() {
+		clausulasAdicionales = new ArrayList<ClausulasAddRobo>();
+		if (anexos != null && anexos.size() > 0) {
+			for (DetalleAnexo anexo : anexos) {
+				if (anexo.getAnexo().getIdAnexo() == 1) {
+					ClausulasAddRobo clausula = new ClausulasAddRobo();
+					clausula.setClausulaAddRobo(anexo.getNombreDetalleAnexo());
+
+					clausulasAdicionales.add(clausula);
+				}
+
+			}
+			for (ClausulasAddRobo clausula : clausulasAdicionales) {
+				ClausulaAdicionalDTO clausulaDTO = new ClausulaAdicionalDTO();
+				clausulaDTO.setClausula(clausula.getClausulaAddRobo());
+				clausulaDTO.setSeleccion(false);
+
+				
+				clausulasAdicionalesDTO.add(clausulaDTO);
+			}
+
+		}
+
+	}
+
+	
 	public void guadraRamo() throws HiperionException {
 		try {
 			if (ramoRoboAsaltoBean.getObjetoaseguradolist().isEmpty()) {
@@ -196,4 +316,125 @@ public class RoboAsaltoBacking implements Serializable {
 		}
 
 	}
+
+	/**
+	 * @return the clausulasAdicionales
+	 */
+	public List<ClausulasAddRobo> getClausulasAdicionales() {
+		return clausulasAdicionales;
+	}
+
+	/**
+	 * @param clausulasAdicionales
+	 *            the clausulasAdicionales to set
+	 */
+	public void setClausulasAdicionales(List<ClausulasAddRobo> clausulasAdicionales) {
+		this.clausulasAdicionales = clausulasAdicionales;
+	}
+
+	/**
+	 * @return the clausulasAdicionalesDTO
+	 */
+	public List<ClausulaAdicionalDTO> getClausulasAdicionalesDTO() {
+		return clausulasAdicionalesDTO;
+	}
+
+	/**
+	 * @param clausulasAdicionalesDTO
+	 *            the clausulasAdicionalesDTO to set
+	 */
+	public void setClausulasAdicionalesDTO(List<ClausulaAdicionalDTO> clausulasAdicionalesDTO) {
+		this.clausulasAdicionalesDTO = clausulasAdicionalesDTO;
+	}
+
+	/**
+	 * @return the coberturas
+	 */
+	public List<CoberturaRobo> getCoberturas() {
+		return coberturas;
+	}
+
+	/**
+	 * @param coberturas
+	 *            the coberturas to set
+	 */
+	public void setCoberturas(List<CoberturaRobo> coberturas) {
+		this.coberturas = coberturas;
+	}
+
+	/**
+	 * @return the coberturasDTO
+	 */
+	public List<CoberturaDTO> getCoberturasDTO() {
+		return coberturasDTO;
+	}
+
+	/**
+	 * @param coberturasDTO
+	 *            the coberturasDTO to set
+	 */
+	public void setCoberturasDTO(List<CoberturaDTO> coberturasDTO) {
+		this.coberturasDTO = coberturasDTO;
+	}
+
+	/**
+	 * @return the coberturasAdd
+	 */
+	public List<CobertAddRobo> getCoberturasAdd() {
+		return coberturasAdd;
+	}
+
+	/**
+	 * @param coberturasAdd
+	 *            the coberturasAdd to set
+	 */
+	public void setCoberturasAdd(List<CobertAddRobo> coberturasAdd) {
+		this.coberturasAdd = coberturasAdd;
+	}
+
+	/**
+	 * @return the coberturasAddDTO
+	 */
+	public List<CoberturaAdicionalDTO> getCoberturasAddDTO() {
+		return coberturasAddDTO;
+	}
+
+	/**
+	 * @param coberturasAddDTO
+	 *            the coberturasAddDTO to set
+	 */
+	public void setCoberturasAddDTO(List<CoberturaAdicionalDTO> coberturasAddDTO) {
+		this.coberturasAddDTO = coberturasAddDTO;
+	}
+
+	/**
+	 * @return the condicionesEspeciales
+	 */
+	public List<CondEspRobo> getCondicionesEspeciales() {
+		return condicionesEspeciales;
+	}
+
+	/**
+	 * @param condicionesEspeciales
+	 *            the condicionesEspeciales to set
+	 */
+	public void setCondicionesEspeciales(List<CondEspRobo> condicionesEspeciales) {
+		this.condicionesEspeciales = condicionesEspeciales;
+	}
+
+	/**
+	 * @return the condicionesEspecialesDTO
+	 */
+	public List<CondicionEspecialDTO> getCondicionesEspecialesDTO() {
+		return condicionesEspecialesDTO;
+	}
+
+	/**
+	 * @param condicionesEspecialesDTO
+	 *            the condicionesEspecialesDTO to set
+	 */
+	public void setCondicionesEspecialesDTO(List<CondicionEspecialDTO> condicionesEspecialesDTO) {
+		this.condicionesEspecialesDTO = condicionesEspecialesDTO;
+	}
+
 }
