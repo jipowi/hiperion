@@ -128,11 +128,110 @@
 								</div>
 							</p:tab>
 							<!-- COBERTURAS -->
-							<p:tab title="#{emision['riesgos.tab.coberturas']}"></p:tab>
-							<p:tab title="#{emision['riesgos.tab.coberturasAdicionales']}"></p:tab>
-							<p:tab title="#{emision['riesgos.tab.clausulasAdicionales']}"></p:tab>
-							<p:tab title="#{emision['riesgos.tab.condicionesEspeciales']}"></p:tab>
-							<p:tab title="#{emision['riesgos.tab.condicionesParticulares']}"></p:tab>
+							<p:tab title="#{emision['riesgos.tab.coberturas']}">
+								<h:form id="coberturaForm">
+									<p:dataTable value="#{riesgosEspecialesBacking.coberturasDTO}" var="cobertura" paginator="true" rows="4">
+										<p:column>
+											<f:facet name="header">
+												<h:outputLabel value="#{emision['anexo.titulo.cob']}" />
+											</f:facet>
+											<h:outputText value="#{cobertura.cobertura}" />
+										</p:column>
+										<p:column>
+											<f:facet name="header">
+												<h:outputLabel value="#{emision['lbl.seleccion']}" />
+											</f:facet>
+											<div align="center">
+												<p:selectBooleanCheckbox value="#{cobertura.seleccion}" />
+											</div>
+										</p:column>
+									</p:dataTable>
+								</h:form>
+							</p:tab>
+							<!-- COBERTURAS ADICIONALES -->
+							<p:tab title="#{emision['riesgos.tab.coberturasAdicionales']}">
+								<h:form id="coberturaAddForm">
+									<p:dataTable value="#{riesgosEspecialesBacking.coberturasAddDTO}" var="cobertura" paginator="true" rows="4">
+										<p:column>
+											<f:facet name="header">
+												<h:outputLabel value="#{emision['anexo.titulo.cob']}" />
+											</f:facet>
+											<h:outputText value="#{cobertura.cobertura}" />
+										</p:column>
+										<p:column>
+											<f:facet name="header">
+												<h:outputLabel value="#{emision['lbl.seleccion']}" />
+											</f:facet>
+											<div align="center">
+												<p:selectBooleanCheckbox value="#{cobertura.seleccion}" />
+											</div>
+										</p:column>
+									</p:dataTable>
+								</h:form>
+							</p:tab>
+							<!-- CLAUSULAS ADICIONALES -->
+							<p:tab title="#{emision['riesgos.tab.clausulasAdicionales']}">
+								<h:form id="clausulaAddForm">
+									<p:dataTable value="#{riesgosEspecialesBacking.clausulasAdicionalesDTO}" var="clausula" paginator="true" rows="4">
+										<p:column>
+											<f:facet name="header">
+												<h:outputLabel value="#{emision['anexo.titulo.cad']}" />
+											</f:facet>
+											<h:outputText value="#{clausula.clausula}" />
+										</p:column>
+										<p:column>
+											<f:facet name="header">
+												<h:outputLabel value="#{emision['lbl.seleccion']}" />
+											</f:facet>
+											<div align="center">
+												<p:selectBooleanCheckbox value="#{clausula.seleccion}" />
+											</div>
+										</p:column>
+									</p:dataTable>
+								</h:form>
+							</p:tab>
+							<!-- CONDICIONES ESPECIALES -->
+							<p:tab title="#{emision['riesgos.tab.condicionesEspeciales']}">
+								<h:form id="condicionEspForm">
+									<p:dataTable value="#{riesgosEspecialesBacking.condicionesEspecialesDTO}" var="condicion" paginator="true" rows="4">
+										<p:column>
+											<f:facet name="header">
+												<h:outputLabel value="#{emision['anexo.titulo.cep']}" />
+											</f:facet>
+											<h:outputText value="#{condicion.condicionEspecial}" />
+										</p:column>
+										<p:column>
+											<f:facet name="header">
+												<h:outputLabel value="#{emision['lbl.seleccion']}" />
+											</f:facet>
+											<div align="center">
+												<p:selectBooleanCheckbox value="#{condicion.condicionEspecial}" />
+											</div>
+										</p:column>
+									</p:dataTable>
+								</h:form>
+							</p:tab>
+							<!-- CONDICIONES PARTICULARES -->
+							<p:tab title="#{emision['riesgos.tab.condicionesParticulares']}">
+								<h:form id="condicionPartForm">
+									<p:dataTable value="#{riesgosEspecialesBacking.condicionesParticularesDTO}" var="condicion" paginator="true" rows="4">
+										<p:column>
+											<f:facet name="header">
+												<h:outputLabel value="#{emision['anexo.titulo.cep']}" />
+											</f:facet>
+											<h:outputText value="#{condicion.condicionParticular}" />
+										</p:column>
+										<p:column>
+											<f:facet name="header">
+												<h:outputLabel value="#{emision['lbl.seleccion']}" />
+											</f:facet>
+											<div align="center">
+												<p:selectBooleanCheckbox value="#{condicion.condicionParticular}" />
+											</div>
+										</p:column>
+									</p:dataTable>
+								</h:form>
+							</p:tab>
 						</p:tabView>
 					</ui:define>
 				</ui:decorate>

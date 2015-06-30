@@ -75,7 +75,7 @@
 														<p:commandLink title="Descargar syllabus" actionListener="#{responsabilidadCivilBacking.descargarResponsabilidadCivilPDF()}">
 															<h:graphicImage name="pdf.png" library="img" />
 														</p:commandLink>
-														</h:panelGrid>
+													</h:panelGrid>
 												</div>
 											</f:facet>
 										</h:panelGrid>
@@ -166,7 +166,27 @@
 									</div>
 								</h:form>
 							</p:tab>
-							<p:tab title="#{emision['responsabilidad.tab.clausulasAdicionales']}"></p:tab>
+							<!-- CLAUSULAS ADICIONALES -->
+							<p:tab title="#{emision['responsabilidad.tab.clausulasAdicionales']}">
+								<h:form id="clausulaAddForm">
+									<p:dataTable value="#{responsabilidadCivilBacking.clausulasAdicionalesDTO}" var="clausula" paginator="true" rows="4">
+										<p:column>
+											<f:facet name="header">
+												<h:outputLabel value="#{emision['anexo.titulo.cad']}" />
+											</f:facet>
+											<h:outputText value="#{clausula.clausula}" />
+										</p:column>
+										<p:column>
+											<f:facet name="header">
+												<h:outputLabel value="#{emision['lbl.seleccion']}" />
+											</f:facet>
+											<div align="center">
+												<p:selectBooleanCheckbox value="#{clausula.seleccion}" />
+											</div>
+										</p:column>
+									</p:dataTable>
+								</h:form>
+							</p:tab>
 						</p:tabView>
 					</ui:define>
 				</ui:decorate>

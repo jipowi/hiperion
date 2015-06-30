@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
@@ -30,6 +31,7 @@ import ec.com.avila.hiperion.emision.entities.CoberturaRobo;
 import ec.com.avila.hiperion.emision.entities.CondEspRobo;
 import ec.com.avila.hiperion.emision.entities.DetalleAnexo;
 import ec.com.avila.hiperion.emision.entities.ObjAsegRobo;
+import ec.com.avila.hiperion.emision.entities.Ramo;
 import ec.com.avila.hiperion.emision.entities.RamoRoboAsalto;
 import ec.com.avila.hiperion.emision.entities.Usuario;
 import ec.com.avila.hiperion.enumeration.EstadoEnum;
@@ -72,12 +74,13 @@ public class RoboAsaltoBacking implements Serializable {
 	Logger log = Logger.getLogger(RoboAsaltoBacking.class);
 
 	RamoRoboAsalto ramoRoboAsalto = new RamoRoboAsalto();
-	private List<ClausulasAddRobo> clausulasAdicionales;
-	private List<ClausulaAdicionalDTO> clausulasAdicionalesDTO = new ArrayList<>();
+	
 	private List<CoberturaRobo> coberturas;
 	private List<CoberturaDTO> coberturasDTO = new ArrayList<>();
 	private List<CobertAddRobo> coberturasAdd;
 	private List<CoberturaAdicionalDTO> coberturasAddDTO = new ArrayList<>();
+	private List<ClausulasAddRobo> clausulasAdicionales;
+	private List<ClausulaAdicionalDTO> clausulasAdicionalesDTO = new ArrayList<>();
 	private List<CondEspRobo> condicionesEspeciales;
 	private List<CondicionEspecialDTO> condicionesEspecialesDTO = new ArrayList<>();
 	private List<DetalleAnexo> anexos;
@@ -108,6 +111,23 @@ public class RoboAsaltoBacking implements Serializable {
 
 	}
 
+	@PostConstruct
+	public void inicializar() {
+		try {
+
+			Ramo ramo = ramoService.consultarRamoPorCodigo("RE");
+
+			anexos = ramo.getDetalleAnexos();
+
+			obtenerCoberturas();
+			obtenerCoberturasAdicionales();
+			obtenerClausulasAdicionales();
+			obtenerCondicionesEspeciales();
+
+		} catch (HiperionException e) {
+			e.printStackTrace();
+		}
+	}
 
 	/**
 	 * 
@@ -203,6 +223,38 @@ public class RoboAsaltoBacking implements Serializable {
 
 				
 				clausulasAdicionalesDTO.add(clausulaDTO);
+			}
+
+		}
+
+	}
+
+	/**
+	 * 
+	 * <b> Permite obtener las condiciones especiales del ramo. </b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: 17/06/2015]
+	 * </p>
+	 * 
+	 */
+	public void obtenerCondicionesEspeciales() {
+		condicionesEspeciales = new ArrayList<CondEspRobo>();
+		if (anexos != null && anexos.size() > 0) {
+			for (DetalleAnexo anexo : anexos) {
+				if (anexo.getAnexo().getIdAnexo() == 3) {
+					CondEspRobo condicion = new CondEspRobo();
+					condicion.setCondicionEspRobo(anexo.getNombreDetalleAnexo());
+
+					condicionesEspeciales.add(condicion);
+				}
+
+			}
+			for (CondEspRobo condicion : condicionesEspeciales) {
+				CondicionEspecialDTO condicionDTO = new CondicionEspecialDTO();
+				condicionDTO.setCondicionEspecial(condicion.getCondicionEspRobo());
+				condicionDTO.setSeleccion(false);
+
+				condicionesEspecialesDTO.add(condicionDTO);
 			}
 
 		}

@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
@@ -19,8 +20,12 @@ import org.apache.log4j.Logger;
 
 import ec.com.avila.emision.web.beans.RamoResponsabilidadCivilBean;
 import ec.com.avila.hiperion.comun.HiperionException;
+import ec.com.avila.hiperion.dto.ClausulaAdicionalDTO;
 import ec.com.avila.hiperion.dto.ObjetoAseguradoResponsabilidadDTO;
+import ec.com.avila.hiperion.emision.entities.ClausulasAddResp;
+import ec.com.avila.hiperion.emision.entities.DetalleAnexo;
 import ec.com.avila.hiperion.emision.entities.ObjAsegResponsabilidad;
+import ec.com.avila.hiperion.emision.entities.Ramo;
 import ec.com.avila.hiperion.emision.entities.RamoResponsabilidadCivil;
 import ec.com.avila.hiperion.emision.entities.Usuario;
 import ec.com.avila.hiperion.enumeration.EstadoEnum;
@@ -65,6 +70,57 @@ public class ResponsabilidadCivilBacking implements Serializable {
 	RamoResponsabilidadCivil responsabilidadCivil = new RamoResponsabilidadCivil();
 
 	Logger log = Logger.getLogger(ResponsabilidadCivilBacking.class);
+
+	private List<ClausulasAddResp> clausulasAdicionales;
+	private List<ClausulaAdicionalDTO> clausulasAdicionalesDTO = new ArrayList<>();
+	private List<DetalleAnexo> anexos;
+
+	@PostConstruct
+	public void inicializar() {
+		try {
+
+			Ramo ramo = ramoService.consultarRamoPorCodigo("RC");
+
+			anexos = ramo.getDetalleAnexos();
+
+			obtenerClausulasAdicionales();
+
+		} catch (HiperionException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * 
+	 * <b> Permite obtener las clausulas adicionales. </b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: 29/06/2015]
+	 * </p>
+	 * 
+	 */
+	public void obtenerClausulasAdicionales() {
+		clausulasAdicionales = new ArrayList<ClausulasAddResp>();
+		if (anexos != null && anexos.size() > 0) {
+			for (DetalleAnexo anexo : anexos) {
+				if (anexo.getAnexo().getIdAnexo() == 1) {
+					ClausulasAddResp clausula = new ClausulasAddResp();
+					clausula.setClausulaResp(anexo.getNombreDetalleAnexo());
+
+					clausulasAdicionales.add(clausula);
+				}
+
+			}
+			for (ClausulasAddResp clausula : clausulasAdicionales) {
+				ClausulaAdicionalDTO clausulaDTO = new ClausulaAdicionalDTO();
+				clausulaDTO.setClausula(clausula.getClausulaResp());
+				clausulaDTO.setSeleccion(false);
+
+				clausulasAdicionalesDTO.add(clausulaDTO);
+			}
+
+		}
+
+	}
 
 	public void setearInfRamo() {
 		Usuario usuario = usuarioBean.getSessionUser();
@@ -185,6 +241,21 @@ public class ResponsabilidadCivilBacking implements Serializable {
 			log.error("Error al momento generar el documento Responsabilidad Civil  en PDF", e);
 			throw new HiperionException(e);
 		}
+	}
+
+	/**
+	 * @return the clausulasAdicionalesDTO
+	 */
+	public List<ClausulaAdicionalDTO> getClausulasAdicionalesDTO() {
+		return clausulasAdicionalesDTO;
+	}
+
+	/**
+	 * @param clausulasAdicionalesDTO
+	 *            the clausulasAdicionalesDTO to set
+	 */
+	public void setClausulasAdicionalesDTO(List<ClausulaAdicionalDTO> clausulasAdicionalesDTO) {
+		this.clausulasAdicionalesDTO = clausulasAdicionalesDTO;
 	}
 
 }
