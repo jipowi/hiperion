@@ -47,7 +47,7 @@
 													</h:panelGrid>
 
 													<h:panelGrid columns="2">
-														<h:outputLabel for="idPorcentajeValorSiniestro" value="#{emision['equipoMaquinaria.deducible.porcentajeValorSiniestro']}"
+														<h:outputLabel  value="#{emision['equipoMaquinaria.deducible.porcentajeValorSiniestro']}"
 															styleClass="negrita" />
 														<p:inputText id="idPorcentajeSiniestro" value="#{ramoEquipoMaquinaraBean.porcentajeSiniestro}" required="true"
 															requiredMessage="#{emision['equipoMaquinaria.deducible.porcentajeValorSiniestro.msn']}" />
@@ -274,30 +274,45 @@
 								</p:tab>
 								<!-- COBERTURAS -->
 								<p:tab title="#{emision['anexo.titulo.tab.cob']}">
-									<p:accordionPanel dynamic="true" cache="true" activeIndex="null">
-										<!-- Para Todo Riesgo -->
-										<p:tab title="#{emision['titulo.cob.cobTodoRiesgo']}">
-											<h:form id="cobTodRiesgEMFormId">
-												<p:dataTable id="cobTodRiesgEMTblId" var="todoRiesgo" value="#{equipoMaquinariaBacking.obtenerCoberturasTodoRiesgo()}" paginator="true"
-													rows="4" selection="#{equipoMaquinariaBacking.selectCoberturasTodoRiesgo}">
-													<f:facet name="header">#{emision['titulo.cob.cobTodoRiesgo']}</f:facet>
-													<p:column selectionMode="multiple" style="width:2%" />
-													<p:column headerText="#{emision['anexo.ca.nombre']}">#{todoRiesgo.nombreDetalleAnexo}</p:column>
-												</p:dataTable>
-											</h:form>
-										</p:tab>
-									</p:accordionPanel>
+									<h:form id="coberturaForm">
+									<p:dataTable value="#{equipoMaquinariaBacking.coberturasDTO}" var="cobertura" paginator="true" rows="4">
+										<p:column>
+											<f:facet name="header">
+												<h:outputLabel value="#{emision['anexo.titulo.cob']}" />
+											</f:facet>
+											<h:outputText value="#{cobertura.cobertura}" />
+										</p:column>
+										<p:column>
+											<f:facet name="header">
+												<h:outputLabel value="#{emision['lbl.seleccion']}" />
+											</f:facet>
+											<div align="center">
+												<p:selectBooleanCheckbox value="#{cobertura.seleccion}" />
+											</div>
+										</p:column>
+									</p:dataTable>
+								</h:form>
 								</p:tab>
 								<!-- COBERTURAS ADICIONALES -->
 								<p:tab title="#{emision['anexo.titulo.tab.cobad']}">
-									<h:form id="cobAdEEFormId">
-										<p:dataTable id="cobAdEETblId" var="cobAdicional" value="#{equipoMaquinariaBacking.obtenerCoberturasAdicionales()}" paginator="true"
-											rows="4" selection="#{equipoMaquinariaBacking.selectCoberturasAdicionales}">
-											<f:facet name="header">#{emision['anexo.titulo.cobad']}</f:facet>
-											<p:column selectionMode="multiple" style="width:2%" />
-											<p:column headerText="#{emision['anexo.ca.nombre']}">#{cobAdicional.nombreDetalleAnexo}</p:column>
-										</p:dataTable>
-									</h:form>
+									<h:form id="coberturaAddForm">
+									<p:dataTable value="#{equipoMaquinariaBacking.coberturasAddDTO}" var="cobertura" paginator="true" rows="4">
+										<p:column>
+											<f:facet name="header">
+												<h:outputLabel value="#{emision['anexo.titulo.cob']}" />
+											</f:facet>
+											<h:outputText value="#{cobertura.cobertura}" />
+										</p:column>
+										<p:column>
+											<f:facet name="header">
+												<h:outputLabel value="#{emision['lbl.seleccion']}" />
+											</f:facet>
+											<div align="center">
+												<p:selectBooleanCheckbox value="#{cobertura.seleccion}" />
+											</div>
+										</p:column>
+									</p:dataTable>
+								</h:form>
 								</p:tab>
 							</p:tabView>
 

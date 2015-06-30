@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package ec.com.avila.emision.web.backings;
 
 import java.io.Serializable;
@@ -90,7 +88,7 @@ public class RoboAsaltoBacking implements Serializable {
 	public void inicializar() {
 		try {
 
-			Ramo ramo = ramoService.consultarRamoPorCodigo("RE");
+			Ramo ramo = ramoService.consultarRamoPorCodigo("RB");
 
 			anexos = ramo.getDetalleAnexos();
 

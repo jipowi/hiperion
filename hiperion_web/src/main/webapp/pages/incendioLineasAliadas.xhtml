@@ -278,7 +278,24 @@
 								</p:tab>
 								<!-- CONDICIONES ESPECIALES -->
 								<p:tab title="#{emision['anexo.titulo.tab.cep']}">
-
+									<h:form id="condicionEspForm">
+										<p:dataTable value="#{incendioLineasAliadasBacking.condicionesEspecialesDTO}" var="condicion" paginator="true" rows="4">
+											<p:column>
+												<f:facet name="header">
+													<h:outputLabel value="#{emision['anexo.titulo.cep']}" />
+												</f:facet>
+												<h:outputText value="#{condicion.condicionEspecial}" />
+											</p:column>
+											<p:column>
+												<f:facet name="header">
+													<h:outputLabel value="#{emision['lbl.seleccion']}" />
+												</f:facet>
+												<div align="center">
+													<p:selectBooleanCheckbox value="#{condicion.condicionEspecial}" />
+												</div>
+											</p:column>
+										</p:dataTable>
+									</h:form>
 								</p:tab>
 								<!-- CLAUSULAS ADICIONALES -->
 								<p:tab title="#{emision['anexo.titulo.tab.cad']}">

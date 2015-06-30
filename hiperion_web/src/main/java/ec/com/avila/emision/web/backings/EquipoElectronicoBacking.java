@@ -20,13 +20,20 @@ import javax.faces.model.SelectItem;
 
 import org.apache.log4j.Logger;
 
-import ec.com.avila.emision.web.beans.DetalleAnexoBean;
 import ec.com.avila.emision.web.beans.RamoEquipoElectronicoBean;
 import ec.com.avila.hiperion.comun.HiperionException;
+import ec.com.avila.hiperion.dto.ClausulaAdicionalDTO;
+import ec.com.avila.hiperion.dto.CoberturaAdicionalDTO;
+import ec.com.avila.hiperion.dto.CoberturaDTO;
+import ec.com.avila.hiperion.dto.GarantiaPolizaDTO;
 import ec.com.avila.hiperion.dto.ObjetoAseguradoEquipoElectronicoDTO;
 import ec.com.avila.hiperion.emision.entities.Catalogo;
+import ec.com.avila.hiperion.emision.entities.ClausulasAddEquipo;
+import ec.com.avila.hiperion.emision.entities.CobertAddEquipo;
+import ec.com.avila.hiperion.emision.entities.CobertEquipo;
 import ec.com.avila.hiperion.emision.entities.DetalleAnexo;
 import ec.com.avila.hiperion.emision.entities.DetalleCatalogo;
+import ec.com.avila.hiperion.emision.entities.GarantiaPoliza;
 import ec.com.avila.hiperion.emision.entities.ObjAsegEquipo;
 import ec.com.avila.hiperion.emision.entities.Ramo;
 import ec.com.avila.hiperion.emision.entities.RamoEquipoElectronico;
@@ -37,7 +44,6 @@ import ec.com.avila.hiperion.servicio.RamoEquipoElectronicoService;
 import ec.com.avila.hiperion.servicio.RamoService;
 import ec.com.avila.hiperion.web.beans.RamoBean;
 import ec.com.avila.hiperion.web.beans.UsuarioBean;
-import ec.com.avila.hiperion.web.model.AnexosDataModel;
 import ec.com.avila.hiperion.web.util.ConstantesUtil;
 import ec.com.avila.hiperion.web.util.GenerarPdfUtil;
 import ec.com.avila.hiperion.web.util.HiperionMensajes;
@@ -69,7 +75,7 @@ public class EquipoElectronicoBacking implements Serializable {
 
 	@ManagedProperty(value = "#{ramoEquipoElectronicoBean}")
 	private RamoEquipoElectronicoBean ramoEquipoElectronicoBean;
-	
+
 	@ManagedProperty(value = "#{usuarioBean}")
 	private UsuarioBean usuarioBean;
 
@@ -77,25 +83,30 @@ public class EquipoElectronicoBacking implements Serializable {
 
 	RamoEquipoElectronico equipoElectronico = new RamoEquipoElectronico();
 
-	private AnexosDataModel anexosDataModel;
+	private List<CobertEquipo> coberturas;
+	private List<CoberturaDTO> coberturasDTO = new ArrayList<>();
+	private List<CobertAddEquipo> coberturasAdd;
+	private List<CoberturaAdicionalDTO> coberturasAddDTO = new ArrayList<>();
+	private List<ClausulasAddEquipo> clausulasAdicionales;
+	private List<ClausulaAdicionalDTO> clausulasAdicionalesDTO = new ArrayList<>();
+	private List<GarantiaPoliza> garantias;
+	private List<GarantiaPolizaDTO> garantiasDTO = new ArrayList<>();
 	private List<DetalleAnexo> anexos;
-
-	private List<DetalleAnexoBean> clausulasAdicionales;
-	private List<DetalleAnexoBean> coberturasAdicionales;
-	private List<DetalleAnexoBean> coberturasTodoRiesgo;
-	private List<DetalleAnexoBean> garantiasPoliza;
-	private DetalleAnexoBean[] selectClausulasAdicionales;
-	private DetalleAnexoBean[] selectCoberturasAdicionales;
-	private DetalleAnexoBean[] selectCoberturasTodoRiesgo;
-	private DetalleAnexoBean[] selectGarantiasPoliza;
 
 	private List<SelectItem> detalleItems;
 
 	@PostConstruct
 	public void inicializar() {
 		try {
+
 			Ramo ramo = ramoService.consultarRamoPorCodigo("EE");
+
 			anexos = ramo.getDetalleAnexos();
+
+			obtenerCoberturas();
+			obtenerCoberturasAdicionales();
+			obtenerGarantiasPoliza();
+
 		} catch (HiperionException e) {
 			e.printStackTrace();
 		}
@@ -127,94 +138,134 @@ public class EquipoElectronicoBacking implements Serializable {
 
 	/**
 	 * 
-	 * <b> Permite obtener las Clausulas Adicionales del Ramo Equipo Electronico. </b>
+	 * <b> Permite obtener las coberturas del ramo. </b>
 	 * <p>
-	 * [Author: Dario Vinueza, Date: 20/04/2014]
+	 * [Author: Paul Jimenez, Date: 17/06/2015]
 	 * </p>
 	 * 
-	 * @return
+	 * @param anexos
 	 */
-	public AnexosDataModel obtenerClausulasAdicionales() {
-		clausulasAdicionales = new ArrayList<DetalleAnexoBean>();
+	public void obtenerCoberturas() {
+
+		coberturas = new ArrayList<CobertEquipo>();
 		if (anexos != null && anexos.size() > 0) {
 			for (DetalleAnexo anexo : anexos) {
-				if (anexo.getAnexo().getIdAnexo() == 1)
-					clausulasAdicionales.add(new DetalleAnexoBean(anexo.getIdDetalleAnexo(), anexo.getNombreDetalleAnexo()));
+				if (anexo.getAnexo().getIdAnexo() == 2) {
+					CobertEquipo cobertura = new CobertEquipo();
+					cobertura.setCoberturaEqElec(anexo.getNombreDetalleAnexo());
+
+					coberturas.add(cobertura);
+				}
+
 			}
 
-			anexosDataModel = new AnexosDataModel(clausulasAdicionales);
+			for (CobertEquipo cobertura : coberturas) {
+				CoberturaDTO coberturaDTO = new CoberturaDTO();
+				coberturaDTO.setCobertura(cobertura.getCoberturaEqElec());
+				coberturaDTO.setSeleccion(false);
+
+				coberturasDTO.add(coberturaDTO);
+			}
 		}
 
-		return anexosDataModel;
 	}
 
 	/**
 	 * 
-	 * <b> Permite obtener las Coberturas con titulo Todo Riesgo para el Ramo Equipo Electronico. </b>
+	 * <b> Permite obetener las coberturas adicionales del ramo. </b>
 	 * <p>
-	 * [Author: Dario Vinueza, Date: 20/04/2014]
+	 * [Author: Paul Jimenez, Date: 26/06/2015]
 	 * </p>
 	 * 
-	 * @return
 	 */
-	public AnexosDataModel obtenerCoberturasTodoRiesgo() {
-		coberturasTodoRiesgo = new ArrayList<DetalleAnexoBean>();
+	public void obtenerCoberturasAdicionales() {
+
+		coberturasAdd = new ArrayList<CobertAddEquipo>();
 		if (anexos != null && anexos.size() > 0) {
 			for (DetalleAnexo anexo : anexos) {
-				if (anexo.getAnexo().getIdAnexo() == 2 && anexo.getTitulo().getIdTitulo() == 6)
-					coberturasTodoRiesgo.add(new DetalleAnexoBean(anexo.getIdDetalleAnexo(), anexo.getNombreDetalleAnexo()));
+				if (anexo.getAnexo().getIdAnexo() == 6) {
+					CobertAddEquipo cobertura = new CobertAddEquipo();
+					cobertura.setCoberturaAddEqElec(anexo.getNombreDetalleAnexo());
+
+					coberturasAdd.add(cobertura);
+				}
+
 			}
 
-			anexosDataModel = new AnexosDataModel(coberturasTodoRiesgo);
+			for (CobertAddEquipo cobertura : coberturasAdd) {
+				CoberturaAdicionalDTO coberturaAddDTO = new CoberturaAdicionalDTO();
+				coberturaAddDTO.setCobertura(cobertura.getCoberturaAddEqElec());
+				coberturaAddDTO.setSeleccion(false);
+
+				coberturasAddDTO.add(coberturaAddDTO);
+			}
 		}
 
-		return anexosDataModel;
 	}
 
 	/**
 	 * 
-	 * <b> Permite obtener las Coberturas Adicionales del Ramo Equipo Elecrtonico. </b>
+	 * <b> Permite obetener las coberturas adicionales del ramo. </b>
 	 * <p>
-	 * [Author: Dario Vinueza, Date: 20/04/2014]
+	 * [Author: Paul Jimenez, Date: 26/06/2015]
 	 * </p>
 	 * 
-	 * @return
 	 */
-	public AnexosDataModel obtenerCoberturasAdicionales() {
-		coberturasAdicionales = new ArrayList<DetalleAnexoBean>();
+	public void obtenerGarantiasPoliza() {
+
+		garantias = new ArrayList<GarantiaPoliza>();
 		if (anexos != null && anexos.size() > 0) {
 			for (DetalleAnexo anexo : anexos) {
-				if (anexo.getAnexo().getIdAnexo() == 6)
-					coberturasAdicionales.add(new DetalleAnexoBean(anexo.getIdDetalleAnexo(), anexo.getNombreDetalleAnexo()));
+				if (anexo.getAnexo().getIdAnexo() == 6) {
+					GarantiaPoliza cobertura = new GarantiaPoliza();
+					cobertura.setGarantiaEqElec(anexo.getNombreDetalleAnexo());
+
+					garantias.add(cobertura);
+				}
+
 			}
 
-			anexosDataModel = new AnexosDataModel(coberturasAdicionales);
+			for (GarantiaPoliza garantia : garantias) {
+				GarantiaPolizaDTO garantiaDTO = new GarantiaPolizaDTO();
+				garantiaDTO.setGarantia(garantia.getGarantiaEqElec());
+				garantiaDTO.setSeleccion(false);
+
+				garantiasDTO.add(garantiaDTO);
+			}
 		}
 
-		return anexosDataModel;
 	}
 
 	/**
 	 * 
-	 * <b> Permite obtener las Garantias de la Poliza del Ramo Equipo Electronico. </b>
+	 * <b> Permite obtener las clausulas adicionales del ramo. </b>
 	 * <p>
-	 * [Author: Dario Vinueza, Date: 20/04/2014]
+	 * [Author: Paul Jimenez, Date: 17/06/2015]
 	 * </p>
 	 * 
-	 * @return
 	 */
-	public AnexosDataModel obtenerGarantiasPoliza() {
-		garantiasPoliza = new ArrayList<DetalleAnexoBean>();
+	public void obtenerClausulasAdicionales() {
+		clausulasAdicionales = new ArrayList<ClausulasAddEquipo>();
 		if (anexos != null && anexos.size() > 0) {
 			for (DetalleAnexo anexo : anexos) {
-				if (anexo.getAnexo().getIdAnexo() == 5)
-					garantiasPoliza.add(new DetalleAnexoBean(anexo.getIdDetalleAnexo(), anexo.getNombreDetalleAnexo()));
+				if (anexo.getAnexo().getIdAnexo() == 1) {
+					ClausulasAddEquipo clausula = new ClausulasAddEquipo();
+					clausula.setClausulaEqElec(anexo.getNombreDetalleAnexo());
+
+					clausulasAdicionales.add(clausula);
+				}
+
+			}
+			for (ClausulasAddEquipo clausula : clausulasAdicionales) {
+				ClausulaAdicionalDTO clausulaDTO = new ClausulaAdicionalDTO();
+				clausulaDTO.setClausula(clausula.getClausulaEqElec());
+				clausulaDTO.setSeleccion(false);
+
+				clausulasAdicionalesDTO.add(clausulaDTO);
 			}
 
-			anexosDataModel = new AnexosDataModel(garantiasPoliza);
 		}
 
-		return anexosDataModel;
 	}
 
 	/**
@@ -226,9 +277,9 @@ public class EquipoElectronicoBacking implements Serializable {
 	 * 
 	 */
 	public void setearInfRamo() throws HiperionException {
-		
-		Usuario usuario=usuarioBean.getSessionUser();
-		
+
+		Usuario usuario = usuarioBean.getSessionUser();
+
 		equipoElectronico.setTasaEquiposFijos(ramoEquipoElectronicoBean.getTasaFijos());
 		equipoElectronico.setTasaExtDatos(ramoEquipoElectronicoBean.getTasaDatos());
 		equipoElectronico.setTasaOperacion(ramoEquipoElectronicoBean.getTasaOperacion());
@@ -236,7 +287,7 @@ public class EquipoElectronicoBacking implements Serializable {
 		equipoElectronico.setTasaCelulares(ramoEquipoElectronicoBean.getTasaCelulares());
 		equipoElectronico.setTasaHurtoEqElec(ramoEquipoElectronicoBean.getTasaHurto());
 		equipoElectronico.setTasaHurtoEqElec(ramoEquipoElectronicoBean.getTasaOtros());
-		
+
 		equipoElectronico.setIdUsuarioCreacion(usuario.getIdUsuario());
 		equipoElectronico.setFechaCreacion(new Date());
 		equipoElectronico.setEstado(EstadoEnum.A);
@@ -251,7 +302,7 @@ public class EquipoElectronicoBacking implements Serializable {
 	 * <p>
 	 * [Author: Paul Jimenez, Date: Nov 7, 2014]
 	 * </p>
-	 *
+	 * 
 	 * @throws HiperionException
 	 */
 	public void guardarRamo() throws HiperionException {
@@ -268,8 +319,8 @@ public class EquipoElectronicoBacking implements Serializable {
 					asegEquipo.setDetalleObjetoEqElec(objeto.getDetalle());
 					asegEquipo.setValorObjEqElec(objeto.getValorObjeto());
 					asegEquipo.setDescObjEqElec(objeto.getDescripcion());
-					
-					Usuario usuario=usuarioBean.getSessionUser();
+
+					Usuario usuario = usuarioBean.getSessionUser();
 					asegEquipo.setIdUsuarioCreacion(usuario.getIdUsuario());
 					asegEquipo.setFechaCreacion(new Date());
 					asegEquipo.setEstado(EstadoEnum.A);
@@ -294,7 +345,6 @@ public class EquipoElectronicoBacking implements Serializable {
 
 	}
 
-	
 	/**
 	 * @return the usuarioBean
 	 */
@@ -303,7 +353,8 @@ public class EquipoElectronicoBacking implements Serializable {
 	}
 
 	/**
-	 * @param usuarioBean the usuarioBean to set
+	 * @param usuarioBean
+	 *            the usuarioBean to set
 	 */
 	public void setUsuarioBean(UsuarioBean usuarioBean) {
 		this.usuarioBean = usuarioBean;
@@ -333,83 +384,23 @@ public class EquipoElectronicoBacking implements Serializable {
 	}
 
 	/**
-	 * @return the selectClausulasAdicionales
-	 */
-	public DetalleAnexoBean[] getSelectClausulasAdicionales() {
-		return selectClausulasAdicionales;
-	}
-
-	/**
-	 * @param selectClausulasAdicionales
-	 *            the selectClausulasAdicionales to set
-	 */
-	public void setSelectClausulasAdicionales(DetalleAnexoBean[] selectClausulasAdicionales) {
-		this.selectClausulasAdicionales = selectClausulasAdicionales;
-	}
-
-	/**
-	 * @return the selectCoberturasAdicionales
-	 */
-	public DetalleAnexoBean[] getSelectCoberturasAdicionales() {
-		return selectCoberturasAdicionales;
-	}
-
-	/**
-	 * @param selectCoberturasAdicionales
-	 *            the selectCoberturasAdicionales to set
-	 */
-	public void setSelectCoberturasAdicionales(DetalleAnexoBean[] selectCoberturasAdicionales) {
-		this.selectCoberturasAdicionales = selectCoberturasAdicionales;
-	}
-
-	/**
-	 * @return the selectCoberturasTodoRiesgo
-	 */
-	public DetalleAnexoBean[] getSelectCoberturasTodoRiesgo() {
-		return selectCoberturasTodoRiesgo;
-	}
-
-	/**
-	 * @param selectCoberturasTodoRiesgo
-	 *            the selectCoberturasTodoRiesgo to set
-	 */
-	public void setSelectCoberturasTodoRiesgo(DetalleAnexoBean[] selectCoberturasTodoRiesgo) {
-		this.selectCoberturasTodoRiesgo = selectCoberturasTodoRiesgo;
-	}
-
-	/**
-	 * @return the selectGarantiasPoliza
-	 */
-	public DetalleAnexoBean[] getSelectGarantiasPoliza() {
-		return selectGarantiasPoliza;
-	}
-
-	/**
-	 * @param selectGarantiasPoliza
-	 *            the selectGarantiasPoliza to set
-	 */
-	public void setSelectGarantiasPoliza(DetalleAnexoBean[] selectGarantiasPoliza) {
-		this.selectGarantiasPoliza = selectGarantiasPoliza;
-	}
-
-	/**
 	 * @param detalleItems
 	 *            the detalleItems to set
 	 */
 	public void setDetalleItems(List<SelectItem> detalleItems) {
 		this.detalleItems = detalleItems;
 	}
-	
+
 	/**
 	 * 
-	 * <b>
-	 * Permite descargar la informacion del ramo dinero y valores.
-	 * </b>
-	 * <p>[Author: Franklin Pozo B, Date: 29/04/2015]</p>
-	 *
+	 * <b> Permite descargar la informacion del ramo dinero y valores. </b>
+	 * <p>
+	 * [Author: Franklin Pozo B, Date: 29/04/2015]
+	 * </p>
+	 * 
 	 * @throws HiperionException
 	 */
-	public void descargarEquipoElectronicoPDF()throws HiperionException{
+	public void descargarEquipoElectronicoPDF() throws HiperionException {
 		try {
 			Map<String, Object> parametrosReporte = new HashMap<String, Object>();
 
@@ -421,11 +412,71 @@ public class EquipoElectronicoBacking implements Serializable {
 			JsfUtil.setSessionAttribute(ConstantesUtil.PARAMETROS_DESCARGADOR_IDENTIFICADOR, parametrosReporte);
 			JsfUtil.downloadFile();
 
-		}catch(Exception e){
+		} catch (Exception e) {
 			log.error("Error al momento generar el documento PDF", e);
 			throw new HiperionException(e);
 		}
-		
+
+	}
+
+	/**
+	 * @return the coberturasDTO
+	 */
+	public List<CoberturaDTO> getCoberturasDTO() {
+		return coberturasDTO;
+	}
+
+	/**
+	 * @param coberturasDTO
+	 *            the coberturasDTO to set
+	 */
+	public void setCoberturasDTO(List<CoberturaDTO> coberturasDTO) {
+		this.coberturasDTO = coberturasDTO;
+	}
+
+	/**
+	 * @return the coberturasAddDTO
+	 */
+	public List<CoberturaAdicionalDTO> getCoberturasAddDTO() {
+		return coberturasAddDTO;
+	}
+
+	/**
+	 * @param coberturasAddDTO
+	 *            the coberturasAddDTO to set
+	 */
+	public void setCoberturasAddDTO(List<CoberturaAdicionalDTO> coberturasAddDTO) {
+		this.coberturasAddDTO = coberturasAddDTO;
+	}
+
+	/**
+	 * @return the clausulasAdicionalesDTO
+	 */
+	public List<ClausulaAdicionalDTO> getClausulasAdicionalesDTO() {
+		return clausulasAdicionalesDTO;
+	}
+
+	/**
+	 * @param clausulasAdicionalesDTO
+	 *            the clausulasAdicionalesDTO to set
+	 */
+	public void setClausulasAdicionalesDTO(List<ClausulaAdicionalDTO> clausulasAdicionalesDTO) {
+		this.clausulasAdicionalesDTO = clausulasAdicionalesDTO;
+	}
+
+	/**
+	 * @return the garantiasDTO
+	 */
+	public List<GarantiaPolizaDTO> getGarantiasDTO() {
+		return garantiasDTO;
+	}
+
+	/**
+	 * @param garantiasDTO
+	 *            the garantiasDTO to set
+	 */
+	public void setGarantiasDTO(List<GarantiaPolizaDTO> garantiasDTO) {
+		this.garantiasDTO = garantiasDTO;
 	}
 
 }

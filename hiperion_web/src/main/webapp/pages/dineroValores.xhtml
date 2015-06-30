@@ -211,23 +211,43 @@
 
 								<!-- COBERTURAS -->
 								<p:tab title="#{emision['ap.tab.coberturas']}">
-									<h:form id="cobDVFormId">
-										<p:dataTable id="cobDVTblId" var="cobertura" value="#{dineroValoresBacking.obtenerCoberturas()}" paginator="true" rows="4"
-											selection="#{dineroValoresBacking.selectCoberturas}">
-											<f:facet name="header">#{emision['anexo.titulo.cob']}</f:facet>
-											<p:column selectionMode="multiple" style="width:2%" />
-											<p:column headerText="#{emision['anexo.ca.nombre']}">#{cobertura.nombreDetalleAnexo}</p:column>
+									<h:form id="coberturaForm">
+										<p:dataTable value="#{dineroValoresBacking.coberturasDTO}" var="cobertura" paginator="true" rows="4">
+											<p:column>
+												<f:facet name="header">
+													<h:outputLabel value="#{emision['anexo.titulo.cob']}" />
+												</f:facet>
+												<h:outputText value="#{cobertura.cobertura}" />
+											</p:column>
+											<p:column>
+												<f:facet name="header">
+													<h:outputLabel value="#{emision['lbl.seleccion']}" />
+												</f:facet>
+												<div align="center">
+													<p:selectBooleanCheckbox value="#{cobertura.seleccion}" />
+												</div>
+											</p:column>
 										</p:dataTable>
 									</h:form>
 								</p:tab>
 								<!-- CLAUSULAS ADICIONALES -->
 								<p:tab title="#{emision['ap.tab.clausulasAdicionales']}">
-									<h:form id="caDVFormId">
-										<p:dataTable id="caDVTblId" var="clausula" value="#{dineroValoresBacking.obtenerClausulasAdicionales()}" paginator="true" rows="4"
-											selection="#{dineroValoresBacking.selectClausulasAdicionales}">
-											<f:facet name="header">#{emision['anexo.titulo.cad']}</f:facet>
-											<p:column selectionMode="multiple" style="width:2%" />
-											<p:column headerText="#{emision['anexo.ca.nombre']}">#{clausula.nombreDetalleAnexo}</p:column>
+									<h:form id="clausulaAddForm">
+										<p:dataTable value="#{dineroValoresBacking.clausulasAdicionalesDTO}" var="clausula" paginator="true" rows="4">
+											<p:column>
+												<f:facet name="header">
+													<h:outputLabel value="#{emision['anexo.titulo.cad']}" />
+												</f:facet>
+												<h:outputText value="#{clausula.clausula}" />
+											</p:column>
+											<p:column>
+												<f:facet name="header">
+													<h:outputLabel value="#{emision['lbl.seleccion']}" />
+												</f:facet>
+												<div align="center">
+													<p:selectBooleanCheckbox value="#{clausula.seleccion}" />
+												</div>
+											</p:column>
 										</p:dataTable>
 									</h:form>
 								</p:tab>

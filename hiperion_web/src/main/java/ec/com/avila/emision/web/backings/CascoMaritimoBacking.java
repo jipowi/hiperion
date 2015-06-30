@@ -77,6 +77,7 @@ public class CascoMaritimoBacking implements Serializable {
 	private List<CobertAddCasco> coberturasAdd;
 	private List<ClausulasAddCasco> clausulasAdd;
 	private List<CoberturaAdicionalDTO> coberturasAddDTO = new ArrayList<>();
+	private List<ClausulasAddCasco> clausulasAdicionales;
 	private List<ClausulaAdicionalDTO> clausulasAdicionalesDTO = new ArrayList<>();
 	private List<DetalleAnexo> anexos;
 
@@ -94,7 +95,10 @@ public class CascoMaritimoBacking implements Serializable {
 		try {
 			Ramo ramo = ramoService.consultarRamoPorCodigo("CM");
 			anexos = ramo.getDetalleAnexos();
+
 			obtenerCoberturasAdicionales();
+			obtenerClausulasAdicionales();
+
 		} catch (HiperionException e) {
 			e.printStackTrace();
 		}
@@ -131,31 +135,32 @@ public class CascoMaritimoBacking implements Serializable {
 
 	/**
 	 * 
-	 * <b> Permite Obtener la clausulas Adicionales del ramo casco maritimo </b>
+	 * <b> Permite obtener las clausulas adicionales del ramo. </b>
 	 * <p>
-	 * [Author: Franklin Pozo B, Date: 17/06/2015]
+	 * [Author: Paul Jimenez, Date: 17/06/2015]
 	 * </p>
 	 * 
 	 */
 	public void obtenerClausulasAdicionales() {
-
-		clausulasAdd = new ArrayList<ClausulasAddCasco>();
+		clausulasAdicionales = new ArrayList<ClausulasAddCasco>();
 		if (anexos != null && anexos.size() > 0) {
 			for (DetalleAnexo anexo : anexos) {
 				if (anexo.getAnexo().getIdAnexo() == 1) {
-					ClausulasAddCasco clauslaAddCasco = new ClausulasAddCasco();
-					clauslaAddCasco.setClausulaAddMaritimo(clauslaAddCasco.getClausulaAddMaritimo());
+					ClausulasAddCasco clausula = new ClausulasAddCasco();
+					clausula.setClausulaAddMaritimo(anexo.getNombreDetalleAnexo());
 
-					clausulasAdd.add(clauslaAddCasco);
+					clausulasAdicionales.add(clausula);
 				}
+
+			}
+			for (ClausulasAddCasco clausula : clausulasAdicionales) {
+				ClausulaAdicionalDTO clausulaDTO = new ClausulaAdicionalDTO();
+				clausulaDTO.setClausula(clausula.getClausulaAddMaritimo());
+				clausulaDTO.setSeleccion(false);
+
+				clausulasAdicionalesDTO.add(clausulaDTO);
 			}
 
-			for (ClausulasAddCasco clausulaAdd : clausulasAdd) {
-				ClausulaAdicionalDTO clausulaAdicionalDTO = new ClausulaAdicionalDTO();
-				clausulaAdicionalDTO.setClausula(clausulaAdd.getClausulaAddMaritimo());
-
-				clausulasAdicionalesDTO.add(clausulaAdicionalDTO);
-			}
 		}
 
 	}
@@ -305,6 +310,21 @@ public class CascoMaritimoBacking implements Serializable {
 	}
 
 	/**
+	 * @return the clausulasAdicionalesDTO
+	 */
+	public List<ClausulaAdicionalDTO> getClausulasAdicionalesDTO() {
+		return clausulasAdicionalesDTO;
+	}
+
+	/**
+	 * @param clausulasAdicionalesDTO
+	 *            the clausulasAdicionalesDTO to set
+	 */
+	public void setClausulasAdicionalesDTO(List<ClausulaAdicionalDTO> clausulasAdicionalesDTO) {
+		this.clausulasAdicionalesDTO = clausulasAdicionalesDTO;
+	}
+
+	/**
 	 * 
 	 * <b> Permite descargar y generar el documento PDF </b>
 	 * <p>
@@ -332,21 +352,6 @@ public class CascoMaritimoBacking implements Serializable {
 	}
 
 	/**
-	 * @return the clausulasAdicionalesDTO
-	 */
-	public List<ClausulaAdicionalDTO> getClausulasAdicionalesDTO() {
-		return clausulasAdicionalesDTO;
-	}
-
-	/**
-	 * @param clausulasAdicionalesDTO
-	 *            the clausulasAdicionalesDTO to set
-	 */
-	public void setClausulasAdicionalesDTO(List<ClausulaAdicionalDTO> clausulasAdicionalesDTO) {
-		this.clausulasAdicionalesDTO = clausulasAdicionalesDTO;
-	}
-
-	/**
 	 * @return the clausulasAdd
 	 */
 	public List<ClausulasAddCasco> getClausulasAdd() {
@@ -354,12 +359,11 @@ public class CascoMaritimoBacking implements Serializable {
 	}
 
 	/**
-	 * @param clausulasAdd the clausulasAdd to set
+	 * @param clausulasAdd
+	 *            the clausulasAdd to set
 	 */
 	public void setClausulasAdd(List<ClausulasAddCasco> clausulasAdd) {
 		this.clausulasAdd = clausulasAdd;
 	}
-	
-	
 
 }

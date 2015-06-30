@@ -106,7 +106,7 @@ public class IncendioLineasAliadasBacking implements Serializable {
 	public void inicializar() {
 		try {
 
-			Ramo ramo = ramoService.consultarRamoPorCodigo("RE");
+			Ramo ramo = ramoService.consultarRamoPorCodigo("ILA");
 
 			anexos = ramo.getDetalleAnexos();
 

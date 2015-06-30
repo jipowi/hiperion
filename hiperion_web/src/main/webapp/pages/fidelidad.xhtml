@@ -88,27 +88,48 @@
 										</div>
 									</h:form>
 								</p:tab>
-								<!-- CLAUSULAS ADICIONALES -->
-								<p:tab title="#{emision['anexo.titulo.tab.cad']}">
-									<h:form id="caDVFormId">
-										<p:dataTable id="caDVTblId" var="clausula" value="#{fidelidadBacking.obtenerClausulasAdicionales()}" paginator="true" rows="4"
-											selection="#{fidelidadBacking.selectClausulasAdicionales}">
-											<f:facet name="header">#{emision['anexo.titulo.cad']}</f:facet>
-											<p:column selectionMode="multiple" style="width:2%" />
-											<p:column headerText="#{emision['anexo.ca.nombre']}">#{clausula.nombreDetalleAnexo}</p:column>
+
+								<!-- COBERTURAS -->
+								<p:tab title="#{emision['anexo.titulo.tab.cob']}">
+									<h:form id="coberturaForm">
+										<p:dataTable value="#{fidelidadBacking.coberturasDTO}" var="cobertura" paginator="true" rows="4">
+											<p:column>
+												<f:facet name="header">
+													<h:outputLabel value="#{emision['anexo.titulo.cob']}" />
+												</f:facet>
+												<h:outputText value="#{cobertura.cobertura}" />
+											</p:column>
+											<p:column>
+												<f:facet name="header">
+													<h:outputLabel value="#{emision['lbl.seleccion']}" />
+												</f:facet>
+												<div align="center">
+													<p:selectBooleanCheckbox value="#{cobertura.seleccion}" />
+												</div>
+											</p:column>
 										</p:dataTable>
 									</h:form>
 								</p:tab>
-								<!-- COBERTURAS -->
-								<p:tab title="#{emision['anexo.titulo.tab.cob']}">
-									<h:form id="cobDVFormId">
-										<p:dataTable id="cobDVTblId" var="cobertura" value="#{fidelidadBacking.obtenerCoberturas()}" paginator="true" rows="4"
-											selection="#{fidelidadBacking.selectCoberturas}">
-											<f:facet name="header">#{emision['anexo.titulo.cob']}</f:facet>
-											<p:column selectionMode="multiple" style="width:2%" />
-											<p:column headerText="#{emision['anexo.ca.nombre']}">#{cobertura.nombreDetalleAnexo}</p:column>
-										</p:dataTable>
-									</h:form>
+								<!-- CLAUSULAS ADICIONALES -->
+								<p:tab title="#{emision['anexo.titulo.tab.cad']}">
+									<h:form id="clausulaAddForm">
+									<p:dataTable value="#{fidelidadBacking.clausulasAdicionalesDTO}" var="clausula" paginator="true" rows="4">
+										<p:column>
+											<f:facet name="header">
+												<h:outputLabel value="#{emision['anexo.titulo.cad']}" />
+											</f:facet>
+											<h:outputText value="#{clausula.clausula}" />
+										</p:column>
+										<p:column>
+											<f:facet name="header">
+												<h:outputLabel value="#{emision['lbl.seleccion']}" />
+											</f:facet>
+											<div align="center">
+												<p:selectBooleanCheckbox value="#{clausula.seleccion}" />
+											</div>
+										</p:column>
+									</p:dataTable>
+								</h:form>
 								</p:tab>
 								<p:tab title="#{emision['fidelidad.tab.modalidadObjetoAsegurado']}">
 									<h:form id="modId">
@@ -138,7 +159,6 @@
 									</h:form>
 								</p:tab>
 							</p:tabView>
-
 						</p:panel>
 					</ui:define>
 				</ui:decorate>

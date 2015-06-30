@@ -19,10 +19,13 @@ import javax.faces.bean.ViewScoped;
 
 import org.apache.log4j.Logger;
 
-import ec.com.avila.emision.web.beans.DetalleAnexoBean;
 import ec.com.avila.emision.web.beans.RamoEquipoMaquinaraBean;
 import ec.com.avila.hiperion.comun.HiperionException;
+import ec.com.avila.hiperion.dto.CoberturaAdicionalDTO;
+import ec.com.avila.hiperion.dto.CoberturaDTO;
 import ec.com.avila.hiperion.dto.ObjetoAseguradoEquipoMaqDTO;
+import ec.com.avila.hiperion.emision.entities.CobertAddRobo;
+import ec.com.avila.hiperion.emision.entities.CobertEqMaq;
 import ec.com.avila.hiperion.emision.entities.DetalleAnexo;
 import ec.com.avila.hiperion.emision.entities.ObjAsegEquipoMaq;
 import ec.com.avila.hiperion.emision.entities.Ramo;
@@ -33,7 +36,6 @@ import ec.com.avila.hiperion.servicio.RamoEquipoMaquinariaService;
 import ec.com.avila.hiperion.servicio.RamoService;
 import ec.com.avila.hiperion.web.beans.RamoBean;
 import ec.com.avila.hiperion.web.beans.UsuarioBean;
-import ec.com.avila.hiperion.web.model.AnexosDataModel;
 import ec.com.avila.hiperion.web.util.ConstantesUtil;
 import ec.com.avila.hiperion.web.util.GenerarPdfUtil;
 import ec.com.avila.hiperion.web.util.HiperionMensajes;
@@ -41,7 +43,7 @@ import ec.com.avila.hiperion.web.util.JsfUtil;
 import ec.com.avila.hiperion.web.util.MessagesController;
 
 /**
- * <b>Clase Baking que permite gestionar la informaci&oacute;n que se maneje en las p&acute;ginas web que utilicen el Ramo Dinero y Valores. </b>
+ * <b>Clase Backing que permite gestionar la informacion que se maneje en las paginas web que utilicen el Ramo Dinero y Valores. </b>
  * 
  * @author Dario Vinueza
  * @version 1.0,17/02/2014
@@ -68,6 +70,13 @@ public class EquipoMaquinariaBacking implements Serializable {
 	private UsuarioBean usuarioBean;
 
 	RamoEquipoMaquinaria ramoEquipoMaquinaria = new RamoEquipoMaquinaria();
+	private List<CobertEqMaq> coberturas;
+	private List<CoberturaDTO> coberturasDTO = new ArrayList<>();
+	private List<CobertAddRobo> coberturasAdd;
+	private List<CoberturaAdicionalDTO> coberturasAddDTO = new ArrayList<>();
+	Logger log = Logger.getLogger(EquipoMaquinariaBacking.class);
+
+	private List<DetalleAnexo> anexos;
 
 	/**
 	 * @return the ramoEquipoMaquinaraBean
@@ -84,21 +93,17 @@ public class EquipoMaquinariaBacking implements Serializable {
 		this.ramoEquipoMaquinaraBean = ramoEquipoMaquinaraBean;
 	}
 
-	Logger log = Logger.getLogger(EquipoMaquinariaBacking.class);
-
-	private AnexosDataModel anexosDataModel;
-	private List<DetalleAnexo> anexos;
-
-	private List<DetalleAnexoBean> coberturasTodoRiesgo;
-	private List<DetalleAnexoBean> coberturasAdicionales;
-	private DetalleAnexoBean[] selectCoberturasTodoRiesgo;
-	private DetalleAnexoBean[] selectCoberturasAdicionales;
-
 	@PostConstruct
 	public void inicializar() {
 		try {
+
 			Ramo ramo = ramoService.consultarRamoPorCodigo("EM");
+
 			anexos = ramo.getDetalleAnexos();
+
+			obtenerCoberturas();
+			obtenerCoberturasAdicionales();
+
 		} catch (HiperionException e) {
 			e.printStackTrace();
 		}
@@ -106,48 +111,69 @@ public class EquipoMaquinariaBacking implements Serializable {
 
 	/**
 	 * 
-	 * <b> Permite obtener las Coberturas con titulo Todo Riesgo para el Ramo Equipo Maquinaria. </b>
+	 * <b> Permite obtener las coberturas del ramo. </b>
 	 * <p>
-	 * [Author: Dario Vinueza, Date: 20/04/2014]
+	 * [Author: Paul Jimenez, Date: 17/06/2015]
 	 * </p>
 	 * 
-	 * @return
+	 * @param anexos
 	 */
-	public AnexosDataModel obtenerCoberturasTodoRiesgo() {
-		coberturasTodoRiesgo = new ArrayList<DetalleAnexoBean>();
+	public void obtenerCoberturas() {
+
+		coberturas = new ArrayList<CobertEqMaq>();
 		if (anexos != null && anexos.size() > 0) {
 			for (DetalleAnexo anexo : anexos) {
-				if (anexo.getAnexo().getIdAnexo() == 2 && anexo.getTitulo().getIdTitulo() == 6)
-					coberturasTodoRiesgo.add(new DetalleAnexoBean(anexo.getIdDetalleAnexo(), anexo.getNombreDetalleAnexo()));
+				if (anexo.getAnexo().getIdAnexo() == 2) {
+					CobertEqMaq cobertura = new CobertEqMaq();
+					cobertura.setCoberturaEqMaq(anexo.getNombreDetalleAnexo());
+
+					coberturas.add(cobertura);
+				}
+
 			}
 
-			anexosDataModel = new AnexosDataModel(coberturasTodoRiesgo);
+			for (CobertEqMaq cobertura : coberturas) {
+				CoberturaDTO coberturaDTO = new CoberturaDTO();
+				coberturaDTO.setCobertura(cobertura.getCoberturaEqMaq());
+				coberturaDTO.setSeleccion(false);
+
+				coberturasDTO.add(coberturaDTO);
+			}
 		}
 
-		return anexosDataModel;
 	}
 
 	/**
 	 * 
-	 * <b> Permite obtener las Coberturas Adicionales del Ramo Equipo Maquinaria. </b>
+	 * <b> Permite obetener las coberturas adicionales del ramo. </b>
 	 * <p>
-	 * [Author: Dario Vinueza, Date: 20/04/2014]
+	 * [Author: Paul Jimenez, Date: 26/06/2015]
 	 * </p>
 	 * 
-	 * @return
 	 */
-	public AnexosDataModel obtenerCoberturasAdicionales() {
-		coberturasAdicionales = new ArrayList<DetalleAnexoBean>();
+	public void obtenerCoberturasAdicionales() {
+
+		coberturasAdd = new ArrayList<CobertAddRobo>();
 		if (anexos != null && anexos.size() > 0) {
 			for (DetalleAnexo anexo : anexos) {
-				if (anexo.getAnexo().getIdAnexo() == 6)
-					coberturasAdicionales.add(new DetalleAnexoBean(anexo.getIdDetalleAnexo(), anexo.getNombreDetalleAnexo()));
+				if (anexo.getAnexo().getIdAnexo() == 6) {
+					CobertAddRobo cobertura = new CobertAddRobo();
+					cobertura.setCoberturaAddRobo(anexo.getNombreDetalleAnexo());
+
+					coberturasAdd.add(cobertura);
+				}
+
 			}
 
-			anexosDataModel = new AnexosDataModel(coberturasAdicionales);
+			for (CobertAddRobo cobertura : coberturasAdd) {
+				CoberturaAdicionalDTO coberturaAddDTO = new CoberturaAdicionalDTO();
+				coberturaAddDTO.setCobertura(cobertura.getCoberturaAddRobo());
+				coberturaAddDTO.setSeleccion(false);
+
+				coberturasAddDTO.add(coberturaAddDTO);
+			}
 		}
 
-		return anexosDataModel;
 	}
 
 	/**
@@ -222,7 +248,6 @@ public class EquipoMaquinariaBacking implements Serializable {
 		}
 	}
 
-	
 	/**
 	 * @return the usuarioBean
 	 */
@@ -231,7 +256,8 @@ public class EquipoMaquinariaBacking implements Serializable {
 	}
 
 	/**
-	 * @param usuarioBean the usuarioBean to set
+	 * @param usuarioBean
+	 *            the usuarioBean to set
 	 */
 	public void setUsuarioBean(UsuarioBean usuarioBean) {
 		this.usuarioBean = usuarioBean;
@@ -246,45 +272,15 @@ public class EquipoMaquinariaBacking implements Serializable {
 	}
 
 	/**
-	 * @return the selectCoberturasTodoRiesgo
-	 */
-	public DetalleAnexoBean[] getSelectCoberturasTodoRiesgo() {
-		return selectCoberturasTodoRiesgo;
-	}
-
-	/**
-	 * @param selectCoberturasTodoRiesgo
-	 *            the selectCoberturasTodoRiesgo to set
-	 */
-	public void setSelectCoberturasTodoRiesgo(DetalleAnexoBean[] selectCoberturasTodoRiesgo) {
-		this.selectCoberturasTodoRiesgo = selectCoberturasTodoRiesgo;
-	}
-
-	/**
-	 * @return the selectCoberturasAdicionales
-	 */
-	public DetalleAnexoBean[] getSelectCoberturasAdicionales() {
-		return selectCoberturasAdicionales;
-	}
-
-	/**
-	 * @param selectCoberturasAdicionales
-	 *            the selectCoberturasAdicionales to set
-	 */
-	public void setSelectCoberturasAdicionales(DetalleAnexoBean[] selectCoberturasAdicionales) {
-		this.selectCoberturasAdicionales = selectCoberturasAdicionales;
-	}
-	
-	/**
 	 * 
-	 * <b>
-	 * Permite generar y descargar informacion Equipo Maquinaria PDF.
-	 * </b>
-	 * <p>[Author: Franklin Pozo B, Date: 29/04/2015]</p>
-	 *
+	 * <b> Permite generar y descargar informacion Equipo Maquinaria PDF. </b>
+	 * <p>
+	 * [Author: Franklin Pozo B, Date: 29/04/2015]
+	 * </p>
+	 * 
 	 * @throws HiperionException
 	 */
-	public void descargarEquipoMaquinariaPDF()throws HiperionException{
+	public void descargarEquipoMaquinariaPDF() throws HiperionException {
 		try {
 			Map<String, Object> parametrosReporte = new HashMap<String, Object>();
 
@@ -297,11 +293,41 @@ public class EquipoMaquinariaBacking implements Serializable {
 			JsfUtil.setSessionAttribute(ConstantesUtil.PARAMETROS_DESCARGADOR_IDENTIFICADOR, parametrosReporte);
 			JsfUtil.downloadFile();
 
-		}catch(Exception e){
+		} catch (Exception e) {
 			log.error("Error al momento generar el a hoja de vida en PDF", e);
 			throw new HiperionException(e);
 		}
-		
+
+	}
+
+	/**
+	 * @return the coberturasDTO
+	 */
+	public List<CoberturaDTO> getCoberturasDTO() {
+		return coberturasDTO;
+	}
+
+	/**
+	 * @param coberturasDTO
+	 *            the coberturasDTO to set
+	 */
+	public void setCoberturasDTO(List<CoberturaDTO> coberturasDTO) {
+		this.coberturasDTO = coberturasDTO;
+	}
+
+	/**
+	 * @return the coberturasAddDTO
+	 */
+	public List<CoberturaAdicionalDTO> getCoberturasAddDTO() {
+		return coberturasAddDTO;
+	}
+
+	/**
+	 * @param coberturasAddDTO
+	 *            the coberturasAddDTO to set
+	 */
+	public void setCoberturasAddDTO(List<CoberturaAdicionalDTO> coberturasAddDTO) {
+		this.coberturasAddDTO = coberturasAddDTO;
 	}
 
 }

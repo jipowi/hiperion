@@ -20,10 +20,11 @@ import javax.faces.model.SelectItem;
 
 import org.apache.log4j.Logger;
 
-import ec.com.avila.emision.web.beans.DetalleAnexoBean;
 import ec.com.avila.emision.web.beans.RamoGarantiaAduaneraBean;
 import ec.com.avila.hiperion.comun.HiperionException;
+import ec.com.avila.hiperion.dto.CoberturaDTO;
 import ec.com.avila.hiperion.emision.entities.Catalogo;
+import ec.com.avila.hiperion.emision.entities.CobertAduanera;
 import ec.com.avila.hiperion.emision.entities.DetalleAnexo;
 import ec.com.avila.hiperion.emision.entities.DetalleCatalogo;
 import ec.com.avila.hiperion.emision.entities.Ramo;
@@ -35,7 +36,6 @@ import ec.com.avila.hiperion.servicio.RamoGarantiaAduaneraService;
 import ec.com.avila.hiperion.servicio.RamoService;
 import ec.com.avila.hiperion.web.beans.RamoBean;
 import ec.com.avila.hiperion.web.beans.UsuarioBean;
-import ec.com.avila.hiperion.web.model.AnexosDataModel;
 import ec.com.avila.hiperion.web.util.ConstantesUtil;
 import ec.com.avila.hiperion.web.util.GenerarPdfUtil;
 import ec.com.avila.hiperion.web.util.HiperionMensajes;
@@ -77,17 +77,21 @@ public class GarantiaAduaneraBacking implements Serializable {
 
 	private List<SelectItem> sectorItems;
 
-	private AnexosDataModel anexosDataModel;
 	private List<DetalleAnexo> anexos;
 
-	private List<DetalleAnexoBean> coberturas;
-	private DetalleAnexoBean[] selectCoberturas;
+	private List<CobertAduanera> coberturas;
+	private List<CoberturaDTO> coberturasDTO = new ArrayList<>();
 
 	@PostConstruct
 	public void inicializar() {
 		try {
+
 			Ramo ramo = ramoService.consultarRamoPorCodigo("GA");
+
 			anexos = ramo.getDetalleAnexos();
+
+			obtenerCoberturas();
+
 		} catch (HiperionException e) {
 			e.printStackTrace();
 		}
@@ -95,25 +99,36 @@ public class GarantiaAduaneraBacking implements Serializable {
 
 	/**
 	 * 
-	 * <b> Permite obtener las Coberturas de Ramo Garantia Aduanera. </b>
+	 * <b> Permite obtener las coberturas del ramo. </b>
 	 * <p>
-	 * [Author: Dario Vinueza, Date: 20/04/2014]
+	 * [Author: Paul Jimenez, Date: 17/06/2015]
 	 * </p>
 	 * 
-	 * @return
+	 * @param anexos
 	 */
-	public AnexosDataModel obtenerCoberturas() {
-		coberturas = new ArrayList<DetalleAnexoBean>();
+	public void obtenerCoberturas() {
+
+		coberturas = new ArrayList<CobertAduanera>();
 		if (anexos != null && anexos.size() > 0) {
 			for (DetalleAnexo anexo : anexos) {
-				if (anexo.getAnexo().getIdAnexo() == 2)
-					coberturas.add(new DetalleAnexoBean(anexo.getIdDetalleAnexo(), anexo.getNombreDetalleAnexo()));
+				if (anexo.getAnexo().getIdAnexo() == 2) {
+					CobertAduanera cobertura = new CobertAduanera();
+					cobertura.setCoberturaAduanera(anexo.getNombreDetalleAnexo());
+
+					coberturas.add(cobertura);
+				}
+
 			}
 
-			anexosDataModel = new AnexosDataModel(coberturas);
+			for (CobertAduanera cobertura : coberturas) {
+				CoberturaDTO coberturaDTO = new CoberturaDTO();
+				coberturaDTO.setCobertura(cobertura.getCoberturaAduanera());
+				coberturaDTO.setSeleccion(false);
+
+				coberturasDTO.add(coberturaDTO);
+			}
 		}
 
-		return anexosDataModel;
 	}
 
 	public void guardarRamo() throws HiperionException {
@@ -178,18 +193,18 @@ public class GarantiaAduaneraBacking implements Serializable {
 	}
 
 	/**
-	 * @return the selectCoberturas
+	 * @return the coberturasDTO
 	 */
-	public DetalleAnexoBean[] getSelectCoberturas() {
-		return selectCoberturas;
+	public List<CoberturaDTO> getCoberturasDTO() {
+		return coberturasDTO;
 	}
 
 	/**
-	 * @param selectCoberturas
-	 *            the selectCoberturas to set
+	 * @param coberturasDTO
+	 *            the coberturasDTO to set
 	 */
-	public void setSelectCoberturas(DetalleAnexoBean[] selectCoberturas) {
-		this.selectCoberturas = selectCoberturas;
+	public void setCoberturasDTO(List<CoberturaDTO> coberturasDTO) {
+		this.coberturasDTO = coberturasDTO;
 	}
 
 	/**
@@ -227,11 +242,11 @@ public class GarantiaAduaneraBacking implements Serializable {
 
 	/**
 	 * 
-	 * <b>
-	 * Permite generar y descargar informacion Ramo Garantia Aduanera PDF
-	 * </b>
-	 * <p>[Author: Franklin Pozo, Date: 08/05/2015]</p>
-	 *
+	 * <b> Permite generar y descargar informacion Ramo Garantia Aduanera PDF </b>
+	 * <p>
+	 * [Author: Franklin Pozo, Date: 08/05/2015]
+	 * </p>
+	 * 
 	 * @throws HiperionException
 	 */
 	public void descargarGarantiaAduaneraPDF() throws HiperionException {

@@ -120,6 +120,7 @@
 									</h:panelGrid>
 								</h:form>
 							</p:tab>
+							<!-- COBERTURAS -->
 							<p:tab title="#{emision['cascoMaritimo.tab.coberturasAdicionales']}">
 								<h:form id="coberturasForm">
 									<p:dataTable value="#{cascoMaritimoBacking.coberturasAddDTO}" var="cobertura" paginator="true">
@@ -140,7 +141,27 @@
 									</p:dataTable>
 								</h:form>
 							</p:tab>
-							<p:tab title="#{emision['cascoMaritimo.tab.clausulasAdicionales']}"></p:tab>
+							<!-- CLAUSULAS ADICIONALAES -->
+							<p:tab title="#{emision['cascoMaritimo.tab.clausulasAdicionales']}">
+								<h:form id="clausulaAddForm">
+									<p:dataTable value="#{cascoMaritimoBacking.clausulasAdicionalesDTO}" var="clausula" paginator="true" rows="4">
+										<p:column>
+											<f:facet name="header">
+												<h:outputLabel value="#{emision['anexo.titulo.cad']}" />
+											</f:facet>
+											<h:outputText value="#{clausula.clausula}" />
+										</p:column>
+										<p:column>
+											<f:facet name="header">
+												<h:outputLabel value="#{emision['lbl.seleccion']}" />
+											</f:facet>
+											<div align="center">
+												<p:selectBooleanCheckbox value="#{clausula.seleccion}" />
+											</div>
+										</p:column>
+									</p:dataTable>
+								</h:form>
+							</p:tab>
 						</p:tabView>
 					</ui:define>
 				</ui:decorate>

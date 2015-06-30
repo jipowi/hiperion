@@ -19,9 +19,10 @@ import javax.faces.bean.ViewScoped;
 
 import org.apache.log4j.Logger;
 
-import ec.com.avila.emision.web.beans.DetalleAnexoBean;
 import ec.com.avila.emision.web.beans.RamoCumplimientoContratoBean;
 import ec.com.avila.hiperion.comun.HiperionException;
+import ec.com.avila.hiperion.dto.CoberturaDTO;
+import ec.com.avila.hiperion.emision.entities.CobertContrato;
 import ec.com.avila.hiperion.emision.entities.DetalleAnexo;
 import ec.com.avila.hiperion.emision.entities.Ramo;
 import ec.com.avila.hiperion.emision.entities.RamoCumplimientoContrato;
@@ -31,7 +32,6 @@ import ec.com.avila.hiperion.servicio.RamoCumplimientoContratoService;
 import ec.com.avila.hiperion.servicio.RamoService;
 import ec.com.avila.hiperion.web.beans.RamoBean;
 import ec.com.avila.hiperion.web.beans.UsuarioBean;
-import ec.com.avila.hiperion.web.model.AnexosDataModel;
 import ec.com.avila.hiperion.web.util.ConstantesUtil;
 import ec.com.avila.hiperion.web.util.GenerarPdfUtil;
 import ec.com.avila.hiperion.web.util.HiperionMensajes;
@@ -68,11 +68,10 @@ public class CumplimientoContratoBacking implements Serializable {
 	Logger log = Logger.getLogger(CumplimientoContratoBacking.class);
 	RamoCumplimientoContrato cumplimientoContrato = new RamoCumplimientoContrato();
 
-	private AnexosDataModel anexosDataModel;
 	private List<DetalleAnexo> anexos;
 
-	private List<DetalleAnexoBean> coberturas;
-	private DetalleAnexoBean[] selectCoberturas;
+	private List<CobertContrato> coberturas;
+	private List<CoberturaDTO> coberturasDTO = new ArrayList<>();
 
 	@PostConstruct
 	public void inicializar() {
@@ -86,25 +85,36 @@ public class CumplimientoContratoBacking implements Serializable {
 
 	/**
 	 * 
-	 * <b> Permite obtener las Coberturas de Ramo Cumplimiento Contrato. </b>
+	 * <b> Permite obtener las coberturas del ramo. </b>
 	 * <p>
-	 * [Author: Dario Vinueza, Date: 20/04/2014]
+	 * [Author: Paul Jimenez, Date: 17/06/2015]
 	 * </p>
 	 * 
-	 * @return
+	 * @param anexos
 	 */
-	public AnexosDataModel obtenerCoberturas() {
-		coberturas = new ArrayList<DetalleAnexoBean>();
+	public void obtenerCoberturas() {
+
+		coberturas = new ArrayList<CobertContrato>();
 		if (anexos != null && anexos.size() > 0) {
 			for (DetalleAnexo anexo : anexos) {
-				if (anexo.getAnexo().getIdAnexo() == 2)
-					coberturas.add(new DetalleAnexoBean(anexo.getIdDetalleAnexo(), anexo.getNombreDetalleAnexo()));
+				if (anexo.getAnexo().getIdAnexo() == 2) {
+					CobertContrato cobertura = new CobertContrato();
+					cobertura.setCoberturaContrato(anexo.getNombreDetalleAnexo());
+
+					coberturas.add(cobertura);
+				}
+
 			}
 
-			anexosDataModel = new AnexosDataModel(coberturas);
+			for (CobertContrato cobertura : coberturas) {
+				CoberturaDTO coberturaDTO = new CoberturaDTO();
+				coberturaDTO.setCobertura(cobertura.getCoberturaContrato());
+				coberturaDTO.setSeleccion(false);
+
+				coberturasDTO.add(coberturaDTO);
+			}
 		}
 
-		return anexosDataModel;
 	}
 
 	/**
@@ -177,18 +187,18 @@ public class CumplimientoContratoBacking implements Serializable {
 	}
 
 	/**
-	 * @return the selectCoberturas
+	 * @return the coberturasDTO
 	 */
-	public DetalleAnexoBean[] getSelectCoberturas() {
-		return selectCoberturas;
+	public List<CoberturaDTO> getCoberturasDTO() {
+		return coberturasDTO;
 	}
 
 	/**
-	 * @param selectCoberturas
-	 *            the selectCoberturas to set
+	 * @param coberturasDTO
+	 *            the coberturasDTO to set
 	 */
-	public void setSelectCoberturas(DetalleAnexoBean[] selectCoberturas) {
-		this.selectCoberturas = selectCoberturas;
+	public void setCoberturasDTO(List<CoberturaDTO> coberturasDTO) {
+		this.coberturasDTO = coberturasDTO;
 	}
 
 	/**

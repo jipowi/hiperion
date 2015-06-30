@@ -20,10 +20,13 @@ import javax.faces.model.SelectItem;
 
 import org.apache.log4j.Logger;
 
-import ec.com.avila.emision.web.beans.DetalleAnexoBean;
 import ec.com.avila.emision.web.beans.RamoFidelidadBean;
 import ec.com.avila.hiperion.comun.HiperionException;
+import ec.com.avila.hiperion.dto.ClausulaAdicionalDTO;
+import ec.com.avila.hiperion.dto.CoberturaDTO;
 import ec.com.avila.hiperion.emision.entities.Catalogo;
+import ec.com.avila.hiperion.emision.entities.ClausulasAddFidelidad;
+import ec.com.avila.hiperion.emision.entities.CobertFidelidad;
 import ec.com.avila.hiperion.emision.entities.DetalleAnexo;
 import ec.com.avila.hiperion.emision.entities.DetalleCatalogo;
 import ec.com.avila.hiperion.emision.entities.Ramo;
@@ -36,7 +39,6 @@ import ec.com.avila.hiperion.servicio.RamoFidelidadService;
 import ec.com.avila.hiperion.servicio.RamoService;
 import ec.com.avila.hiperion.web.beans.RamoBean;
 import ec.com.avila.hiperion.web.beans.UsuarioBean;
-import ec.com.avila.hiperion.web.model.AnexosDataModel;
 import ec.com.avila.hiperion.web.util.ConstantesUtil;
 import ec.com.avila.hiperion.web.util.GenerarPdfUtil;
 import ec.com.avila.hiperion.web.util.HiperionMensajes;
@@ -84,21 +86,25 @@ public class FidelidadBacking implements Serializable {
 
 	RamoFidelidad ramoFidelidad = new RamoFidelidad();
 
-	private AnexosDataModel anexosDataModel;
 	private List<DetalleAnexo> anexos;
 
-	private List<DetalleAnexoBean> clausulasAdicionales;
-	private List<DetalleAnexoBean> coberturas;
-	private DetalleAnexoBean[] selectClausulasAdicionales;
-	private DetalleAnexoBean[] selectCoberturas;
+	private List<CobertFidelidad> coberturas;
+	private List<CoberturaDTO> coberturasDTO = new ArrayList<>();
+	private List<ClausulasAddFidelidad> clausulasAdicionales;
+	private List<ClausulaAdicionalDTO> clausulasAdicionalesDTO = new ArrayList<>();
 
 	private Boolean activarFileModalidad;
 
 	@PostConstruct
 	public void inicializar() {
 		try {
+
 			Ramo ramo = ramoService.consultarRamoPorCodigo("FD");
+
 			anexos = ramo.getDetalleAnexos();
+
+			obtenerCoberturas();
+
 		} catch (HiperionException e) {
 			e.printStackTrace();
 		}
@@ -106,48 +112,68 @@ public class FidelidadBacking implements Serializable {
 
 	/**
 	 * 
-	 * <b> Permite obtener las Clausulas Adicionales del Ramo Fidelidad. </b>
+	 * <b> Permite obtener las coberturas del ramo. </b>
 	 * <p>
-	 * [Author: Dario Vinueza, Date: 20/04/2014]
+	 * [Author: Paul Jimenez, Date: 17/06/2015]
 	 * </p>
 	 * 
-	 * @return
+	 * @param anexos
 	 */
-	public AnexosDataModel obtenerClausulasAdicionales() {
-		clausulasAdicionales = new ArrayList<DetalleAnexoBean>();
+	public void obtenerCoberturas() {
+
+		coberturas = new ArrayList<CobertFidelidad>();
 		if (anexos != null && anexos.size() > 0) {
 			for (DetalleAnexo anexo : anexos) {
-				if (anexo.getAnexo().getIdAnexo() == 1)
-					clausulasAdicionales.add(new DetalleAnexoBean(anexo.getIdDetalleAnexo(), anexo.getNombreDetalleAnexo()));
+				if (anexo.getAnexo().getIdAnexo() == 2) {
+					CobertFidelidad cobertura = new CobertFidelidad();
+					cobertura.setCoberturaFidelidad(anexo.getNombreDetalleAnexo());
+
+					coberturas.add(cobertura);
+				}
+
 			}
 
-			anexosDataModel = new AnexosDataModel(clausulasAdicionales);
+			for (CobertFidelidad cobertura : coberturas) {
+				CoberturaDTO coberturaDTO = new CoberturaDTO();
+				coberturaDTO.setCobertura(cobertura.getCoberturaFidelidad());
+				coberturaDTO.setSeleccion(false);
+
+				coberturasDTO.add(coberturaDTO);
+			}
 		}
 
-		return anexosDataModel;
 	}
 
 	/**
 	 * 
-	 * <b> Permite obtener las Coberturas de Ramo Dinero y Valores. </b>
+	 * <b> Permite obtener las clausulas adicionales del ramo. </b>
 	 * <p>
-	 * [Author: Dario Vinueza, Date: 20/04/2014]
+	 * [Author: Paul Jimenez, Date: 17/06/2015]
 	 * </p>
 	 * 
-	 * @return
 	 */
-	public AnexosDataModel obtenerCoberturas() {
-		coberturas = new ArrayList<DetalleAnexoBean>();
+	public void obtenerClausulasAdicionales() {
+		clausulasAdicionales = new ArrayList<ClausulasAddFidelidad>();
 		if (anexos != null && anexos.size() > 0) {
 			for (DetalleAnexo anexo : anexos) {
-				if (anexo.getAnexo().getIdAnexo() == 2)
-					coberturas.add(new DetalleAnexoBean(anexo.getIdDetalleAnexo(), anexo.getNombreDetalleAnexo()));
+				if (anexo.getAnexo().getIdAnexo() == 1) {
+					ClausulasAddFidelidad clausula = new ClausulasAddFidelidad();
+					clausula.setClausulaFidelidad(anexo.getNombreDetalleAnexo());
+
+					clausulasAdicionales.add(clausula);
+				}
+
+			}
+			for (ClausulasAddFidelidad clausula : clausulasAdicionales) {
+				ClausulaAdicionalDTO clausulaDTO = new ClausulaAdicionalDTO();
+				clausulaDTO.setClausula(clausula.getClausulaFidelidad());
+				clausulaDTO.setSeleccion(false);
+
+				clausulasAdicionalesDTO.add(clausulaDTO);
 			}
 
-			anexosDataModel = new AnexosDataModel(coberturas);
 		}
 
-		return anexosDataModel;
 	}
 
 	/**
@@ -284,36 +310,6 @@ public class FidelidadBacking implements Serializable {
 	}
 
 	/**
-	 * @return the selectCoberturas
-	 */
-	public DetalleAnexoBean[] getSelectCoberturas() {
-		return selectCoberturas;
-	}
-
-	/**
-	 * @param selectCoberturas
-	 *            the selectCoberturas to set
-	 */
-	public void setSelectCoberturas(DetalleAnexoBean[] selectCoberturas) {
-		this.selectCoberturas = selectCoberturas;
-	}
-
-	/**
-	 * @return the selectClausulasAdicionales
-	 */
-	public DetalleAnexoBean[] getSelectClausulasAdicionales() {
-		return selectClausulasAdicionales;
-	}
-
-	/**
-	 * @param selectClausulasAdicionales
-	 *            the selectClausulasAdicionales to set
-	 */
-	public void setSelectClausulasAdicionales(DetalleAnexoBean[] selectClausulasAdicionales) {
-		this.selectClausulasAdicionales = selectClausulasAdicionales;
-	}
-
-	/**
 	 * @return the activarFileModalidad
 	 */
 	public Boolean getActivarFileModalidad() {
@@ -342,18 +338,18 @@ public class FidelidadBacking implements Serializable {
 	public void setFidelidadBean(RamoFidelidadBean fidelidadBean) {
 		this.fidelidadBean = fidelidadBean;
 	}
-	
+
 	/**
 	 * 
-	 * <b>
-	 * Permite generar y descargar informacion Ramo Fidelidad PDF.
-	 * </b>
-	 * <p>[Author: Franklin Pozo B, Date: 04/05/2015]</p>
-	 *
+	 * <b> Permite generar y descargar informacion Ramo Fidelidad PDF. </b>
+	 * <p>
+	 * [Author: Franklin Pozo B, Date: 04/05/2015]
+	 * </p>
+	 * 
 	 * @throws HiperionException
 	 */
-	public void descargarFidelidadPDF()throws HiperionException{
-		
+	public void descargarFidelidadPDF() throws HiperionException {
+
 		try {
 			Map<String, Object> parametrosReporte = new HashMap<String, Object>();
 
@@ -370,7 +366,37 @@ public class FidelidadBacking implements Serializable {
 			throw new HiperionException(e);
 		}
 
-		
 	}
 
+	/**
+	 * @return the coberturasDTO
+	 */
+	public List<CoberturaDTO> getCoberturasDTO() {
+		return coberturasDTO;
+	}
+
+	/**
+	 * @param coberturasDTO
+	 *            the coberturasDTO to set
+	 */
+	public void setCoberturasDTO(List<CoberturaDTO> coberturasDTO) {
+		this.coberturasDTO = coberturasDTO;
+	}
+
+	/**
+	 * @return the clausulasAdicionalesDTO
+	 */
+	public List<ClausulaAdicionalDTO> getClausulasAdicionalesDTO() {
+		return clausulasAdicionalesDTO;
+	}
+
+	/**
+	 * @param clausulasAdicionalesDTO
+	 *            the clausulasAdicionalesDTO to set
+	 */
+	public void setClausulasAdicionalesDTO(List<ClausulaAdicionalDTO> clausulasAdicionalesDTO) {
+		this.clausulasAdicionalesDTO = clausulasAdicionalesDTO;
+	}
+
+	
 }

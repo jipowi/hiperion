@@ -66,14 +66,24 @@
 								</p:tab>
 								<!-- COBERTURAS -->
 								<p:tab title="#{emision['ap.tab.coberturas']}">
-									<h:form id="cobCCFormId">
-										<p:dataTable id="cobCCTblId" var="cobertura" value="#{cumplimientoContratoBacking.obtenerCoberturas()}"
-											selection="#{cumplimientoContratoBacking.selectCoberturas}">
-											<f:facet name="header">#{emision['anexo.titulo.cob']}</f:facet>
-											<p:column selectionMode="multiple" style="width:2%" />
-											<p:column headerText="#{emision['anexo.ca.nombre']}">#{cobertura.nombreDetalleAnexo}</p:column>
-										</p:dataTable>
-									</h:form>
+									<h:form id="coberturaForm">
+									<p:dataTable value="#{cumplimientoContratoBacking.coberturasDTO}" var="cobertura" paginator="true" rows="4">
+										<p:column>
+											<f:facet name="header">
+												<h:outputLabel value="#{emision['anexo.titulo.cob']}" />
+											</f:facet>
+											<h:outputText value="#{cobertura.cobertura}" />
+										</p:column>
+										<p:column>
+											<f:facet name="header">
+												<h:outputLabel value="#{emision['lbl.seleccion']}" />
+											</f:facet>
+											<div align="center">
+												<p:selectBooleanCheckbox value="#{cobertura.seleccion}" />
+											</div>
+										</p:column>
+									</p:dataTable>
+								</h:form>
 								</p:tab>
 							</p:tabView>
 
