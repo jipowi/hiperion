@@ -7,7 +7,9 @@ package ec.com.avila.emision.web.backings;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -20,8 +22,10 @@ import org.apache.log4j.Logger;
 
 import ec.com.avila.emision.web.beans.RamoCascoMaritimoBean;
 import ec.com.avila.hiperion.comun.HiperionException;
+import ec.com.avila.hiperion.dto.ClausulaAdicionalDTO;
 import ec.com.avila.hiperion.dto.CoberturaAdicionalDTO;
 import ec.com.avila.hiperion.emision.entities.Catalogo;
+import ec.com.avila.hiperion.emision.entities.ClausulasAddCasco;
 import ec.com.avila.hiperion.emision.entities.CobertAddCasco;
 import ec.com.avila.hiperion.emision.entities.DetalleAnexo;
 import ec.com.avila.hiperion.emision.entities.DetalleCatalogo;
@@ -35,7 +39,10 @@ import ec.com.avila.hiperion.servicio.RamoCascoMaritimoService;
 import ec.com.avila.hiperion.servicio.RamoService;
 import ec.com.avila.hiperion.web.beans.RamoBean;
 import ec.com.avila.hiperion.web.beans.UsuarioBean;
+import ec.com.avila.hiperion.web.util.ConstantesUtil;
+import ec.com.avila.hiperion.web.util.GenerarPdfUtil;
 import ec.com.avila.hiperion.web.util.HiperionMensajes;
+import ec.com.avila.hiperion.web.util.JsfUtil;
 import ec.com.avila.hiperion.web.util.MessagesController;
 
 /**
@@ -68,7 +75,9 @@ public class CascoMaritimoBacking implements Serializable {
 	private List<SelectItem> embarcacionItems;
 	private List<SelectItem> zonasItems;
 	private List<CobertAddCasco> coberturasAdd;
+	private List<ClausulasAddCasco> clausulasAdd;
 	private List<CoberturaAdicionalDTO> coberturasAddDTO = new ArrayList<>();
+	private List<ClausulaAdicionalDTO> clausulasAdicionalesDTO = new ArrayList<>();
 	private List<DetalleAnexo> anexos;
 
 	@EJB
@@ -78,6 +87,7 @@ public class CascoMaritimoBacking implements Serializable {
 	private DetalleCatalogoService detalleCatalogoService;
 
 	Logger log = Logger.getLogger(CascoMaritimoBacking.class);
+	RamoCascoMaritimo cascoMaritimo = new RamoCascoMaritimo();
 
 	@PostConstruct
 	public void inicializar() {
@@ -121,6 +131,37 @@ public class CascoMaritimoBacking implements Serializable {
 
 	/**
 	 * 
+	 * <b> Permite Obtener la clausulas Adicionales del ramo casco maritimo </b>
+	 * <p>
+	 * [Author: Franklin Pozo B, Date: 17/06/2015]
+	 * </p>
+	 * 
+	 */
+	public void obtenerClausulasAdicionales() {
+
+		clausulasAdd = new ArrayList<ClausulasAddCasco>();
+		if (anexos != null && anexos.size() > 0) {
+			for (DetalleAnexo anexo : anexos) {
+				if (anexo.getAnexo().getIdAnexo() == 1) {
+					ClausulasAddCasco clauslaAddCasco = new ClausulasAddCasco();
+					clauslaAddCasco.setClausulaAddMaritimo(clauslaAddCasco.getClausulaAddMaritimo());
+
+					clausulasAdd.add(clauslaAddCasco);
+				}
+			}
+
+			for (ClausulasAddCasco clausulaAdd : clausulasAdd) {
+				ClausulaAdicionalDTO clausulaAdicionalDTO = new ClausulaAdicionalDTO();
+				clausulaAdicionalDTO.setClausula(clausulaAdd.getClausulaAddMaritimo());
+
+				clausulasAdicionalesDTO.add(clausulaAdicionalDTO);
+			}
+		}
+
+	}
+
+	/**
+	 * 
 	 * <b> Permite guardar un objeto Ramo Casco Maritimo en la base de datos </b>
 	 * <p>
 	 * [Author: Franklin Pozo, Date: 15/08/2014]
@@ -129,7 +170,6 @@ public class CascoMaritimoBacking implements Serializable {
 	 */
 	public void guardarRamo() throws HiperionException {
 		Usuario usuario = usuarioBean.getSessionUser();
-		RamoCascoMaritimo cascoMaritimo = new RamoCascoMaritimo();
 
 		cascoMaritimo.setNombreNave(ramoCascoMaritimoBean.getNombreNave());
 		cascoMaritimo.setNumeroRegistro(ramoCascoMaritimoBean.getNumeroRegistro());
@@ -263,5 +303,63 @@ public class CascoMaritimoBacking implements Serializable {
 	public void setCoberturasAddDTO(List<CoberturaAdicionalDTO> coberturasAddDTO) {
 		this.coberturasAddDTO = coberturasAddDTO;
 	}
+
+	/**
+	 * 
+	 * <b> Permite descargar y generar el documento PDF </b>
+	 * <p>
+	 * [Author: Franklin Pozo B., Date: 17/06/2015]
+	 * </p>
+	 * 
+	 * @throws HiperionException
+	 */
+	public void descargarCascoMaritimoPDF() throws HiperionException {
+
+		try {
+			Map<String, Object> parametrosReporte = new HashMap<String, Object>();
+
+			parametrosReporte.put(ConstantesUtil.CONTENT_TYPE_IDENTIFICADOR, ConstantesUtil.CONTENT_TYPE_PDF);
+			parametrosReporte.put(ConstantesUtil.NOMBRE_ARCHIVO_IDENTIFICADOR, usuarioBean.getSessionUser().getIdentificacionUsuario());
+
+			parametrosReporte.put(ConstantesUtil.CONTENIDO_BYTES_IDENTIFICADOR, GenerarPdfUtil.generarAchivoPDFCascoMaritimo(cascoMaritimo));
+
+			JsfUtil.setSessionAttribute(ConstantesUtil.PARAMETROS_DESCARGADOR_IDENTIFICADOR, parametrosReporte);
+			JsfUtil.downloadFile();
+		} catch (Exception e) {
+			log.error("Error al momento generar el documento Buen Uso de Anticipo en PDF", e);
+			throw new HiperionException(e);
+		}
+	}
+
+	/**
+	 * @return the clausulasAdicionalesDTO
+	 */
+	public List<ClausulaAdicionalDTO> getClausulasAdicionalesDTO() {
+		return clausulasAdicionalesDTO;
+	}
+
+	/**
+	 * @param clausulasAdicionalesDTO
+	 *            the clausulasAdicionalesDTO to set
+	 */
+	public void setClausulasAdicionalesDTO(List<ClausulaAdicionalDTO> clausulasAdicionalesDTO) {
+		this.clausulasAdicionalesDTO = clausulasAdicionalesDTO;
+	}
+
+	/**
+	 * @return the clausulasAdd
+	 */
+	public List<ClausulasAddCasco> getClausulasAdd() {
+		return clausulasAdd;
+	}
+
+	/**
+	 * @param clausulasAdd the clausulasAdd to set
+	 */
+	public void setClausulasAdd(List<ClausulasAddCasco> clausulasAdd) {
+		this.clausulasAdd = clausulasAdd;
+	}
+	
+	
 
 }
