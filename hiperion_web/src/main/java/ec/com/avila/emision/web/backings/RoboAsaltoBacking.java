@@ -85,6 +85,25 @@ public class RoboAsaltoBacking implements Serializable {
 	private List<CondicionEspecialDTO> condicionesEspecialesDTO = new ArrayList<>();
 	private List<DetalleAnexo> anexos;
 
+	
+	@PostConstruct
+	public void inicializar() {
+		try {
+
+			Ramo ramo = ramoService.consultarRamoPorCodigo("RE");
+
+			anexos = ramo.getDetalleAnexos();
+
+			obtenerCoberturas();
+			obtenerCoberturasAdicionales();
+			obtenerClausulasAdicionales();
+			obtenerCondicionesEspeciales();
+
+		} catch (HiperionException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	/**
 	 * 
 	 * <b> Permite setear la informacion del ramo Robo Asalto </b>
@@ -111,23 +130,7 @@ public class RoboAsaltoBacking implements Serializable {
 
 	}
 
-	@PostConstruct
-	public void inicializar() {
-		try {
 
-			Ramo ramo = ramoService.consultarRamoPorCodigo("RE");
-
-			anexos = ramo.getDetalleAnexos();
-
-			obtenerCoberturas();
-			obtenerCoberturasAdicionales();
-			obtenerClausulasAdicionales();
-			obtenerCondicionesEspeciales();
-
-		} catch (HiperionException e) {
-			e.printStackTrace();
-		}
-	}
 
 	/**
 	 * 

@@ -233,104 +233,72 @@
 										</h:form>
 									</div>
 								</p:tab>
-								<!-- CLAUSULAS ADICIONALES -->
-								<p:tab title="#{emision['anexo.titulo.tab.cad']}">
-									<h:form id="caILAFormId">
-										<p:dataTable id="caILATblId" var="clausula" value="#{incendioLineasAliadasBacking.obtenerClausulasAdicionales()}" paginator="true" rows="6"
-											selection="#{fidelidadBacking.selectClausulasAdicionales}">
-											<f:facet name="header">#{emision['anexo.titulo.cad']}</f:facet>
-											<p:column selectionMode="multiple" style="width:2%" />
-											<p:column headerText="#{emision['anexo.ca.nombre']}">#{clausula.nombreDetalleAnexo}</p:column>
+
+								<!-- COBERTURAS -->
+								<p:tab title="#{emision['anexo.titulo.tab.cob']}">
+									<h:form id="coberturaForm">
+										<p:dataTable value="#{incendioLineasAliadasBacking.coberturasDTO}" var="cobertura" paginator="true" rows="4">
+											<p:column>
+												<f:facet name="header">
+													<h:outputLabel value="#{emision['anexo.titulo.cob']}" />
+												</f:facet>
+												<h:outputText value="#{cobertura.cobertura}" />
+											</p:column>
+											<p:column>
+												<f:facet name="header">
+													<h:outputLabel value="#{emision['lbl.seleccion']}" />
+												</f:facet>
+												<div align="center">
+													<p:selectBooleanCheckbox value="#{cobertura.seleccion}" />
+												</div>
+											</p:column>
 										</p:dataTable>
 									</h:form>
 								</p:tab>
-								<!-- COBERTURAS -->
-								<p:tab title="#{emision['anexo.titulo.tab.cob']}">
-									<p:accordionPanel dynamic="true" cache="true" activeIndex="null">
-										<!-- Para Todo Riesgo -->
-										<p:tab title="#{emision['titulo.cob.cobTodoRiesgoLimitado']}">
-											<h:form id="cobILAFormId">
-												<p:dataTable id="cobILATblId" var="cobertura" value="#{incendioLineasAliadasBacking.obtenerCoberturas()}" paginator="true" rows="4"
-													selection="#{incendioLineasAliadasBacking.selectCoberturas}">
-													<f:facet name="header">#{emision['anexo.titulo.cob']}</f:facet>
-													<p:column selectionMode="multiple" style="width:2%" />
-													<p:column headerText="#{emision['anexo.ca.nombre']}">#{cobertura.nombreDetalleAnexo}</p:column>
-												</p:dataTable>
-											</h:form>
-										</p:tab>
-									</p:accordionPanel>
-								</p:tab>
 								<!-- COBERTURAS ADICIONALES -->
 								<p:tab title="#{emision['anexo.titulo.tab.cobad']}">
-									<h:form id="cobILAFormId">
-										<p:dataTable id="cobILATblId" var="cobAdicional" value="#{incendioLineasAliadasBacking.obtenerCoberturasAdicionales()}" paginator="true"
-											rows="4" selection="#{incendioLineasAliadasBacking.selectCoberturasAdicionales}">
-											<f:facet name="header">#{emision['anexo.titulo.cobad']}</f:facet>
-											<p:column selectionMode="multiple" style="width:2%" />
-											<p:column headerText="#{emision['anexo.ca.nombre']}">#{cobAdicional.nombreDetalleAnexo}</p:column>
+									<h:form id="coberturaAddForm">
+										<p:dataTable value="#{incendioLineasAliadasBacking.coberturasAddDTO}" var="cobertura" paginator="true" rows="4">
+											<p:column>
+												<f:facet name="header">
+													<h:outputLabel value="#{emision['anexo.titulo.cob']}" />
+												</f:facet>
+												<h:outputText value="#{cobertura.cobertura}" />
+											</p:column>
+											<p:column>
+												<f:facet name="header">
+													<h:outputLabel value="#{emision['lbl.seleccion']}" />
+												</f:facet>
+												<div align="center">
+													<p:selectBooleanCheckbox value="#{cobertura.seleccion}" />
+												</div>
+											</p:column>
 										</p:dataTable>
 									</h:form>
 								</p:tab>
 								<!-- CONDICIONES ESPECIALES -->
 								<p:tab title="#{emision['anexo.titulo.tab.cep']}">
-									<h:form id="ceILAFormId">
-										<p:accordionPanel dynamic="true" cache="true" activeIndex="null">
-											<!-- Dinero y Valores -->
-											<p:tab title="#{emision['titulo.dineroValores']}">
-												<h:form id="ceDVFormId">
-													<p:dataTable id="ceDVTblId" var="condiciones" value="#{incendioLineasAliadasBacking.obtenerCondicionesEspecialesDineroValores()}"
-														paginator="true" rows="4" selection="#{incendioLineasAliadasBacking.selectCondicionesEspecialesDineroValor}">
-														<f:facet name="header">#{emision['anexo.titulo.cob']}</f:facet>
-														<p:column selectionMode="multiple" style="width:2%" />
-														<p:column headerText="#{emision['anexo.ca.nombre']}">#{condiciones.nombreDetalleAnexo}</p:column>
-													</p:dataTable>
-												</h:form>
-											</p:tab>
-											<!-- Edificio e Instalaciones -->
-											<p:tab title="#{emision['titulo.edificioInstalaciones']}">
-												<h:form id="ceEIFormId">
-													<p:dataTable id="ceEITblId" var="condiciones" value="#{incendioLineasAliadasBacking.obtenerCondicionesEspecialesEdificioInstalaciones()}"
-														paginator="true" rows="4" selection="#{incendioLineasAliadasBacking.selectCondicionesEspecialesEdificioInstalaciones}">
-														<f:facet name="header">#{emision['anexo.titulo.cob']}</f:facet>
-														<p:column selectionMode="multiple" style="width:2%" />
-														<p:column headerText="#{emision['anexo.ca.nombre']}">#{condiciones.nombreDetalleAnexo}</p:column>
-													</p:dataTable>
-												</h:form>
-											</p:tab>
-											<!-- Maquinaria y Equipos -->
-											<p:tab title="#{emision['titulo.maquinariaEquipos']}">
-												<h:form id="ceMEFormId">
-													<p:dataTable id="ceMETblId" var="condiciones" value="#{incendioLineasAliadasBacking.obtenerCondicionesMaquinariaEquipos()}"
-														paginator="true" rows="4" selection="#{incendioLineasAliadasBacking.selectCondicionesMaquinariaEquipos}">
-														<f:facet name="header">#{emision['anexo.titulo.cob']}</f:facet>
-														<p:column selectionMode="multiple" style="width:2%" />
-														<p:column headerText="#{emision['anexo.ca.nombre']}">#{condiciones.nombreDetalleAnexo}</p:column>
-													</p:dataTable>
-												</h:form>
-											</p:tab>
-											<!-- Mercaderias y/o Activos Flotantes -->
-											<p:tab title="#{emision['titulo.mercaderiaActivos']}">
-												<h:form id="ceAFFormId">
-													<p:dataTable id="ceAFTblId" var="condiciones" value="#{incendioLineasAliadasBacking.obtenerCondicionesActivosFlotantes()}"
-														paginator="true" rows="4" selection="#{incendioLineasAliadasBacking.selectCondicionesActivosFlotantes}">
-														<f:facet name="header">#{emision['anexo.titulo.cob']}</f:facet>
-														<p:column selectionMode="multiple" style="width:2%" />
-														<p:column headerText="#{emision['anexo.ca.nombre']}">#{condiciones.nombreDetalleAnexo}</p:column>
-													</p:dataTable>
-												</h:form>
-											</p:tab>
-											<!-- Muebles, Enseres y Equipos de Oficina -->
-											<p:tab title="#{emision['titulo.mueblesEnseres']}">
-												<h:form id="ceEOFormId">
-													<p:dataTable id="ceEOTblId" var="condiciones" value="#{incendioLineasAliadasBacking.obtenerCondicionesMueblesEnseres()}" paginator="true"
-														rows="4" selection="#{incendioLineasAliadasBacking.selectCondicionesMueblesEnseres}">
-														<f:facet name="header">#{emision['anexo.titulo.cob']}</f:facet>
-														<p:column selectionMode="multiple" style="width:2%" />
-														<p:column headerText="#{emision['anexo.ca.nombre']}">#{condiciones.nombreDetalleAnexo}</p:column>
-													</p:dataTable>
-												</h:form>
-											</p:tab>
-										</p:accordionPanel>
+
+								</p:tab>
+								<!-- CLAUSULAS ADICIONALES -->
+								<p:tab title="#{emision['anexo.titulo.tab.cad']}">
+									<h:form id="clausulaAddForm">
+										<p:dataTable value="#{incendioLineasAliadasBacking.clausulasAdicionalesDTO}" var="clausula" paginator="true" rows="4">
+											<p:column>
+												<f:facet name="header">
+													<h:outputLabel value="#{emision['anexo.titulo.cad']}" />
+												</f:facet>
+												<h:outputText value="#{clausula.clausula}" />
+											</p:column>
+											<p:column>
+												<f:facet name="header">
+													<h:outputLabel value="#{emision['lbl.seleccion']}" />
+												</f:facet>
+												<div align="center">
+													<p:selectBooleanCheckbox value="#{clausula.seleccion}" />
+												</div>
+											</p:column>
+										</p:dataTable>
 									</h:form>
 								</p:tab>
 							</p:tabView>

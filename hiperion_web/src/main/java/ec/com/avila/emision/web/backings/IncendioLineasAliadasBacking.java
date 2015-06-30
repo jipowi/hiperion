@@ -18,10 +18,17 @@ import javax.faces.bean.ViewScoped;
 
 import org.apache.log4j.Logger;
 
-import ec.com.avila.emision.web.beans.DetalleAnexoBean;
 import ec.com.avila.emision.web.beans.RamoIncendioLineasAliadaBean;
 import ec.com.avila.hiperion.comun.HiperionException;
+import ec.com.avila.hiperion.dto.ClausulaAdicionalDTO;
+import ec.com.avila.hiperion.dto.CoberturaAdicionalDTO;
+import ec.com.avila.hiperion.dto.CoberturaDTO;
+import ec.com.avila.hiperion.dto.CondicionEspecialDTO;
 import ec.com.avila.hiperion.dto.ObjetoAseguradoIlaDTO;
+import ec.com.avila.hiperion.emision.entities.ClausulasAddIncendio;
+import ec.com.avila.hiperion.emision.entities.CobertAddIncendio;
+import ec.com.avila.hiperion.emision.entities.CobertIncendio;
+import ec.com.avila.hiperion.emision.entities.CondEspIncendio;
 import ec.com.avila.hiperion.emision.entities.DetalleAnexo;
 import ec.com.avila.hiperion.emision.entities.ObjAsegIncendio;
 import ec.com.avila.hiperion.emision.entities.Ramo;
@@ -32,7 +39,6 @@ import ec.com.avila.hiperion.servicio.RamoIncendioLineasAliadaService;
 import ec.com.avila.hiperion.servicio.RamoService;
 import ec.com.avila.hiperion.web.beans.RamoBean;
 import ec.com.avila.hiperion.web.beans.UsuarioBean;
-import ec.com.avila.hiperion.web.model.AnexosDataModel;
 import ec.com.avila.hiperion.web.util.ConstantesUtil;
 import ec.com.avila.hiperion.web.util.GenerarPdfUtil;
 import ec.com.avila.hiperion.web.util.HiperionMensajes;
@@ -84,33 +90,31 @@ public class IncendioLineasAliadasBacking implements Serializable {
 
 	Logger log = Logger.getLogger(IncendioLineasAliadasBacking.class);
 
-	private AnexosDataModel anexosDataModel;
+	private List<CobertIncendio> coberturas;
+	private List<CoberturaDTO> coberturasDTO = new ArrayList<>();
+	private List<CobertAddIncendio> coberturasAdd;
+	private List<CoberturaAdicionalDTO> coberturasAddDTO = new ArrayList<>();
+	private List<ClausulasAddIncendio> clausulasAdicionales;
+	private List<ClausulaAdicionalDTO> clausulasAdicionalesDTO = new ArrayList<>();
+	private List<CondEspIncendio> condicionesEspeciales;
+	private List<CondicionEspecialDTO> condicionesEspecialesDTO = new ArrayList<>();
 	private List<DetalleAnexo> anexos;
-
-	private List<DetalleAnexoBean> clausulasAdicionales;
-	private List<DetalleAnexoBean> coberturas;
-	private List<DetalleAnexoBean> coberturasAdicionales;
-	private List<DetalleAnexoBean> condicionesEspecialesDineroValor;
-	private List<DetalleAnexoBean> condicionesEspecialesEdificioInstalaciones;
-	private List<DetalleAnexoBean> condicionesMaquinariaEquipos;
-	private List<DetalleAnexoBean> condicionesActivosFlotantes;
-	private List<DetalleAnexoBean> condicionesMueblesEnseres;
-	private DetalleAnexoBean[] selectClausulasAdicionales;
-	private DetalleAnexoBean[] selectCoberturas;
-	private DetalleAnexoBean[] selectCoberturasAdicionales;
-	private DetalleAnexoBean[] selectCondicionesEspecialesDineroValor;
-	private DetalleAnexoBean[] selectCondicionesEspecialesEdificioInstalaciones;
-	private DetalleAnexoBean[] selectCondicionesMaquinariaEquipos;
-	private DetalleAnexoBean[] selectCondicionesActivosFlotantes;
-	private DetalleAnexoBean[] selectCondicionesMueblesEnseres;
 
 	RamoIncendioLineasAliada ramoIncendioLineasAliada = new RamoIncendioLineasAliada();
 
 	@PostConstruct
 	public void inicializar() {
 		try {
-			Ramo ramo = ramoService.consultarRamoPorCodigo("ILA");
+
+			Ramo ramo = ramoService.consultarRamoPorCodigo("RE");
+
 			anexos = ramo.getDetalleAnexos();
+
+			obtenerCoberturas();
+			obtenerCoberturasAdicionales();
+			obtenerClausulasAdicionales();
+			obtenerCondicionesEspeciales();
+
 		} catch (HiperionException e) {
 			e.printStackTrace();
 		}
@@ -118,188 +122,135 @@ public class IncendioLineasAliadasBacking implements Serializable {
 
 	/**
 	 * 
-	 * <b> Permite obtener las Clausulas Adicionales del Ramo Incendio Lineas Aliadas. </b>
+	 * <b> Permite obtener las coberturas del ramo. </b>
 	 * <p>
-	 * [Author: Dario Vinueza, Date: 20/04/2014]
+	 * [Author: Paul Jimenez, Date: 17/06/2015]
 	 * </p>
 	 * 
-	 * @return
+	 * @param anexos
 	 */
-	public AnexosDataModel obtenerClausulasAdicionales() {
-		clausulasAdicionales = new ArrayList<DetalleAnexoBean>();
+	public void obtenerCoberturas() {
+
+		coberturas = new ArrayList<CobertIncendio>();
 		if (anexos != null && anexos.size() > 0) {
 			for (DetalleAnexo anexo : anexos) {
-				if (anexo.getAnexo().getIdAnexo() == 1)
-					clausulasAdicionales.add(new DetalleAnexoBean(anexo.getIdDetalleAnexo(), anexo.getNombreDetalleAnexo()));
+				if (anexo.getAnexo().getIdAnexo() == 2) {
+					CobertIncendio cobertura = new CobertIncendio();
+					cobertura.setCoberturaIncendio(anexo.getNombreDetalleAnexo());
+
+					coberturas.add(cobertura);
+				}
+
 			}
 
-			anexosDataModel = new AnexosDataModel(clausulasAdicionales);
+			for (CobertIncendio cobertura : coberturas) {
+				CoberturaDTO coberturaDTO = new CoberturaDTO();
+				coberturaDTO.setCobertura(cobertura.getCoberturaIncendio());
+				coberturaDTO.setSeleccion(false);
+
+				coberturasDTO.add(coberturaDTO);
+			}
 		}
 
-		return anexosDataModel;
 	}
 
 	/**
 	 * 
-	 * <b> Permite obtener las Coberturas del Ramo Incendio Lineas Aliadas. </b>
+	 * <b> Permite obetener las coberturas adicionales del ramo. </b>
 	 * <p>
-	 * [Author: Dario Vinueza, Date: 20/04/2014]
+	 * [Author: Paul Jimenez, Date: 26/06/2015]
 	 * </p>
 	 * 
-	 * @return
 	 */
-	public AnexosDataModel obtenerCoberturas() {
-		coberturas = new ArrayList<DetalleAnexoBean>();
+	public void obtenerCoberturasAdicionales() {
+
+		coberturasAdd = new ArrayList<CobertAddIncendio>();
 		if (anexos != null && anexos.size() > 0) {
 			for (DetalleAnexo anexo : anexos) {
-				if (anexo.getAnexo().getIdAnexo() == 2)
-					coberturas.add(new DetalleAnexoBean(anexo.getIdDetalleAnexo(), anexo.getNombreDetalleAnexo()));
+				if (anexo.getAnexo().getIdAnexo() == 6) {
+					CobertAddIncendio cobertura = new CobertAddIncendio();
+					cobertura.setCoberturaAddIncendio(anexo.getNombreDetalleAnexo());
+
+					coberturasAdd.add(cobertura);
+				}
+
 			}
 
-			anexosDataModel = new AnexosDataModel(coberturas);
+			for (CobertAddIncendio cobertura : coberturasAdd) {
+				CoberturaAdicionalDTO coberturaAddDTO = new CoberturaAdicionalDTO();
+				coberturaAddDTO.setCobertura(cobertura.getCoberturaAddIncendio());
+				coberturaAddDTO.setSeleccion(false);
+
+				coberturasAddDTO.add(coberturaAddDTO);
+			}
 		}
 
-		return anexosDataModel;
 	}
 
 	/**
 	 * 
-	 * <b> Permite obtener las Coberturas Adicionales del Ramo Incendio Lineas Aliadas. </b>
+	 * <b> Permite obtener las clausulas adicionales del ramo. </b>
 	 * <p>
-	 * [Author: Dario Vinueza, Date: 20/04/2014]
+	 * [Author: Paul Jimenez, Date: 17/06/2015]
 	 * </p>
 	 * 
-	 * @return
 	 */
-	public AnexosDataModel obtenerCoberturasAdicionales() {
-		coberturasAdicionales = new ArrayList<DetalleAnexoBean>();
+	public void obtenerClausulasAdicionales() {
+		clausulasAdicionales = new ArrayList<ClausulasAddIncendio>();
 		if (anexos != null && anexos.size() > 0) {
 			for (DetalleAnexo anexo : anexos) {
-				if (anexo.getAnexo().getIdAnexo() == 6)
-					coberturasAdicionales.add(new DetalleAnexoBean(anexo.getIdDetalleAnexo(), anexo.getNombreDetalleAnexo()));
+				if (anexo.getAnexo().getIdAnexo() == 1) {
+					ClausulasAddIncendio clausula = new ClausulasAddIncendio();
+					clausula.setClausulaAddIncendio(anexo.getNombreDetalleAnexo());
+
+					clausulasAdicionales.add(clausula);
+				}
+
+			}
+			for (ClausulasAddIncendio clausula : clausulasAdicionales) {
+				ClausulaAdicionalDTO clausulaDTO = new ClausulaAdicionalDTO();
+				clausulaDTO.setClausula(clausula.getClausulaAddIncendio());
+				clausulaDTO.setSeleccion(false);
+
+				
+				clausulasAdicionalesDTO.add(clausulaDTO);
 			}
 
-			anexosDataModel = new AnexosDataModel(coberturasAdicionales);
 		}
 
-		return anexosDataModel;
 	}
 
 	/**
 	 * 
-	 * <b> Permite obtener las Condiciones Especiales con titulo Dinero y Valores del Ramo Incendio Lineas Aliadas. </b>
+	 * <b> Permite obtener las condiciones especiales del ramo. </b>
 	 * <p>
-	 * [Author: Dario Vinueza, Date: 20/04/2014]
+	 * [Author: Paul Jimenez, Date: 17/06/2015]
 	 * </p>
 	 * 
-	 * @return
 	 */
-	public AnexosDataModel obtenerCondicionesEspecialesDineroValores() {
-		condicionesEspecialesDineroValor = new ArrayList<DetalleAnexoBean>();
+	public void obtenerCondicionesEspeciales() {
+		condicionesEspeciales = new ArrayList<CondEspIncendio>();
 		if (anexos != null && anexos.size() > 0) {
 			for (DetalleAnexo anexo : anexos) {
-				if (anexo.getAnexo().getIdAnexo() == 3 && anexo.getTitulo().getIdTitulo() == 8)
-					condicionesEspecialesDineroValor.add(new DetalleAnexoBean(anexo.getIdDetalleAnexo(), anexo.getNombreDetalleAnexo()));
+				if (anexo.getAnexo().getIdAnexo() == 3) {
+					CondEspIncendio condicion = new CondEspIncendio();
+					condicion.setCondicionEspIncendio(anexo.getNombreDetalleAnexo());
+
+					condicionesEspeciales.add(condicion);
+				}
+
+			}
+			for (CondEspIncendio condicion : condicionesEspeciales) {
+				CondicionEspecialDTO condicionDTO = new CondicionEspecialDTO();
+				condicionDTO.setCondicionEspecial(condicion.getCondicionEspIncendio());
+				condicionDTO.setSeleccion(false);
+
+				condicionesEspecialesDTO.add(condicionDTO);
 			}
 
-			anexosDataModel = new AnexosDataModel(condicionesEspecialesDineroValor);
 		}
 
-		return anexosDataModel;
 	}
-
-	/**
-	 * 
-	 * <b> Permite obtener las Condiciones Especiales Edificio e Instalaciones del Ramo Incendio Lineas Aliadas. </b>
-	 * <p>
-	 * [Author: Dario Vinueza, Date: 20/04/2014]
-	 * </p>
-	 * 
-	 * @return
-	 */
-	public AnexosDataModel obtenerCondicionesEspecialesEdificioInstalaciones() {
-		condicionesEspecialesEdificioInstalaciones = new ArrayList<DetalleAnexoBean>();
-		if (anexos != null && anexos.size() > 0) {
-			for (DetalleAnexo anexo : anexos) {
-				if (anexo.getAnexo().getIdAnexo() == 3 && anexo.getTitulo().getIdTitulo() == 9)
-					condicionesEspecialesEdificioInstalaciones.add(new DetalleAnexoBean(anexo.getIdDetalleAnexo(), anexo.getNombreDetalleAnexo()));
-			}
-
-			anexosDataModel = new AnexosDataModel(condicionesEspecialesEdificioInstalaciones);
-		}
-
-		return anexosDataModel;
-	}
-
-	/**
-	 * 
-	 * <b> Permite obtener las Condiciones Especiales con titulo Maquinaria y Equipos del Ramo Incendio Lineas Aliadas. </b>
-	 * <p>
-	 * [Author: Dario Vinueza, Date: 20/04/2014]
-	 * </p>
-	 * 
-	 * @return
-	 */
-	public AnexosDataModel obtenerCondicionesMaquinariaEquipos() {
-		condicionesMaquinariaEquipos = new ArrayList<DetalleAnexoBean>();
-		if (anexos != null && anexos.size() > 0) {
-			for (DetalleAnexo anexo : anexos) {
-				if (anexo.getAnexo().getIdAnexo() == 3 && anexo.getTitulo().getIdTitulo() == 10)
-					condicionesMaquinariaEquipos.add(new DetalleAnexoBean(anexo.getIdDetalleAnexo(), anexo.getNombreDetalleAnexo()));
-			}
-
-			anexosDataModel = new AnexosDataModel(condicionesMaquinariaEquipos);
-		}
-
-		return anexosDataModel;
-	}
-
-	/**
-	 * 
-	 * <b> Permite obtener las Condiciones Especiales con titulo Mercaderias y/o Activos Flotantes del Ramo Incendio Lineas Aliadas. </b>
-	 * <p>
-	 * [Author: Dario Vinueza, Date: 20/04/2014]
-	 * </p>
-	 * 
-	 * @return
-	 */
-	public AnexosDataModel obtenerCondicionesActivosFlotantes() {
-		condicionesActivosFlotantes = new ArrayList<DetalleAnexoBean>();
-		if (anexos != null && anexos.size() > 0) {
-			for (DetalleAnexo anexo : anexos) {
-				if (anexo.getAnexo().getIdAnexo() == 3 && anexo.getTitulo().getIdTitulo() == 11)
-					condicionesActivosFlotantes.add(new DetalleAnexoBean(anexo.getIdDetalleAnexo(), anexo.getNombreDetalleAnexo()));
-			}
-
-			anexosDataModel = new AnexosDataModel(condicionesActivosFlotantes);
-		}
-
-		return anexosDataModel;
-	}
-
-	/**
-	 * 
-	 * <b> Permite obtener las Condiciones Especiales con titulo Muebles, Enseres y Equipos de Oficina del Ramo Incendio Lineas Aliadas. </b>
-	 * <p>
-	 * [Author: Dario Vinueza, Date: 20/04/2014]
-	 * </p>
-	 * 
-	 * @return
-	 */
-	public AnexosDataModel obtenerCondicionesMueblesEnseres() {
-		condicionesMueblesEnseres = new ArrayList<DetalleAnexoBean>();
-		if (anexos != null && anexos.size() > 0) {
-			for (DetalleAnexo anexo : anexos) {
-				if (anexo.getAnexo().getIdAnexo() == 3 && anexo.getTitulo().getIdTitulo() == 12)
-					condicionesMueblesEnseres.add(new DetalleAnexoBean(anexo.getIdDetalleAnexo(), anexo.getNombreDetalleAnexo()));
-			}
-
-			anexosDataModel = new AnexosDataModel(condicionesMueblesEnseres);
-		}
-
-		return anexosDataModel;
-	}
-
 	/**
 	 * 
 	 * <b> Permite Ingresar Datos del ramo Incendio y Lineas Aliadas </b>
@@ -408,123 +359,63 @@ public class IncendioLineasAliadasBacking implements Serializable {
 	}
 
 	/**
-	 * @return the selectCoberturas
+	 * @return the coberturasDTO
 	 */
-	public DetalleAnexoBean[] getSelectCoberturas() {
-		return selectCoberturas;
+	public List<CoberturaDTO> getCoberturasDTO() {
+		return coberturasDTO;
 	}
 
 	/**
-	 * @param selectCoberturas
-	 *            the selectCoberturas to set
+	 * @param coberturasDTO
+	 *            the coberturasDTO to set
 	 */
-	public void setSelectCoberturas(DetalleAnexoBean[] selectCoberturas) {
-		this.selectCoberturas = selectCoberturas;
+	public void setCoberturasDTO(List<CoberturaDTO> coberturasDTO) {
+		this.coberturasDTO = coberturasDTO;
 	}
 
 	/**
-	 * @return the selectClausulasAdicionales
+	 * @return the coberturasAddDTO
 	 */
-	public DetalleAnexoBean[] getSelectClausulasAdicionales() {
-		return selectClausulasAdicionales;
+	public List<CoberturaAdicionalDTO> getCoberturasAddDTO() {
+		return coberturasAddDTO;
 	}
 
 	/**
-	 * @param selectClausulasAdicionales
-	 *            the selectClausulasAdicionales to set
+	 * @param coberturasAddDTO
+	 *            the coberturasAddDTO to set
 	 */
-	public void setSelectClausulasAdicionales(DetalleAnexoBean[] selectClausulasAdicionales) {
-		this.selectClausulasAdicionales = selectClausulasAdicionales;
+	public void setCoberturasAddDTO(List<CoberturaAdicionalDTO> coberturasAddDTO) {
+		this.coberturasAddDTO = coberturasAddDTO;
 	}
 
 	/**
-	 * @return the selectCoberturasAdicionales
+	 * @return the clausulasAdicionalesDTO
 	 */
-	public DetalleAnexoBean[] getSelectCoberturasAdicionales() {
-		return selectCoberturasAdicionales;
+	public List<ClausulaAdicionalDTO> getClausulasAdicionalesDTO() {
+		return clausulasAdicionalesDTO;
 	}
 
 	/**
-	 * @param selectCoberturasAdicionales
-	 *            the selectCoberturasAdicionales to set
+	 * @param clausulasAdicionalesDTO
+	 *            the clausulasAdicionalesDTO to set
 	 */
-	public void setSelectCoberturasAdicionales(DetalleAnexoBean[] selectCoberturasAdicionales) {
-		this.selectCoberturasAdicionales = selectCoberturasAdicionales;
+	public void setClausulasAdicionalesDTO(List<ClausulaAdicionalDTO> clausulasAdicionalesDTO) {
+		this.clausulasAdicionalesDTO = clausulasAdicionalesDTO;
 	}
 
 	/**
-	 * @return the selectCondicionesEspecialesDineroValor
+	 * @return the condicionesEspecialesDTO
 	 */
-	public DetalleAnexoBean[] getSelectCondicionesEspecialesDineroValor() {
-		return selectCondicionesEspecialesDineroValor;
+	public List<CondicionEspecialDTO> getCondicionesEspecialesDTO() {
+		return condicionesEspecialesDTO;
 	}
 
 	/**
-	 * @param selectCondicionesEspecialesDineroValor
-	 *            the selectCondicionesEspecialesDineroValor to set
+	 * @param condicionesEspecialesDTO
+	 *            the condicionesEspecialesDTO to set
 	 */
-	public void setSelectCondicionesEspecialesDineroValor(DetalleAnexoBean[] selectCondicionesEspecialesDineroValor) {
-		this.selectCondicionesEspecialesDineroValor = selectCondicionesEspecialesDineroValor;
-	}
-
-	/**
-	 * @return the selectCondicionesEspecialesEdificioInstalaciones
-	 */
-	public DetalleAnexoBean[] getSelectCondicionesEspecialesEdificioInstalaciones() {
-		return selectCondicionesEspecialesEdificioInstalaciones;
-	}
-
-	/**
-	 * @param selectCondicionesEspecialesEdificioInstalaciones
-	 *            the selectCondicionesEspecialesEdificioInstalaciones to set
-	 */
-	public void setSelectCondicionesEspecialesEdificioInstalaciones(DetalleAnexoBean[] selectCondicionesEspecialesEdificioInstalaciones) {
-		this.selectCondicionesEspecialesEdificioInstalaciones = selectCondicionesEspecialesEdificioInstalaciones;
-	}
-
-	/**
-	 * @return the selectCondicionesMaquinariaEquipos
-	 */
-	public DetalleAnexoBean[] getSelectCondicionesMaquinariaEquipos() {
-		return selectCondicionesMaquinariaEquipos;
-	}
-
-	/**
-	 * @param selectCondicionesMaquinariaEquipos
-	 *            the selectCondicionesMaquinariaEquipos to set
-	 */
-	public void setSelectCondicionesMaquinariaEquipos(DetalleAnexoBean[] selectCondicionesMaquinariaEquipos) {
-		this.selectCondicionesMaquinariaEquipos = selectCondicionesMaquinariaEquipos;
-	}
-
-	/**
-	 * @return the selectCondicionesActivosFlotantes
-	 */
-	public DetalleAnexoBean[] getSelectCondicionesActivosFlotantes() {
-		return selectCondicionesActivosFlotantes;
-	}
-
-	/**
-	 * @param selectCondicionesActivosFlotantes
-	 *            the selectCondicionesActivosFlotantes to set
-	 */
-	public void setSelectCondicionesActivosFlotantes(DetalleAnexoBean[] selectCondicionesActivosFlotantes) {
-		this.selectCondicionesActivosFlotantes = selectCondicionesActivosFlotantes;
-	}
-
-	/**
-	 * @return the selectCondicionesMueblesEnseres
-	 */
-	public DetalleAnexoBean[] getSelectCondicionesMueblesEnseres() {
-		return selectCondicionesMueblesEnseres;
-	}
-
-	/**
-	 * @param selectCondicionesMueblesEnseres
-	 *            the selectCondicionesMueblesEnseres to set
-	 */
-	public void setSelectCondicionesMueblesEnseres(DetalleAnexoBean[] selectCondicionesMueblesEnseres) {
-		this.selectCondicionesMueblesEnseres = selectCondicionesMueblesEnseres;
+	public void setCondicionesEspecialesDTO(List<CondicionEspecialDTO> condicionesEspecialesDTO) {
+		this.condicionesEspecialesDTO = condicionesEspecialesDTO;
 	}
 
 	/**
