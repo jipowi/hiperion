@@ -20,10 +20,15 @@ import javax.faces.bean.ViewScoped;
 
 import org.apache.log4j.Logger;
 
-import ec.com.avila.emision.web.beans.DetalleAnexoBean;
 import ec.com.avila.emision.web.beans.RamoCesanteRoturaMaqBean;
 import ec.com.avila.hiperion.comun.HiperionException;
+import ec.com.avila.hiperion.dto.ClausulaAdicionalDTO;
+import ec.com.avila.hiperion.dto.CoberturaAdicionalDTO;
+import ec.com.avila.hiperion.dto.CoberturaDTO;
 import ec.com.avila.hiperion.dto.ObjetoAseguradoCesanteRoturaMaqDTO;
+import ec.com.avila.hiperion.emision.entities.ClaAddLcRot;
+import ec.com.avila.hiperion.emision.entities.CobertAddLcRot;
+import ec.com.avila.hiperion.emision.entities.CobertLcRot;
 import ec.com.avila.hiperion.emision.entities.DetalleAnexo;
 import ec.com.avila.hiperion.emision.entities.ObjAsegLcRotMaq;
 import ec.com.avila.hiperion.emision.entities.Ramo;
@@ -34,7 +39,6 @@ import ec.com.avila.hiperion.servicio.RamoCesanteRoturaMaqService;
 import ec.com.avila.hiperion.servicio.RamoService;
 import ec.com.avila.hiperion.web.beans.RamoBean;
 import ec.com.avila.hiperion.web.beans.UsuarioBean;
-import ec.com.avila.hiperion.web.model.AnexosDataModel;
 import ec.com.avila.hiperion.web.util.ConstantesUtil;
 import ec.com.avila.hiperion.web.util.GenerarPdfUtil;
 import ec.com.avila.hiperion.web.util.HiperionMensajes;
@@ -71,23 +75,28 @@ public class LucroCesanteRoturaMaquinariaBacking implements Serializable {
 
 	Logger log = Logger.getLogger(LucroCesanteIncendioBacking.class);
 
-	private AnexosDataModel anexosDataModel;
 	private List<DetalleAnexo> anexos;
-
-	private List<DetalleAnexoBean> clausulasAdicionales;
-	private List<DetalleAnexoBean> coberturas;
-	private List<DetalleAnexoBean> coberturasAdicionales;
-	private DetalleAnexoBean[] selectClausulasAdicionales;
-	private DetalleAnexoBean[] selectCoberturas;
-	private DetalleAnexoBean[] selectCoberturasAdicionales;
+	private List<CobertLcRot> coberturas;
+	private List<CoberturaDTO> coberturasDTO = new ArrayList<>();
+	private List<CobertAddLcRot> coberturasAdd;
+	private List<CoberturaAdicionalDTO> coberturasAddDTO = new ArrayList<>();
+	private List<ClaAddLcRot> clausulasAdicionales;
+	private List<ClausulaAdicionalDTO> clausulasAdicionalesDTO = new ArrayList<>();
 
 	RamoLcRotMaq ramoCesanteRoturaMaq = new RamoLcRotMaq();
 
 	@PostConstruct
 	public void inicializar() {
 		try {
+
 			Ramo ramo = ramoService.consultarRamoPorCodigo("LCRM");
+
 			anexos = ramo.getDetalleAnexos();
+
+			obtenerCoberturas();
+			obtenerCoberturasAdicionales();
+			obtenerClausulasAdicionales();
+
 		} catch (HiperionException e) {
 			e.printStackTrace();
 		}
@@ -95,71 +104,101 @@ public class LucroCesanteRoturaMaquinariaBacking implements Serializable {
 
 	/**
 	 * 
-	 * <b> Permite obtener las Clausulas Adicionales del Ramo Lucro Cesante Rotura Maquinaria. </b>
+	 * <b> Permite obtener las coberturas del ramo. </b>
 	 * <p>
-	 * [Author: Dario Vinueza, Date: 20/04/2014]
+	 * [Author: Paul Jimenez, Date: 17/06/2015]
 	 * </p>
 	 * 
-	 * @return
+	 * @param anexos
 	 */
-	public AnexosDataModel obtenerClausulasAdicionales() {
-		clausulasAdicionales = new ArrayList<DetalleAnexoBean>();
+	public void obtenerCoberturas() {
+
+		coberturas = new ArrayList<CobertLcRot>();
 		if (anexos != null && anexos.size() > 0) {
 			for (DetalleAnexo anexo : anexos) {
-				if (anexo.getAnexo().getIdAnexo() == 1)
-					clausulasAdicionales.add(new DetalleAnexoBean(anexo.getIdDetalleAnexo(), anexo.getNombreDetalleAnexo()));
+				if (anexo.getAnexo().getIdAnexo() == 2) {
+					CobertLcRot cobertura = new CobertLcRot();
+					cobertura.setCoberturaLcRotura(anexo.getNombreDetalleAnexo());
+
+					coberturas.add(cobertura);
+				}
+
 			}
 
-			anexosDataModel = new AnexosDataModel(clausulasAdicionales);
+			for (CobertLcRot cobertura : coberturas) {
+				CoberturaDTO coberturaDTO = new CoberturaDTO();
+				coberturaDTO.setCobertura(cobertura.getCoberturaLcRotura());
+				coberturaDTO.setSeleccion(false);
+
+				coberturasDTO.add(coberturaDTO);
+			}
 		}
 
-		return anexosDataModel;
 	}
 
 	/**
 	 * 
-	 * <b> Permite obtener las Coberturas del Ramo Lucro Cesante Rotura Maquinaria.</b>
+	 * <b> Permite obtener las coberturas adicionales del ramo. </b>
 	 * <p>
-	 * [Author: Dario Vinueza, Date: 20/04/2014]
+	 * [Author: Paul Jimenez, Date: 26/06/2015]
 	 * </p>
 	 * 
-	 * @return
 	 */
-	public AnexosDataModel obtenerCoberturas() {
-		coberturas = new ArrayList<DetalleAnexoBean>();
+	public void obtenerCoberturasAdicionales() {
+
+		coberturasAdd = new ArrayList<CobertAddLcRot>();
 		if (anexos != null && anexos.size() > 0) {
 			for (DetalleAnexo anexo : anexos) {
-				if (anexo.getAnexo().getIdAnexo() == 2)
-					coberturas.add(new DetalleAnexoBean(anexo.getIdDetalleAnexo(), anexo.getNombreDetalleAnexo()));
+				if (anexo.getAnexo().getIdAnexo() == 6) {
+					CobertAddLcRot cobertura = new CobertAddLcRot();
+					cobertura.setCoberturaAddLcRotura(anexo.getNombreDetalleAnexo());
+
+					coberturasAdd.add(cobertura);
+				}
+
 			}
 
-			anexosDataModel = new AnexosDataModel(coberturas);
+			for (CobertAddLcRot cobertura : coberturasAdd) {
+				CoberturaAdicionalDTO coberturaAddDTO = new CoberturaAdicionalDTO();
+				coberturaAddDTO.setCobertura(cobertura.getCoberturaAddLcRotura());
+				coberturaAddDTO.setSeleccion(false);
+
+				coberturasAddDTO.add(coberturaAddDTO);
+			}
 		}
 
-		return anexosDataModel;
 	}
 
 	/**
 	 * 
-	 * <b> Permite obtener las Coberturas Adicionales Ramo Lucro Cesante Rotura Maquinaria. </b>
+	 * <b> Permite obtener las clausulas adicionales del ramo. </b>
 	 * <p>
-	 * [Author: Dario Vinueza, Date: 20/04/2014]
+	 * [Author: Paul Jimenez, Date: 17/06/2015]
 	 * </p>
 	 * 
-	 * @return
 	 */
-	public AnexosDataModel obtenerCoberturasAdicionales() {
-		coberturasAdicionales = new ArrayList<DetalleAnexoBean>();
+	public void obtenerClausulasAdicionales() {
+		clausulasAdicionales = new ArrayList<ClaAddLcRot>();
 		if (anexos != null && anexos.size() > 0) {
 			for (DetalleAnexo anexo : anexos) {
-				if (anexo.getAnexo().getIdAnexo() == 6)
-					coberturasAdicionales.add(new DetalleAnexoBean(anexo.getIdDetalleAnexo(), anexo.getNombreDetalleAnexo()));
+				if (anexo.getAnexo().getIdAnexo() == 1) {
+					ClaAddLcRot clausula = new ClaAddLcRot();
+					clausula.setClausulaAddLcRotura(anexo.getNombreDetalleAnexo());
+
+					clausulasAdicionales.add(clausula);
+				}
+
+			}
+			for (ClaAddLcRot clausula : clausulasAdicionales) {
+				ClausulaAdicionalDTO clausulaDTO = new ClausulaAdicionalDTO();
+				clausulaDTO.setClausula(clausula.getClausulaAddLcRotura());
+				clausulaDTO.setSeleccion(false);
+
+				clausulasAdicionalesDTO.add(clausulaDTO);
 			}
 
-			anexosDataModel = new AnexosDataModel(coberturasAdicionales);
 		}
 
-		return anexosDataModel;
 	}
 
 	/**
@@ -270,48 +309,48 @@ public class LucroCesanteRoturaMaquinariaBacking implements Serializable {
 	}
 
 	/**
-	 * @return the selectClausulasAdicionales
+	 * @return the coberturasDTO
 	 */
-	public DetalleAnexoBean[] getSelectClausulasAdicionales() {
-		return selectClausulasAdicionales;
+	public List<CoberturaDTO> getCoberturasDTO() {
+		return coberturasDTO;
 	}
 
 	/**
-	 * @param selectClausulasAdicionales
-	 *            the selectClausulasAdicionales to set
+	 * @param coberturasDTO
+	 *            the coberturasDTO to set
 	 */
-	public void setSelectClausulasAdicionales(DetalleAnexoBean[] selectClausulasAdicionales) {
-		this.selectClausulasAdicionales = selectClausulasAdicionales;
+	public void setCoberturasDTO(List<CoberturaDTO> coberturasDTO) {
+		this.coberturasDTO = coberturasDTO;
 	}
 
 	/**
-	 * @return the selectCoberturas
+	 * @return the coberturasAddDTO
 	 */
-	public DetalleAnexoBean[] getSelectCoberturas() {
-		return selectCoberturas;
+	public List<CoberturaAdicionalDTO> getCoberturasAddDTO() {
+		return coberturasAddDTO;
 	}
 
 	/**
-	 * @param selectCoberturas
-	 *            the selectCoberturas to set
+	 * @param coberturasAddDTO
+	 *            the coberturasAddDTO to set
 	 */
-	public void setSelectCoberturas(DetalleAnexoBean[] selectCoberturas) {
-		this.selectCoberturas = selectCoberturas;
+	public void setCoberturasAddDTO(List<CoberturaAdicionalDTO> coberturasAddDTO) {
+		this.coberturasAddDTO = coberturasAddDTO;
 	}
 
 	/**
-	 * @return the selectCoberturasAdicionales
+	 * @return the clausulasAdicionalesDTO
 	 */
-	public DetalleAnexoBean[] getSelectCoberturasAdicionales() {
-		return selectCoberturasAdicionales;
+	public List<ClausulaAdicionalDTO> getClausulasAdicionalesDTO() {
+		return clausulasAdicionalesDTO;
 	}
 
 	/**
-	 * @param selectCoberturasAdicionales
-	 *            the selectCoberturasAdicionales to set
+	 * @param clausulasAdicionalesDTO
+	 *            the clausulasAdicionalesDTO to set
 	 */
-	public void setSelectCoberturasAdicionales(DetalleAnexoBean[] selectCoberturasAdicionales) {
-		this.selectCoberturasAdicionales = selectCoberturasAdicionales;
+	public void setClausulasAdicionalesDTO(List<ClausulaAdicionalDTO> clausulasAdicionalesDTO) {
+		this.clausulasAdicionalesDTO = clausulasAdicionalesDTO;
 	}
 
 	public void descargarLucroCesanteRoturaMaquinariaPDF() throws HiperionException {

@@ -145,7 +145,7 @@ public class RoturaMaquinariaBacking implements Serializable {
 		coberturasAdd = new ArrayList<CobertAddRotura>();
 		if (anexos != null && anexos.size() > 0) {
 			for (DetalleAnexo anexo : anexos) {
-				if (anexo.getAnexo().getIdAnexo() == 2) {
+				if (anexo.getAnexo().getIdAnexo() == 6) {
 					CobertAddRotura cobertura = new CobertAddRotura();
 					cobertura.setCoberturaAddRotura(anexo.getNombreDetalleAnexo());
 

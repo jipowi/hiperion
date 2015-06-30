@@ -176,7 +176,7 @@ public class RoboAsaltoBacking implements Serializable {
 		coberturasAdd = new ArrayList<CobertAddRobo>();
 		if (anexos != null && anexos.size() > 0) {
 			for (DetalleAnexo anexo : anexos) {
-				if (anexo.getAnexo().getIdAnexo() == 2) {
+				if (anexo.getAnexo().getIdAnexo() == 6) {
 					CobertAddRobo cobertura = new CobertAddRobo();
 					cobertura.setCoberturaAddRobo(anexo.getNombreDetalleAnexo());
 
