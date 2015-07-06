@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      PostgreSQL 8                                 */
-/* Created on:     16/06/2015 22:55:04                          */
+/* Created on:     06/07/2015 14:05:03                          */
 /*==============================================================*/
 
 
@@ -1812,11 +1812,6 @@ create table CONTACTO (
    ID_CLIENTE           INT4                 null,
    TIPO_CONTACTO        TEXT                 null,
    DESCRIPCION_CONTACTO TEXT                 null,
-   ID_USUARIO_CREACION  INT4                 not null,
-   ID_USUARIO_ACTUALIZACION INT4                 null,
-   FECHA_CREACION       DATE                 not null,
-   FECHA_ACTUALIZACION  DATE                 null,
-   ESTADO               TEXT                 not null,
    constraint PK_CONTACTO primary key (ID_CONTACTO)
 );
 
@@ -2039,6 +2034,7 @@ create table FINANCIAMIENTO (
    ID_PAGO_POLIZA       INT4                 null,
    NUMERO_CUOTA         NUMERIC              null,
    FECHA_VENCIMIENTO    DATE                 null,
+   VALOR_LETRA          DECIMAL              null,
    constraint PK_FINANCIAMIENTO primary key (ID_FINANCIAMIENTO)
 );
 
