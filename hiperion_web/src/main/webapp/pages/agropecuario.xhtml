@@ -293,7 +293,9 @@
 								<!-- CLAUSULAS ADICIONALES -->
 								<p:tab title="#{emision['ap.tab.clausulasAdicionales']}">
 									<h:form id="clausulaAddForm">
-										<p:dataTable var="clausula" value="#{agropecuarioBacking.clausulasAdicionalesDTO}" paginator="true" rows="4">
+										<p:dataTable id="tableClausulas" var="clausula" value="#{agropecuarioBacking.clausulasAdicionalesDTO}" paginator="true" editable="true"
+											rows="4">
+											<p:ajax event="rowEdit" listener="#{agropecuarioBacking.onEditTable}" update="tableClausulas" />
 											<p:column>
 												<f:facet name="header">
 													<h:outputLabel value="#{emision['anexo.titulo.cad']}" />
@@ -307,6 +309,22 @@
 												<div align="center">
 													<p:selectBooleanCheckbox value="#{clausula.seleccion}" />
 												</div>
+											</p:column>
+											<p:column>
+												<f:facet name="header">
+													<h:outputLabel value="#{emision['lbl.numeroDias']}" />
+												</f:facet>
+												<p:cellEditor>
+													<f:facet name="output">
+														<h:outputText value="#{clausula.numDias}" />
+													</f:facet>
+													<f:facet name="input">
+														<p:inputText value="#{clausula.numDias}" />
+													</f:facet>
+												</p:cellEditor>
+											</p:column>
+											<p:column headerText="Options" style="width:50px">
+												<p:rowEditor />
 											</p:column>
 										</p:dataTable>
 									</h:form>
@@ -346,7 +364,6 @@
 														<h:outputText value="#{cobertura.cobertura}" />
 													</p:column>
 													<p:column>
-
 														<f:facet name="header">
 															<h:outputLabel value="#{emision['lbl.seleccion']}" />
 														</f:facet>

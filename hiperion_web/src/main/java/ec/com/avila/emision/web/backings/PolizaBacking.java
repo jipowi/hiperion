@@ -37,8 +37,7 @@ import ec.com.avila.hiperion.web.util.HiperionMensajes;
 import ec.com.avila.hiperion.web.util.MessagesController;
 
 /**
- * <b> Clase que�sirve�de�soporte�para�un�objeto manejado�dentro�de�la�aplicacion se�codifican�los�comportamientos
- * especificos�asociados�a�cada�control�del�Managed�Bean�representado�por�la�pagina</b>
+ * <b> Clase Backing que permite gestionar la informacion que se maneje en las paginas web</b>
  * 
  * @author Paul Jimenez
  * @version 1.0,Dec 18, 2013
@@ -131,6 +130,7 @@ public class PolizaBacking implements Serializable {
 			throw new HiperionException(e);
 		}
 	}
+
 	
 	/**
 	 * @return the aseguradorasItems
@@ -273,6 +273,7 @@ public class PolizaBacking implements Serializable {
 			cont++;
 		}
 
+		polizaBean.setFinanciamientos(tablaAmortizacionList);
 	}
 
 	public double redondear(double numero, int decimales) {
@@ -308,7 +309,7 @@ public class PolizaBacking implements Serializable {
 			Double emision = redondear((polizaBean.getPrimaNeta() * 0.005), 2);
 			Double subtotal = redondear((valorSuperBan + seguroCampesino + emision + polizaBean.getPrimaNeta()), 2);
 			Double iva = redondear((subtotal * 0.12), 2);
-			Double total = redondear((subtotal+iva),2);
+			Double total = redondear((subtotal + iva), 2);
 
 			polizaBean.setSuperBanSeguros(BigDecimal.valueOf(valorSuperBan));
 			polizaBean.setSeguroCampesino(seguroCampesino);
@@ -316,6 +317,7 @@ public class PolizaBacking implements Serializable {
 			polizaBean.setIva(BigDecimal.valueOf(iva));
 			polizaBean.setTotal(BigDecimal.valueOf(total));
 		}
+		selectFormaDePago();
 	}
 
 	public PolizaBean getPolizaBean() {
@@ -617,8 +619,6 @@ public class PolizaBacking implements Serializable {
 	public void setTarjetaCreditoItems(List<SelectItem> tarjetaCreditoItems) {
 		this.tarjetaCreditoItems = tarjetaCreditoItems;
 	}
-
-	
 
 	/**
 	 * @param aseguradorasItems

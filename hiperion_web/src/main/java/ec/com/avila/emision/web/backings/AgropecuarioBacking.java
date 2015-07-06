@@ -6,6 +6,7 @@
 package ec.com.avila.emision.web.backings;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -23,6 +24,7 @@ import javax.faces.model.SelectItem;
 
 import org.apache.log4j.Logger;
 import org.primefaces.event.FileUploadEvent;
+import org.primefaces.event.RowEditEvent;
 import org.primefaces.model.UploadedFile;
 
 import ec.com.avila.emision.web.beans.PolizaBean;
@@ -40,9 +42,13 @@ import ec.com.avila.hiperion.emision.entities.ClausulasAddAgro;
 import ec.com.avila.hiperion.emision.entities.CobertAgro;
 import ec.com.avila.hiperion.emision.entities.DetalleAnexo;
 import ec.com.avila.hiperion.emision.entities.DetalleCatalogo;
+import ec.com.avila.hiperion.emision.entities.Financiamiento;
 import ec.com.avila.hiperion.emision.entities.ObjAsegAgropecuario;
+import ec.com.avila.hiperion.emision.entities.PagoPoliza;
+import ec.com.avila.hiperion.emision.entities.Poliza;
 import ec.com.avila.hiperion.emision.entities.Ramo;
 import ec.com.avila.hiperion.emision.entities.RamoAgropecuario;
+import ec.com.avila.hiperion.emision.entities.TarjetaCredito;
 import ec.com.avila.hiperion.emision.entities.Usuario;
 import ec.com.avila.hiperion.enumeration.EstadoEnum;
 import ec.com.avila.hiperion.servicio.CatalogoService;
@@ -58,7 +64,7 @@ import ec.com.avila.hiperion.web.util.JsfUtil;
 import ec.com.avila.hiperion.web.util.MessagesController;
 
 /**
- * <b>Clase Baking que permite gestionar la informaci&oacute;n que se maneje en las p&acute;ginas web que utilicen el Ramo Agropecuario. </b>
+ * <b>Clase Backing que permite gestionar la informacion que se maneje en las paginas web que utilicen el Ramo Agropecuario. </b>
  * 
  * @author Dario Vinueza
  * @version 1.0,17/02/2014
@@ -238,8 +244,12 @@ public class AgropecuarioBacking implements Serializable {
 	public void setearRamo() throws HiperionException {
 
 		try {
+			
+			Poliza poliza = setearDatosPoliza();
+			
 			Usuario usuario = usuarioBean.getSessionUser();
 
+			//Informacion del Ramo
 			agropecuario.setIdUsuarioCreacion(usuario.getIdUsuario());
 			agropecuario.setFechaCreacion(new Date());
 			agropecuario.setEstado(EstadoEnum.A);
@@ -247,6 +257,7 @@ public class AgropecuarioBacking implements Serializable {
 			agropecuario.setTasaAgro(ramoAgropecuarioBean.getTasa());
 			agropecuario.setDeducAgro(ramoAgropecuarioBean.getDeducible());
 
+			//Informacion del objeto asegurado
 			if (ramoAgropecuarioBean.getTipoObjeto().equals("1") && !ramoAgropecuarioBean.getObjetoAseguradoList().isEmpty()) {
 
 				List<ObjAsegAgropecuario> listObjetos = new ArrayList<>();
@@ -290,9 +301,10 @@ public class AgropecuarioBacking implements Serializable {
 				MessagesController.addError(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.error.save.Obj"));
 			}
 
+			//Archivo
 			if (ramoAgropecuarioBean.getFilePolizaVigente() != null) {
 				ramoAgropecuarioService.guardarArchivoPoliza(ramoAgropecuarioBean.getFilePolizaVigente());
-				ramoAgropecuarioService.guardarAgropecuario(agropecuario);
+				//ramoAgropecuarioService.guardarAgropecuario(agropecuario);
 
 				MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.save"));
 				agropecuario = new RamoAgropecuario();
@@ -301,6 +313,7 @@ public class AgropecuarioBacking implements Serializable {
 				MessagesController.addError(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.error.agropecuario"));
 			}
 
+			//Clausulas Adicionales
 			List<ClausulasAddAgro> clausulasAgropecuario = new ArrayList<>();
 			for (ClausulaAdicionalDTO clausualaDTO : clausulasAdicionalesDTO) {
 				if (clausualaDTO.getSeleccion()) {
@@ -315,6 +328,7 @@ public class AgropecuarioBacking implements Serializable {
 				}
 			}
 
+			//Coberturas Transporte
 			List<CobertAgro> coberturasAgropecuario = new ArrayList<>();
 			for (CoberturaDTO coberturaDTO : coberturasTransporteDTO) {
 				if (coberturaDTO.getSeleccion()) {
@@ -328,6 +342,7 @@ public class AgropecuarioBacking implements Serializable {
 					coberturasAgropecuario.add(coberturaAgropecuario);
 				}
 			}
+			//coberturas Vida
 			for (CoberturaDTO coberturaDTO : coberturasVidaDTO) {
 				if (coberturaDTO.getSeleccion()) {
 					CobertAgro coberturaAgropecuario = new CobertAgro();
@@ -343,7 +358,9 @@ public class AgropecuarioBacking implements Serializable {
 			agropecuario.setClausulasAddAgros(clausulasAgropecuario);
 			agropecuario.setCobertAgros(coberturasAgropecuario);
 
-			ramoAgropecuarioService.guardarAgropecuario(agropecuario);
+			
+			
+			ramoAgropecuarioService.guardarAgropecuario(agropecuario, poliza);
 
 			MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.save"));
 
@@ -354,7 +371,63 @@ public class AgropecuarioBacking implements Serializable {
 			throw new HiperionException(e);
 		}
 	}
+	
+	public Poliza setearDatosPoliza(){
+		Poliza poliza = new Poliza();
+		
+		poliza.setNumeroPoliza(polizaBean.getNumeroPoliza());
+		poliza.setNumeroAnexo(polizaBean.getNumeroAnexo());
+		poliza.setEjecutivo(polizaBean.getEjecutivo().getNombreUsuario());
+		poliza.setVigenciaDesde(polizaBean.getVigenciaDesde());
+		poliza.setVigenciaHasta(polizaBean.getVigenciaHasta());
+		poliza.setDiasCobertura(polizaBean.getDiasCobertura());
+		poliza.setSumaAsegurada(polizaBean.getSumaAsegurada());
+		poliza.setPrimaNeta(BigDecimal.valueOf(polizaBean.getPrimaNeta()));
+		poliza.setSuperBanSeguros(polizaBean.getSuperBanSeguros());
+		poliza.setSeguroCampesino(BigDecimal.valueOf(polizaBean.getSeguroCampesino()));
+		poliza.setDerechoEmision(BigDecimal.valueOf(polizaBean.getDerechoEmision()));
+		poliza.setRamo(1);
+		poliza.setEstadoPoliza("COTIZADO");
+		
+		PagoPoliza pagoPoliza = new PagoPoliza();
+		pagoPoliza.setNumeroFactura(polizaBean.getNumeroFactura());
+		pagoPoliza.setSubtotal(polizaBean.getSubtotal());
+		pagoPoliza.setAdicionalSegCampesino(polizaBean.getAdicionalSegCampesino());
+		pagoPoliza.setIva(polizaBean.getIva());
+		pagoPoliza.setCuotaInicial(polizaBean.getCuotaInicial());
+		pagoPoliza.setValorTotalPagoPoliza(polizaBean.getTotal());
+		
+		TarjetaCredito tarjeta = new TarjetaCredito();
+		tarjeta.setTarjeta(polizaBean.getTarjetaCredito());
+		tarjeta.setTipoPago(polizaBean.getFormaPago());
+		//tarjeta.setNumeroMeses(polizaBean.getN);
+		
+		Financiamiento financiamiento = new Financiamiento();
+		financiamiento.setNumeroCuota(polizaBean.getNumeroCuota());
+		financiamiento.setFechaVencimiento(polizaBean.getFechaVencimiento());
+		
+		pagoPoliza.setTarjetaCredito(tarjeta);
+		//pagoPoliza.setFinanciamientos(financiamientos);
+		
+		poliza.setPagoPoliza(pagoPoliza);
+		
+		return poliza;
+	}
 
+	/**
+	 * 
+	 * <b> Permite editar un registro de la tabla de amortizacion </b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: Aug 3, 2014]
+	 * </p>
+	 * 
+	 * @param event
+	 */
+	public void onEditTable(RowEditEvent event) {
+		FacesMessage msg = new FacesMessage("Item Edited", ((ClausulaAdicionalDTO) event.getObject()).getClausula());
+		FacesContext.getCurrentInstance().addMessage(null, msg);
+	}
+	
 	/**
 	 * 
 	 * <b> Permite controlar la obligatoriedad de los campos dependiendo el tipo de objeto asegurado. </b>

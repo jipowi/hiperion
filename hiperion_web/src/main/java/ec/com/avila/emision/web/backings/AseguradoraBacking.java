@@ -6,6 +6,7 @@ package ec.com.avila.emision.web.backings;
 import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,9 +31,12 @@ import ec.com.avila.hiperion.emision.entities.Catalogo;
 import ec.com.avila.hiperion.emision.entities.Cliente;
 import ec.com.avila.hiperion.emision.entities.Contacto;
 import ec.com.avila.hiperion.emision.entities.DetalleCatalogo;
+import ec.com.avila.hiperion.emision.entities.Usuario;
+import ec.com.avila.hiperion.enumeration.EstadoEnum;
 import ec.com.avila.hiperion.servicio.AseguradoraService;
 import ec.com.avila.hiperion.servicio.CatalogoService;
 import ec.com.avila.hiperion.servicio.DetalleCatalogoService;
+import ec.com.avila.hiperion.web.beans.UsuarioBean;
 import ec.com.avila.hiperion.web.servlet.ReportServlet;
 import ec.com.avila.hiperion.web.util.HiperionMensajes;
 import ec.com.avila.hiperion.web.util.MessagesController;
@@ -70,7 +74,12 @@ public class AseguradoraBacking implements Serializable {
 	@Resource(mappedName = "java:/AvilaSgsDS")
 	private DataSource dataSource;
 
+	@ManagedProperty(value = "#{usuarioBean}")
+	private UsuarioBean usuarioBean;
+
 	private String rutaReporte;
+
+	
 
 	@PostConstruct
 	public void inicializar() throws HiperionException {
@@ -109,6 +118,7 @@ public class AseguradoraBacking implements Serializable {
 	 * @throws HiperionException
 	 */
 	public void guardarAseguradora() throws HiperionException {
+		Usuario usuario = usuarioBean.getSessionUser();
 
 		Aseguradora aseguradora = new Aseguradora();
 
@@ -117,6 +127,9 @@ public class AseguradoraBacking implements Serializable {
 		aseguradora.setEmailAseguradora(aseguradoraBean.getEmail());
 		aseguradora.setRuc(aseguradoraBean.getRuc());
 		aseguradora.setTelfConvencionalAseg((aseguradoraBean.getTelefono()));
+		aseguradora.setIdUsuarioCreacion(usuario.getIdUsuario());
+		aseguradora.setFechaCreacion(new Date());
+		aseguradora.setEstado(EstadoEnum.A);
 
 		List<Cliente> contactosAseguradora = new ArrayList<>();
 		for (PersonaContactoAseguradoraDTO contactoAseguradora : aseguradoraBean.getContactoList()) {
@@ -128,6 +141,9 @@ public class AseguradoraBacking implements Serializable {
 			persona.setApellidoMaterno(contactoAseguradora.getApellidoMaterno());
 			persona.setIdentificacionPersona(contactoAseguradora.getIdentificacion());
 			persona.setActividadProfesion(contactoAseguradora.getCargo());
+			persona.setIdUsuarioCreacion(usuario.getIdUsuario());
+			persona.setFechaCreacion(new Date());
+			persona.setEstado(EstadoEnum.A);
 
 			Contacto contactoTelefono = new Contacto();
 			contactoTelefono.setTipoContacto("TELEFONO");
@@ -263,6 +279,21 @@ public class AseguradoraBacking implements Serializable {
 	 */
 	public void setRutaReporte(String rutaReporte) {
 		this.rutaReporte = rutaReporte;
+	}
+
+	/**
+	 * @return the usuarioBean
+	 */
+	public UsuarioBean getUsuarioBean() {
+		return usuarioBean;
+	}
+
+	/**
+	 * @param usuarioBean
+	 *            the usuarioBean to set
+	 */
+	public void setUsuarioBean(UsuarioBean usuarioBean) {
+		this.usuarioBean = usuarioBean;
 	}
 
 }

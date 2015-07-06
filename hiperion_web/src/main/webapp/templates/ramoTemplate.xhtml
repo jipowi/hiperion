@@ -71,7 +71,7 @@
 				<p:tab title="#{emision['poliza.titulo.infoPago']}">
 					<h:form id="formPago">
 						<div align="center">
-							<p:panel>
+							<p:panel id="panelPago">
 								<h:panelGrid columns="2" cellpadding="3">
 									<p:outputLabel value="#{emision['poliza.financiacion.atributo.formaPago']}" styleClass="negrita" />
 									<p:selectOneMenu id="formaPagoId" value="#{polizaBean.idFormaPago}" required="true" effect="drop">
@@ -133,9 +133,7 @@
 								</h:panelGrid>
 
 							</p:panel>
-							<p:commandLink title="Calcular valores de pago" update="formPago" actionListener="#{polizaBacking.calcularValoresPago()}">
-								<h:graphicImage name="boton_calcular.png" library="img" />
-							</p:commandLink>
+
 							<h:panelGrid columns="1" cellpadding="3">
 
 								<!-- CONTADO -->
@@ -232,12 +230,29 @@
 									</h:panelGrid>
 								</p:panel>
 							</h:panelGrid>
+							<p:commandLink title="Calcular valores de pago" update="panelPago, pagoContadoId, pagoFinanciadoId, pagoTarjetaCreditoId, pagoDebitoBancarioId"
+								actionListener="#{polizaBacking.calcularValoresPago()}">
+								<h:graphicImage name="boton_calcular.png" library="img" />
+							</p:commandLink>
+						</div>
+					</h:form>
+				</p:tab>
+			</p:accordionPanel>
+		</div>
+		<p:spacer height="15px;" />
+		<!-- TABLA DE AMORTIZACION -->
+		<div id="content">
+			<p:growl id="msgsFinanciamiento" showDetail="true" />
+			<p:accordionPanel dynamic="true" cache="true" activeIndex="null">
+				<p:tab title="#{emision['poliza.titulo.infoFinanciamiento']}">
+					<h:form id="formFinanciamiento">
+						<div align="center">
 							<h:panelGrid columns="3">
 								<h:graphicImage name="help.png" library="img" />
 
 								<p:outputLabel value="#{emision['poliza.info.tablaAmortizacion']}" style="color:green;" />
 
-								<p:commandLink title="Generar tabla" actionListener="#{polizaBacking.generarTablaAmortizacion()}" update="tablaAmortizacion">
+								<p:commandLink title="Generar tabla" actionListener="#{polizaBacking.generarTablaAmortizacion()}" update="formFinanciamiento">
 									<h:graphicImage name="timeTable.png" library="img" />
 								</p:commandLink>
 							</h:panelGrid>
@@ -270,16 +285,12 @@
 										</f:facet>
 									</p:cellEditor>
 								</p:column>
-								<p:column headerText="Options" style="width:50px">
-									<p:rowEditor />
-								</p:column>
 							</p:dataTable>
 						</div>
 					</h:form>
 				</p:tab>
 			</p:accordionPanel>
 		</div>
-
 		<p:spacer height="15px;" />
 		<!-- POLIZA -->
 		<div id="content">

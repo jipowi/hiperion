@@ -36,7 +36,7 @@ import ec.com.avila.hiperion.web.beans.RamoBean;
 import ec.com.avila.hiperion.web.util.HiperionMensajes;
 
 /**
- * <b>Clase Baking que permite gestionar la informaci&oacute;n que se maneje en las p&acute;ginas web que utilicen el Ramo ACCIDENTES PERSONALES. </b>
+ * <b>Clase Backing que permite gestionar la informacion que se maneje en las paginas web que utilicen el Ramo ACCIDENTES PERSONALES. </b>
  * 
  * @author Dario Vinueza
  * @version 1.0,17/02/2014

@@ -5,11 +5,14 @@ package ec.com.avila.emision.web.beans;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
+import ec.com.avila.hiperion.dto.TablaAmortizacionDTO;
 import ec.com.avila.hiperion.emision.entities.Usuario;
 
 /**
@@ -29,16 +32,16 @@ public class PolizaBean implements Serializable {
 
 	// Cabecera de la poliza
 	private Double derechoEmision;
-	private Double diasCobertura;
+	private Integer diasCobertura;
 	private Usuario ejecutivo;
 	private String horaDesde;
 	private String horaHasta;
 	private String numeroAnexo;
-	private Double numeroPoliza;
+	private BigDecimal numeroPoliza;
 	private Double primaNeta;
 	private String ramo;
 	private Double seguroCampesino;
-	private Double sumaAsegurada;
+	private BigDecimal sumaAsegurada;
 	private BigDecimal superBanSeguros;
 	private Date vigenciaDesde;
 	private Date vigenciaHasta;
@@ -80,6 +83,7 @@ public class PolizaBean implements Serializable {
 	private String identificacion;
 	private String aseguradora;
 	private String nombreCliente;
+	private List<TablaAmortizacionDTO> financiamientos = new ArrayList<>();
 
 	public Double getDerechoEmision() {
 		return derechoEmision;
@@ -89,11 +93,11 @@ public class PolizaBean implements Serializable {
 		this.derechoEmision = derechoEmision;
 	}
 
-	public Double getDiasCobertura() {
+	public Integer getDiasCobertura() {
 		return diasCobertura;
 	}
 
-	public void setDiasCobertura(Double diasCobertura) {
+	public void setDiasCobertura(Integer diasCobertura) {
 		this.diasCobertura = diasCobertura;
 	}
 
@@ -151,11 +155,11 @@ public class PolizaBean implements Serializable {
 		this.numeroAnexo = numeroAnexo;
 	}
 
-	public Double getNumeroPoliza() {
+	public BigDecimal getNumeroPoliza() {
 		return numeroPoliza;
 	}
 
-	public void setNumeroPoliza(Double numeroPoliza) {
+	public void setNumeroPoliza(BigDecimal numeroPoliza) {
 		this.numeroPoliza = numeroPoliza;
 	}
 
@@ -183,11 +187,11 @@ public class PolizaBean implements Serializable {
 		this.seguroCampesino = seguroCampesino;
 	}
 
-	public Double getSumaAsegurada() {
+	public BigDecimal getSumaAsegurada() {
 		return sumaAsegurada;
 	}
 
-	public void setSumaAsegurada(Double sumaAsegurada) {
+	public void setSumaAsegurada(BigDecimal sumaAsegurada) {
 		this.sumaAsegurada = sumaAsegurada;
 	}
 
@@ -589,12 +593,26 @@ public class PolizaBean implements Serializable {
 	}
 
 	/**
-	 * @param tarjetaCredito the tarjetaCredito to set
+	 * @param tarjetaCredito
+	 *            the tarjetaCredito to set
 	 */
 	public void setTarjetaCredito(String tarjetaCredito) {
 		this.tarjetaCredito = tarjetaCredito;
 	}
-	
-	
+
+	/**
+	 * @return the financiamientos
+	 */
+	public List<TablaAmortizacionDTO> getFinanciamientos() {
+		return financiamientos;
+	}
+
+	/**
+	 * @param financiamientos
+	 *            the financiamientos to set
+	 */
+	public void setFinanciamientos(List<TablaAmortizacionDTO> financiamientos) {
+		this.financiamientos = financiamientos;
+	}
 
 }
