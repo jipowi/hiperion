@@ -24,7 +24,7 @@ public class Poliza implements Serializable {
 	private BigDecimal derechoEmision;
 
 	@Column(name = "dias_cobertura")
-	private BigDecimal diasCobertura;
+	private Integer diasCobertura;
 
 	private String ejecutivo;
 
@@ -193,11 +193,11 @@ public class Poliza implements Serializable {
 		this.derechoEmision = derechoEmision;
 	}
 
-	public BigDecimal getDiasCobertura() {
+	public Integer getDiasCobertura() {
 		return this.diasCobertura;
 	}
 
-	public void setDiasCobertura(BigDecimal diasCobertura) {
+	public void setDiasCobertura(Integer diasCobertura) {
 		this.diasCobertura = diasCobertura;
 	}
 

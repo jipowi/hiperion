@@ -26,6 +26,9 @@ public class Financiamiento implements Serializable {
 
 	@Column(name="numero_cuota")
 	private BigDecimal numeroCuota;
+	
+	@Column(name="valor_letra")
+	private BigDecimal valorLetra;
 
 	//bi-directional many-to-one association to PagoPoliza
 	@ManyToOne(fetch=FetchType.LAZY)
@@ -67,4 +70,19 @@ public class Financiamiento implements Serializable {
 		this.pagoPoliza = pagoPoliza;
 	}
 
+	/**
+	 * @return the valorLetra
+	 */
+	public BigDecimal getValorLetra() {
+		return valorLetra;
+	}
+
+	/**
+	 * @param valorLetra the valorLetra to set
+	 */
+	public void setValorLetra(BigDecimal valorLetra) {
+		this.valorLetra = valorLetra;
+	}
+
+	
 }

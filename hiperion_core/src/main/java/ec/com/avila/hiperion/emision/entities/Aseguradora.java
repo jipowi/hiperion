@@ -1,60 +1,49 @@
 package ec.com.avila.hiperion.emision.entities;
 
 import java.io.Serializable;
-import javax.persistence.*;
-import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 
 /**
  * The persistent class for the aseguradora database table.
  * 
  */
 @Entity
-@NamedQuery(name="Aseguradora.findAll", query="SELECT a FROM Aseguradora a")
-public class Aseguradora implements Serializable {
+@NamedQuery(name = "Aseguradora.findAll", query = "SELECT a FROM Aseguradora a")
+public class Aseguradora extends Auditoria implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="id_aseguradora")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id_aseguradora")
 	private Integer idAseguradora;
 
-	@Column(name="codigo_aseguradora")
+	@Column(name = "codigo_aseguradora")
 	private String codigoAseguradora;
 
 	private String direcion;
 
-	@Column(name="email_aseguradora")
+	@Column(name = "email_aseguradora")
 	private String emailAseguradora;
-
-	private String estado;
-
-	@Temporal(TemporalType.DATE)
-	@Column(name="fecha_actualizacion")
-	private Date fechaActualizacion;
-
-	@Temporal(TemporalType.DATE)
-	@Column(name="fecha_creacion")
-	private Date fechaCreacion;
-
-	@Column(name="id_usuario_actualizacion")
-	private Integer idUsuarioActualizacion;
-
-	@Column(name="id_usuario_creacion")
-	private Integer idUsuarioCreacion;
 
 	private String ruc;
 
-	@Column(name="telf_convencional_aseg")
+	@Column(name = "telf_convencional_aseg")
 	private String telfConvencionalAseg;
 
-	//bi-directional many-to-one association to Cliente
-	@OneToMany(mappedBy="aseguradora")
+	// bi-directional many-to-one association to Cliente
+	@OneToMany(mappedBy = "aseguradora")
 	private List<Cliente> clientes;
 
-	//bi-directional many-to-one association to RamoAseguradora
-	@OneToMany(mappedBy="aseguradora")
+	// bi-directional many-to-one association to RamoAseguradora
+	@OneToMany(mappedBy = "aseguradora")
 	private List<RamoAseguradora> ramoAseguradoras;
 
 	public Aseguradora() {
@@ -90,46 +79,6 @@ public class Aseguradora implements Serializable {
 
 	public void setEmailAseguradora(String emailAseguradora) {
 		this.emailAseguradora = emailAseguradora;
-	}
-
-	public String getEstado() {
-		return this.estado;
-	}
-
-	public void setEstado(String estado) {
-		this.estado = estado;
-	}
-
-	public Date getFechaActualizacion() {
-		return this.fechaActualizacion;
-	}
-
-	public void setFechaActualizacion(Date fechaActualizacion) {
-		this.fechaActualizacion = fechaActualizacion;
-	}
-
-	public Date getFechaCreacion() {
-		return this.fechaCreacion;
-	}
-
-	public void setFechaCreacion(Date fechaCreacion) {
-		this.fechaCreacion = fechaCreacion;
-	}
-
-	public Integer getIdUsuarioActualizacion() {
-		return this.idUsuarioActualizacion;
-	}
-
-	public void setIdUsuarioActualizacion(Integer idUsuarioActualizacion) {
-		this.idUsuarioActualizacion = idUsuarioActualizacion;
-	}
-
-	public Integer getIdUsuarioCreacion() {
-		return this.idUsuarioCreacion;
-	}
-
-	public void setIdUsuarioCreacion(Integer idUsuarioCreacion) {
-		this.idUsuarioCreacion = idUsuarioCreacion;
 	}
 
 	public String getRuc() {

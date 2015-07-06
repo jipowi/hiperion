@@ -4,11 +4,8 @@
  */
 package ec.com.avila.hiperion.dao;
 
-import java.util.List;
-
 import javax.ejb.Local;
 
-import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.emision.entities.Poliza;
 
 /**
@@ -20,42 +17,7 @@ import ec.com.avila.hiperion.emision.entities.Poliza;
  * @since JDK1.6
  */
 @Local
-public interface PolizaDao {
+public interface PolizaDao extends GenericDAO<Poliza, Long> {
 
-	/**
-	 * 
-	 * <b> Permite guardar los registros en la tabla de Poliza </b>
-	 * <p>
-	 * [Author: Paul Jimenez, Date: Dec 18, 2013]
-	 * </p>
-	 * 
-	 * @param poliza
-	 * @throws HiperionException
-	 */
-	public void guardarPoliza(Poliza poliza) throws HiperionException;
-
-	/**
-	 * 
-	 * <b> Permite obtener la lista de polizas que se encuantran en la base de
-	 * datos. </b>
-	 * <p>
-	 * [Author: Paul Jimenez, Date: Dec 18, 2013]
-	 * </p>
-	 * 
-	 * @return
-	 * @throws HiperionException
-	 */
-	public List<Poliza> consultarPoliza() throws HiperionException;
-
-	/**
-	 * 
-	 * <b> Permite modificar los registros en la tabla de Poliza </b>
-	 * <p>
-	 * [Author: Franklin Pozo, Date: Dec 29, 2013]
-	 * </p>
-	 * 
-	 * @param poliza
-	 * @throws HiperionException
-	 */
-	public void modificarPoliza(Poliza poliza) throws HiperionException;
+	
 }
