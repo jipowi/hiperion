@@ -19,6 +19,7 @@ import ec.com.avila.hiperion.emision.entities.ClausulasAddAgro;
 import ec.com.avila.hiperion.emision.entities.CobertAgro;
 import ec.com.avila.hiperion.emision.entities.DetalleAnexo;
 import ec.com.avila.hiperion.emision.entities.ObjAsegAgropecuario;
+import ec.com.avila.hiperion.emision.entities.Poliza;
 import ec.com.avila.hiperion.emision.entities.RamoAgropecuario;
 import ec.com.avila.hiperion.servicio.RamoAgropecuarioService;
 
@@ -49,7 +50,7 @@ public class RamoAgropecuarioServiceImpl implements RamoAgropecuarioService {
 	 * @see ec.com.avila.hiperion.servicio.RamoAgropecuarioService#guardarAgropecuario(ec.com.avila.hiperion.emision.entities.RamoAgropecuario)
 	 */
 	@Override
-	public void guardarAgropecuario(RamoAgropecuario ramoAgropecuario) throws HiperionException {
+	public void guardarAgropecuario(RamoAgropecuario ramoAgropecuario, Poliza poliza) throws HiperionException {
 		
 		ramoAgropecuarioDao.persist(ramoAgropecuario);
 

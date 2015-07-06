@@ -11,6 +11,7 @@ import javax.ejb.Local;
 import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.emision.entities.ArchivoBase;
 import ec.com.avila.hiperion.emision.entities.DetalleAnexo;
+import ec.com.avila.hiperion.emision.entities.Poliza;
 import ec.com.avila.hiperion.emision.entities.RamoAgropecuario;
 
 /**
@@ -45,7 +46,7 @@ public interface RamoAgropecuarioService {
 	 * @param ramoAgropecuario
 	 * @throws HiperionException
 	 */
-	public void guardarAgropecuario(RamoAgropecuario ramoAgropecuario) throws HiperionException;
+	public void guardarAgropecuario(RamoAgropecuario ramoAgropecuario, Poliza poliza) throws HiperionException;
 
 	/**
 	 * 

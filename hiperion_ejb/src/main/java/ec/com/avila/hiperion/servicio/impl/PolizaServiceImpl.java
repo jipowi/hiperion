@@ -4,14 +4,10 @@
  */
 package ec.com.avila.hiperion.servicio.impl;
 
-import java.util.List;
-
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
-import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.dao.PolizaDao;
-import ec.com.avila.hiperion.emision.entities.Poliza;
 import ec.com.avila.hiperion.servicio.PolizaService;
 
 /**
@@ -27,17 +23,4 @@ public class PolizaServiceImpl implements PolizaService {
 	@EJB
 	private PolizaDao polizaDao;
 
-	public void guardarPoliza(Poliza poliza) throws HiperionException {
-		polizaDao.guardarPoliza(poliza);
-
-	}
-
-	public List<Poliza> consultarPoliza() throws HiperionException {
-		return polizaDao.consultarPoliza();
-	}
-
-	public void modificarPoliza(Poliza poliza) throws HiperionException {
-		polizaDao.modificarPoliza(poliza);
-
-	}
 }
