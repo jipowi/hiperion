@@ -22,7 +22,6 @@ import ec.com.avila.hiperion.emision.entities.Cliente;
 @Local
 public interface ClienteDao extends GenericDAO<Cliente, Long> {
 
-		
 	/**
 	 * 
 	 * <b> Permite consultar el cliente por medio de la cedula de identidad </b>
@@ -49,5 +48,16 @@ public interface ClienteDao extends GenericDAO<Cliente, Long> {
 	 */
 	public List<Cliente> consultarClienteByApellido(String apellido) throws HiperionException;
 
-	
+	/**
+	 * 
+	 * <b> Permite consultar la lista de clientes que posee una aseguradora. </b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: 06/07/2015]
+	 * </p>
+	 * 
+	 * @param aseguradora
+	 * @return
+	 * @throws HiperionException
+	 */
+	public List<Cliente> consultarClienteByAseguradora(String aseguradora) throws HiperionException;
 }

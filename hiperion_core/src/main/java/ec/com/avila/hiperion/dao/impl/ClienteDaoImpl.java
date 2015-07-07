@@ -43,9 +43,9 @@ public class ClienteDaoImpl extends GenericDAOImpl<Cliente, Long> implements Cli
 	public Cliente consultarClienteByIdentificacion(String identificacion) throws HiperionException {
 		Query query = em.createNamedQuery("Cliente.findByIdentificacion");
 		query.setParameter("identificacion", identificacion);
-		
+
 		List<Cliente> clientes = query.getResultList();
-		
+
 		if (!clientes.isEmpty()) {
 			return clientes.get(0);
 		} else {
@@ -65,6 +65,26 @@ public class ClienteDaoImpl extends GenericDAOImpl<Cliente, Long> implements Cli
 		query.setParameter("nombre", "%" + apellido + "%");
 		List<Cliente> clientes = query.getResultList();
 		return clientes;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see ec.com.avila.hiperion.dao.ClienteDao#consultarClienteByAseguradora(java.lang.String)
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Cliente> consultarClienteByAseguradora(String aseguradora) throws HiperionException {
+		Query query = em.createNamedQuery("Cliente.findByAseguradora");
+		query.setParameter("aseguradora", aseguradora);
+
+		List<Cliente> clientes = query.getResultList();
+
+		if (!clientes.isEmpty()) {
+			return clientes;
+		} else {
+			return null;
+		}
 	}
 
 }
