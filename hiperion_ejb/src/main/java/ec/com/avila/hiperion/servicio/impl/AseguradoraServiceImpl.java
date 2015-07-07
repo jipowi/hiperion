@@ -11,6 +11,7 @@ import javax.ejb.Stateless;
 
 import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.dao.AseguradoraDao;
+import ec.com.avila.hiperion.dao.ClienteDao;
 import ec.com.avila.hiperion.emision.entities.Aseguradora;
 import ec.com.avila.hiperion.emision.entities.Cliente;
 import ec.com.avila.hiperion.servicio.AseguradoraService;
@@ -28,8 +29,23 @@ public class AseguradoraServiceImpl implements AseguradoraService {
 	@EJB
 	private AseguradoraDao aseguradoraDao;
 
+	@EJB
+	private ClienteDao clienteDao;
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see ec.com.avila.hiperion.servicio.PolizaService#guardarAseguradora(ec.com.avila.hiperion.emision.entities.Aseguradora, java.util.List)
+	 */
+	@Override
 	public void guardarAseguradora(Aseguradora aseguradora, List<Cliente> contactos) throws HiperionException {
-		aseguradoraDao.guardarAseguradora(aseguradora, contactos);
+
+		aseguradoraDao.persist(aseguradora);
+
+		for (Cliente cliente : contactos) {
+			cliente.setAseguradora(aseguradora);
+			clienteDao.persist(cliente);
+		}
 	}
 
 	/*
@@ -40,6 +56,14 @@ public class AseguradoraServiceImpl implements AseguradoraService {
 	@Override
 	public List<Aseguradora> consultarAseguradoraByRucAseg(String ruc, Integer aseguradora) throws HiperionException {
 		return aseguradoraDao.consultarAseguradora(ruc, aseguradora);
+	}
+
+	/* (non-Javadoc)
+	 * @see ec.com.avila.hiperion.servicio.AseguradoraService#consultarClienteByAseguradora(java.lang.String)
+	 */
+	@Override
+	public List<Cliente> consultarClienteByAseguradora(String aseguradora) throws HiperionException {
+		return clienteDao.consultarClienteByAseguradora(aseguradora);
 	}
 
 }

@@ -24,19 +24,6 @@ public interface AseguradoraService {
 
 	/**
 	 * 
-	 * <b> permite guardar los registros en la tabla Aseguradora </b>
-	 * <p>
-	 * [Author: Paul Jimenez, Date: Aug 10, 2014]
-	 * </p>
-	 * 
-	 * @param aseguradora
-	 * @param contactos
-	 * @throws HiperionException
-	 */
-	public void guardarAseguradora(Aseguradora aseguradora, List<Cliente> contactos) throws HiperionException;
-
-	/**
-	 * 
 	 * <b> Permite buscar las asegurdoras por medio del nombre o ruc </b>
 	 * <p>
 	 * [Author: Paul Jimenez, Date: Aug 23, 2014]
@@ -48,5 +35,31 @@ public interface AseguradoraService {
 	 * @throws HiperionException
 	 */
 	public List<Aseguradora> consultarAseguradoraByRucAseg(String ruc, Integer aseguradora) throws HiperionException;
+	
+	/**
+	 * 
+	 * <b> Permite guardar las aseguradoras con sus respectivos contactos. </b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: 06/07/2015]
+	 * </p>
+	 * 
+	 * @param aseguradora
+	 * @param contactos
+	 * @throws HiperionException
+	 */
+	public void guardarAseguradora(Aseguradora aseguradora, List<Cliente> contactos) throws HiperionException;
+	
+	/**
+	 * 
+	 * <b> Permite consultar la lista de clientes que posee una aseguradora. </b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: 06/07/2015]
+	 * </p>
+	 * 
+	 * @param aseguradora
+	 * @return
+	 * @throws HiperionException
+	 */
+	public List<Cliente> consultarClienteByAseguradora(String aseguradora) throws HiperionException;
 
 }

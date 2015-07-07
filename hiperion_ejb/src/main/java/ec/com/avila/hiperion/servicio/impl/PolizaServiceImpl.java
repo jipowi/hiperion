@@ -7,6 +7,7 @@ package ec.com.avila.hiperion.servicio.impl;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
+import ec.com.avila.hiperion.dao.AseguradoraDao;
 import ec.com.avila.hiperion.dao.PolizaDao;
 import ec.com.avila.hiperion.servicio.PolizaService;
 
@@ -22,5 +23,11 @@ public class PolizaServiceImpl implements PolizaService {
 
 	@EJB
 	private PolizaDao polizaDao;
+
+	@EJB
+	private AseguradoraDao aseguradoraDao;
+
+	
+	
 
 }
