@@ -54,6 +54,16 @@
 										<p:selectOneMenu value="#{polizaBean.aseguradora}" effect="drop">
 											<f:selectItem itemLabel="Seleccione Aseguradora" noSelectionOption="true" />
 											<f:selectItems value="#{polizaBacking.aseguradorasItems}" />
+											<p:ajax listener="#{polizaBacking.buscarContactoAseguradora()}" update="contacto" />
+										</p:selectOneMenu>
+									</h:panelGrid>
+								</h:panelGrid>
+								<h:panelGrid columns="1" id="contacto">
+									<h:panelGrid columns="2" cellpadding="3">
+										<p:outputLabel value="#{emision['lbl.contactoAseguradora']}" styleClass="negrita" />
+										<p:selectOneMenu value="#{polizaBean.contactoAseguradora}" effect="drop">
+											<f:selectItem itemLabel="Seleccione Contacto de la Aseguradora" noSelectionOption="true" />
+											<f:selectItems value="#{polizaBacking.contactosItems}" />
 										</p:selectOneMenu>
 									</h:panelGrid>
 								</h:panelGrid>

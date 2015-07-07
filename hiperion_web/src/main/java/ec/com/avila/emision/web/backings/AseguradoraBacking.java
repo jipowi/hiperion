@@ -162,6 +162,7 @@ public class AseguradoraBacking implements Serializable {
 
 			contactosAseguradora.add(persona);
 		}
+		
 		aseguradoraService.guardarAseguradora(aseguradora, contactosAseguradora);
 
 	}

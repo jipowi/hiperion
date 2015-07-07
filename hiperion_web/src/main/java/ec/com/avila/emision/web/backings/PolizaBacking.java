@@ -73,6 +73,7 @@ public class PolizaBacking implements Serializable {
 	private List<SelectItem> pagoFinanciadoItems;
 	private List<SelectItem> aseguradorasItems;
 	private List<SelectItem> tarjetaCreditoItems;
+	private List<SelectItem> contactosItems = new ArrayList<>();
 
 	private Usuario ejecutivo;
 
@@ -131,7 +132,34 @@ public class PolizaBacking implements Serializable {
 		}
 	}
 
-	
+	/**
+	 * 
+	 * <b> Permite buscar los contactos de una aseguradora. </b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: 07/07/2015]
+	 * </p>
+	 * 
+	 */
+	public void buscarContactoAseguradora() {
+		String aseguradora = polizaBean.getAseguradora();
+
+		try {
+
+			List<Cliente> contactos = aseguradoraService.consultarClienteByAseguradora(aseguradora);
+			contactos.size();
+
+			for (Cliente cliente : contactos) {
+				SelectItem selectItem = new SelectItem(cliente.getIdCliente(), cliente.getApellidoPaterno() + " " + cliente.getApellidoMaterno()
+						+ " " + cliente.getNombrePersona());
+				contactosItems.add(selectItem);
+			}
+
+		} catch (HiperionException e) {
+			e.printStackTrace();
+		}
+
+	}
+
 	/**
 	 * @return the aseguradorasItems
 	 * @throws HiperionException
@@ -641,6 +669,22 @@ public class PolizaBacking implements Serializable {
 	 */
 	public void setActivarDatosCliente(Boolean activarDatosCliente) {
 		this.activarDatosCliente = activarDatosCliente;
+	}
+
+	/**
+	 * @return the contactosItems
+	 */
+	public List<SelectItem> getContactosItems() {
+
+		return contactosItems;
+	}
+
+	/**
+	 * @param contactosItems
+	 *            the contactosItems to set
+	 */
+	public void setContactosItems(List<SelectItem> contactosItems) {
+		this.contactosItems = contactosItems;
 	}
 
 }
