@@ -21,6 +21,7 @@ import org.apache.log4j.Logger;
 import org.primefaces.event.RowEditEvent;
 
 import ec.com.avila.emision.web.beans.PolizaBean;
+import ec.com.avila.emision.web.validator.ValidatorCedula;
 import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.dto.TablaAmortizacionDTO;
 import ec.com.avila.hiperion.emision.entities.Catalogo;
@@ -116,14 +117,23 @@ public class PolizaBacking implements Serializable {
 	public void buscarCliente() throws HiperionException {
 		try {
 			Cliente cliente = new Cliente();
-			if (!polizaBean.getIdentificacion().equals("")) {
-				cliente = clienteService.consultarClienteByIdentificacion(polizaBean.getIdentificacion());
+			
+			String identificacion = polizaBean.getIdentificacion();
+
+			if (!polizaBean.getIdentificacion().equals("") && ValidatorCedula.getInstancia().validateCedula(identificacion)) {
+				cliente = clienteService.consultarClienteByIdentificacion(identificacion);
 				if (cliente == null) {
 					MessagesController.addWarn(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.warn.buscar"));
 				} else {
 					activarDatosCliente = true;
 					polizaBean.setNombreCliente(cliente.getApellidoPaterno() + " " + cliente.getApellidoMaterno() + " " + cliente.getNombrePersona());
+					Usuario ejecutivo = new Usuario();
+					ejecutivo.setNombreUsuario(polizaBean.getNombreCliente());
+					
+					polizaBean.setEjecutivo(ejecutivo);
 				}
+			}else{
+				MessagesController.addError(null, HiperionMensajes.getInstancia().getString("hiperion.mensage.error.identificacionNoValido"));
 			}
 
 		} catch (HiperionException e) {
@@ -296,6 +306,7 @@ public class PolizaBacking implements Serializable {
 			TablaAmortizacionDTO tablaAmortizacionDTO = new TablaAmortizacionDTO();
 			tablaAmortizacionDTO.setLetra("Letra " + cont);
 			tablaAmortizacionDTO.setValor(valorLetras);
+			tablaAmortizacionDTO.setNumeroLetra(cont);
 
 			tablaAmortizacionList.add(tablaAmortizacionDTO);
 			cont++;

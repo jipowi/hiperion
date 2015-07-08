@@ -36,6 +36,7 @@ import ec.com.avila.hiperion.dto.ClausulaAdicionalDTO;
 import ec.com.avila.hiperion.dto.CoberturaDTO;
 import ec.com.avila.hiperion.dto.ObjetoAseguradoGanaderoAgroDTO;
 import ec.com.avila.hiperion.dto.ObjetoAseguradoPlantacionAgroDTO;
+import ec.com.avila.hiperion.dto.TablaAmortizacionDTO;
 import ec.com.avila.hiperion.emision.entities.ArchivoBase;
 import ec.com.avila.hiperion.emision.entities.Catalogo;
 import ec.com.avila.hiperion.emision.entities.ClausulasAddAgro;
@@ -82,7 +83,7 @@ public class AgropecuarioBacking implements Serializable {
 	@EJB
 	private RamoAgropecuarioService ramoAgropecuarioService;
 
-	@EJB  
+	@EJB
 	private CatalogoService catalogoService;
 
 	@ManagedProperty(value = "#{ramoBean}")
@@ -244,12 +245,12 @@ public class AgropecuarioBacking implements Serializable {
 	public void setearRamo() throws HiperionException {
 
 		try {
-			
+
 			Poliza poliza = setearDatosPoliza();
-			
+
 			Usuario usuario = usuarioBean.getSessionUser();
 
-			//Informacion del Ramo
+			// Informacion del Ramo
 			agropecuario.setIdUsuarioCreacion(usuario.getIdUsuario());
 			agropecuario.setFechaCreacion(new Date());
 			agropecuario.setEstado(EstadoEnum.A);
@@ -257,54 +258,54 @@ public class AgropecuarioBacking implements Serializable {
 			agropecuario.setTasaAgro(ramoAgropecuarioBean.getTasa());
 			agropecuario.setDeducAgro(ramoAgropecuarioBean.getDeducible());
 
-			//Informacion del objeto asegurado
-			if (ramoAgropecuarioBean.getTipoObjeto().equals("1") && !ramoAgropecuarioBean.getObjetoAseguradoList().isEmpty()) {
-
-				List<ObjAsegAgropecuario> listObjetos = new ArrayList<>();
-				for (ObjetoAseguradoGanaderoAgroDTO objeto : ramoAgropecuarioBean.getObjetoAseguradoList()) {
-					ObjAsegAgropecuario objAsegAgropecuario = new ObjAsegAgropecuario();
-
-					objAsegAgropecuario.setRamoAgropecuario(agropecuario);
-					objAsegAgropecuario.setItemObjAgro(objeto.getItem());
-					objAsegAgropecuario.setNombreObjAgro(objeto.getNombre());
-					objAsegAgropecuario.setSexoObjAgro(objeto.getSexo());
-					objAsegAgropecuario.setRazaObjAgro(objeto.getRaza());
-					objAsegAgropecuario.setColorObjAgro(objeto.getColor());
-					objAsegAgropecuario.setEdadObjAgro(objeto.getEdad());
-					objAsegAgropecuario.setMontoAsegObjAgro(objeto.getMontoAsegurado());
-					objAsegAgropecuario.setIdUsuarioCreacion(usuario.getIdUsuario());
-					objAsegAgropecuario.setFechaCreacion(new Date());
-					objAsegAgropecuario.setEstado(EstadoEnum.A);
-					listObjetos.add(objAsegAgropecuario);
-				}
-				agropecuario.setObjAsegAgropecuarios(listObjetos);
-			} else {
+			if (ramoAgropecuarioBean.getObjetoAseguradoPlantacionList().isEmpty() && ramoAgropecuarioBean.getObjetoAseguradoList().isEmpty()) {
 				MessagesController.addError(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.error.save.Obj"));
-			}
-
-			if (ramoAgropecuarioBean.getTipoObjeto().equals("2") && !ramoAgropecuarioBean.getObjetoAseguradoPlantacionList().isEmpty()) {
-
-				List<ObjAsegAgropecuario> listObjetos = new ArrayList<>();
-				for (ObjetoAseguradoPlantacionAgroDTO objeto : ramoAgropecuarioBean.getObjetoAseguradoPlantacionList()) {
-					ObjAsegAgropecuario objAsegAgropecuario = new ObjAsegAgropecuario();
-
-					objAsegAgropecuario.setValorAseguradoAgro(objeto.getValorAsegurado());
-					objAsegAgropecuario.setDetalleAgro(objeto.getDetalle());
-					objAsegAgropecuario.setUbicacion(objeto.getUbicacion());
-					objAsegAgropecuario.setIdUsuarioCreacion(usuario.getIdUsuario());
-					objAsegAgropecuario.setFechaCreacion(new Date());
-					objAsegAgropecuario.setEstado(EstadoEnum.A);
-					listObjetos.add(objAsegAgropecuario);
-				}
-				agropecuario.setObjAsegAgropecuarios(listObjetos);
 			} else {
-				MessagesController.addError(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.error.save.Obj"));
-			}
+				// Informacion del objeto asegurado
+				if (ramoAgropecuarioBean.getTipoObjeto().equals("1") && !ramoAgropecuarioBean.getObjetoAseguradoList().isEmpty()) {
 
-			//Archivo
+					List<ObjAsegAgropecuario> listObjetos = new ArrayList<>();
+					for (ObjetoAseguradoGanaderoAgroDTO objeto : ramoAgropecuarioBean.getObjetoAseguradoList()) {
+						ObjAsegAgropecuario objAsegAgropecuario = new ObjAsegAgropecuario();
+
+						objAsegAgropecuario.setRamoAgropecuario(agropecuario);
+						objAsegAgropecuario.setItemObjAgro(objeto.getItem());
+						objAsegAgropecuario.setNombreObjAgro(objeto.getNombre());
+						objAsegAgropecuario.setSexoObjAgro(objeto.getSexo());
+						objAsegAgropecuario.setRazaObjAgro(objeto.getRaza());
+						objAsegAgropecuario.setColorObjAgro(objeto.getColor());
+						objAsegAgropecuario.setEdadObjAgro(objeto.getEdad());
+						objAsegAgropecuario.setMontoAsegObjAgro(objeto.getMontoAsegurado());
+						objAsegAgropecuario.setIdUsuarioCreacion(usuario.getIdUsuario());
+						objAsegAgropecuario.setFechaCreacion(new Date());
+						objAsegAgropecuario.setEstado(EstadoEnum.A);
+						listObjetos.add(objAsegAgropecuario);
+					}
+					agropecuario.setObjAsegAgropecuarios(listObjetos);
+				}
+
+				if (ramoAgropecuarioBean.getTipoObjeto().equals("2") && !ramoAgropecuarioBean.getObjetoAseguradoPlantacionList().isEmpty()) {
+
+					List<ObjAsegAgropecuario> listObjetos = new ArrayList<>();
+					for (ObjetoAseguradoPlantacionAgroDTO objeto : ramoAgropecuarioBean.getObjetoAseguradoPlantacionList()) {
+						ObjAsegAgropecuario objAsegAgropecuario = new ObjAsegAgropecuario();
+
+						objAsegAgropecuario.setValorAseguradoAgro(objeto.getValorAsegurado());
+						objAsegAgropecuario.setDetalleAgro(objeto.getDetalle());
+						objAsegAgropecuario.setUbicacion(objeto.getUbicacion());
+						objAsegAgropecuario.setIdUsuarioCreacion(usuario.getIdUsuario());
+						objAsegAgropecuario.setFechaCreacion(new Date());
+						objAsegAgropecuario.setEstado(EstadoEnum.A);
+						listObjetos.add(objAsegAgropecuario);
+					}
+					agropecuario.setObjAsegAgropecuarios(listObjetos);
+				}
+
+			}
+			// Archivo
 			if (ramoAgropecuarioBean.getFilePolizaVigente() != null) {
 				ramoAgropecuarioService.guardarArchivoPoliza(ramoAgropecuarioBean.getFilePolizaVigente());
-				//ramoAgropecuarioService.guardarAgropecuario(agropecuario);
+				// ramoAgropecuarioService.guardarAgropecuario(agropecuario);
 
 				MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.save"));
 				agropecuario = new RamoAgropecuario();
@@ -313,7 +314,7 @@ public class AgropecuarioBacking implements Serializable {
 				MessagesController.addError(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.error.agropecuario"));
 			}
 
-			//Clausulas Adicionales
+			// Clausulas Adicionales
 			List<ClausulasAddAgro> clausulasAgropecuario = new ArrayList<>();
 			for (ClausulaAdicionalDTO clausualaDTO : clausulasAdicionalesDTO) {
 				if (clausualaDTO.getSeleccion()) {
@@ -328,7 +329,7 @@ public class AgropecuarioBacking implements Serializable {
 				}
 			}
 
-			//Coberturas Transporte
+			// Coberturas Transporte
 			List<CobertAgro> coberturasAgropecuario = new ArrayList<>();
 			for (CoberturaDTO coberturaDTO : coberturasTransporteDTO) {
 				if (coberturaDTO.getSeleccion()) {
@@ -342,7 +343,7 @@ public class AgropecuarioBacking implements Serializable {
 					coberturasAgropecuario.add(coberturaAgropecuario);
 				}
 			}
-			//coberturas Vida
+			// coberturas Vida
 			for (CoberturaDTO coberturaDTO : coberturasVidaDTO) {
 				if (coberturaDTO.getSeleccion()) {
 					CobertAgro coberturaAgropecuario = new CobertAgro();
@@ -358,8 +359,6 @@ public class AgropecuarioBacking implements Serializable {
 			agropecuario.setClausulasAddAgros(clausulasAgropecuario);
 			agropecuario.setCobertAgros(coberturasAgropecuario);
 
-			
-			
 			ramoAgropecuarioService.guardarAgropecuario(agropecuario, poliza);
 
 			MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.save"));
@@ -371,10 +370,10 @@ public class AgropecuarioBacking implements Serializable {
 			throw new HiperionException(e);
 		}
 	}
-	
-	public Poliza setearDatosPoliza(){
+
+	public Poliza setearDatosPoliza() {
 		Poliza poliza = new Poliza();
-		
+
 		poliza.setNumeroPoliza(polizaBean.getNumeroPoliza());
 		poliza.setNumeroAnexo(polizaBean.getNumeroAnexo());
 		poliza.setEjecutivo(polizaBean.getEjecutivo().getNombreUsuario());
@@ -388,7 +387,7 @@ public class AgropecuarioBacking implements Serializable {
 		poliza.setDerechoEmision(BigDecimal.valueOf(polizaBean.getDerechoEmision()));
 		poliza.setRamo(1);
 		poliza.setEstadoPoliza("COTIZADO");
-		
+
 		PagoPoliza pagoPoliza = new PagoPoliza();
 		pagoPoliza.setNumeroFactura(polizaBean.getNumeroFactura());
 		pagoPoliza.setSubtotal(polizaBean.getSubtotal());
@@ -396,21 +395,27 @@ public class AgropecuarioBacking implements Serializable {
 		pagoPoliza.setIva(polizaBean.getIva());
 		pagoPoliza.setCuotaInicial(polizaBean.getCuotaInicial());
 		pagoPoliza.setValorTotalPagoPoliza(polizaBean.getTotal());
-		
+
 		TarjetaCredito tarjeta = new TarjetaCredito();
 		tarjeta.setTarjeta(polizaBean.getTarjetaCredito());
 		tarjeta.setTipoPago(polizaBean.getFormaPago());
-		//tarjeta.setNumeroMeses(polizaBean.getN);
-		
-		Financiamiento financiamiento = new Financiamiento();
-		financiamiento.setNumeroCuota(polizaBean.getNumeroCuota());
-		financiamiento.setFechaVencimiento(polizaBean.getFechaVencimiento());
-		
+		// tarjeta.setNumeroMeses(polizaBean.getN);
+
+		List<Financiamiento> financiamientos = new ArrayList<>();
+		for (TablaAmortizacionDTO financiamiento : polizaBean.getFinanciamientos()) {
+			Financiamiento financiamientoTemp = new Financiamiento();
+			financiamientoTemp.setNumeroCuota(financiamiento.getNumeroLetra());
+			financiamientoTemp.setValorLetra(BigDecimal.valueOf(financiamiento.getValor()));
+			financiamientoTemp.setFechaVencimiento(financiamiento.getFechaVencimiento());
+
+			financiamientos.add(financiamientoTemp);
+		}
+
 		pagoPoliza.setTarjetaCredito(tarjeta);
-		//pagoPoliza.setFinanciamientos(financiamientos);
-		
+		pagoPoliza.setFinanciamientos(financiamientos);
+
 		poliza.setPagoPoliza(pagoPoliza);
-		
+
 		return poliza;
 	}
 
@@ -427,7 +432,7 @@ public class AgropecuarioBacking implements Serializable {
 		FacesMessage msg = new FacesMessage("Item Edited", ((ClausulaAdicionalDTO) event.getObject()).getClausula());
 		FacesContext.getCurrentInstance().addMessage(null, msg);
 	}
-	
+
 	/**
 	 * 
 	 * <b> Permite controlar la obligatoriedad de los campos dependiendo el tipo de objeto asegurado. </b>
