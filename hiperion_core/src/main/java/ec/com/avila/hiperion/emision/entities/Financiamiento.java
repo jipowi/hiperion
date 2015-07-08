@@ -25,7 +25,7 @@ public class Financiamiento implements Serializable {
 	private Date fechaVencimiento;
 
 	@Column(name="numero_cuota")
-	private BigDecimal numeroCuota;
+	private Integer numeroCuota;
 	
 	@Column(name="valor_letra")
 	private BigDecimal valorLetra;
@@ -54,11 +54,11 @@ public class Financiamiento implements Serializable {
 		this.fechaVencimiento = fechaVencimiento;
 	}
 
-	public BigDecimal getNumeroCuota() {
+	public Integer getNumeroCuota() {
 		return this.numeroCuota;
 	}
 
-	public void setNumeroCuota(BigDecimal numeroCuota) {
+	public void setNumeroCuota(Integer numeroCuota) {
 		this.numeroCuota = numeroCuota;
 	}
 
