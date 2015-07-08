@@ -19,6 +19,7 @@ public class TablaAmortizacionDTO implements Serializable {
 	private String letra;
 	private Double valor;
 	private Date fechaVencimiento;
+	private Integer numeroLetra;
 
 	/**
 	 * @return the letra
@@ -63,6 +64,21 @@ public class TablaAmortizacionDTO implements Serializable {
 	 */
 	public void setFechaVencimiento(Date fechaVencimiento) {
 		this.fechaVencimiento = fechaVencimiento;
+	}
+
+	/**
+	 * @return the numeroLetra
+	 */
+	public Integer getNumeroLetra() {
+		return numeroLetra;
+	}
+
+	/**
+	 * @param numeroLetra
+	 *            the numeroLetra to set
+	 */
+	public void setNumeroLetra(Integer numeroLetra) {
+		this.numeroLetra = numeroLetra;
 	}
 
 }
