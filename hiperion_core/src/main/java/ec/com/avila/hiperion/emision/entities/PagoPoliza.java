@@ -6,12 +6,9 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -44,17 +41,21 @@ public class PagoPoliza extends Auditoria implements Serializable {
 
 	private BigDecimal subtotal;
 
+	@Column(name = "numero_meses")
+	private BigDecimal numeroMeses;
+
+	@Column(name = "tarjeta")
+	private String tarjeta;
+
+	@Column(name = "tipo_pago")
+	private String tipoPago;
+
 	@Column(name = "valor_total_pago_poliza")
 	private BigDecimal valorTotalPagoPoliza;
 
 	// bi-directional many-to-one association to Financiamiento
 	@OneToMany(mappedBy = "pagoPoliza")
 	private List<Financiamiento> financiamientos;
-
-	// bi-directional many-to-one association to TarjetaCredito
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "id_tarjeta")
-	private TarjetaCredito tarjetaCredito;
 
 	// bi-directional many-to-one association to Poliza
 	@OneToMany(mappedBy = "pagoPoliza")
@@ -141,14 +142,6 @@ public class PagoPoliza extends Auditoria implements Serializable {
 		return financiamiento;
 	}
 
-	public TarjetaCredito getTarjetaCredito() {
-		return this.tarjetaCredito;
-	}
-
-	public void setTarjetaCredito(TarjetaCredito tarjetaCredito) {
-		this.tarjetaCredito = tarjetaCredito;
-	}
-
 	public List<Poliza> getPolizas() {
 		return this.polizas;
 	}
@@ -169,6 +162,51 @@ public class PagoPoliza extends Auditoria implements Serializable {
 		poliza.setPagoPoliza(null);
 
 		return poliza;
+	}
+
+	/**
+	 * @return the numeroMeses
+	 */
+	public BigDecimal getNumeroMeses() {
+		return numeroMeses;
+	}
+
+	/**
+	 * @param numeroMeses
+	 *            the numeroMeses to set
+	 */
+	public void setNumeroMeses(BigDecimal numeroMeses) {
+		this.numeroMeses = numeroMeses;
+	}
+
+	/**
+	 * @return the tarjeta
+	 */
+	public String getTarjeta() {
+		return tarjeta;
+	}
+
+	/**
+	 * @param tarjeta
+	 *            the tarjeta to set
+	 */
+	public void setTarjeta(String tarjeta) {
+		this.tarjeta = tarjeta;
+	}
+
+	/**
+	 * @return the tipoPago
+	 */
+	public String getTipoPago() {
+		return tipoPago;
+	}
+
+	/**
+	 * @param tipoPago
+	 *            the tipoPago to set
+	 */
+	public void setTipoPago(String tipoPago) {
+		this.tipoPago = tipoPago;
 	}
 
 }

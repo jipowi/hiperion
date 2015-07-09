@@ -59,6 +59,9 @@ public class ObjAsegAgropecuario extends Auditoria implements Serializable {
 	@Column(name = "ubicacion_agro")
 	private String ubicacion;
 
+	@Column(name = "tipo_objeto_agro")
+	private Integer tipoObjeto;
+
 	// bi-directional many-to-one association to RamoAgropecuario
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_agropecuario")
@@ -182,6 +185,21 @@ public class ObjAsegAgropecuario extends Auditoria implements Serializable {
 	 */
 	public void setUbicacion(String ubicacion) {
 		this.ubicacion = ubicacion;
+	}
+
+	/**
+	 * @return the tipoObjeto
+	 */
+	public Integer getTipoObjeto() {
+		return tipoObjeto;
+	}
+
+	/**
+	 * @param tipoObjeto
+	 *            the tipoObjeto to set
+	 */
+	public void setTipoObjeto(Integer tipoObjeto) {
+		this.tipoObjeto = tipoObjeto;
 	}
 
 }
