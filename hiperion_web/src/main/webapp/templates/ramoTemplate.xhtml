@@ -51,7 +51,7 @@
 										<p:outputLabel value="#{polizaBean.identificacion}" />
 									</h:panelGrid>
 								</h:panelGrid>
-								
+
 								<h:panelGrid columns="1">
 									<h:panelGrid columns="2" cellpadding="3">
 										<p:outputLabel value="#{emision['aseguradora.aseguradora']}" styleClass="negrita" />
@@ -92,7 +92,8 @@
 									<p:selectOneMenu id="formaPagoId" value="#{polizaBean.idFormaPago}" required="true" effect="drop">
 										<f:selectItem itemLabel="Seleccionar" noSelectionOption="true" />
 										<f:selectItems value="#{polizaBacking.formasPagoItems}" />
-										<p:ajax listener="#{polizaBacking.selectFormaDePago()}" update="pagoContadoId, pagoFinanciadoId, pagoTarjetaCreditoId, pagoDebitoBancarioId" />
+										<p:ajax listener="#{polizaBacking.selectFormaDePago()}"
+											update="pagoContadoId, pagoFinanciadoId, pagoTarjetaCreditoId, pagoDebitoBancarioId, idGenerarTabla" />
 									</p:selectOneMenu>
 								</h:panelGrid>
 
@@ -249,6 +250,17 @@
 								actionListener="#{polizaBacking.calcularValoresPago()}">
 								<h:graphicImage name="boton_calcular.png" library="img" />
 							</p:commandLink>
+							<h:panelGroup id="idGenerarTabla">
+								<h:panelGrid columns="3" rendered="#{!polizaBacking.activarPanelPagoContado}">
+									<h:graphicImage name="help.png" library="img" />
+
+									<p:outputLabel value="#{emision['poliza.info.tablaAmortizacion']}" style="color:green;" />
+
+									<p:commandLink title="Generar tabla" actionListener="#{polizaBacking.generarTablaAmortizacion()}">
+										<h:graphicImage name="timeTable.png" library="img" />
+									</p:commandLink>
+								</h:panelGrid>
+							</h:panelGroup>
 						</div>
 					</h:form>
 				</p:tab>
@@ -262,18 +274,8 @@
 				<p:tab title="#{emision['poliza.titulo.infoFinanciamiento']}">
 					<h:form id="formFinanciamiento">
 						<div align="center">
-							<h:panelGrid columns="3">
-								<h:graphicImage name="help.png" library="img" />
-
-								<p:outputLabel value="#{emision['poliza.info.tablaAmortizacion']}" style="color:green;" />
-
-								<p:commandLink title="Generar tabla" actionListener="#{polizaBacking.generarTablaAmortizacion()}" update="formFinanciamiento">
-									<h:graphicImage name="timeTable.png" library="img" />
-								</p:commandLink>
-							</h:panelGrid>
-
-							<p:dataTable id="tablaAmortizacion" value="#{polizaBacking.tablaAmortizacionList}" var="tabla" widgetVar="50" editable="true">
-								<p:ajax event="rowEdit" listener="#{polizaBacking.onEditTable}" update="tablaAmortizacion" />
+							<p:dataTable id="tablaAmortizacion" value="#{polizaBean.financiamientos}" var="tabla" widgetVar="50" editable="true">
+								<p:ajax event="rowEdit" listener="#{polizaBacking.onEditTable}" />
 								<p:column>
 									<f:facet name="header">
 										<h:outputText value="#{emision['poliza.tabla.letra']}" />
@@ -293,12 +295,15 @@
 
 									<p:cellEditor>
 										<f:facet name="output">
-											<h:outputText value="#{tabla.fechaVencimiento}" />
+											<p:calendar value="#{tabla.fechaVencimiento}" pattern="dd/MM/yyyy HH:mm" locale="es" navigator="true" />
 										</f:facet>
 										<f:facet name="input">
-											<h:outputText value="#{tabla.fechaVencimiento}" />
+											<p:calendar value="#{tabla.fechaVencimiento}" pattern="dd/MM/yyyy HH:mm" locale="es" navigator="true" />
 										</f:facet>
 									</p:cellEditor>
+								</p:column>
+								<p:column headerText="Options" style="width:50px">
+									<p:rowEditor />
 								</p:column>
 							</p:dataTable>
 						</div>
