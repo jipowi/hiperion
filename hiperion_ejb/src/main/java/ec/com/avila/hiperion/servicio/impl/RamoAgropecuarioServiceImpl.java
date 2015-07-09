@@ -13,12 +13,15 @@ import ec.com.avila.hiperion.dao.ClausulaAddAgroDao;
 import ec.com.avila.hiperion.dao.CoberturaAgroDao;
 import ec.com.avila.hiperion.dao.DetalleAnexoDao;
 import ec.com.avila.hiperion.dao.ObjAsegAgropecuarioDao;
+import ec.com.avila.hiperion.dao.PagoPolizaDao;
+import ec.com.avila.hiperion.dao.PolizaDao;
 import ec.com.avila.hiperion.dao.RamoAgropecuarioDao;
 import ec.com.avila.hiperion.emision.entities.ArchivoBase;
 import ec.com.avila.hiperion.emision.entities.ClausulasAddAgro;
 import ec.com.avila.hiperion.emision.entities.CobertAgro;
 import ec.com.avila.hiperion.emision.entities.DetalleAnexo;
 import ec.com.avila.hiperion.emision.entities.ObjAsegAgropecuario;
+import ec.com.avila.hiperion.emision.entities.PagoPoliza;
 import ec.com.avila.hiperion.emision.entities.Poliza;
 import ec.com.avila.hiperion.emision.entities.RamoAgropecuario;
 import ec.com.avila.hiperion.servicio.RamoAgropecuarioService;
@@ -43,6 +46,10 @@ public class RamoAgropecuarioServiceImpl implements RamoAgropecuarioService {
 	private CoberturaAgroDao coberturaAgroDao;
 	@EJB
 	private DetalleAnexoDao detalleAnexoDao;
+	@EJB
+	private PolizaDao polizaDao;
+	@EJB
+	private PagoPolizaDao pagoPolizaDao;
 
 	/*
 	 * (non-Javadoc)
@@ -51,10 +58,18 @@ public class RamoAgropecuarioServiceImpl implements RamoAgropecuarioService {
 	 */
 	@Override
 	public void guardarAgropecuario(RamoAgropecuario ramoAgropecuario, Poliza poliza) throws HiperionException {
-		
+
+		PagoPoliza pagoPoliza = poliza.getPagoPoliza();
+		pagoPolizaDao.persist(pagoPoliza);
+
+		polizaDao.persist(poliza);
+
+		ramoAgropecuario.setPoliza(poliza);
+
 		ramoAgropecuarioDao.persist(ramoAgropecuario);
 
 		for (ObjAsegAgropecuario objeto : ramoAgropecuario.getObjAsegAgropecuarios()) {
+			objeto.setRamoAgropecuario(ramoAgropecuario);
 			objAsegAgropecuarioDao.persist(objeto);
 		}
 
