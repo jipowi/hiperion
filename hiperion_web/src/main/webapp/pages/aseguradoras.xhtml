@@ -4,9 +4,7 @@
 <ui:composition template="/templates/menuPrincipalTemplate.xhtml">
 	<ui:define name="content">
 		<h:form id="formPricipal">
-			<p:outputPanel id="messagesAseguradora">
-				<p:messages></p:messages>
-			</p:outputPanel>
+			<p:messages id="messagesAseguradora" showDetail="true" autoUpdate="true" closable="true" />
 			<p:panel>
 				<!-- PANEL DE BUSQUEDAA -->
 				<h:panelGrid columns="1">
