@@ -64,7 +64,7 @@ public class PolizaBean implements Serializable {
 	private String cuentaBancos;
 	private Integer numeroDebitos;
 	private BigDecimal valorDebitos;
-	private String fechaDebito;
+	private Date fechaDebito;
 	private String numeroCuenta;
 	private BigDecimal porcentajeFinanciamiento;
 
@@ -437,21 +437,6 @@ public class PolizaBean implements Serializable {
 	}
 
 	/**
-	 * @return the fechaDebito
-	 */
-	public String getFechaDebito() {
-		return fechaDebito;
-	}
-
-	/**
-	 * @param fechaDebito
-	 *            the fechaDebito to set
-	 */
-	public void setFechaDebito(String fechaDebito) {
-		this.fechaDebito = fechaDebito;
-	}
-
-	/**
 	 * @return the interes
 	 */
 	public BigDecimal getInteres() {
@@ -629,6 +614,21 @@ public class PolizaBean implements Serializable {
 	 */
 	public void setContactoAseguradora(String contactoAseguradora) {
 		this.contactoAseguradora = contactoAseguradora;
+	}
+
+	/**
+	 * @return the fechaDebito
+	 */
+	public Date getFechaDebito() {
+		return fechaDebito;
+	}
+
+	/**
+	 * @param fechaDebito
+	 *            the fechaDebito to set
+	 */
+	public void setFechaDebito(Date fechaDebito) {
+		this.fechaDebito = fechaDebito;
 	}
 
 }

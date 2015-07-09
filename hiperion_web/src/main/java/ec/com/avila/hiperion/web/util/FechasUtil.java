@@ -7,6 +7,7 @@ package ec.com.avila.hiperion.web.util;
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -67,4 +68,26 @@ public class FechasUtil implements Serializable {
 		return fechaDate;
 	}
 
+	/**
+	 * 
+	 * <b> Permite sumar o restar dias a una fecha. </b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: 09/07/2015]
+	 * </p>
+	 * 
+	 * @param fecha
+	 * @param dias
+	 * @return
+	 */
+	public Date sumarRestarDiasFecha(Date fecha, int dias) {
+
+		Calendar calendar = Calendar.getInstance();
+
+		calendar.setTime(fecha); // Configuramos la fecha que se recibe
+
+		calendar.add(Calendar.DAY_OF_YEAR, dias); // numero de días a añadir, o restar en caso de días<0
+
+		return calendar.getTime(); // Devuelve el objeto Date con los nuevos días añadidos
+
+	}
 }

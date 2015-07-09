@@ -6,6 +6,8 @@ package ec.com.avila.emision.web.backings;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -34,6 +36,7 @@ import ec.com.avila.hiperion.servicio.ClienteService;
 import ec.com.avila.hiperion.servicio.PolizaService;
 import ec.com.avila.hiperion.servicio.UsuarioService;
 import ec.com.avila.hiperion.web.beans.UsuarioBean;
+import ec.com.avila.hiperion.web.util.FechasUtil;
 import ec.com.avila.hiperion.web.util.HiperionMensajes;
 import ec.com.avila.hiperion.web.util.MessagesController;
 
@@ -117,7 +120,7 @@ public class PolizaBacking implements Serializable {
 	public void buscarCliente() throws HiperionException {
 		try {
 			Cliente cliente = new Cliente();
-			
+
 			String identificacion = polizaBean.getIdentificacion();
 
 			if (!polizaBean.getIdentificacion().equals("") && ValidatorCedula.getInstancia().validateCedula(identificacion)) {
@@ -129,10 +132,10 @@ public class PolizaBacking implements Serializable {
 					polizaBean.setNombreCliente(cliente.getApellidoPaterno() + " " + cliente.getApellidoMaterno() + " " + cliente.getNombrePersona());
 					Usuario ejecutivo = new Usuario();
 					ejecutivo.setNombreUsuario(polizaBean.getNombreCliente());
-					
+
 					polizaBean.setEjecutivo(ejecutivo);
 				}
-			}else{
+			} else {
 				MessagesController.addError(null, HiperionMensajes.getInstancia().getString("hiperion.mensage.error.identificacionNoValido"));
 			}
 
@@ -307,6 +310,14 @@ public class PolizaBacking implements Serializable {
 			tablaAmortizacionDTO.setLetra("Letra " + cont);
 			tablaAmortizacionDTO.setValor(valorLetras);
 			tablaAmortizacionDTO.setNumeroLetra(cont);
+
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime(polizaBean.getFechaDebito());
+			int dias = calendar.get(Calendar.DAY_OF_MONTH)*(i+1);
+
+			Date fechaCuota = FechasUtil.getInstancia().sumarRestarDiasFecha(polizaBean.getFechaDebito(), dias);
+			
+			tablaAmortizacionDTO.setFechaVencimiento(fechaCuota);
 
 			tablaAmortizacionList.add(tablaAmortizacionDTO);
 			cont++;

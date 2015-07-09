@@ -79,8 +79,6 @@ public class AseguradoraBacking implements Serializable {
 
 	private String rutaReporte;
 
-	
-
 	@PostConstruct
 	public void inicializar() throws HiperionException {
 		// consultarAseguradoras();
@@ -162,9 +160,12 @@ public class AseguradoraBacking implements Serializable {
 
 			contactosAseguradora.add(persona);
 		}
-		
-		aseguradoraService.guardarAseguradora(aseguradora, contactosAseguradora);
 
+		aseguradoraService.guardarAseguradora(aseguradora, contactosAseguradora);
+		MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.save"));
+
+		aseguradora = new Aseguradora();
+		contactosAseguradora = new ArrayList<>();
 	}
 
 	/**
@@ -202,8 +203,9 @@ public class AseguradoraBacking implements Serializable {
 			}
 
 			aseguradoraBean.setAseguradorasList(aseguradorasDTOList);
+
 		} else {
-			MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.war.aseguradora"));
+			MessagesController.addWarn(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.war.aseguradora"));
 			aseguradorasDTOList = new ArrayList<>();
 			aseguradoraBean.setActivarTabla(true);
 		}

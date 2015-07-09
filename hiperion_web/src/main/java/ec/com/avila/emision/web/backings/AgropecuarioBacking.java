@@ -49,7 +49,6 @@ import ec.com.avila.hiperion.emision.entities.PagoPoliza;
 import ec.com.avila.hiperion.emision.entities.Poliza;
 import ec.com.avila.hiperion.emision.entities.Ramo;
 import ec.com.avila.hiperion.emision.entities.RamoAgropecuario;
-import ec.com.avila.hiperion.emision.entities.TarjetaCredito;
 import ec.com.avila.hiperion.emision.entities.Usuario;
 import ec.com.avila.hiperion.enumeration.EstadoEnum;
 import ec.com.avila.hiperion.servicio.CatalogoService;
@@ -262,7 +261,7 @@ public class AgropecuarioBacking implements Serializable {
 				MessagesController.addError(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.error.save.Obj"));
 			} else {
 				// Informacion del objeto asegurado
-				if (ramoAgropecuarioBean.getTipoObjeto().equals("1") && !ramoAgropecuarioBean.getObjetoAseguradoList().isEmpty()) {
+				if (ramoAgropecuarioBean.getTipoObjeto().equals("2") && !ramoAgropecuarioBean.getObjetoAseguradoList().isEmpty()) {
 
 					List<ObjAsegAgropecuario> listObjetos = new ArrayList<>();
 					for (ObjetoAseguradoGanaderoAgroDTO objeto : ramoAgropecuarioBean.getObjetoAseguradoList()) {
@@ -284,7 +283,7 @@ public class AgropecuarioBacking implements Serializable {
 					agropecuario.setObjAsegAgropecuarios(listObjetos);
 				}
 
-				if (ramoAgropecuarioBean.getTipoObjeto().equals("2") && !ramoAgropecuarioBean.getObjetoAseguradoPlantacionList().isEmpty()) {
+				if (ramoAgropecuarioBean.getTipoObjeto().equals("1") && !ramoAgropecuarioBean.getObjetoAseguradoPlantacionList().isEmpty()) {
 
 					List<ObjAsegAgropecuario> listObjetos = new ArrayList<>();
 					for (ObjetoAseguradoPlantacionAgroDTO objeto : ramoAgropecuarioBean.getObjetoAseguradoPlantacionList()) {
@@ -311,57 +310,67 @@ public class AgropecuarioBacking implements Serializable {
 				agropecuario = new RamoAgropecuario();
 				ramoAgropecuarioBean.getObjetoAseguradoList().clear();
 			} else {
-				MessagesController.addError(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.error.agropecuario"));
+				MessagesController.addError(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.error.archivoPoliza"));
 			}
 
 			// Clausulas Adicionales
-			List<ClausulasAddAgro> clausulasAgropecuario = new ArrayList<>();
-			for (ClausulaAdicionalDTO clausualaDTO : clausulasAdicionalesDTO) {
-				if (clausualaDTO.getSeleccion()) {
+			if (clausulasAdicionalesDTO.isEmpty()) {
+				MessagesController.addWarn(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.warn.clausulasAdd"));
+			} else {
+				List<ClausulasAddAgro> clausulasAgropecuario = new ArrayList<>();
+				for (ClausulaAdicionalDTO clausualaDTO : clausulasAdicionalesDTO) {
+					if (clausualaDTO.getSeleccion()) {
 
-					ClausulasAddAgro clausulaAgropecuario = new ClausulasAddAgro();
-					clausulaAgropecuario.setClausulaAddAgro(clausualaDTO.getClausula());
-					clausulaAgropecuario.setEstado(EstadoEnum.A);
-					clausulaAgropecuario.setFechaCreacion(new Date());
-					clausulaAgropecuario.setIdUsuarioCreacion(usuario.getIdUsuario());
+						ClausulasAddAgro clausulaAgropecuario = new ClausulasAddAgro();
+						clausulaAgropecuario.setClausulaAddAgro(clausualaDTO.getClausula());
+						clausulaAgropecuario.setEstado(EstadoEnum.A);
+						clausulaAgropecuario.setFechaCreacion(new Date());
+						clausulaAgropecuario.setIdUsuarioCreacion(usuario.getIdUsuario());
 
-					clausulasAgropecuario.add(clausulaAgropecuario);
+						clausulasAgropecuario.add(clausulaAgropecuario);
+					}
 				}
+				agropecuario.setClausulasAddAgros(clausulasAgropecuario);
 			}
 
 			// Coberturas Transporte
-			List<CobertAgro> coberturasAgropecuario = new ArrayList<>();
-			for (CoberturaDTO coberturaDTO : coberturasTransporteDTO) {
-				if (coberturaDTO.getSeleccion()) {
-					CobertAgro coberturaAgropecuario = new CobertAgro();
-					coberturaAgropecuario.setCoberturaAgro(coberturaDTO.getCobertura());
-					coberturaAgropecuario.setEstado(EstadoEnum.A);
-					coberturaAgropecuario.setFechaCreacion(new Date());
-					coberturaAgropecuario.setIdUsuarioCreacion(usuario.getIdUsuario());
-					coberturaAgropecuario.setTipoCoberturaAgro("T");
+			if (coberturasTransporteDTO.isEmpty()) {
+				MessagesController.addWarn(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.warn.coberturas"));
+			} else {
+				List<CobertAgro> coberturasAgropecuario = new ArrayList<>();
+				for (CoberturaDTO coberturaDTO : coberturasTransporteDTO) {
+					if (coberturaDTO.getSeleccion()) {
+						CobertAgro coberturaAgropecuario = new CobertAgro();
+						coberturaAgropecuario.setCoberturaAgro(coberturaDTO.getCobertura());
+						coberturaAgropecuario.setEstado(EstadoEnum.A);
+						coberturaAgropecuario.setFechaCreacion(new Date());
+						coberturaAgropecuario.setIdUsuarioCreacion(usuario.getIdUsuario());
+						coberturaAgropecuario.setTipoCoberturaAgro("T");
 
-					coberturasAgropecuario.add(coberturaAgropecuario);
+						coberturasAgropecuario.add(coberturaAgropecuario);
+					}
 				}
-			}
-			// coberturas Vida
-			for (CoberturaDTO coberturaDTO : coberturasVidaDTO) {
-				if (coberturaDTO.getSeleccion()) {
-					CobertAgro coberturaAgropecuario = new CobertAgro();
-					coberturaAgropecuario.setCoberturaAgro(coberturaDTO.getCobertura());
-					coberturaAgropecuario.setEstado(EstadoEnum.A);
-					coberturaAgropecuario.setFechaCreacion(new Date());
-					coberturaAgropecuario.setIdUsuarioCreacion(usuario.getIdUsuario());
-					coberturaAgropecuario.setTipoCoberturaAgro("V");
 
-					coberturasAgropecuario.add(coberturaAgropecuario);
+				// coberturas Vida
+				for (CoberturaDTO coberturaDTO : coberturasVidaDTO) {
+					if (coberturaDTO.getSeleccion()) {
+						CobertAgro coberturaAgropecuario = new CobertAgro();
+						coberturaAgropecuario.setCoberturaAgro(coberturaDTO.getCobertura());
+						coberturaAgropecuario.setEstado(EstadoEnum.A);
+						coberturaAgropecuario.setFechaCreacion(new Date());
+						coberturaAgropecuario.setIdUsuarioCreacion(usuario.getIdUsuario());
+						coberturaAgropecuario.setTipoCoberturaAgro("V");
+
+						coberturasAgropecuario.add(coberturaAgropecuario);
+					}
 				}
+
+				agropecuario.setCobertAgros(coberturasAgropecuario);
 			}
-			agropecuario.setClausulasAddAgros(clausulasAgropecuario);
-			agropecuario.setCobertAgros(coberturasAgropecuario);
 
 			ramoAgropecuarioService.guardarAgropecuario(agropecuario, poliza);
 
-			MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.save"));
+			MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.save.aseguradora"));
 
 		} catch (HiperionException e) {
 			log.error("Error al momento de guardar el ramo agropecuario", e);
@@ -371,7 +380,18 @@ public class AgropecuarioBacking implements Serializable {
 		}
 	}
 
+	/**
+	 * 
+	 * <b> Permite setear los datos de la poliza. </b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: 09/07/2015]
+	 * </p>
+	 * 
+	 * @return
+	 */
 	public Poliza setearDatosPoliza() {
+
+		Usuario usuario = usuarioBean.getSessionUser();
 		Poliza poliza = new Poliza();
 
 		poliza.setNumeroPoliza(polizaBean.getNumeroPoliza());
@@ -395,11 +415,9 @@ public class AgropecuarioBacking implements Serializable {
 		pagoPoliza.setIva(polizaBean.getIva());
 		pagoPoliza.setCuotaInicial(polizaBean.getCuotaInicial());
 		pagoPoliza.setValorTotalPagoPoliza(polizaBean.getTotal());
-
-		TarjetaCredito tarjeta = new TarjetaCredito();
-		tarjeta.setTarjeta(polizaBean.getTarjetaCredito());
-		tarjeta.setTipoPago(polizaBean.getFormaPago());
-		// tarjeta.setNumeroMeses(polizaBean.getN);
+		pagoPoliza.setEstado(EstadoEnum.A);
+		pagoPoliza.setFechaCreacion(new Date());
+		pagoPoliza.setIdUsuarioCreacion(usuario.getIdUsuario());
 
 		List<Financiamiento> financiamientos = new ArrayList<>();
 		for (TablaAmortizacionDTO financiamiento : polizaBean.getFinanciamientos()) {
@@ -411,7 +429,6 @@ public class AgropecuarioBacking implements Serializable {
 			financiamientos.add(financiamientoTemp);
 		}
 
-		pagoPoliza.setTarjetaCredito(tarjeta);
 		pagoPoliza.setFinanciamientos(financiamientos);
 
 		poliza.setPagoPoliza(pagoPoliza);
