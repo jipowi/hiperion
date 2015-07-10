@@ -12,6 +12,7 @@ import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.dao.ClausulaAddAgroDao;
 import ec.com.avila.hiperion.dao.CoberturaAgroDao;
 import ec.com.avila.hiperion.dao.DetalleAnexoDao;
+import ec.com.avila.hiperion.dao.FinanciamientoDao;
 import ec.com.avila.hiperion.dao.ObjAsegAgropecuarioDao;
 import ec.com.avila.hiperion.dao.PagoPolizaDao;
 import ec.com.avila.hiperion.dao.PolizaDao;
@@ -20,6 +21,7 @@ import ec.com.avila.hiperion.emision.entities.ArchivoBase;
 import ec.com.avila.hiperion.emision.entities.ClausulasAddAgro;
 import ec.com.avila.hiperion.emision.entities.CobertAgro;
 import ec.com.avila.hiperion.emision.entities.DetalleAnexo;
+import ec.com.avila.hiperion.emision.entities.Financiamiento;
 import ec.com.avila.hiperion.emision.entities.ObjAsegAgropecuario;
 import ec.com.avila.hiperion.emision.entities.PagoPoliza;
 import ec.com.avila.hiperion.emision.entities.Poliza;
@@ -50,6 +52,8 @@ public class RamoAgropecuarioServiceImpl implements RamoAgropecuarioService {
 	private PolizaDao polizaDao;
 	@EJB
 	private PagoPolizaDao pagoPolizaDao;
+	@EJB
+	private FinanciamientoDao financiamientoDao;
 
 	/*
 	 * (non-Javadoc)
@@ -62,6 +66,11 @@ public class RamoAgropecuarioServiceImpl implements RamoAgropecuarioService {
 		PagoPoliza pagoPoliza = poliza.getPagoPoliza();
 		pagoPolizaDao.persist(pagoPoliza);
 
+		for (Financiamiento financiamiento : pagoPoliza.getFinanciamientos()) {
+			financiamiento.setPagoPoliza(pagoPoliza);
+			financiamientoDao.persist(financiamiento);
+		}
+		
 		polizaDao.persist(poliza);
 
 		ramoAgropecuario.setPoliza(poliza);
