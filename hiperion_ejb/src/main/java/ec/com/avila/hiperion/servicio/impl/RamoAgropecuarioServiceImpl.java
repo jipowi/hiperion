@@ -83,10 +83,12 @@ public class RamoAgropecuarioServiceImpl implements RamoAgropecuarioService {
 		}
 
 		for (ClausulasAddAgro clausula : ramoAgropecuario.getClausulasAddAgros()) {
+			clausula.setRamoAgropecuario(ramoAgropecuario);
 			clausulaAddAgroDao.persist(clausula);
 		}
 
 		for (CobertAgro cobertura : ramoAgropecuario.getCobertAgros()) {
+			cobertura.setRamoAgropecuario(ramoAgropecuario);
 			coberturaAgroDao.persist(cobertura);
 		}
 

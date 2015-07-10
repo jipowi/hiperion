@@ -10,7 +10,19 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
 import ec.com.avila.hiperion.comun.HiperionException;
+import ec.com.avila.hiperion.dao.ClausulaAddAccPerDao;
+import ec.com.avila.hiperion.dao.CoberturaAccPerDao;
+import ec.com.avila.hiperion.dao.CondicionEspAccPerDao;
+import ec.com.avila.hiperion.dao.FinanciamientoDao;
+import ec.com.avila.hiperion.dao.PagoPolizaDao;
+import ec.com.avila.hiperion.dao.PolizaDao;
 import ec.com.avila.hiperion.dao.RamoAccidentesPersonalesDao;
+import ec.com.avila.hiperion.emision.entities.ClausulasAddAccPer;
+import ec.com.avila.hiperion.emision.entities.CobertAccPer;
+import ec.com.avila.hiperion.emision.entities.CondEspAccPer;
+import ec.com.avila.hiperion.emision.entities.Financiamiento;
+import ec.com.avila.hiperion.emision.entities.PagoPoliza;
+import ec.com.avila.hiperion.emision.entities.Poliza;
 import ec.com.avila.hiperion.emision.entities.RamoAccidentesPersonale;
 import ec.com.avila.hiperion.servicio.RamoAccidentesPersonalesService;
 
@@ -27,18 +39,60 @@ public class RamoAccidentesPersonalesServiceImpl implements RamoAccidentesPerson
 	@EJB
 	private RamoAccidentesPersonalesDao ramoAccidentesPersonalesDao;
 
-	public void guardarRamoAccidentesPersonales(RamoAccidentesPersonale ramoAccidentesPersonales) throws HiperionException {
-		ramoAccidentesPersonalesDao.persist(ramoAccidentesPersonales);
-
-	}
+	@EJB
+	private PolizaDao polizaDao;
+	@EJB
+	private PagoPolizaDao pagoPolizaDao;
+	@EJB
+	private FinanciamientoDao financiamientoDao;
+	@EJB
+	private ClausulaAddAccPerDao clausulaAddAccPerDao;
+	@EJB
+	private CoberturaAccPerDao coberturaAccPerDao;
+	@EJB
+	private CondicionEspAccPerDao conAccPerDao;
 
 	public List<RamoAccidentesPersonale> consultarRamoAccidentesPersonales() throws HiperionException {
 		return ramoAccidentesPersonalesDao.findAll();
 	}
 
-	public void modificarRamoAccidentesPersonales(RamoAccidentesPersonale ramoAccidentesPersonales) throws HiperionException {
-		ramoAccidentesPersonalesDao.update(ramoAccidentesPersonales);
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see ec.com.avila.hiperion.servicio.RamoAccidentesPersonalesService#guardarRamoAccidentesPersonales(ec.com.avila.hiperion.emision.entities.RamoAccidentesPersonale,
+	 * ec.com.avila.hiperion.emision.entities.Poliza)
+	 */
+	@Override
+	public void guardarRamoAccidentesPersonales(RamoAccidentesPersonale ramoAccidentesPersonales, Poliza poliza) throws HiperionException {
 
+		PagoPoliza pagoPoliza = poliza.getPagoPoliza();
+		pagoPolizaDao.persist(pagoPoliza);
+
+		for (Financiamiento financiamiento : pagoPoliza.getFinanciamientos()) {
+			financiamiento.setPagoPoliza(pagoPoliza);
+			financiamientoDao.persist(financiamiento);
+		}
+
+		polizaDao.persist(poliza);
+
+		ramoAccidentesPersonales.setPoliza(poliza);
+
+		for (ClausulasAddAccPer clausula : ramoAccidentesPersonales.getClausulasAddAccPers()) {
+			clausula.setRamoAccidentesPersonale(ramoAccidentesPersonales);
+			clausulaAddAccPerDao.persist(clausula);
+		}
+
+		for (CobertAccPer cobertura : ramoAccidentesPersonales.getCoberturasAcc()) {
+			cobertura.setRamoAccidentesPersonale(ramoAccidentesPersonales);
+			coberturaAccPerDao.persist(cobertura);
+		}
+
+		for (CondEspAccPer condicion : ramoAccidentesPersonales.getCondicionesEspAcc()) {
+			condicion.setRamoAccidentesPersonale(ramoAccidentesPersonales);
+			conAccPerDao.persist(condicion);
+		}
+
+		ramoAccidentesPersonalesDao.persist(ramoAccidentesPersonales);
 	}
 
 }
