@@ -18,263 +18,261 @@
 						</div>
 					</ui:define>
 					<ui:define name="ramoContent">
-						<p:panel>
-							<p:tabView id="tabGeneral">
-								<!-- RAMO ACCIDENTES PERSONALES -->
-								<p:tab id="tabRamo" title="#{emision['ap.tab.principal']}">
-									<h:form id="formPrincipal">
-										<div align="center">
-											<h:panelGrid columns="1">
-												<p:panel>
-													<h:panelGrid columns="4" cellpadding="5">
-														<p:outputLabel value="#{emision['ap.primaNetaPorPersona']}" styleClass="negrita" />
-														<p:inputText value="#{ramoAccidentesPersonalesBean.primaNetaPersona}" />
-														<p:outputLabel value="#{emision['ap.primaTotal']}" styleClass="negrita" />
-														<p:inputText value="#{ramoAccidentesPersonalesBean.primaTotalPersona}" />
-														<p:outputLabel value="#{emision['ap.facturacion']}" styleClass="negrita" />
-														<p:inputText value="#{ramoAccidentesPersonalesBean.facturacion}" />
-														<p:outputLabel value="#{emision['ap.tasa']}" styleClass="negrita" />
-														<p:inputText value="#{ramoAccidentesPersonalesBean.tasa}" />
-													</h:panelGrid>
-													<h:panelGrid columns="1">
-														<p:outputLabel value="#{emision['ap.polizaVigente']}" styleClass="negrita" />
-														<p:fileUpload fileLimit="1" />
-													</h:panelGrid>
-
-													<h:panelGrid columns="2">
-														<h:outputLabel value="#{emision['emision.deducibles']}" />
-														<h:graphicImage name="deducibles.jpg" library="img" />
-													</h:panelGrid>
-
-													<h:panelGrid columns="2">
-														<p:outputLabel value="#{emision['ap.deducible']}" styleClass="negrita" />
-														<p:inputText value="#{ramoAccidentesPersonalesBean.deducible}" />
-													</h:panelGrid>
-												</p:panel>
-											</h:panelGrid>
-										</div>
-									</h:form>
-								</p:tab>
-								<!-- COBERTURAS -->
-								<p:tab title="#{emision['anexo.titulo.tab.cob']}">
-									<h:form id="coberturaForm">
-										<p:dataTable value="#{accidentesPersonalesBacking.coberturasDTO}" var="cobertura" paginator="true" rows="4">
-											<p:column>
-												<f:facet name="header">
-													<h:outputLabel value="#{emision['anexo.titulo.cob']}" />
-												</f:facet>
-												<h:outputText value="#{cobertura.cobertura}" />
-											</p:column>
-											<p:column>
-												<f:facet name="header">
-													<h:outputLabel value="#{emision['lbl.seleccion']}" />
-												</f:facet>
-												<div align="center">
-													<p:selectBooleanCheckbox value="#{cobertura.seleccion}" />
-												</div>
-											</p:column>
-										</p:dataTable>
-									</h:form>
-								</p:tab>
-								<!-- CONDICIONES ESPECIALES -->
-								<p:tab title="#{emision['anexo.titulo.tab.cep']}">
-									<h:form id="condicionEspForm">
-										<p:dataTable value="#{accidentesPersonalesBacking.condicionesEspecialesDTO}" var="condicion" paginator="true" >
-											<p:column>
-												<f:facet name="header">
-													<h:outputLabel value="#{emision['anexo.titulo.cep']}" />
-												</f:facet>
-												<h:outputText value="#{condicion.condicionEspecial}" />
-											</p:column>
-											<p:column>
-												<f:facet name="header">
-													<h:outputLabel value="#{emision['lbl.seleccion']}" />
-												</f:facet>
-												<div align="center">
-													<p:selectBooleanCheckbox value="#{condicion.seleccion}" />
-												</div>
-											</p:column>
-										</p:dataTable>
-									</h:form>
-								</p:tab>
-								<!-- CLAUSULAS ADICIONALES -->
-								<p:tab title="#{emision['ap.tab.clausulasAdicionales']}">
-									<h:form id="clausulaAddEspForm">
-										<p:dataTable value="#{accidentesPersonalesBacking.clausulasAdicionalesDTO}" var="clausula" paginator="true" >
-											<p:column>
-												<f:facet name="header">
-													<h:outputLabel value="#{emision['anexo.titulo.cad']}" />
-												</f:facet>
-												<h:outputText value="#{clausula.clausula}" />
-											</p:column>
-											<p:column>
-												<f:facet name="header">
-													<h:outputLabel value="#{emision['lbl.seleccion']}" />
-												</f:facet>
-												<div align="center">
-													<p:selectBooleanCheckbox value="#{clausula.seleccion}" />
-												</div>
-											</p:column>
-										</p:dataTable>
-									</h:form>
-								</p:tab>
-
-								<!-- GRUPOS -->
-								<p:tab title="#{emision['ap.tab.grupos']}">
-									<h:form id="formGrupos">
-										<p:messages id="messagesGrupos" showDetail="true" autoUpdate="true" closable="true" />
-										<div align="center">
-											<h:panelGrid columns="1">
-												<f:facet name="header">
-													<p:outputLabel value="#{emision['ap.grupo.titulo']}" styleClass="negrita" />
-												</f:facet>
-												<p:separator id="customSeparator" style="width:auto;height:1px" />
-												<p:growl id="messages" showDetail="true" />
-												<p:panelGrid columns="2">
-													<p:outputLabel value="#{emision['ap.grupo.numeroGrupo']}" styleClass="negrita" />
-													<p:inputText value="#{ramoAccidentesPersonalesBean.numGrupo}" />
-
-													<p:outputLabel value="#{emision['ap.grupo.nombreGrupo']}" styleClass="negrita" />
-													<p:inputText value="#{ramoAccidentesPersonalesBean.nomGrupo}" />
-
-													<p:outputLabel value="#{emision['ap.grupo.numeroPersonas']}" styleClass="negrita" />
-													<p:inputText value="#{ramoAccidentesPersonalesBean.numPersonas}" />
-
-													<p:outputLabel value="#{emision['ap.grupo.actividad']}" styleClass="negrita" />
-													<p:inputText value="#{ramoAccidentesPersonalesBean.actividad}" />
-
-													<p:outputLabel value="#{emision['ap.grupo.valorGrupo']}" styleClass="negrita" />
-													<p:inputText value="#{ramoAccidentesPersonalesBean.valorGrupo}" />
-												</p:panelGrid>
-												<f:facet name="footer">
-													<div align="center">
-														<p:commandButton id="agregarGrupo" update="formGrupos" icon="icon-add" value="#{emision['boton.agregar']}"
-															actionListener="#{ramoAccidentesPersonalesBean.addGrupo}" title="Agregar" />
-													</div>
-												</f:facet>
-											</h:panelGrid>
-											<p:spacer height="30px;" />
-											<p:dataTable id="tablaGrupos" value="#{ramoAccidentesPersonalesBean.grupos}" var="obj" widgetVar="50" style="width: 60%;" editable="true">
-												<p:ajax event="rowEdit" listener="#{ramoAccidentesPersonalesBean.onEdit}" />
-												<p:ajax event="rowEditCancel" listener="#{ramoAccidentesPersonalesBean.onCancel}" />
-												<p:column>
-													<f:facet name="header">
-														<h:outputText value="#{emision['ap.grupo.numeroGrupo']}" />
-													</f:facet>
-													<p:cellEditor>
-														<f:facet name="output">
-															<h:outputText value="#{obj.numGrupo}" />
-														</f:facet>
-														<f:facet name="input">
-															<p:inputText value="#{obj.numGrupo}" />
-														</f:facet>
-													</p:cellEditor>
-												</p:column>
-												<p:column>
-													<f:facet name="header">
-														<h:outputText value="#{emision['ap.grupo.nombreGrupo']}" />
-													</f:facet>
-													<p:cellEditor>
-														<f:facet name="output">
-															<h:outputText value="#{obj.nomGrupo}" />
-														</f:facet>
-														<f:facet name="input">
-															<p:inputText value="#{obj.nomGrupo}" />
-														</f:facet>
-													</p:cellEditor>
-												</p:column>
-												<p:column>
-													<f:facet name="header">
-														<h:outputText value="#{emision['ap.grupo.numeroPersonas']}" />
-													</f:facet>
-													<p:cellEditor>
-														<f:facet name="output">
-															<h:outputText value="#{obj.numPersonas}" />
-														</f:facet>
-														<f:facet name="input">
-															<p:inputText value="#{obj.numPersonas}" />
-														</f:facet>
-													</p:cellEditor>
-												</p:column>
-												<p:column>
-													<f:facet name="header">
-														<h:outputText value="#{emision['ap.grupo.actividad']}" />
-													</f:facet>
-													<p:cellEditor>
-														<f:facet name="output">
-															<h:outputText value="#{obj.actividad}" />
-														</f:facet>
-														<f:facet name="input">
-															<p:inputText value="#{obj.actividad}" />
-														</f:facet>
-													</p:cellEditor>
-												</p:column>
-												<p:column>
-													<f:facet name="header">
-														<h:outputText value="#{emision['ap.grupo.valorGrupo']}" />
-													</f:facet>
-													<p:cellEditor>
-														<f:facet name="output">
-															<h:outputText value="#{obj.valorGrupo}" />
-														</f:facet>
-														<f:facet name="input">
-															<p:inputText value="#{obj.valorGrupo}" />
-														</f:facet>
-													</p:cellEditor>
-												</p:column>
-												<p:column headerText="Options" style="width:50px">
-													<p:rowEditor />
-												</p:column>
-											</p:dataTable>
-										</div>
-									</h:form>
-								</p:tab>
-
-								<!-- MIEMBROS GRUPO -->
-								<p:tab title="#{emision['ap.grupo.miembroGrupo']}">
+						<p:tabView id="tabGeneral">
+							<!-- RAMO ACCIDENTES PERSONALES -->
+							<p:tab id="tabRamo" title="#{emision['ap.tab.principal']}">
+								<h:form id="formPrincipal">
 									<div align="center">
-										<h:form id="formMiembrosGrupo">
-											<h:panelGrid columns="1">
-												<f:facet name="header">
-													<p:outputLabel value="#{emision['ap.grupo.miembroGrupo.titulo']}" styleClass="negrita" />
-												</f:facet>
-												<p:separator id="customSeparadorMiembrosGrupo" style="width:auto;height:1px" />
-												<p:growl id="messagesAsegurado" showDetail="true" />
-												<h:panelGrid columns="2">
-													<p:outputLabel value="#{emision['ap.grupo.miembroGrupo.titular']}" styleClass="negrita" />
-													<p:inputText value="" />
-													<p:outputLabel value="#{emision['ap.grupo.miembroGrupo.grupo']}" styleClass="negrita" />
-													<p:selectOneRadio value="#{ramoAccidentesPersonalesBean.grupo}">
-														<f:selectItem itemLabel="Grupo 1" itemValue="1" />
-														<f:selectItem itemLabel="Grupo 2" itemValue="2" />
-														<f:selectItem itemLabel="Grupo 3" itemValue="3" />
-														<f:selectItem itemLabel="Grupo 4" itemValue="4" />
-													</p:selectOneRadio>
-													<p:outputLabel value="#{emision['ap.grupo.miembrosGrupo.nombre']}" styleClass="negrita" />
-													<p:inputText value="" />
-													<p:outputLabel value="#{emision['ap.grupo.miembroGrupo.fechaNacimiento']}" styleClass="negrita" />
-													<p:inputText value="#{ramoAccidentesPersonalesBean.fechaNacimiento}" />
-													<p:outputLabel value="#{emision['ap.grupo.miembroGrupo.parentesco']}" styleClass="negrita" />
-													<p:selectOneMenu value="#{ramoAccidentesPersonalesBean.parentezco}" effect="drop">
-														<f:selectItem itemLabel="Seleccione" noSelectionOption="true" />
-														<f:selectItems value="#{accidentesPersonalesBacking.parentescoItems}" />
-													</p:selectOneMenu>
-													<p:outputLabel value="#{emision['ap.grupo.miembroGrupo.sexo']}" styleClass="negrita" />
-													<p:selectOneMenu id="idSexo" value="#{ramoAccidentesPersonalesBean.sexo}" effect="drop">
-														<f:selectItem itemLabel="Seleccione" noSelectionOption="true" />
-														<f:selectItems value="#{accidentesPersonalesBacking.sexoItems}" />
-													</p:selectOneMenu>
-													<p:outputLabel value="#{emision['agropecuario.objeto.edad']}" styleClass="negrita" />
-													<p:inputText value="#{ramoAccidentesPersonalesBean.edad}" />
+										<h:panelGrid columns="1">
+											<p:panel>
+												<h:panelGrid columns="4" cellpadding="5">
+													<p:outputLabel value="#{emision['ap.primaNetaPorPersona']}" styleClass="negrita" />
+													<p:inputText value="#{ramoAccidentesPersonalesBean.primaNetaPersona}" />
+													<p:outputLabel value="#{emision['ap.primaTotal']}" styleClass="negrita" />
+													<p:inputText value="#{ramoAccidentesPersonalesBean.primaTotalPersona}" />
+													<p:outputLabel value="#{emision['ap.facturacion']}" styleClass="negrita" />
+													<p:inputText value="#{ramoAccidentesPersonalesBean.facturacion}" />
+													<p:outputLabel value="#{emision['ap.tasa']}" styleClass="negrita" />
+													<p:inputText value="#{ramoAccidentesPersonalesBean.tasa}" />
 												</h:panelGrid>
-											</h:panelGrid>
+												<h:panelGrid columns="1">
+													<p:outputLabel value="#{emision['ap.polizaVigente']}" styleClass="negrita" />
+													<p:fileUpload fileLimit="1" />
+												</h:panelGrid>
 
-										</h:form>
+												<h:panelGrid columns="2">
+													<h:outputLabel value="#{emision['emision.deducibles']}" />
+													<h:graphicImage name="deducibles.jpg" library="img" />
+												</h:panelGrid>
+
+												<h:panelGrid columns="2">
+													<p:outputLabel value="#{emision['ap.deducible']}" styleClass="negrita" />
+													<p:inputText value="#{ramoAccidentesPersonalesBean.deducible}" />
+												</h:panelGrid>
+											</p:panel>
+										</h:panelGrid>
 									</div>
+								</h:form>
+							</p:tab>
+							<!-- COBERTURAS -->
+							<p:tab title="#{emision['anexo.titulo.tab.cob']}">
+								<h:form id="coberturaForm">
+									<p:dataTable value="#{accidentesPersonalesBacking.coberturasDTO}" var="cobertura" paginator="true" rows="4">
+										<p:column>
+											<f:facet name="header">
+												<h:outputLabel value="#{emision['anexo.titulo.cob']}" />
+											</f:facet>
+											<h:outputText value="#{cobertura.cobertura}" />
+										</p:column>
+										<p:column>
+											<f:facet name="header">
+												<h:outputLabel value="#{emision['lbl.seleccion']}" />
+											</f:facet>
+											<div align="center">
+												<p:selectBooleanCheckbox value="#{cobertura.seleccion}" />
+											</div>
+										</p:column>
+									</p:dataTable>
+								</h:form>
+							</p:tab>
+							<!-- CONDICIONES ESPECIALES -->
+							<p:tab title="#{emision['anexo.titulo.tab.cep']}">
+								<h:form id="condicionEspForm">
+									<p:dataTable value="#{accidentesPersonalesBacking.condicionesEspecialesDTO}" var="condicion" paginator="true">
+										<p:column>
+											<f:facet name="header">
+												<h:outputLabel value="#{emision['anexo.titulo.cep']}" />
+											</f:facet>
+											<h:outputText value="#{condicion.condicionEspecial}" />
+										</p:column>
+										<p:column>
+											<f:facet name="header">
+												<h:outputLabel value="#{emision['lbl.seleccion']}" />
+											</f:facet>
+											<div align="center">
+												<p:selectBooleanCheckbox value="#{condicion.seleccion}" />
+											</div>
+										</p:column>
+									</p:dataTable>
+								</h:form>
+							</p:tab>
+							<!-- CLAUSULAS ADICIONALES -->
+							<p:tab title="#{emision['ap.tab.clausulasAdicionales']}">
+								<h:form id="clausulaAddEspForm">
+									<p:dataTable value="#{accidentesPersonalesBacking.clausulasAdicionalesDTO}" var="clausula" paginator="true">
+										<p:column>
+											<f:facet name="header">
+												<h:outputLabel value="#{emision['anexo.titulo.cad']}" />
+											</f:facet>
+											<h:outputText value="#{clausula.clausula}" />
+										</p:column>
+										<p:column>
+											<f:facet name="header">
+												<h:outputLabel value="#{emision['lbl.seleccion']}" />
+											</f:facet>
+											<div align="center">
+												<p:selectBooleanCheckbox value="#{clausula.seleccion}" />
+											</div>
+										</p:column>
+									</p:dataTable>
+								</h:form>
+							</p:tab>
 
-								</p:tab>
-							</p:tabView>
-						</p:panel>
+							<!-- GRUPOS -->
+							<p:tab title="#{emision['ap.tab.grupos']}">
+								<h:form id="formGrupos">
+									<p:messages id="messagesGrupos" showDetail="true" autoUpdate="true" closable="true" />
+									<div align="center">
+										<h:panelGrid columns="1">
+											<f:facet name="header">
+												<p:outputLabel value="#{emision['ap.grupo.titulo']}" styleClass="negrita" />
+											</f:facet>
+											<p:separator id="customSeparator" style="width:auto;height:1px" />
+											<p:growl id="messages" showDetail="true" />
+											<p:panelGrid columns="2">
+												<p:outputLabel value="#{emision['ap.grupo.numeroGrupo']}" styleClass="negrita" />
+												<p:inputText value="#{ramoAccidentesPersonalesBean.numGrupo}" />
+
+												<p:outputLabel value="#{emision['ap.grupo.nombreGrupo']}" styleClass="negrita" />
+												<p:inputText value="#{ramoAccidentesPersonalesBean.nomGrupo}" />
+
+												<p:outputLabel value="#{emision['ap.grupo.numeroPersonas']}" styleClass="negrita" />
+												<p:inputText value="#{ramoAccidentesPersonalesBean.numPersonas}" />
+
+												<p:outputLabel value="#{emision['ap.grupo.actividad']}" styleClass="negrita" />
+												<p:inputText value="#{ramoAccidentesPersonalesBean.actividad}" />
+
+												<p:outputLabel value="#{emision['ap.grupo.valorGrupo']}" styleClass="negrita" />
+												<p:inputText value="#{ramoAccidentesPersonalesBean.valorGrupo}" />
+											</p:panelGrid>
+											<f:facet name="footer">
+												<div align="center">
+													<p:commandButton id="agregarGrupo" update="formGrupos" icon="icon-add" value="#{emision['boton.agregar']}"
+														actionListener="#{ramoAccidentesPersonalesBean.addGrupo}" title="Agregar" />
+												</div>
+											</f:facet>
+										</h:panelGrid>
+										<p:spacer height="30px;" />
+										<p:dataTable id="tablaGrupos" value="#{ramoAccidentesPersonalesBean.grupos}" var="obj" widgetVar="50" style="width: 60%;" editable="true">
+											<p:ajax event="rowEdit" listener="#{ramoAccidentesPersonalesBean.onEdit}" />
+											<p:ajax event="rowEditCancel" listener="#{ramoAccidentesPersonalesBean.onCancel}" />
+											<p:column>
+												<f:facet name="header">
+													<h:outputText value="#{emision['ap.grupo.numeroGrupo']}" />
+												</f:facet>
+												<p:cellEditor>
+													<f:facet name="output">
+														<h:outputText value="#{obj.numGrupo}" />
+													</f:facet>
+													<f:facet name="input">
+														<p:inputText value="#{obj.numGrupo}" />
+													</f:facet>
+												</p:cellEditor>
+											</p:column>
+											<p:column>
+												<f:facet name="header">
+													<h:outputText value="#{emision['ap.grupo.nombreGrupo']}" />
+												</f:facet>
+												<p:cellEditor>
+													<f:facet name="output">
+														<h:outputText value="#{obj.nomGrupo}" />
+													</f:facet>
+													<f:facet name="input">
+														<p:inputText value="#{obj.nomGrupo}" />
+													</f:facet>
+												</p:cellEditor>
+											</p:column>
+											<p:column>
+												<f:facet name="header">
+													<h:outputText value="#{emision['ap.grupo.numeroPersonas']}" />
+												</f:facet>
+												<p:cellEditor>
+													<f:facet name="output">
+														<h:outputText value="#{obj.numPersonas}" />
+													</f:facet>
+													<f:facet name="input">
+														<p:inputText value="#{obj.numPersonas}" />
+													</f:facet>
+												</p:cellEditor>
+											</p:column>
+											<p:column>
+												<f:facet name="header">
+													<h:outputText value="#{emision['ap.grupo.actividad']}" />
+												</f:facet>
+												<p:cellEditor>
+													<f:facet name="output">
+														<h:outputText value="#{obj.actividad}" />
+													</f:facet>
+													<f:facet name="input">
+														<p:inputText value="#{obj.actividad}" />
+													</f:facet>
+												</p:cellEditor>
+											</p:column>
+											<p:column>
+												<f:facet name="header">
+													<h:outputText value="#{emision['ap.grupo.valorGrupo']}" />
+												</f:facet>
+												<p:cellEditor>
+													<f:facet name="output">
+														<h:outputText value="#{obj.valorGrupo}" />
+													</f:facet>
+													<f:facet name="input">
+														<p:inputText value="#{obj.valorGrupo}" />
+													</f:facet>
+												</p:cellEditor>
+											</p:column>
+											<p:column headerText="Options" style="width:50px">
+												<p:rowEditor />
+											</p:column>
+										</p:dataTable>
+									</div>
+								</h:form>
+							</p:tab>
+
+							<!-- MIEMBROS GRUPO -->
+							<p:tab title="#{emision['ap.grupo.miembroGrupo']}">
+								<div align="center">
+									<h:form id="formMiembrosGrupo">
+										<h:panelGrid columns="1">
+											<f:facet name="header">
+												<p:outputLabel value="#{emision['ap.grupo.miembroGrupo.titulo']}" styleClass="negrita" />
+											</f:facet>
+											<p:separator id="customSeparadorMiembrosGrupo" style="width:auto;height:1px" />
+											<p:growl id="messagesAsegurado" showDetail="true" />
+											<h:panelGrid columns="2">
+												<p:outputLabel value="#{emision['ap.grupo.miembroGrupo.titular']}" styleClass="negrita" />
+												<p:inputText value="" />
+												<p:outputLabel value="#{emision['ap.grupo.miembroGrupo.grupo']}" styleClass="negrita" />
+												<p:selectOneRadio value="#{ramoAccidentesPersonalesBean.grupo}">
+													<f:selectItem itemLabel="Grupo 1" itemValue="1" />
+													<f:selectItem itemLabel="Grupo 2" itemValue="2" />
+													<f:selectItem itemLabel="Grupo 3" itemValue="3" />
+													<f:selectItem itemLabel="Grupo 4" itemValue="4" />
+												</p:selectOneRadio>
+												<p:outputLabel value="#{emision['ap.grupo.miembrosGrupo.nombre']}" styleClass="negrita" />
+												<p:inputText value="" />
+												<p:outputLabel value="#{emision['ap.grupo.miembroGrupo.fechaNacimiento']}" styleClass="negrita" />
+												<p:inputText value="#{ramoAccidentesPersonalesBean.fechaNacimiento}" />
+												<p:outputLabel value="#{emision['ap.grupo.miembroGrupo.parentesco']}" styleClass="negrita" />
+												<p:selectOneMenu value="#{ramoAccidentesPersonalesBean.parentezco}" effect="drop">
+													<f:selectItem itemLabel="Seleccione" noSelectionOption="true" />
+													<f:selectItems value="#{accidentesPersonalesBacking.parentescoItems}" />
+												</p:selectOneMenu>
+												<p:outputLabel value="#{emision['ap.grupo.miembroGrupo.sexo']}" styleClass="negrita" />
+												<p:selectOneMenu id="idSexo" value="#{ramoAccidentesPersonalesBean.sexo}" effect="drop">
+													<f:selectItem itemLabel="Seleccione" noSelectionOption="true" />
+													<f:selectItems value="#{accidentesPersonalesBacking.sexoItems}" />
+												</p:selectOneMenu>
+												<p:outputLabel value="#{emision['agropecuario.objeto.edad']}" styleClass="negrita" />
+												<p:inputText value="#{ramoAccidentesPersonalesBean.edad}" />
+											</h:panelGrid>
+										</h:panelGrid>
+
+									</h:form>
+								</div>
+
+							</p:tab>
+						</p:tabView>
 					</ui:define>
 				</ui:decorate>
 			</ui:define>
