@@ -134,5 +134,7 @@
 		<class>ec.com.avila.hiperion.emision.entities.RolMenu</class>
 		<class>ec.com.avila.hiperion.emision.entities.PlanAsm</class>
 		<class>ec.com.avila.hiperion.emision.entities.CobertCascoAereo</class>
+		<class>ec.com.avila.hiperion.emision.entities.CobertAccPer</class>
+		<class>ec.com.avila.hiperion.emision.entities.CondEspAccPer</class>
 	</persistence-unit>
 </persistence>
