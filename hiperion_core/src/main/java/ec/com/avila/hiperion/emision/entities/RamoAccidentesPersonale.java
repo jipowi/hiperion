@@ -40,9 +40,20 @@ public class RamoAccidentesPersonale extends Auditoria implements Serializable {
 	@Column(name = "tasa_accidente")
 	private BigDecimal tasaAccidente;
 
+	@Column(name = "facturacion")
+	private Integer facturacion;
+
 	// bi-directional many-to-one association to ClausulasAddAccPer
 	@OneToMany(mappedBy = "ramoAccidentesPersonale")
 	private List<ClausulasAddAccPer> clausulasAddAccPers;
+
+	// bi-directional many-to-one association to ClausulasAddAccPer
+	@OneToMany(mappedBy = "ramoAccidentesPersonale")
+	private List<CobertAccPer> coberturasAcc;
+
+	// bi-directional many-to-one association to ClausulasAddAccPer
+	@OneToMany(mappedBy = "ramoAccidentesPersonale")
+	private List<CondEspAccPer> condicionesEspAcc;
 
 	// bi-directional many-to-one association to GrupoAccPersonale
 	@OneToMany(mappedBy = "ramoAccidentesPersonale")
@@ -138,6 +149,51 @@ public class RamoAccidentesPersonale extends Auditoria implements Serializable {
 
 	public void setPoliza(Poliza poliza) {
 		this.poliza = poliza;
+	}
+
+	/**
+	 * @return the facturacion
+	 */
+	public Integer getFacturacion() {
+		return facturacion;
+	}
+
+	/**
+	 * @param facturacion
+	 *            the facturacion to set
+	 */
+	public void setFacturacion(Integer facturacion) {
+		this.facturacion = facturacion;
+	}
+
+	/**
+	 * @return the coberturasAcc
+	 */
+	public List<CobertAccPer> getCoberturasAcc() {
+		return coberturasAcc;
+	}
+
+	/**
+	 * @param coberturasAcc
+	 *            the coberturasAcc to set
+	 */
+	public void setCoberturasAcc(List<CobertAccPer> coberturasAcc) {
+		this.coberturasAcc = coberturasAcc;
+	}
+
+	/**
+	 * @return the condicionesEspAcc
+	 */
+	public List<CondEspAccPer> getCondicionesEspAcc() {
+		return condicionesEspAcc;
+	}
+
+	/**
+	 * @param condicionesEspAcc
+	 *            the condicionesEspAcc to set
+	 */
+	public void setCondicionesEspAcc(List<CondEspAccPer> condicionesEspAcc) {
+		this.condicionesEspAcc = condicionesEspAcc;
 	}
 
 }
