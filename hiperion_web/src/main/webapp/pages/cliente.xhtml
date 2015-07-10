@@ -7,7 +7,7 @@
 		<h:form id="formPricipal">
 			<p:panel>
 				<p:messages id="messagesCliente" showDetail="true" autoUpdate="true" closable="true" />
-				
+
 				<h:panelGrid columns="2">
 					<h:panelGrid columns="1">
 						<!-- PANEL DE BUSQUEDA -->
@@ -86,7 +86,8 @@
 
 						<p:outputLabel for="tipoIdentificacionId" value="#{administrador['cliente.dlg.agregar.tipoIdentificacion']}" styleClass="negrita" />
 						<p:selectOneMenu id="tipoIdentificacionId" value="#{clienteBean.tipoIdentificacion}" required="true"
-							requiredMessage="#{administrador['cliente.dlg.agregar.msg.tipoIdentificacion']}" effect="drop" disabled="#{clienteBacking.activarPanelPersonaJuridica}">
+							requiredMessage="#{administrador['cliente.dlg.agregar.msg.tipoIdentificacion']}" effect="drop"
+							disabled="#{clienteBacking.activarPanelPersonaJuridica}">
 							<f:selectItem itemLabel="Seleccione" noSelectionOption="true" />
 							<f:selectItems value="#{clienteBacking.tipoIdentificacionItems}" />
 						</p:selectOneMenu>
@@ -115,8 +116,7 @@
 							<p:outputLabel for="fechaNacimientoId" value="#{administrador['cliente.dlg.agregar.fechaNacimiento']}" styleClass="negrita" />
 							<p:outputLabel for="contactoId" value="#{administrador['cliente.dlg.agregar.contacto']}" styleClass="negrita" />
 							<p:inputText id="actProfecionId" value="#{clienteBean.actividadProfecion}" styleClass="DialogoCliente-actProfesion" />
-							<p:calendar id="fechaNacimientoId" navigator="true" effect="fold" yearRange="c-100:c-17" value="#{clienteBean.fechaNacimiento}"
-								pattern="MM/dd/yyyy" styleClass="DialogCliente-fechaNacimiento" />
+							<p:calendar id="fechaNacimientoId" value="#{clienteBean.fechaNacimiento}" pattern="MM/dd/yyyy" mask="true" />
 							<p:commandLink id="contactoId">
 								<h:graphicImage name="icono-contacto.jpg" onclick="contactosDlg.show()" library="img" height="30px;" />
 							</p:commandLink>
