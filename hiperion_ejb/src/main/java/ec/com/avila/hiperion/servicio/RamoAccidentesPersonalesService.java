@@ -9,6 +9,7 @@ import java.util.List;
 import javax.ejb.Local;
 
 import ec.com.avila.hiperion.comun.HiperionException;
+import ec.com.avila.hiperion.emision.entities.Poliza;
 import ec.com.avila.hiperion.emision.entities.RamoAccidentesPersonale;
 
 /**
@@ -31,7 +32,7 @@ public interface RamoAccidentesPersonalesService {
 	 * @param ramoAccidentesPersonales
 	 * @throws HiperionException
 	 */
-	public void guardarRamoAccidentesPersonales(RamoAccidentesPersonale ramoAccidentesPersonales) throws HiperionException;
+	public void guardarRamoAccidentesPersonales(RamoAccidentesPersonale ramoAccidentesPersonales, Poliza poliza) throws HiperionException;
 
 	/**
 	 * 
@@ -45,17 +46,4 @@ public interface RamoAccidentesPersonalesService {
 	 */
 	public List<RamoAccidentesPersonale> consultarRamoAccidentesPersonales() throws HiperionException;
 
-	/**
-	 * 
-	 * <b> Permite modificar registros de la tabla RamoAccidentesPersonales </b>
-	 * <p>
-	 * [Author: Franklin, Date: 31/12/2013]
-	 * </p>
-	 * 
-	 * @param ramoAccidentesPersonales
-	 * @throws HiperionException
-	 */
-	public void modificarRamoAccidentesPersonales(RamoAccidentesPersonale ramoAccidentesPersonales) throws HiperionException;
-
-	
 }
