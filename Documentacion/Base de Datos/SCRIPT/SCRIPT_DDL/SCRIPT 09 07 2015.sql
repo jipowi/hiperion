@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      PostgreSQL 8                                 */
-/* Created on:     09/07/2015 22:49:31                          */
+/* Created on:     10/07/2015 15:23:40                          */
 /*==============================================================*/
 
 
@@ -754,6 +754,30 @@ ID_COBERT_ROBO
 /*==============================================================*/
 create  index COBERTURA_ROBO_FK on COBERTURA_ROBO (
 ID_ROBO
+);
+
+/*==============================================================*/
+/* Table: COBERT_ACC_PER                                        */
+/*==============================================================*/
+create table COBERT_ACC_PER (
+   ID_COBERTURA         SERIAL               not null,
+   ID_ACCIDENTES        INT4                 null,
+   COBERTURA_ACC_PERSONALES TEXT                 null,
+   constraint PK_COBERT_ACC_PER primary key (ID_COBERTURA)
+);
+
+/*==============================================================*/
+/* Index: COBERT_ACC_PER_PK                                     */
+/*==============================================================*/
+create unique index COBERT_ACC_PER_PK on COBERT_ACC_PER (
+ID_COBERTURA
+);
+
+/*==============================================================*/
+/* Index: COBERT_ACC_PER_FK                                     */
+/*==============================================================*/
+create  index COBERT_ACC_PER_FK on COBERT_ACC_PER (
+ID_ACCIDENTES
 );
 
 /*==============================================================*/
@@ -1598,6 +1622,30 @@ ID_COBERT_TRANSPORTE
 /*==============================================================*/
 create  index COBERT_TRANS_FK on COBERT_TRANS (
 ID_TRANSPORTE
+);
+
+/*==============================================================*/
+/* Table: COND_ESP_ACC_PERS                                     */
+/*==============================================================*/
+create table COND_ESP_ACC_PERS (
+   ID_CONDICION_ESP_ACC SERIAL               not null,
+   ID_ACCIDENTES        INT4                 null,
+   CONDICION_ACC        TEXT                 null,
+   constraint PK_COND_ESP_ACC_PERS primary key (ID_CONDICION_ESP_ACC)
+);
+
+/*==============================================================*/
+/* Index: COND_ESP_ACC_PERS_PK                                  */
+/*==============================================================*/
+create unique index COND_ESP_ACC_PERS_PK on COND_ESP_ACC_PERS (
+ID_CONDICION_ESP_ACC
+);
+
+/*==============================================================*/
+/* Index: COND_ESP_ACC_PERS_FK                                  */
+/*==============================================================*/
+create  index COND_ESP_ACC_PERS_FK on COND_ESP_ACC_PERS (
+ID_ACCIDENTES
 );
 
 /*==============================================================*/
@@ -4118,6 +4166,11 @@ alter table COBERTURA_ROBO
       references RAMO_ROBO_ASALTO (ID_ROBO)
       on delete restrict on update restrict;
 
+alter table COBERT_ACC_PER
+   add constraint FK_COBERT_A_RELATIONS_RAMO_ACC foreign key (ID_ACCIDENTES)
+      references RAMO_ACCIDENTES_PERSONALES (ID_ACCIDENTES)
+      on delete restrict on update restrict;
+
 alter table COBERT_ADD_CASCO
    add constraint FK_COBERT_A_COB_ADD_C_RAMO_CAS foreign key (ID_CASCO)
       references RAMO_CASCO_MARITIMO (ID_CASCO)
@@ -4261,6 +4314,11 @@ alter table COBERT_SOAT
 alter table COBERT_TRANS
    add constraint FK_COBERT_T_COB_TRANS_RAMO_TRA foreign key (ID_TRANSPORTE)
       references RAMO_TRANSPORTE (ID_TRANSPORTE)
+      on delete restrict on update restrict;
+
+alter table COND_ESP_ACC_PERS
+   add constraint FK_COND_ESP_RELATIONS_RAMO_ACC foreign key (ID_ACCIDENTES)
+      references RAMO_ACCIDENTES_PERSONALES (ID_ACCIDENTES)
       on delete restrict on update restrict;
 
 alter table COND_ESP_INCENDIO
