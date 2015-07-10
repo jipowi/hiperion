@@ -275,6 +275,7 @@ public class AgropecuarioBacking implements Serializable {
 						objAsegAgropecuario.setColorObjAgro(objeto.getColor());
 						objAsegAgropecuario.setEdadObjAgro(objeto.getEdad());
 						objAsegAgropecuario.setMontoAsegObjAgro(objeto.getMontoAsegurado());
+						objAsegAgropecuario.setTipoObjeto(Integer.parseInt(ramoAgropecuarioBean.getTipoObjeto()));
 						objAsegAgropecuario.setIdUsuarioCreacion(usuario.getIdUsuario());
 						objAsegAgropecuario.setFechaCreacion(new Date());
 						objAsegAgropecuario.setEstado(EstadoEnum.A);
@@ -292,6 +293,7 @@ public class AgropecuarioBacking implements Serializable {
 						objAsegAgropecuario.setValorAseguradoAgro(objeto.getValorAsegurado());
 						objAsegAgropecuario.setDetalleAgro(objeto.getDetalle());
 						objAsegAgropecuario.setUbicacion(objeto.getUbicacion());
+						objAsegAgropecuario.setTipoObjeto(Integer.parseInt(ramoAgropecuarioBean.getTipoObjeto()));
 						objAsegAgropecuario.setIdUsuarioCreacion(usuario.getIdUsuario());
 						objAsegAgropecuario.setFechaCreacion(new Date());
 						objAsegAgropecuario.setEstado(EstadoEnum.A);
@@ -314,63 +316,65 @@ public class AgropecuarioBacking implements Serializable {
 			}
 
 			// Clausulas Adicionales
-			if (clausulasAdicionalesDTO.isEmpty()) {
-				MessagesController.addWarn(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.warn.clausulasAdd"));
-			} else {
-				List<ClausulasAddAgro> clausulasAgropecuario = new ArrayList<>();
-				for (ClausulaAdicionalDTO clausualaDTO : clausulasAdicionalesDTO) {
-					if (clausualaDTO.getSeleccion()) {
+			int contClausulas = 0;
 
-						ClausulasAddAgro clausulaAgropecuario = new ClausulasAddAgro();
-						clausulaAgropecuario.setClausulaAddAgro(clausualaDTO.getClausula());
-						clausulaAgropecuario.setEstado(EstadoEnum.A);
-						clausulaAgropecuario.setFechaCreacion(new Date());
-						clausulaAgropecuario.setIdUsuarioCreacion(usuario.getIdUsuario());
+			List<ClausulasAddAgro> clausulasAgropecuario = new ArrayList<>();
+			for (ClausulaAdicionalDTO clausualaDTO : clausulasAdicionalesDTO) {
+				if (clausualaDTO.getSeleccion()) {
+					contClausulas++;
+					ClausulasAddAgro clausulaAgropecuario = new ClausulasAddAgro();
+					clausulaAgropecuario.setClausulaAddAgro(clausualaDTO.getClausula());
+					clausulaAgropecuario.setEstado(EstadoEnum.A);
+					clausulaAgropecuario.setFechaCreacion(new Date());
+					clausulaAgropecuario.setIdUsuarioCreacion(usuario.getIdUsuario());
 
-						clausulasAgropecuario.add(clausulaAgropecuario);
-					}
+					clausulasAgropecuario.add(clausulaAgropecuario);
 				}
-				agropecuario.setClausulasAddAgros(clausulasAgropecuario);
 			}
+			if (contClausulas == 0) {
+				MessagesController.addWarn(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.warn.clausulasAdd"));
+			}
+			agropecuario.setClausulasAddAgros(clausulasAgropecuario);
 
 			// Coberturas Transporte
-			if (coberturasTransporteDTO.isEmpty()) {
-				MessagesController.addWarn(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.warn.coberturas"));
-			} else {
-				List<CobertAgro> coberturasAgropecuario = new ArrayList<>();
-				for (CoberturaDTO coberturaDTO : coberturasTransporteDTO) {
-					if (coberturaDTO.getSeleccion()) {
-						CobertAgro coberturaAgropecuario = new CobertAgro();
-						coberturaAgropecuario.setCoberturaAgro(coberturaDTO.getCobertura());
-						coberturaAgropecuario.setEstado(EstadoEnum.A);
-						coberturaAgropecuario.setFechaCreacion(new Date());
-						coberturaAgropecuario.setIdUsuarioCreacion(usuario.getIdUsuario());
-						coberturaAgropecuario.setTipoCoberturaAgro("T");
+			int cont = 0;
+			List<CobertAgro> coberturasAgropecuario = new ArrayList<>();
+			for (CoberturaDTO coberturaDTO : coberturasTransporteDTO) {
+				if (coberturaDTO.getSeleccion()) {
+					cont++;
+					CobertAgro coberturaAgropecuario = new CobertAgro();
+					coberturaAgropecuario.setCoberturaAgro(coberturaDTO.getCobertura());
+					coberturaAgropecuario.setEstado(EstadoEnum.A);
+					coberturaAgropecuario.setFechaCreacion(new Date());
+					coberturaAgropecuario.setIdUsuarioCreacion(usuario.getIdUsuario());
+					coberturaAgropecuario.setTipoCoberturaAgro("T");
 
-						coberturasAgropecuario.add(coberturaAgropecuario);
-					}
+					coberturasAgropecuario.add(coberturaAgropecuario);
 				}
-
-				// coberturas Vida
-				for (CoberturaDTO coberturaDTO : coberturasVidaDTO) {
-					if (coberturaDTO.getSeleccion()) {
-						CobertAgro coberturaAgropecuario = new CobertAgro();
-						coberturaAgropecuario.setCoberturaAgro(coberturaDTO.getCobertura());
-						coberturaAgropecuario.setEstado(EstadoEnum.A);
-						coberturaAgropecuario.setFechaCreacion(new Date());
-						coberturaAgropecuario.setIdUsuarioCreacion(usuario.getIdUsuario());
-						coberturaAgropecuario.setTipoCoberturaAgro("V");
-
-						coberturasAgropecuario.add(coberturaAgropecuario);
-					}
-				}
-
-				agropecuario.setCobertAgros(coberturasAgropecuario);
 			}
+
+			// coberturas Vida
+			for (CoberturaDTO coberturaDTO : coberturasVidaDTO) {
+				if (coberturaDTO.getSeleccion()) {
+					cont++;
+					CobertAgro coberturaAgropecuario = new CobertAgro();
+					coberturaAgropecuario.setCoberturaAgro(coberturaDTO.getCobertura());
+					coberturaAgropecuario.setEstado(EstadoEnum.A);
+					coberturaAgropecuario.setFechaCreacion(new Date());
+					coberturaAgropecuario.setIdUsuarioCreacion(usuario.getIdUsuario());
+					coberturaAgropecuario.setTipoCoberturaAgro("V");
+
+					coberturasAgropecuario.add(coberturaAgropecuario);
+				}
+			}
+			if (cont == 0) {
+				MessagesController.addWarn(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.warn.coberturas"));
+			}
+			agropecuario.setCobertAgros(coberturasAgropecuario);
 
 			ramoAgropecuarioService.guardarAgropecuario(agropecuario, poliza);
 
-			MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.save.aseguradora"));
+			MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.save"));
 
 		} catch (HiperionException e) {
 			log.error("Error al momento de guardar el ramo agropecuario", e);

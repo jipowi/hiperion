@@ -313,10 +313,8 @@ public class PolizaBacking implements Serializable {
 
 			Calendar calendar = Calendar.getInstance();
 			calendar.setTime(polizaBean.getFechaDebito());
-			int dias = calendar.get(Calendar.DAY_OF_MONTH)*(i+1);
+			Date fechaCuota = FechasUtil.getInstancia().sumarMeses(polizaBean.getFechaDebito(), (i + 1));
 
-			Date fechaCuota = FechasUtil.getInstancia().sumarRestarDiasFecha(polizaBean.getFechaDebito(), dias);
-			
 			tablaAmortizacionDTO.setFechaVencimiento(fechaCuota);
 
 			tablaAmortizacionList.add(tablaAmortizacionDTO);

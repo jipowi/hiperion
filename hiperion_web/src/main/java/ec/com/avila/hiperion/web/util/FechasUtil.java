@@ -90,4 +90,15 @@ public class FechasUtil implements Serializable {
 		return calendar.getTime(); // Devuelve el objeto Date con los nuevos días añadidos
 
 	}
+
+	public Date sumarMeses(Date fecha, int meses) {
+
+		Calendar calendar = Calendar.getInstance();
+
+		calendar.setTime(fecha); 
+
+		calendar.add(Calendar.MONTH, meses);
+
+		return calendar.getTime();
+	}
 }

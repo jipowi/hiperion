@@ -162,7 +162,7 @@ public class AseguradoraBacking implements Serializable {
 		}
 
 		aseguradoraService.guardarAseguradora(aseguradora, contactosAseguradora);
-		MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.save"));
+		MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.save.aseguradora"));
 
 		aseguradora = new Aseguradora();
 		contactosAseguradora = new ArrayList<>();
