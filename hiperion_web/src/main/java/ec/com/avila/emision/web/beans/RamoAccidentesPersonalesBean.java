@@ -36,7 +36,7 @@ public class RamoAccidentesPersonalesBean implements Serializable {
 	private BigDecimal primaNetaPersona;
 	private BigDecimal primaTotalPersona;
 	private BigDecimal tasa;
-	private String facturacion;
+	private Integer facturacion;
 	private BigDecimal deducible;
 
 	// Tabla ClausulasAddAccPer
@@ -320,11 +320,11 @@ public class RamoAccidentesPersonalesBean implements Serializable {
 		this.valorCobertura = valorCobertura;
 	}
 
-	public String getFacturacion() {
+	public Integer getFacturacion() {
 		return facturacion;
 	}
 
-	public void setFacturacion(String facturacion) {
+	public void setFacturacion(Integer facturacion) {
 		this.facturacion = facturacion;
 	}
 
