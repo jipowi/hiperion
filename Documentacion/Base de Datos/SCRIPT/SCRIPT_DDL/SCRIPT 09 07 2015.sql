@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      PostgreSQL 8                                 */
-/* Created on:     09/07/2015 8:39:15                           */
+/* Created on:     09/07/2015 22:49:31                          */
 /*==============================================================*/
 
 
@@ -2778,7 +2778,6 @@ ID_TRANSPORTE
 /*==============================================================*/
 create table PAGO_POLIZA (
    ID_PAGO_POLIZA       SERIAL               not null,
-   ID_TARJETA           INT4                 null,
    NUMERO_FACTURA       TEXT                 null,
    SUBTOTAL             DECIMAL(8,2)         null,
    ADICIONAL_SEG_CAMPESINO DECIMAL(8,2)         null,
@@ -2790,6 +2789,9 @@ create table PAGO_POLIZA (
    FECHA_CREACION       DATE                 not null,
    FECHA_ACTUALIZACION  DATE                 null,
    ESTADO               TEXT                 not null,
+   TARJETA              TEXT                 null,
+   TIPO_PAGO            TEXT                 null,
+   NUMERO_MESES         NUMERIC              null,
    constraint PK_PAGO_POLIZA primary key (ID_PAGO_POLIZA)
 );
 
@@ -2798,13 +2800,6 @@ create table PAGO_POLIZA (
 /*==============================================================*/
 create unique index PAGO_POLIZA_PK on PAGO_POLIZA (
 ID_PAGO_POLIZA
-);
-
-/*==============================================================*/
-/* Index: PAGO_POLIZA_FK                                        */
-/*==============================================================*/
-create  index PAGO_POLIZA_FK on PAGO_POLIZA (
-ID_TARJETA
 );
 
 /*==============================================================*/
@@ -3951,24 +3946,6 @@ ID_MENU
 );
 
 /*==============================================================*/
-/* Table: TARJETA_CREDITO                                       */
-/*==============================================================*/
-create table TARJETA_CREDITO (
-   ID_TARJETA           SERIAL               not null,
-   TARJETA              TEXT                 null,
-   TIPO_PAGO            TEXT                 null,
-   NUMERO_MESES         NUMERIC              null,
-   constraint PK_TARJETA_CREDITO primary key (ID_TARJETA)
-);
-
-/*==============================================================*/
-/* Index: TARJETA_CREDITO_PK                                    */
-/*==============================================================*/
-create unique index TARJETA_CREDITO_PK on TARJETA_CREDITO (
-ID_TARJETA
-);
-
-/*==============================================================*/
 /* Table: TIPO_DIRECCION                                        */
 /*==============================================================*/
 create table TIPO_DIRECCION (
@@ -4479,11 +4456,6 @@ alter table OBJ_ASEG_ROTURA
 alter table OBJ_ASEG_TRANSPORTE
    add constraint FK_OBJ_ASEG_OBJ_ASEG__RAMO_TRA foreign key (ID_TRANSPORTE)
       references RAMO_TRANSPORTE (ID_TRANSPORTE)
-      on delete restrict on update restrict;
-
-alter table PAGO_POLIZA
-   add constraint FK_PAGO_POL_PAGO_TARJ_TARJETA_ foreign key (ID_TARJETA)
-      references TARJETA_CREDITO (ID_TARJETA)
       on delete restrict on update restrict;
 
 alter table PLAN_ASM
