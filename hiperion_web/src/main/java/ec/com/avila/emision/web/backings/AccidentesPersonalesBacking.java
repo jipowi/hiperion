@@ -4,7 +4,9 @@
 package ec.com.avila.emision.web.backings;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -16,6 +18,7 @@ import javax.faces.model.SelectItem;
 
 import org.apache.log4j.Logger;
 
+import ec.com.avila.emision.web.beans.PolizaBean;
 import ec.com.avila.emision.web.beans.RamoAccidentesPersonalesBean;
 import ec.com.avila.emision.web.domain.ClausulaAdicional;
 import ec.com.avila.emision.web.domain.Cobertura;
@@ -24,16 +27,27 @@ import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.dto.ClausulaAdicionalDTO;
 import ec.com.avila.hiperion.dto.CoberturaDTO;
 import ec.com.avila.hiperion.dto.CondicionEspecialDTO;
+import ec.com.avila.hiperion.dto.TablaAmortizacionDTO;
 import ec.com.avila.hiperion.emision.entities.Catalogo;
+import ec.com.avila.hiperion.emision.entities.ClausulasAddAccPer;
+import ec.com.avila.hiperion.emision.entities.CobertAccPer;
+import ec.com.avila.hiperion.emision.entities.CondEspAccPer;
 import ec.com.avila.hiperion.emision.entities.DetalleAnexo;
 import ec.com.avila.hiperion.emision.entities.DetalleCatalogo;
+import ec.com.avila.hiperion.emision.entities.Financiamiento;
+import ec.com.avila.hiperion.emision.entities.PagoPoliza;
+import ec.com.avila.hiperion.emision.entities.Poliza;
 import ec.com.avila.hiperion.emision.entities.Ramo;
 import ec.com.avila.hiperion.emision.entities.RamoAccidentesPersonale;
+import ec.com.avila.hiperion.emision.entities.Usuario;
+import ec.com.avila.hiperion.enumeration.EstadoEnum;
 import ec.com.avila.hiperion.servicio.CatalogoService;
 import ec.com.avila.hiperion.servicio.RamoAccidentesPersonalesService;
 import ec.com.avila.hiperion.servicio.RamoService;
 import ec.com.avila.hiperion.web.beans.RamoBean;
+import ec.com.avila.hiperion.web.beans.UsuarioBean;
 import ec.com.avila.hiperion.web.util.HiperionMensajes;
+import ec.com.avila.hiperion.web.util.MessagesController;
 
 /**
  * <b>Clase Backing que permite gestionar la informacion que se maneje en las paginas web que utilicen el Ramo ACCIDENTES PERSONALES. </b>
@@ -56,6 +70,12 @@ public class AccidentesPersonalesBacking implements Serializable {
 
 	@EJB
 	private CatalogoService catalogoService;
+
+	@ManagedProperty(value = "#{usuarioBean}")
+	private UsuarioBean usuarioBean;
+
+	@ManagedProperty(value = "#{polizaBean}")
+	private PolizaBean polizaBean;
 
 	@ManagedProperty(value = "#{ramoBean}")
 	private RamoBean ramoBean;
@@ -89,6 +109,62 @@ public class AccidentesPersonalesBacking implements Serializable {
 		} catch (HiperionException e) {
 			e.printStackTrace();
 		}
+	}
+
+	/**
+	 * 
+	 * <b> Permite setear los datos de la poliza. </b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: 09/07/2015]
+	 * </p>
+	 * 
+	 * @return
+	 */
+	public Poliza setearDatosPoliza() {
+
+		Usuario usuario = usuarioBean.getSessionUser();
+		Poliza poliza = new Poliza();
+
+		poliza.setNumeroPoliza(polizaBean.getNumeroPoliza());
+		poliza.setNumeroAnexo(polizaBean.getNumeroAnexo());
+		poliza.setEjecutivo(polizaBean.getEjecutivo().getNombreUsuario());
+		poliza.setVigenciaDesde(polizaBean.getVigenciaDesde());
+		poliza.setVigenciaHasta(polizaBean.getVigenciaHasta());
+		poliza.setDiasCobertura(polizaBean.getDiasCobertura());
+		poliza.setSumaAsegurada(polizaBean.getSumaAsegurada());
+		poliza.setPrimaNeta(BigDecimal.valueOf(polizaBean.getPrimaNeta()));
+		poliza.setSuperBanSeguros(polizaBean.getSuperBanSeguros());
+		poliza.setSeguroCampesino(BigDecimal.valueOf(polizaBean.getSeguroCampesino()));
+		poliza.setDerechoEmision(BigDecimal.valueOf(polizaBean.getDerechoEmision()));
+		poliza.setRamo(1);
+		poliza.setEstadoPoliza("COTIZADO");
+
+		PagoPoliza pagoPoliza = new PagoPoliza();
+		pagoPoliza.setNumeroFactura(polizaBean.getNumeroFactura());
+		pagoPoliza.setSubtotal(polizaBean.getSubtotal());
+		pagoPoliza.setAdicionalSegCampesino(polizaBean.getAdicionalSegCampesino());
+		pagoPoliza.setIva(polizaBean.getIva());
+		pagoPoliza.setCuotaInicial(polizaBean.getCuotaInicial());
+		pagoPoliza.setValorTotalPagoPoliza(polizaBean.getTotal());
+		pagoPoliza.setEstado(EstadoEnum.A);
+		pagoPoliza.setFechaCreacion(new Date());
+		pagoPoliza.setIdUsuarioCreacion(usuario.getIdUsuario());
+
+		List<Financiamiento> financiamientos = new ArrayList<>();
+		for (TablaAmortizacionDTO financiamiento : polizaBean.getFinanciamientos()) {
+			Financiamiento financiamientoTemp = new Financiamiento();
+			financiamientoTemp.setNumeroCuota(financiamiento.getNumeroLetra());
+			financiamientoTemp.setValorLetra(BigDecimal.valueOf(financiamiento.getValor()));
+			financiamientoTemp.setFechaVencimiento(financiamiento.getFechaVencimiento());
+
+			financiamientos.add(financiamientoTemp);
+		}
+
+		pagoPoliza.setFinanciamientos(financiamientos);
+
+		poliza.setPagoPoliza(pagoPoliza);
+
+		return poliza;
 	}
 
 	/**
@@ -173,16 +249,92 @@ public class AccidentesPersonalesBacking implements Serializable {
 
 	}
 
+	/**
+	 * 
+	 * <b> Permite guardar los datos del ramo y la poliza. </b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: 10/07/2015]
+	 * </p>
+	 * 
+	 * @throws HiperionException
+	 */
 	public void guardarRamo() throws HiperionException {
-
-		RamoAccidentesPersonale accidentesPersonales = new RamoAccidentesPersonale();
-
-		accidentesPersonales.setPrimaNetaPersona(ramoAccidentesPersonalesBean.getPrimaNetaPersona());
-		accidentesPersonales.setPrimaTotalPersona(ramoAccidentesPersonalesBean.getPrimaTotalPersona());
 
 		try {
 
-			ramoAccidentesPersonalesService.guardarRamoAccidentesPersonales(accidentesPersonales);
+			Poliza poliza = setearDatosPoliza();
+
+			Usuario usuario = usuarioBean.getSessionUser();
+
+			RamoAccidentesPersonale accidentesPersonales = new RamoAccidentesPersonale();
+
+			accidentesPersonales.setPrimaNetaPersona(ramoAccidentesPersonalesBean.getPrimaNetaPersona());
+			accidentesPersonales.setPrimaTotalPersona(ramoAccidentesPersonalesBean.getPrimaTotalPersona());
+			accidentesPersonales.setTasaAccidente(ramoAccidentesPersonalesBean.getTasa());
+			accidentesPersonales.setFacturacion(ramoAccidentesPersonalesBean.getFacturacion());
+			accidentesPersonales.setIdUsuarioCreacion(usuario.getIdUsuario());
+			accidentesPersonales.setFechaCreacion(new Date());
+			accidentesPersonales.setEstado(EstadoEnum.A);
+
+			// Coberturas
+			int contCoberturas = 0;
+			List<CobertAccPer> coberturas = new ArrayList<>();
+			for (CoberturaDTO coberturaDTO : coberturasDTO) {
+				if (coberturaDTO.getSeleccion()) {
+					contCoberturas++;
+					CobertAccPer cobertura = new CobertAccPer();
+					cobertura.setCoberturaAccPersonales(coberturaDTO.getCobertura());
+
+					coberturas.add(cobertura);
+				}
+			}
+
+			if (contCoberturas == 0) {
+				MessagesController.addWarn(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.warn.coberturas"));
+			} else {
+				accidentesPersonales.setCoberturasAcc(coberturas);
+			}
+
+			// Clausulas Adicionales
+			int contClausulas = 0;
+			List<ClausulasAddAccPer> clausulas = new ArrayList<>();
+			for (ClausulaAdicionalDTO clausualaDTO : clausulasAdicionalesDTO) {
+				if (clausualaDTO.getSeleccion()) {
+					contClausulas++;
+					ClausulasAddAccPer clausula = new ClausulasAddAccPer();
+					clausula.setClausulaAccPersonales(clausualaDTO.getClausula());
+					clausula.setEstado(EstadoEnum.A);
+					clausula.setFechaCreacion(new Date());
+					clausula.setIdUsuarioCreacion(usuario.getIdUsuario());
+
+					clausulas.add(clausula);
+				}
+			}
+			if (contClausulas == 0) {
+				MessagesController.addWarn(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.warn.clausulasAdd"));
+			} else {
+				accidentesPersonales.setClausulasAddAccPers(clausulas);
+			}
+
+			// Condiciones Especiales
+			int contCondicion = 0;
+			List<CondEspAccPer> condiciones = new ArrayList<>();
+			for (CondicionEspecialDTO condicionDTO : condicionesEspecialesDTO) {
+				if (condicionDTO.getSeleccion()) {
+					contCondicion++;
+					CondEspAccPer condicion = new CondEspAccPer();
+					condicion.setCondicionAcc(condicionDTO.getCondicionEspecial());
+
+					condiciones.add(condicion);
+				}
+			}
+			if (contCondicion == 0) {
+				MessagesController.addWarn(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.warn.condicionesEsp"));
+			} else {
+				accidentesPersonales.setCondicionesEspAcc(condiciones);
+			}
+
+			ramoAccidentesPersonalesService.guardarRamoAccidentesPersonales(accidentesPersonales, poliza);
 
 		} catch (HiperionException e) {
 			log.error("Error al momento de guardar el ramo accidentes personales", e);

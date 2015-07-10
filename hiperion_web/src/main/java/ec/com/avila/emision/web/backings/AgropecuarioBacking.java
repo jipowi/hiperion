@@ -317,7 +317,6 @@ public class AgropecuarioBacking implements Serializable {
 
 			// Clausulas Adicionales
 			int contClausulas = 0;
-
 			List<ClausulasAddAgro> clausulasAgropecuario = new ArrayList<>();
 			for (ClausulaAdicionalDTO clausualaDTO : clausulasAdicionalesDTO) {
 				if (clausualaDTO.getSeleccion()) {
