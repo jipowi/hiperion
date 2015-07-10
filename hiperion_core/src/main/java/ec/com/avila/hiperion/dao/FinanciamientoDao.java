@@ -6,10 +6,10 @@ package ec.com.avila.hiperion.dao;
 
 import javax.ejb.Local;
 
-import ec.com.avila.hiperion.emision.entities.Poliza;
+import ec.com.avila.hiperion.emision.entities.Financiamiento;
 
 /**
- * <b>Interface local de la tabla Poliza para realizar las operaciones
+ * <b>Interface local de la tabla Financiamiento para realizar las operaciones
  * necesarias </b>
  * 
  * @author Paul Jimenez
@@ -17,7 +17,7 @@ import ec.com.avila.hiperion.emision.entities.Poliza;
  * @since JDK1.6
  */
 @Local
-public interface PolizaDao extends GenericDAO<Poliza, Long> {
-	
+public interface FinanciamientoDao extends GenericDAO<Financiamiento, Long> {
+
 	
 }
