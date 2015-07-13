@@ -22,9 +22,6 @@ public class CobertAccPer implements Serializable {
 	@Column(name = "cobertura_acc_personales")
 	private String coberturaAccPersonales;
 
-	@Column(name = "id_accidentes")
-	private Integer idAccidentes;
-
 	// bi-directional many-to-one association to RamoAccidentesPersonale
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_accidentes")
@@ -49,13 +46,7 @@ public class CobertAccPer implements Serializable {
 		this.coberturaAccPersonales = coberturaAccPersonales;
 	}
 
-	public Integer getIdAccidentes() {
-		return this.idAccidentes;
-	}
-
-	public void setIdAccidentes(Integer idAccidentes) {
-		this.idAccidentes = idAccidentes;
-	}
+	
 
 	/**
 	 * @return the ramoAccidentesPersonale
