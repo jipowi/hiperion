@@ -109,6 +109,7 @@ public class AgropecuarioBacking implements Serializable {
 	private List<SelectItem> sexoItems;
 	private List<SelectItem> tipoObjetoItems;
 	private Boolean activarGanadero;
+	private Usuario usuario;
 
 	Logger log = Logger.getLogger(AgropecuarioBacking.class);
 
@@ -125,6 +126,8 @@ public class AgropecuarioBacking implements Serializable {
 			obtenerClausulasAdicionales();
 			obtenerCoberturasTransporte();
 			obtenerCoberturasVida();
+
+			usuario = usuarioBean.getSessionUser();
 
 		} catch (HiperionException e) {
 			e.printStackTrace();
@@ -247,8 +250,6 @@ public class AgropecuarioBacking implements Serializable {
 
 			Poliza poliza = setearDatosPoliza();
 
-			Usuario usuario = usuarioBean.getSessionUser();
-
 			// Informacion del Ramo
 			agropecuario.setIdUsuarioCreacion(usuario.getIdUsuario());
 			agropecuario.setFechaCreacion(new Date());
@@ -315,62 +316,6 @@ public class AgropecuarioBacking implements Serializable {
 				MessagesController.addError(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.error.archivoPoliza"));
 			}
 
-			// Clausulas Adicionales
-			int contClausulas = 0;
-			List<ClausulasAddAgro> clausulasAgropecuario = new ArrayList<>();
-			for (ClausulaAdicionalDTO clausualaDTO : clausulasAdicionalesDTO) {
-				if (clausualaDTO.getSeleccion()) {
-					contClausulas++;
-					ClausulasAddAgro clausulaAgropecuario = new ClausulasAddAgro();
-					clausulaAgropecuario.setClausulaAddAgro(clausualaDTO.getClausula());
-					clausulaAgropecuario.setEstado(EstadoEnum.A);
-					clausulaAgropecuario.setFechaCreacion(new Date());
-					clausulaAgropecuario.setIdUsuarioCreacion(usuario.getIdUsuario());
-
-					clausulasAgropecuario.add(clausulaAgropecuario);
-				}
-			}
-			if (contClausulas == 0) {
-				MessagesController.addWarn(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.warn.clausulasAdd"));
-			}
-			agropecuario.setClausulasAddAgros(clausulasAgropecuario);
-
-			// Coberturas Transporte
-			int cont = 0;
-			List<CobertAgro> coberturasAgropecuario = new ArrayList<>();
-			for (CoberturaDTO coberturaDTO : coberturasTransporteDTO) {
-				if (coberturaDTO.getSeleccion()) {
-					cont++;
-					CobertAgro coberturaAgropecuario = new CobertAgro();
-					coberturaAgropecuario.setCoberturaAgro(coberturaDTO.getCobertura());
-					coberturaAgropecuario.setEstado(EstadoEnum.A);
-					coberturaAgropecuario.setFechaCreacion(new Date());
-					coberturaAgropecuario.setIdUsuarioCreacion(usuario.getIdUsuario());
-					coberturaAgropecuario.setTipoCoberturaAgro("T");
-
-					coberturasAgropecuario.add(coberturaAgropecuario);
-				}
-			}
-
-			// coberturas Vida
-			for (CoberturaDTO coberturaDTO : coberturasVidaDTO) {
-				if (coberturaDTO.getSeleccion()) {
-					cont++;
-					CobertAgro coberturaAgropecuario = new CobertAgro();
-					coberturaAgropecuario.setCoberturaAgro(coberturaDTO.getCobertura());
-					coberturaAgropecuario.setEstado(EstadoEnum.A);
-					coberturaAgropecuario.setFechaCreacion(new Date());
-					coberturaAgropecuario.setIdUsuarioCreacion(usuario.getIdUsuario());
-					coberturaAgropecuario.setTipoCoberturaAgro("V");
-
-					coberturasAgropecuario.add(coberturaAgropecuario);
-				}
-			}
-			if (cont == 0) {
-				MessagesController.addWarn(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.warn.coberturas"));
-			}
-			agropecuario.setCobertAgros(coberturasAgropecuario);
-
 			ramoAgropecuarioService.guardarAgropecuario(agropecuario, poliza);
 
 			MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.save"));
@@ -381,6 +326,100 @@ public class AgropecuarioBacking implements Serializable {
 
 			throw new HiperionException(e);
 		}
+	}
+
+	/**
+	 * 
+	 * <b> Permite setear las clausulas seleccionadas en el bean. </b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: 13/07/2015]
+	 * </p>
+	 * 
+	 */
+	public void setearClausulas() {
+
+		// Clausulas Adicionales
+		int contClausulas = 0;
+		List<ClausulasAddAgro> clausulasAgropecuario = new ArrayList<>();
+		for (ClausulaAdicionalDTO clausualaDTO : clausulasAdicionalesDTO) {
+			if (clausualaDTO.getSeleccion()) {
+				contClausulas++;
+				ClausulasAddAgro clausulaAgropecuario = new ClausulasAddAgro();
+				clausulaAgropecuario.setClausulaAddAgro(clausualaDTO.getClausula());
+				clausulaAgropecuario.setEstado(EstadoEnum.A);
+				clausulaAgropecuario.setFechaCreacion(new Date());
+				clausulaAgropecuario.setIdUsuarioCreacion(usuario.getIdUsuario());
+
+				clausulasAgropecuario.add(clausulaAgropecuario);
+			}
+		}
+		if (contClausulas == 0) {
+			MessagesController.addWarn(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.warn.clausulasAdd"));
+		} else {
+			agropecuario.setClausulasAddAgros(clausulasAgropecuario);
+			MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.clausulasAdd"));
+		}
+	}
+
+	/**
+	 * 
+	 * <b> Permite setear las coberturas seleccionadas en el bean. </b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: 13/07/2015]
+	 * </p>
+	 * 
+	 */
+	public void setearCoberturas() {
+		// Coberturas Transporte
+		int cont = 0;
+		List<CobertAgro> coberturasAgropecuario = new ArrayList<>();
+		for (CoberturaDTO coberturaDTO : coberturasTransporteDTO) {
+			if (coberturaDTO.getSeleccion()) {
+				cont++;
+				CobertAgro coberturaAgropecuario = new CobertAgro();
+				coberturaAgropecuario.setCoberturaAgro(coberturaDTO.getCobertura());
+				coberturaAgropecuario.setEstado(EstadoEnum.A);
+				coberturaAgropecuario.setFechaCreacion(new Date());
+				coberturaAgropecuario.setIdUsuarioCreacion(usuario.getIdUsuario());
+				coberturaAgropecuario.setTipoCoberturaAgro("T");
+
+				coberturasAgropecuario.add(coberturaAgropecuario);
+			}
+		}
+		// coberturas Vida
+		for (CoberturaDTO coberturaDTO : coberturasVidaDTO) {
+			if (coberturaDTO.getSeleccion()) {
+				cont++;
+				CobertAgro coberturaAgropecuario = new CobertAgro();
+				coberturaAgropecuario.setCoberturaAgro(coberturaDTO.getCobertura());
+				coberturaAgropecuario.setEstado(EstadoEnum.A);
+				coberturaAgropecuario.setFechaCreacion(new Date());
+				coberturaAgropecuario.setIdUsuarioCreacion(usuario.getIdUsuario());
+				coberturaAgropecuario.setTipoCoberturaAgro("V");
+
+				coberturasAgropecuario.add(coberturaAgropecuario);
+			}
+		}
+		if (cont == 0) {
+			MessagesController.addWarn(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.warn.coberturas"));
+		} else {
+			agropecuario.setCobertAgros(coberturasAgropecuario);
+			MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.coberturas"));
+		}
+	}
+
+	/**
+	 * 
+	 * <b> Permite editar un registro de la tabla</b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: Aug 3, 2014]
+	 * </p>
+	 * 
+	 * @param event
+	 */
+	public void onEditCobertura(RowEditEvent event) {
+		FacesMessage msg = new FacesMessage("Item Edited", ((CoberturaDTO) event.getObject()).getCobertura());
+		FacesContext.getCurrentInstance().addMessage(null, msg);
 	}
 
 	/**
@@ -441,14 +480,14 @@ public class AgropecuarioBacking implements Serializable {
 
 	/**
 	 * 
-	 * <b> Permite editar un registro de la tabla de amortizacion </b>
+	 * <b> Permite editar un registro de la tabla</b>
 	 * <p>
 	 * [Author: Paul Jimenez, Date: Aug 3, 2014]
 	 * </p>
 	 * 
 	 * @param event
 	 */
-	public void onEditTable(RowEditEvent event) {
+	public void onEditClausula(RowEditEvent event) {
 		FacesMessage msg = new FacesMessage("Item Edited", ((ClausulaAdicionalDTO) event.getObject()).getClausula());
 		FacesContext.getCurrentInstance().addMessage(null, msg);
 	}

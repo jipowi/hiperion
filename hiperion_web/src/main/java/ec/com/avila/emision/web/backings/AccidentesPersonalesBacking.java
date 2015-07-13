@@ -11,18 +11,18 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
+import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
 import org.apache.log4j.Logger;
+import org.primefaces.event.RowEditEvent;
 
 import ec.com.avila.emision.web.beans.PolizaBean;
 import ec.com.avila.emision.web.beans.RamoAccidentesPersonalesBean;
-import ec.com.avila.emision.web.domain.ClausulaAdicional;
-import ec.com.avila.emision.web.domain.Cobertura;
-import ec.com.avila.emision.web.domain.CondicionEspecial;
 import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.dto.ClausulaAdicionalDTO;
 import ec.com.avila.hiperion.dto.CoberturaDTO;
@@ -85,11 +85,11 @@ public class AccidentesPersonalesBacking implements Serializable {
 
 	private List<DetalleAnexo> anexos;
 	private List<ClausulaAdicionalDTO> clausulasAdicionalesDTO = new ArrayList<>();
-	private List<ClausulaAdicional> clausulasAdicionales;
+	private List<ClausulasAddAccPer> clausulasAdicionales;
 	private List<CoberturaDTO> coberturasDTO = new ArrayList<>();
-	private List<Cobertura> coberturas;
+	private List<CobertAccPer> coberturas;
 	private List<CondicionEspecialDTO> condicionesEspecialesDTO = new ArrayList<>();
-	private List<CondicionEspecial> condicionesEspeciales;
+	private List<CondEspAccPer> condicionesEspeciales;
 	private List<SelectItem> sexoItems;
 	private List<SelectItem> parentescoItems;
 
@@ -177,16 +177,19 @@ public class AccidentesPersonalesBacking implements Serializable {
 	 * @return
 	 */
 	public void obtenerCondicionesEspeciales(List<DetalleAnexo> anexos) {
-		condicionesEspeciales = new ArrayList<CondicionEspecial>();
+		condicionesEspeciales = new ArrayList<CondEspAccPer>();
 		if (anexos != null && anexos.size() > 0) {
 			for (DetalleAnexo anexo : anexos) {
-				if (anexo.getAnexo().getIdAnexo() == 3)
-					condicionesEspeciales.add(new CondicionEspecial(anexo.getIdDetalleAnexo(), anexo.getNombreDetalleAnexo()));
+				if (anexo.getAnexo().getIdAnexo() == 3) {
+					CondEspAccPer condicion = new CondEspAccPer();
+					condicion.setCondicionAcc(anexo.getNombreDetalleAnexo());
+					condicionesEspeciales.add(condicion);
+				}
 			}
 		}
-		for (CondicionEspecial condicion : condicionesEspeciales) {
+		for (CondEspAccPer condicion : condicionesEspeciales) {
 			CondicionEspecialDTO condicionDTO = new CondicionEspecialDTO();
-			condicionDTO.setCondicionEspecial(condicion.getNombre());
+			condicionDTO.setCondicionEspecial(condicion.getCondicionAcc());
 			condicionDTO.setSeleccion(false);
 
 			condicionesEspecialesDTO.add(condicionDTO);
@@ -204,18 +207,19 @@ public class AccidentesPersonalesBacking implements Serializable {
 	 * @return
 	 */
 	public void obtenerClausulasAdicionales(List<DetalleAnexo> anexos) {
-		clausulasAdicionales = new ArrayList<ClausulaAdicional>();
+		clausulasAdicionales = new ArrayList<ClausulasAddAccPer>();
 		if (anexos != null && anexos.size() > 0) {
 			for (DetalleAnexo anexo : anexos) {
 				if (anexo.getAnexo().getIdAnexo() == 1) {
-					clausulasAdicionales.add(new ClausulaAdicional(anexo.getIdDetalleAnexo(), anexo.getNombreDetalleAnexo()));
+					ClausulasAddAccPer clausula = new ClausulasAddAccPer();
+					clausula.setClausulaAccPersonales(anexo.getNombreDetalleAnexo());
+					clausulasAdicionales.add(clausula);
 				}
 			}
 		}
-		for (ClausulaAdicional clausula : clausulasAdicionales) {
+		for (ClausulasAddAccPer clausula : clausulasAdicionales) {
 			ClausulaAdicionalDTO clausulaDTO = new ClausulaAdicionalDTO();
-			clausulaDTO.setClausula(clausula.getNombre());
-			clausulaDTO.setSeleccion(false);
+			clausulaDTO.setClausula(clausula.getClausulaAccPersonales());
 
 			clausulasAdicionalesDTO.add(clausulaDTO);
 		}
@@ -232,17 +236,19 @@ public class AccidentesPersonalesBacking implements Serializable {
 	 * @return
 	 */
 	public void obtenerCoberturas(List<DetalleAnexo> anexos) {
-		coberturas = new ArrayList<Cobertura>();
+		coberturas = new ArrayList<CobertAccPer>();
 		if (anexos != null && anexos.size() > 0) {
 			for (DetalleAnexo anexo : anexos) {
-				if (anexo.getAnexo().getIdAnexo() == 2)
-					coberturas.add(new Cobertura(anexo.getIdDetalleAnexo(), anexo.getNombreDetalleAnexo()));
+				if (anexo.getAnexo().getIdAnexo() == 2) {
+					CobertAccPer cobertura = new CobertAccPer();
+					cobertura.setCoberturaAccPersonales(anexo.getNombreDetalleAnexo());
+					coberturas.add(cobertura);
+				}
 			}
 		}
-		for (Cobertura cobertura : coberturas) {
+		for (CobertAccPer cobertura : coberturas) {
 			CoberturaDTO coberturaDTO = new CoberturaDTO();
-			coberturaDTO.setCobertura(cobertura.getNombre());
-			coberturaDTO.setSeleccion(false);
+			coberturaDTO.setCobertura(cobertura.getCoberturaAccPersonales());
 
 			coberturasDTO.add(coberturaDTO);
 		}
@@ -345,6 +351,48 @@ public class AccidentesPersonalesBacking implements Serializable {
 	}
 
 	/**
+	 * 
+	 * <b> Permite editar un registro de la tabla</b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: Aug 3, 2014]
+	 * </p>
+	 * 
+	 * @param event
+	 */
+	public void onEditCobertura(RowEditEvent event) {
+		FacesMessage msg = new FacesMessage("Item Edited", ((CoberturaDTO) event.getObject()).getCobertura());
+		FacesContext.getCurrentInstance().addMessage(null, msg);
+	}
+
+	/**
+	 * 
+	 * <b> Permite editar un registro de la tabla</b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: Aug 3, 2014]
+	 * </p>
+	 * 
+	 * @param event
+	 */
+	public void onEditClausula(RowEditEvent event) {
+		FacesMessage msg = new FacesMessage("Item Edited", ((ClausulaAdicionalDTO) event.getObject()).getClausula());
+		FacesContext.getCurrentInstance().addMessage(null, msg);
+	}
+
+	/**
+	 * 
+	 * <b> Permite editar un registro de la tabla</b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: Aug 3, 2014]
+	 * </p>
+	 * 
+	 * @param event
+	 */
+	public void onEditCondicion(RowEditEvent event) {
+		FacesMessage msg = new FacesMessage("Item Edited", ((CondicionEspecialDTO) event.getObject()).getCondicionEspecial());
+		FacesContext.getCurrentInstance().addMessage(null, msg);
+	}
+
+	/**
 	 * @return the ramoBean
 	 */
 	public RamoBean getRamoBean() {
@@ -442,21 +490,6 @@ public class AccidentesPersonalesBacking implements Serializable {
 	}
 
 	/**
-	 * @return the clausulasAdicionales
-	 */
-	public List<ClausulaAdicional> getClausulasAdicionales() {
-		return clausulasAdicionales;
-	}
-
-	/**
-	 * @param clausulasAdicionales
-	 *            the clausulasAdicionales to set
-	 */
-	public void setClausulasAdicionales(List<ClausulaAdicional> clausulasAdicionales) {
-		this.clausulasAdicionales = clausulasAdicionales;
-	}
-
-	/**
 	 * @return the coberturasDTO
 	 */
 	public List<CoberturaDTO> getCoberturasDTO() {
@@ -469,21 +502,6 @@ public class AccidentesPersonalesBacking implements Serializable {
 	 */
 	public void setCoberturasDTO(List<CoberturaDTO> coberturasDTO) {
 		this.coberturasDTO = coberturasDTO;
-	}
-
-	/**
-	 * @return the coberturas
-	 */
-	public List<Cobertura> getCoberturas() {
-		return coberturas;
-	}
-
-	/**
-	 * @param coberturas
-	 *            the coberturas to set
-	 */
-	public void setCoberturas(List<Cobertura> coberturas) {
-		this.coberturas = coberturas;
 	}
 
 	/**
@@ -502,9 +520,24 @@ public class AccidentesPersonalesBacking implements Serializable {
 	}
 
 	/**
+	 * @return the coberturas
+	 */
+	public List<CobertAccPer> getCoberturas() {
+		return coberturas;
+	}
+
+	/**
+	 * @param coberturas
+	 *            the coberturas to set
+	 */
+	public void setCoberturas(List<CobertAccPer> coberturas) {
+		this.coberturas = coberturas;
+	}
+
+	/**
 	 * @return the condicionesEspeciales
 	 */
-	public List<CondicionEspecial> getCondicionesEspeciales() {
+	public List<CondEspAccPer> getCondicionesEspeciales() {
 		return condicionesEspeciales;
 	}
 
@@ -512,8 +545,53 @@ public class AccidentesPersonalesBacking implements Serializable {
 	 * @param condicionesEspeciales
 	 *            the condicionesEspeciales to set
 	 */
-	public void setCondicionesEspeciales(List<CondicionEspecial> condicionesEspeciales) {
+	public void setCondicionesEspeciales(List<CondEspAccPer> condicionesEspeciales) {
 		this.condicionesEspeciales = condicionesEspeciales;
+	}
+
+	/**
+	 * @return the usuarioBean
+	 */
+	public UsuarioBean getUsuarioBean() {
+		return usuarioBean;
+	}
+
+	/**
+	 * @param usuarioBean
+	 *            the usuarioBean to set
+	 */
+	public void setUsuarioBean(UsuarioBean usuarioBean) {
+		this.usuarioBean = usuarioBean;
+	}
+
+	/**
+	 * @return the polizaBean
+	 */
+	public PolizaBean getPolizaBean() {
+		return polizaBean;
+	}
+
+	/**
+	 * @param polizaBean
+	 *            the polizaBean to set
+	 */
+	public void setPolizaBean(PolizaBean polizaBean) {
+		this.polizaBean = polizaBean;
+	}
+
+	/**
+	 * @return the clausulasAdicionales
+	 */
+	public List<ClausulasAddAccPer> getClausulasAdicionales() {
+		return clausulasAdicionales;
+	}
+
+	/**
+	 * @param clausulasAdicionales
+	 *            the clausulasAdicionales to set
+	 */
+	public void setClausulasAdicionales(List<ClausulasAddAccPer> clausulasAdicionales) {
+		this.clausulasAdicionales = clausulasAdicionales;
 	}
 
 }

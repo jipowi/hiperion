@@ -263,7 +263,7 @@
 											<f:facet name="footer">
 												<div align="center">
 													<p:commandButton id="guardarRoboBtnId" oncomplete="asmDlg.hide();" actionListener="#{roboAsaltoBacking.guadraRamo()}" icon="icon-save"
-														value="#{emision['boton.guardar']}" title="Guardar" />
+														value="#{emision['boton.guardar']}" title="Guardar" update="coberturaForm"/>
 													<p:commandButton id="cancelarBtnId" oncomplete="asmDlg.hide();" icon="icon-cancel" value="#{emision['boton.cancelar']}" process="@this"
 														title="Cancelar" />
 												</div>
