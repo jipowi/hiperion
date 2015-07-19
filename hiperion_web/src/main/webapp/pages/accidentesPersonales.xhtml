@@ -18,12 +18,12 @@
 						</div>
 					</ui:define>
 					<ui:define name="ramoContent">
-						<p:tabView id="tabGeneral">
+						<p:outputPanel id="messageAcc">
+							<p:messages id="messagesAcc" showDetail="true" autoUpdate="true" closable="true" />
+						</p:outputPanel>
+						<p:tabView effect="blind" effectDuration="normal">
 							<!-- RAMO ACCIDENTES PERSONALES -->
-							<p:tab id="tabRamo" title="#{emision['ap.tab.principal']}">
-								<p:outputPanel id="messageAcc">
-									<p:messages id="messagesAcc" showDetail="true" autoUpdate="true" closable="true" />
-								</p:outputPanel>
+							<p:tab title="#{emision['ap.tab.principal']}">
 								<h:form id="formPrincipal">
 									<div align="center">
 										<h:panelGrid columns="1">
@@ -56,113 +56,153 @@
 										</h:panelGrid>
 									</div>
 								</h:form>
-							</p:tab>
-							<!-- COBERTURAS -->
-							<p:tab title="#{emision['anexo.titulo.tab.cob']}">
-								<h:form id="coberturaForm">
-									<p:dataTable id="tablaCoberturas" value="#{accidentesPersonalesBacking.coberturasDTO}" var="cobertura" paginator="true" rows="4"
-										editable="true">
-										<p:ajax event="rowEdit" listener="#{accidentesPersonalesBacking.onEditCobertura}" update="tablaCoberturas" />
-										<p:column>
-											<f:facet name="header">
-												<h:outputLabel value="#{emision['anexo.titulo.cob']}" />
-											</f:facet>
-											<h:outputText value="#{cobertura.cobertura}" />
-										</p:column>
-										<p:column>
-											<f:facet name="header">
-												<h:outputLabel value="#{emision['lbl.seleccion']}" />
-											</f:facet>
-											<p:cellEditor>
-												<f:facet name="output">
-													<div align="center">
-														<p:selectBooleanCheckbox value="#{cobertura.seleccion}" disabled="true" />
-													</div>
+								<!-- COBERTURAS -->
+								<h:panelGrid columns="2">
+									<p:outputLabel value="#{emision['lbl.seleccionarCoberturas']}" styleClass="negrita" />
+									<p:commandLink title="#{emision['lbl.seleccionarCoberturas']}" oncomplete="coberturas.show();" update="idCobertura">
+										<h:graphicImage name="check.png" library="img" />
+									</p:commandLink>
+								</h:panelGrid>
+								<p:dialog id="idCobertura" header="#{emision['anexo.titulo.tab.cob']}" widgetVar="coberturas" modal="true" position="center" showEffect="fade"
+									hideEffect="explode" resizable="false" closable="true" width="500" height="300">
+									<h:form id="coberturaForm">
+										<p:growl id="msgs" showDetail="true" />
+										<p:dataTable id="tablaCoberturas" value="#{accidentesPersonalesBacking.coberturasDTO}" var="cobertura" paginator="true" rows="4"
+											editable="true">
+											<p:ajax event="rowEdit" listener="#{accidentesPersonalesBacking.onEditCobertura}" />
+											<p:column>
+												<f:facet name="header">
+													<h:outputLabel value="#{emision['anexo.titulo.cob']}" />
 												</f:facet>
-												<f:facet name="input">
-													<div align="center">
-														<p:selectBooleanCheckbox value="#{cobertura.seleccion}" />
-													</div>
+												<h:outputText value="#{cobertura.cobertura}" />
+											</p:column>
+											<p:column>
+												<f:facet name="header">
+													<h:outputLabel value="#{emision['lbl.seleccion']}" />
 												</f:facet>
-											</p:cellEditor>
-										</p:column>
-										<p:column headerText="Options" style="width:50px">
-											<p:rowEditor />
-										</p:column>
-									</p:dataTable>
-								</h:form>
-							</p:tab>
-							<!-- CONDICIONES ESPECIALES -->
-							<p:tab title="#{emision['anexo.titulo.tab.cep']}">
-								<h:form id="condicionEspForm">
-									<p:dataTable id="tablaCondiciones" value="#{accidentesPersonalesBacking.condicionesEspecialesDTO}" var="condicion" paginator="true"
-										editable="true">
-										<p:ajax event="rowEdit" listener="#{accidentesPersonalesBacking.onEditCondicion}" update="tablaCondiciones" />
-										<p:column>
-											<f:facet name="header">
-												<h:outputLabel value="#{emision['anexo.titulo.cep']}" />
-											</f:facet>
-											<h:outputText value="#{condicion.condicionEspecial}" />
-										</p:column>
-										<p:column>
-											<f:facet name="header">
-												<h:outputLabel value="#{emision['lbl.seleccion']}" />
-											</f:facet>
-											<p:cellEditor>
-												<f:facet name="output">
-													<div align="center">
-														<p:selectBooleanCheckbox value="#{condicion.seleccion}" disabled="true" />
-													</div>
-												</f:facet>
-												<f:facet name="input">
-													<div align="center">
-														<p:selectBooleanCheckbox value="#{condicion.seleccion}" />
-													</div>
-												</f:facet>
-											</p:cellEditor>
-										</p:column>
-										<p:column headerText="Options" style="width:50px">
-											<p:rowEditor />
-										</p:column>
-									</p:dataTable>
-								</h:form>
-							</p:tab>
-							<!-- CLAUSULAS ADICIONALES -->
-							<p:tab title="#{emision['ap.tab.clausulasAdicionales']}">
-								<h:form id="clausulaAddEspForm">
-									<p:dataTable id="tablaClausulas" value="#{accidentesPersonalesBacking.clausulasAdicionalesDTO}" var="clausula" paginator="true"
-										editable="true">
-										<p:ajax event="rowEdit" listener="#{accidentesPersonalesBacking.onEditClausula}" update="tablaClausulas" />
-										<p:column>
-											<f:facet name="header">
-												<h:outputLabel value="#{emision['anexo.titulo.cad']}" />
-											</f:facet>
-											<h:outputText value="#{clausula.clausula}" />
-										</p:column>
-										<p:column>
-											<f:facet name="header">
-												<h:outputLabel value="#{emision['lbl.seleccion']}" />
-											</f:facet>
-											<p:cellEditor>
-												<f:facet name="output">
-													<div align="center">
-														<p:selectBooleanCheckbox value="#{clausula.seleccion}" disabled="true" />
-													</div>
-												</f:facet>
-												<f:facet name="input">
-													<div align="center">
-														<p:selectBooleanCheckbox value="#{clausula.seleccion}" />
-													</div>
-												</f:facet>
-											</p:cellEditor>
-										</p:column>
-										<p:column headerText="Options" style="width:50px">
-											<p:rowEditor />
-										</p:column>
-									</p:dataTable>
-								</h:form>
-							</p:tab>
+												<p:cellEditor>
+													<f:facet name="output">
+														<div align="center">
+															<p:selectBooleanCheckbox value="#{cobertura.seleccion}" disabled="true" />
+														</div>
+													</f:facet>
+													<f:facet name="input">
+														<div align="center">
+															<p:selectBooleanCheckbox value="#{cobertura.seleccion}" />
+														</div>
+													</f:facet>
+												</p:cellEditor>
+											</p:column>
+											<p:column headerText="Options" style="width:50px">
+												<p:rowEditor />
+											</p:column>
+										</p:dataTable>
+										<p:spacer height="15px;" />
+										<div align="center">
+											<p:commandButton id="guardarCoberturas" process="@this" actionListener="#{accidentesPersonalesBacking.setearCoberturas()}" icon="icon-save"
+												value="#{emision['boton.guardar']}" title="Guardar" oncomplete="coberturas.hide()" />
+										</div>
+									</h:form>
+								</p:dialog>
 
+								<!-- CONDICIONES ESPECIALES -->
+								<h:panelGrid columns="2">
+									<p:outputLabel value="#{emision['lbl.seleccionarCondicionesEsp']}" styleClass="negrita" />
+									<p:commandLink title="#{emision['lbl.seleccionarCondicionesEsp']}" oncomplete="condiciones.show();"
+										actionListener="#{accidentesPersonalesBacking.obtenerCondicionesEspeciales()}" update="idCondicionesEspeciales">
+										<h:graphicImage name="check.png" library="img" />
+									</p:commandLink>
+								</h:panelGrid>
+								<p:dialog id="idCondicionesEspeciales" header="#{emision['anexo.titulo.tab.cep']}" widgetVar="condiciones" modal="true" position="center"
+									showEffect="fade" hideEffect="explode" resizable="false" closable="true" width="500" height="300">
+									<h:form id="condicionEspForm">
+										<p:dataTable value="#{accidentesPersonalesBacking.condicionesEspecialesDTO}" var="condicion" paginator="true" editable="true">
+											<p:ajax event="rowEdit" listener="#{accidentesPersonalesBacking.onEditCondicionesEsp}" />
+											<p:column>
+												<f:facet name="header">
+													<h:outputLabel value="#{emision['anexo.titulo.cep']}" />
+												</f:facet>
+												<h:outputText value="#{condicion.condicionEspecial}" />
+											</p:column>
+											<p:column>
+												<f:facet name="header">
+													<h:outputLabel value="#{emision['lbl.seleccion']}" />
+												</f:facet>
+												<p:cellEditor>
+													<f:facet name="output">
+														<div align="center">
+															<p:selectBooleanCheckbox value="#{condicion.seleccion}" disabled="true" />
+														</div>
+													</f:facet>
+													<f:facet name="input">
+														<div align="center">
+															<p:selectBooleanCheckbox value="#{condicion.seleccion}" />
+														</div>
+													</f:facet>
+												</p:cellEditor>
+											</p:column>
+											<p:column headerText="Options" style="width:50px">
+												<p:rowEditor />
+											</p:column>
+
+										</p:dataTable>
+										<p:spacer height="15px;" />
+										<div align="center">
+											<p:commandButton id="guardarCondiciones" process="@this" actionListener="#{accidentesPersonalesBacking.setearCondiciones()}"
+												icon="icon-save" value="#{emision['boton.guardar']}" title="Guardar" oncomplete="condiciones.hide()" />
+										</div>
+									</h:form>
+								</p:dialog>
+
+								<!-- CLAUSULAS ADICIONALES -->
+								<h:panelGrid columns="2">
+									<p:outputLabel value="#{emision['lbl.seleccionarClausulasAdd']}" styleClass="negrita" />
+									<p:commandLink title="#{emision['lbl.seleccionarClausulasAdd']}" oncomplete="clausulasAdd.show();"
+										actionListener="#{accidentesPersonalesBacking.obtenerClausulasAdicionales()}" update="idClausulasAdd">
+										<h:graphicImage name="check.png" library="img" />
+									</p:commandLink>
+								</h:panelGrid>
+								<p:dialog id="idClausulasAdd" header="#{emision['ap.tab.clausulasAdicionales']}" widgetVar="clausulasAdd" modal="true" position="center"
+									showEffect="fade" hideEffect="explode" resizable="false" closable="true" width="500" height="300">
+									<h:form id="clausulaAddEspForm">
+										<p:dataTable id="tablaClausulas" value="#{accidentesPersonalesBacking.clausulasAdicionalesDTO}" var="clausula" paginator="true"
+											editable="true">
+											<p:ajax event="rowEdit" listener="#{accidentesPersonalesBacking.onEditCLausulasAdd}" />
+											<p:column>
+												<f:facet name="header">
+													<h:outputLabel value="#{emision['anexo.titulo.cad']}" />
+												</f:facet>
+												<h:outputText value="#{clausula.clausula}" />
+											</p:column>
+											<p:column>
+												<f:facet name="header">
+													<h:outputLabel value="#{emision['lbl.seleccion']}" />
+												</f:facet>
+												<p:cellEditor>
+													<f:facet name="output">
+														<div align="center">
+															<p:selectBooleanCheckbox value="#{clausula.seleccion}" disabled="true" />
+														</div>
+													</f:facet>
+													<f:facet name="input">
+														<div align="center">
+															<p:selectBooleanCheckbox value="#{clausula.seleccion}" />
+														</div>
+													</f:facet>
+												</p:cellEditor>
+											</p:column>
+											<p:column headerText="Options" style="width:50px">
+												<p:rowEditor />
+											</p:column>
+										</p:dataTable>
+										<p:spacer height="15px;" />
+										<div align="center">
+											<p:commandButton id="guardarClausulas" process="@this" actionListener="#{accidentesPersonalesBacking.setearClausulasAdd()}"
+												icon="icon-save" value="#{emision['boton.guardar']}" title="Guardar" oncomplete="clausulasAdd.hide()" />
+										</div>
+									</h:form>
+								</p:dialog>
+							</p:tab>
 							<!-- GRUPOS -->
 							<p:tab title="#{emision['ap.tab.grupos']}">
 								<h:form id="formGrupos">
@@ -315,7 +355,6 @@
 
 									</h:form>
 								</div>
-
 							</p:tab>
 						</p:tabView>
 					</ui:define>

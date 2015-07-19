@@ -14,7 +14,7 @@ import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.RequestScoped;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
@@ -57,7 +57,7 @@ import ec.com.avila.hiperion.web.util.MessagesController;
  * @since JDK1.6
  */
 @ManagedBean
-@RequestScoped
+@ViewScoped
 public class AccidentesPersonalesBacking implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -84,28 +84,33 @@ public class AccidentesPersonalesBacking implements Serializable {
 	private RamoAccidentesPersonalesBean ramoAccidentesPersonalesBean;
 
 	private List<DetalleAnexo> anexos;
-	private List<ClausulaAdicionalDTO> clausulasAdicionalesDTO = new ArrayList<>();
+	private List<ClausulaAdicionalDTO> clausulasAdicionalesDTO;
 	private List<ClausulasAddAccPer> clausulasAdicionales;
-	private List<CoberturaDTO> coberturasDTO = new ArrayList<>();
+	private List<CoberturaDTO> coberturasDTO;
 	private List<CobertAccPer> coberturas;
-	private List<CondicionEspecialDTO> condicionesEspecialesDTO = new ArrayList<>();
+	private List<CondicionEspecialDTO> condicionesEspecialesDTO;
 	private List<CondEspAccPer> condicionesEspeciales;
 	private List<SelectItem> sexoItems;
 	private List<SelectItem> parentescoItems;
+
+	private Usuario usuario;
+	RamoAccidentesPersonale accidentesPersonales = new RamoAccidentesPersonale();
 
 	Logger log = Logger.getLogger(AccidentesPersonalesBacking.class);
 
 	@PostConstruct
 	public void init() {
 		try {
+			usuario = usuarioBean.getSessionUser();
+
 			Ramo ramo = ramoService.consultarRamoPorCodigo("AP");
 			anexos = ramo.getDetalleAnexos();
 
-			obtenerClausulasAdicionales(anexos);
-			obtenerCoberturas(anexos);
-
-			obtenerCondicionesEspeciales(anexos);
-
+			if (coberturasDTO == null) {
+				obtenerCoberturas();
+				obtenerClausulasAdicionales();
+				obtenerCondicionesEspeciales();
+			}
 		} catch (HiperionException e) {
 			e.printStackTrace();
 		}
@@ -176,7 +181,7 @@ public class AccidentesPersonalesBacking implements Serializable {
 	 * 
 	 * @return
 	 */
-	public void obtenerCondicionesEspeciales(List<DetalleAnexo> anexos) {
+	public void obtenerCondicionesEspeciales() {
 		condicionesEspeciales = new ArrayList<CondEspAccPer>();
 		if (anexos != null && anexos.size() > 0) {
 			for (DetalleAnexo anexo : anexos) {
@@ -187,6 +192,7 @@ public class AccidentesPersonalesBacking implements Serializable {
 				}
 			}
 		}
+		condicionesEspecialesDTO = new ArrayList<>();
 		for (CondEspAccPer condicion : condicionesEspeciales) {
 			CondicionEspecialDTO condicionDTO = new CondicionEspecialDTO();
 			condicionDTO.setCondicionEspecial(condicion.getCondicionAcc());
@@ -206,7 +212,7 @@ public class AccidentesPersonalesBacking implements Serializable {
 	 * 
 	 * @return
 	 */
-	public void obtenerClausulasAdicionales(List<DetalleAnexo> anexos) {
+	public void obtenerClausulasAdicionales() {
 		clausulasAdicionales = new ArrayList<ClausulasAddAccPer>();
 		if (anexos != null && anexos.size() > 0) {
 			for (DetalleAnexo anexo : anexos) {
@@ -217,9 +223,11 @@ public class AccidentesPersonalesBacking implements Serializable {
 				}
 			}
 		}
+		clausulasAdicionalesDTO = new ArrayList<>();
 		for (ClausulasAddAccPer clausula : clausulasAdicionales) {
 			ClausulaAdicionalDTO clausulaDTO = new ClausulaAdicionalDTO();
 			clausulaDTO.setClausula(clausula.getClausulaAccPersonales());
+			clausulaDTO.setSeleccion(false);
 
 			clausulasAdicionalesDTO.add(clausulaDTO);
 		}
@@ -235,7 +243,7 @@ public class AccidentesPersonalesBacking implements Serializable {
 	 * 
 	 * @return
 	 */
-	public void obtenerCoberturas(List<DetalleAnexo> anexos) {
+	public void obtenerCoberturas() {
 		coberturas = new ArrayList<CobertAccPer>();
 		if (anexos != null && anexos.size() > 0) {
 			for (DetalleAnexo anexo : anexos) {
@@ -246,10 +254,12 @@ public class AccidentesPersonalesBacking implements Serializable {
 				}
 			}
 		}
+		coberturasDTO = new ArrayList<>();
 		for (CobertAccPer cobertura : coberturas) {
 			CoberturaDTO coberturaDTO = new CoberturaDTO();
 			coberturaDTO.setCobertura(cobertura.getCoberturaAccPersonales());
-
+			coberturaDTO.setSeleccion(false);
+			
 			coberturasDTO.add(coberturaDTO);
 		}
 
@@ -270,10 +280,6 @@ public class AccidentesPersonalesBacking implements Serializable {
 
 			Poliza poliza = setearDatosPoliza();
 
-			Usuario usuario = usuarioBean.getSessionUser();
-
-			RamoAccidentesPersonale accidentesPersonales = new RamoAccidentesPersonale();
-
 			accidentesPersonales.setPrimaNetaPersona(ramoAccidentesPersonalesBean.getPrimaNetaPersona());
 			accidentesPersonales.setPrimaTotalPersona(ramoAccidentesPersonalesBean.getPrimaTotalPersona());
 			accidentesPersonales.setTasaAccidente(ramoAccidentesPersonalesBean.getTasa());
@@ -281,64 +287,6 @@ public class AccidentesPersonalesBacking implements Serializable {
 			accidentesPersonales.setIdUsuarioCreacion(usuario.getIdUsuario());
 			accidentesPersonales.setFechaCreacion(new Date());
 			accidentesPersonales.setEstado(EstadoEnum.A);
-
-			// Coberturas
-			int contCoberturas = 0;
-			List<CobertAccPer> coberturas = new ArrayList<>();
-			for (CoberturaDTO coberturaDTO : coberturasDTO) {
-				if (coberturaDTO.getSeleccion()) {
-					contCoberturas++;
-					CobertAccPer cobertura = new CobertAccPer();
-					cobertura.setCoberturaAccPersonales(coberturaDTO.getCobertura());
-
-					coberturas.add(cobertura);
-				}
-			}
-
-			if (contCoberturas == 0) {
-				MessagesController.addWarn(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.warn.coberturas"));
-			} else {
-				accidentesPersonales.setCoberturasAcc(coberturas);
-			}
-
-			// Clausulas Adicionales
-			int contClausulas = 0;
-			List<ClausulasAddAccPer> clausulas = new ArrayList<>();
-			for (ClausulaAdicionalDTO clausualaDTO : clausulasAdicionalesDTO) {
-				if (clausualaDTO.getSeleccion()) {
-					contClausulas++;
-					ClausulasAddAccPer clausula = new ClausulasAddAccPer();
-					clausula.setClausulaAccPersonales(clausualaDTO.getClausula());
-					clausula.setEstado(EstadoEnum.A);
-					clausula.setFechaCreacion(new Date());
-					clausula.setIdUsuarioCreacion(usuario.getIdUsuario());
-
-					clausulas.add(clausula);
-				}
-			}
-			if (contClausulas == 0) {
-				MessagesController.addWarn(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.warn.clausulasAdd"));
-			} else {
-				accidentesPersonales.setClausulasAddAccPers(clausulas);
-			}
-
-			// Condiciones Especiales
-			int contCondicion = 0;
-			List<CondEspAccPer> condiciones = new ArrayList<>();
-			for (CondicionEspecialDTO condicionDTO : condicionesEspecialesDTO) {
-				if (condicionDTO.getSeleccion()) {
-					contCondicion++;
-					CondEspAccPer condicion = new CondEspAccPer();
-					condicion.setCondicionAcc(condicionDTO.getCondicionEspecial());
-
-					condiciones.add(condicion);
-				}
-			}
-			if (contCondicion == 0) {
-				MessagesController.addWarn(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.warn.condicionesEsp"));
-			} else {
-				accidentesPersonales.setCondicionesEspAcc(condiciones);
-			}
 
 			ramoAccidentesPersonalesService.guardarRamoAccidentesPersonales(accidentesPersonales, poliza);
 
@@ -348,6 +296,70 @@ public class AccidentesPersonalesBacking implements Serializable {
 			throw new HiperionException(e);
 		}
 
+	}
+
+	/**
+	 * 
+	 * <b> permite setear las clausualas adicionales seleccionadas. </b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: 14/07/2015]
+	 * </p>
+	 * 
+	 */
+	public void setearClausulasAdd() {
+
+		// Clausulas Adicionales
+		int contClausulas = 0;
+		List<ClausulasAddAccPer> clausulas = new ArrayList<>();
+		for (ClausulaAdicionalDTO clausualaDTO : clausulasAdicionalesDTO) {
+			if (clausualaDTO.getSeleccion()) {
+				contClausulas++;
+				ClausulasAddAccPer clausula = new ClausulasAddAccPer();
+				clausula.setClausulaAccPersonales(clausualaDTO.getClausula());
+				clausula.setEstado(EstadoEnum.A);
+				clausula.setFechaCreacion(new Date());
+				clausula.setIdUsuarioCreacion(usuario.getIdUsuario());
+
+				clausulas.add(clausula);
+			}
+		}
+		if (contClausulas == 0) {
+			MessagesController.addWarn(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.warn.clausulasAdd"));
+		} else {
+			accidentesPersonales.setClausulasAddAccPers(clausulas);
+			MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.clausulasAdd"));
+		}
+
+	}
+
+	/**
+	 * 
+	 * <b> permite setear las coberturas seleccionadas en el Bean. </b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: 14/07/2015]
+	 * </p>
+	 * 
+	 */
+	public void setearCoberturas() {
+		// Coberturas
+		int contCoberturas = 0;
+		List<CobertAccPer> coberturas = new ArrayList<>();
+		for (CoberturaDTO coberturaDTO : coberturasDTO) {
+			if (coberturaDTO.getSeleccion()) {
+				contCoberturas++;
+				CobertAccPer cobertura = new CobertAccPer();
+				cobertura.setCoberturaAccPersonales(coberturaDTO.getCobertura());
+
+				coberturas.add(cobertura);
+			}
+		}
+
+		if (contCoberturas == 0) {
+			MessagesController.addWarn(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.warn.coberturas"));
+		} else {
+			accidentesPersonales.setCoberturasAcc(coberturas);
+			MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.coberturas"));
+		}
 	}
 
 	/**
@@ -373,7 +385,7 @@ public class AccidentesPersonalesBacking implements Serializable {
 	 * 
 	 * @param event
 	 */
-	public void onEditClausula(RowEditEvent event) {
+	public void onEditCLausulasAdd(RowEditEvent event) {
 		FacesMessage msg = new FacesMessage("Item Edited", ((ClausulaAdicionalDTO) event.getObject()).getClausula());
 		FacesContext.getCurrentInstance().addMessage(null, msg);
 	}
@@ -387,9 +399,38 @@ public class AccidentesPersonalesBacking implements Serializable {
 	 * 
 	 * @param event
 	 */
-	public void onEditCondicion(RowEditEvent event) {
+	public void onEditCondicionesEsp(RowEditEvent event) {
 		FacesMessage msg = new FacesMessage("Item Edited", ((CondicionEspecialDTO) event.getObject()).getCondicionEspecial());
 		FacesContext.getCurrentInstance().addMessage(null, msg);
+	}
+
+	/**
+	 * 
+	 * <b> permite setear las condiciones especiales seleccionadas en el Bean. </b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: 14/07/2015]
+	 * </p>
+	 * 
+	 */
+	public void setearCondiciones() {
+		// Condiciones Especiales
+		int contCondicion = 0;
+		List<CondEspAccPer> condiciones = new ArrayList<>();
+		for (CondicionEspecialDTO condicionDTO : condicionesEspecialesDTO) {
+			if (condicionDTO.getSeleccion()) {
+				contCondicion++;
+				CondEspAccPer condicion = new CondEspAccPer();
+				condicion.setCondicionAcc(condicionDTO.getCondicionEspecial());
+
+				condiciones.add(condicion);
+			}
+		}
+		if (contCondicion == 0) {
+			MessagesController.addWarn(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.warn.condicionesEsp"));
+		} else {
+			accidentesPersonales.setCondicionesEspAcc(condiciones);
+			MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.condicionesEsp"));
+		}
 	}
 
 	/**

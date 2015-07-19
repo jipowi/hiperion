@@ -24,7 +24,6 @@
 						<p:tabView effect="blind" effectDuration="normal">
 							<!-- RAMO AGROPECUARIO -->
 							<p:tab title="#{emision['agropecuario.tab.principal']}">
-
 								<h:form id="formPrincipal">
 									<div align="center">
 										<h:panelGrid columns="1" id="ramo">
@@ -287,6 +286,7 @@
 											</p:commandLink>
 										</h:panelGrid>
 
+										
 									</div>
 								</h:form>
 							</p:tab>
@@ -337,8 +337,8 @@
 									</p:dataTable>
 									<p:spacer height="15px;" />
 									<div align="center">
-										<p:commandButton id="guardarClausulas" process="@this" actionListener="#{agropecuarioBacking.setearClausulas()}"
-											icon="icon-save" value="#{emision['boton.guardar']}" title="Guardar" />
+										<p:commandButton id="guardarClausulas" process="@this" actionListener="#{agropecuarioBacking.setearClausulas()}" icon="icon-save"
+											value="#{emision['boton.guardar']}" title="Guardar" />
 									</div>
 								</h:form>
 							</p:tab>
@@ -413,8 +413,8 @@
 
 									<p:spacer height="15px;" />
 									<div align="center">
-										<p:commandButton id="guardarCoberturas"  process="@this" actionListener="#{agropecuarioBacking.setearCoberturas()}"
-											icon="icon-save" value="#{emision['boton.guardar']}" title="Guardar" />
+										<p:commandButton id="guardarCoberturas" process="@this" actionListener="#{agropecuarioBacking.setearCoberturas()}" icon="icon-save"
+											value="#{emision['boton.guardar']}" title="Guardar" />
 									</div>
 								</h:form>
 							</p:tab>

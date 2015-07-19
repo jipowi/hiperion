@@ -8,7 +8,7 @@ import java.util.List;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
 import org.primefaces.event.RowEditEvent;
@@ -25,7 +25,7 @@ import ec.com.avila.hiperion.dto.GrupoAccPersonalesDTO;
  * @since JDK1.6
  */
 @ManagedBean
-@RequestScoped
+@ViewScoped
 public class RamoAccidentesPersonalesBean implements Serializable {
 
 	/**

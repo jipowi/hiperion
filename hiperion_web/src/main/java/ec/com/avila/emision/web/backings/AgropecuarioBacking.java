@@ -306,8 +306,10 @@ public class AgropecuarioBacking implements Serializable {
 			}
 			// Archivo
 			if (ramoAgropecuarioBean.getFilePolizaVigente() != null) {
+				ramoAgropecuarioBean.getFilePolizaVigente().setIdUsuarioCreacion(usuario.getIdUsuario());
+				ramoAgropecuarioBean.getFilePolizaVigente().setFechaCreacion(new Date());
+				ramoAgropecuarioBean.getFilePolizaVigente().setEstado(EstadoEnum.A);
 				ramoAgropecuarioService.guardarArchivoPoliza(ramoAgropecuarioBean.getFilePolizaVigente());
-				// ramoAgropecuarioService.guardarAgropecuario(agropecuario);
 
 				MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.save"));
 				agropecuario = new RamoAgropecuario();
@@ -346,6 +348,7 @@ public class AgropecuarioBacking implements Serializable {
 				contClausulas++;
 				ClausulasAddAgro clausulaAgropecuario = new ClausulasAddAgro();
 				clausulaAgropecuario.setClausulaAddAgro(clausualaDTO.getClausula());
+				clausulaAgropecuario.setNumDiasAgro(clausualaDTO.getNumDias());
 				clausulaAgropecuario.setEstado(EstadoEnum.A);
 				clausulaAgropecuario.setFechaCreacion(new Date());
 				clausulaAgropecuario.setIdUsuarioCreacion(usuario.getIdUsuario());
