@@ -66,7 +66,7 @@
 								<p:dialog id="idCobertura" header="#{emision['anexo.titulo.tab.cob']}" widgetVar="coberturas" modal="true" position="center" showEffect="fade"
 									hideEffect="explode" resizable="false" closable="true" width="500" height="300">
 									<h:form id="coberturaForm">
-										<p:growl id="msgs" showDetail="true" />
+										<p:messages id="messagesCoberturas" showDetail="true" autoUpdate="true" closable="true" />
 										<p:dataTable id="tablaCoberturas" value="#{accidentesPersonalesBacking.coberturasDTO}" var="cobertura" paginator="true" rows="4"
 											editable="true">
 											<p:ajax event="rowEdit" listener="#{accidentesPersonalesBacking.onEditCobertura}" />
@@ -116,6 +116,7 @@
 								<p:dialog id="idCondicionesEspeciales" header="#{emision['anexo.titulo.tab.cep']}" widgetVar="condiciones" modal="true" position="center"
 									showEffect="fade" hideEffect="explode" resizable="false" closable="true" width="500" height="300">
 									<h:form id="condicionEspForm">
+										<p:messages id="messagesCondiciones" showDetail="true" autoUpdate="true" closable="true" />
 										<p:dataTable value="#{accidentesPersonalesBacking.condicionesEspecialesDTO}" var="condicion" paginator="true" editable="true">
 											<p:ajax event="rowEdit" listener="#{accidentesPersonalesBacking.onEditCondicionesEsp}" />
 											<p:column>
@@ -165,6 +166,7 @@
 								<p:dialog id="idClausulasAdd" header="#{emision['ap.tab.clausulasAdicionales']}" widgetVar="clausulasAdd" modal="true" position="center"
 									showEffect="fade" hideEffect="explode" resizable="false" closable="true" width="500" height="300">
 									<h:form id="clausulaAddEspForm">
+										<p:messages id="messagesClausulas" showDetail="true" autoUpdate="true" closable="true" />
 										<p:dataTable id="tablaClausulas" value="#{accidentesPersonalesBacking.clausulasAdicionalesDTO}" var="clausula" paginator="true"
 											editable="true">
 											<p:ajax event="rowEdit" listener="#{accidentesPersonalesBacking.onEditCLausulasAdd}" />

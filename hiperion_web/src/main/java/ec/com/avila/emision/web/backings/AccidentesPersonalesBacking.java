@@ -259,7 +259,7 @@ public class AccidentesPersonalesBacking implements Serializable {
 			CoberturaDTO coberturaDTO = new CoberturaDTO();
 			coberturaDTO.setCobertura(cobertura.getCoberturaAccPersonales());
 			coberturaDTO.setSeleccion(false);
-			
+
 			coberturasDTO.add(coberturaDTO);
 		}
 
@@ -290,8 +290,11 @@ public class AccidentesPersonalesBacking implements Serializable {
 
 			ramoAccidentesPersonalesService.guardarRamoAccidentesPersonales(accidentesPersonales, poliza);
 
+			MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.save"));
+
 		} catch (HiperionException e) {
 			log.error("Error al momento de guardar el ramo accidentes personales", e);
+			MessagesController.addError(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.error.save"));
 
 			throw new HiperionException(e);
 		}
