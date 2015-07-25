@@ -12,6 +12,7 @@ import javax.ejb.Stateless;
 import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.dao.DetalleAnexoDao;
 import ec.com.avila.hiperion.dao.RamoAsistenciaMedicaDao;
+import ec.com.avila.hiperion.emision.entities.Poliza;
 import ec.com.avila.hiperion.emision.entities.RamoAsistenciaMedica;
 import ec.com.avila.hiperion.servicio.RamoAstMedicaService;
 
@@ -31,7 +32,7 @@ public class RamoAstMedicaServiceImpl implements RamoAstMedicaService {
 	@EJB
 	protected DetalleAnexoDao detalleAnexoDao;
 
-	public void guardarRamoAsistenciaMedica(RamoAsistenciaMedica ramoAstMedica) throws HiperionException {
+	public void guardarRamoAsistenciaMedica(RamoAsistenciaMedica ramoAstMedica, Poliza poliza) throws HiperionException {
 		ramoAstMedicaDao.persist(ramoAstMedica);
 
 	}
