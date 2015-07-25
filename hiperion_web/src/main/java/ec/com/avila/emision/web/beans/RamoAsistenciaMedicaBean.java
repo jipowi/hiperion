@@ -11,7 +11,7 @@ import java.util.List;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
 import org.primefaces.event.RowEditEvent;
@@ -30,7 +30,7 @@ import ec.com.avila.hiperion.dto.PlanAsmDTO;
  * @since JDK1.6
  */
 @ManagedBean
-@RequestScoped
+@ViewScoped
 public class RamoAsistenciaMedicaBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;

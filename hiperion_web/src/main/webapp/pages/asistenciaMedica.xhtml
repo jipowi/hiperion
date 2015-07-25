@@ -18,6 +18,9 @@
 						</div>
 					</ui:define>
 					<ui:define name="ramoContent">
+						<p:outputPanel id="messageAsm">
+							<p:messages id="messagesAsm" showDetail="true" autoUpdate="true" closable="true" />
+						</p:outputPanel>
 						<p:tabView id="tabGeneral">
 							<p:tab id="tabRamo" title="#{emision['asm.tab.principal']}">
 								<h:form id="formGeneral">
@@ -36,87 +39,160 @@
 												<p:outputLabel value="#{emision['asm.polizaVigente']}" styleClass="negrita" />
 												<p:fileUpload fileLimit="1" />
 											</h:panelGrid>
-
-											<!-- Footer del Formulario -->
-											<f:facet name="footer">
-												<div align="center">
-													<p:commandButton id="guardarAsmBtnId" oncomplete="asmDlg.hide();" actionListener="#{asistenciaMedicaBacking.guardar}" icon="icon-save"
-														value="#{emision['boton.guardar']}" title="Guardar" />
-													<p:commandButton id="cancelarAsmBtnId" oncomplete="asmDlg.hide();" icon="icon-cancel" value="#{emision['boton.cancelar']}"
-														process="@this" title="Cancelar" />
-												</div>
-											</f:facet>
 										</h:panelGrid>
 									</div>
 								</h:form>
-							</p:tab>
-							<!-- LIMITES Y COSTOS -->
-							<p:tab id="tabLimites" title="#{emision['asm.tab.limitesCostos']}">
-								<p:accordionPanel dynamic="true" cache="true" activeIndex="null">
-									<!-- BENEFICIOS -->
-									<p:tab title="#{emision['anexo.titulo.beneficios']}">
-										<h:form id="beneficiosForm">
-											<p:dataTable value="#{asistenciaMedicaBacking.limitesCostosBeneficiosDTO}" var="beneficio" paginator="true">
-												<p:column>
-													<f:facet name="header">
-														<h:outputLabel value="#{emision['anexo.titulo.beneficios']}" />
+
+								<p:spacer height="15px;" />
+								<h:outputLabel style="color : #F4751B;" value="Limites y Costos" />
+								<p:spacer height="15px;" />
+								<!-- BENEFICIOS -->
+								<h:panelGrid columns="2">
+									<p:outputLabel value="#{emision['lbl.beneficios']}" styleClass="negrita" />
+									<p:commandLink title="#{emision['lbl.beneficios']}" oncomplete="beneficios.show();" update="idBeneficios">
+										<h:graphicImage name="check.png" library="img" />
+									</p:commandLink>
+								</h:panelGrid>
+								<p:dialog id="idBeneficios" header="#{emision['anexo.titulo.beneficios']}" widgetVar="beneficios" modal="true" position="center"
+									showEffect="fade" hideEffect="explode" resizable="false" closable="true" width="500" height="400">
+									<h:form id="beneficiosForm">
+										<p:dataTable value="#{asistenciaMedicaBacking.limitesCostosBeneficiosDTO}" var="beneficio" paginator="true" editable="true">
+											<p:ajax event="rowEdit" listener="#{asistenciaMedicaBacking.onEditBeneficios}" />
+											<p:column>
+												<f:facet name="header">
+													<h:outputLabel value="#{emision['anexo.titulo.beneficios']}" />
+												</f:facet>
+												<h:outputText value="#{beneficio.limitesCostos}" />
+											</p:column>
+
+											<p:column>
+												<f:facet name="header">
+													<h:outputLabel value="#{emision['lbl.seleccion']}" />
+												</f:facet>
+												<p:cellEditor>
+													<f:facet name="output">
+														<div align="center">
+															<p:selectBooleanCheckbox value="#{beneficio.seleccion}" disabled="true" />
+														</div>
 													</f:facet>
-													<h:outputText value="#{beneficio.limitesCostos}" />
-												</p:column>
-												<p:column>
-													<f:facet name="header">
-														<h:outputLabel value="#{emision['lbl.seleccion']}" />
+													<f:facet name="input">
+														<div align="center">
+															<p:selectBooleanCheckbox value="#{beneficio.seleccion}" />
+														</div>
 													</f:facet>
-													<div align="center">
-														<p:selectBooleanCheckbox value="#{beneficio.seleccion}" />
-													</div>
-												</p:column>
-											</p:dataTable>
-										</h:form>
-									</p:tab>
-									<!-- Beneficios Adicionales -->
-									<p:tab title="BENEFICIOS ADICIONALES">
-										<h:form id="beneficiosAddForm">
-											<p:dataTable value="#{asistenciaMedicaBacking.limitesCostosBenAddDTO}" var="beneficio" paginator="true">
-												<p:column>
-													<f:facet name="header">
-														<h:outputLabel value="#{emision['anexo.titulo.beneficiosAdd']}" />
+												</p:cellEditor>
+											</p:column>
+											<p:column headerText="Options" style="width:50px">
+												<p:rowEditor />
+											</p:column>
+										</p:dataTable>
+										<p:spacer height="15px;" />
+										<div align="center">
+											<p:commandButton id="guardarBeneficios" process="@this" actionListener="#{asistenciaMedicaBacking.setearBeneficios()}" icon="icon-save"
+												value="#{emision['boton.guardar']}" title="Guardar" oncomplete="beneficios.hide()" />
+										</div>
+									</h:form>
+								</p:dialog>
+								<!-- BENEFICIOS ADICIONALES -->
+								<h:panelGrid columns="2">
+									<p:outputLabel value="#{emision['lbl.beneficiosAdd']}" styleClass="negrita" />
+									<p:commandLink title="#{emision['lbl.beneficiosAdd']}" oncomplete="beneficiosAdd.show();" update="idBeneficiosAA">
+										<h:graphicImage name="check.png" library="img" />
+									</p:commandLink>
+								</h:panelGrid>
+								<p:dialog id="idBeneficiosAA" header="#{emision['anexo.titulo.beneficiosAdd']}" widgetVar="beneficiosAdd" modal="true" position="center"
+									showEffect="fade" hideEffect="explode" resizable="false" closable="true" width="500" height="300">
+									<h:form id="beneficiosAddForm">
+										<p:dataTable value="#{asistenciaMedicaBacking.limitesCostosBenAddDTO}" var="beneficio" paginator="true" editable="true">
+											<p:ajax event="rowEdit" listener="#{asistenciaMedicaBacking.onEditBeneficios}" />
+											<p:column>
+												<f:facet name="header">
+													<h:outputLabel value="#{emision['anexo.titulo.beneficiosAdd']}" />
+												</f:facet>
+												<h:outputText value="#{beneficio.limitesCostos}" />
+											</p:column>
+											<p:column>
+												<f:facet name="header">
+													<h:outputLabel value="#{emision['lbl.seleccion']}" />
+												</f:facet>
+												<p:cellEditor>
+													<f:facet name="output">
+														<div align="center">
+															<p:selectBooleanCheckbox value="#{beneficio.seleccion}" disabled="true" />
+														</div>
 													</f:facet>
-													<h:outputText value="#{beneficio.limitesCostos}" />
-												</p:column>
-												<p:column>
-													<f:facet name="header">
-														<h:outputLabel value="#{emision['lbl.seleccion']}" />
+													<f:facet name="input">
+														<div align="center">
+															<p:selectBooleanCheckbox value="#{beneficio.seleccion}" />
+														</div>
 													</f:facet>
-													<div align="center">
-														<p:selectBooleanCheckbox value="#{beneficio.seleccion}" />
-													</div>
-												</p:column>
-											</p:dataTable>
-										</h:form>
-									</p:tab>
-									<!-- Maternidad -->
-									<p:tab title="MATERNIDAD">
-										<h:form id="maternidadForm">
-											<p:dataTable value="#{asistenciaMedicaBacking.limitesCostosMaternidadDTO}" var="beneficio" paginator="true">
-												<p:column>
-													<f:facet name="header">
-														<h:outputLabel value="#{emision['anexo.titulo.maternidad']}" />
+												</p:cellEditor>
+											</p:column>
+											<p:column headerText="Options" style="width:50px">
+												<p:rowEditor />
+											</p:column>
+										</p:dataTable>
+										<p:spacer height="15px;" />
+										<div align="center">
+											<p:commandButton id="guardarBeneficiosAdd" process="@this" actionListener="#{asistenciaMedicaBacking.setearBeneficiosAdd()}"
+												icon="icon-save" value="#{emision['boton.guardar']}" title="Guardar" oncomplete="beneficiosAdd.hide()" />
+										</div>
+									</h:form>
+								</p:dialog>
+
+								<!-- MATERNIDAD -->
+								<h:panelGrid columns="2">
+									<p:outputLabel value="#{emision['lbl.maternidad']}" styleClass="negrita" />
+									<p:commandLink title="#{emision['lbl.maternidad']}" oncomplete="maternidad.show();" update="idMaternidad">
+										<h:graphicImage name="check.png" library="img" />
+									</p:commandLink>
+								</h:panelGrid>
+								<p:dialog id="idMaternidad" header="#{emision['anexo.titulo.maternidad']}" widgetVar="maternidad" modal="true" position="center"
+									showEffect="fade" hideEffect="explode" resizable="false" closable="true" width="500" height="300">
+									<h:form id="maternidadForm">
+										<p:dataTable value="#{asistenciaMedicaBacking.limitesCostosMaternidadDTO}" var="beneficio" paginator="true">
+											<p:column>
+												<f:facet name="header">
+													<h:outputLabel value="#{emision['anexo.titulo.maternidad']}" />
+												</f:facet>
+												<h:outputText value="#{beneficio.limitesCostos}" />
+											</p:column>
+											<p:column>
+												<f:facet name="header">
+													<h:outputLabel value="#{emision['lbl.seleccion']}" />
+												</f:facet>
+												<div align="center">
+													<p:selectBooleanCheckbox value="#{beneficio.seleccion}" />
+												</div>
+											</p:column>
+											<p:column>
+												<f:facet name="header">
+													<h:outputLabel value="#{emision['lbl.seleccion']}" />
+												</f:facet>
+												<p:cellEditor>
+													<f:facet name="output">
+														<div align="center">
+															<p:selectBooleanCheckbox value="#{beneficio.seleccion}" disabled="true" />
+														</div>
 													</f:facet>
-													<h:outputText value="#{beneficio.limitesCostos}" />
-												</p:column>
-												<p:column>
-													<f:facet name="header">
-														<h:outputLabel value="#{emision['lbl.seleccion']}" />
+													<f:facet name="input">
+														<div align="center">
+															<p:selectBooleanCheckbox value="#{beneficio.seleccion}" />
+														</div>
 													</f:facet>
-													<div align="center">
-														<p:selectBooleanCheckbox value="#{beneficio.seleccion}" />
-													</div>
-												</p:column>
-											</p:dataTable>
-										</h:form>
-									</p:tab>
-								</p:accordionPanel>
+												</p:cellEditor>
+											</p:column>
+											<p:column headerText="Options" style="width:50px">
+												<p:rowEditor />
+											</p:column>
+										</p:dataTable>
+										<p:spacer height="15px;" />
+										<div align="center">
+											<p:commandButton id="guardarMaternidad" process="@this" actionListener="#{asistenciaMedicaBacking.setearMaternidad()}" icon="icon-save"
+												value="#{emision['boton.guardar']}" title="Guardar" oncomplete="maternidad.hide()" />
+										</div>
+									</h:form>
+								</p:dialog>
 							</p:tab>
 
 							<!-- PLANES -->
