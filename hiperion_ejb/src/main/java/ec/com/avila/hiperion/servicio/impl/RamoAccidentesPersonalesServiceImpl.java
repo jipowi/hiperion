@@ -76,6 +76,8 @@ public class RamoAccidentesPersonalesServiceImpl implements RamoAccidentesPerson
 		polizaDao.persist(poliza);
 
 		ramoAccidentesPersonales.setPoliza(poliza);
+		
+		ramoAccidentesPersonalesDao.persist(ramoAccidentesPersonales);
 
 		for (ClausulasAddAccPer clausula : ramoAccidentesPersonales.getClausulasAddAccPers()) {
 			clausula.setRamoAccidentesPersonale(ramoAccidentesPersonales);
@@ -92,7 +94,6 @@ public class RamoAccidentesPersonalesServiceImpl implements RamoAccidentesPerson
 			conAccPerDao.persist(condicion);
 		}
 
-		ramoAccidentesPersonalesDao.persist(ramoAccidentesPersonales);
 	}
 
 }

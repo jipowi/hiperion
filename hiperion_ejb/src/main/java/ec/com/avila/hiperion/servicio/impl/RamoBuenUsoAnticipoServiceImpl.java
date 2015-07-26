@@ -11,6 +11,7 @@ import javax.ejb.Stateless;
 
 import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.dao.RamoBuenUsoAnticipoDao;
+import ec.com.avila.hiperion.emision.entities.Poliza;
 import ec.com.avila.hiperion.emision.entities.RamoBuenUsoAnt;
 import ec.com.avila.hiperion.servicio.RamoBuenUsoAnticipoService;
 
@@ -33,7 +34,7 @@ public class RamoBuenUsoAnticipoServiceImpl implements RamoBuenUsoAnticipoServic
 	 * @see ec.com.avila.hiperion.servicio.RamoBuenUsoAnticipoService#guardarRamoBuenUsoAnticipo(ec.com.avila.hiperion.emision.entities.RamoBuenUsoAnt)
 	 */
 	@Override
-	public void guardarRamoBuenUsoAnticipo(RamoBuenUsoAnt ramoBuenUsoAnt) throws HiperionException {
+	public void guardarRamoBuenUsoAnticipo(RamoBuenUsoAnt ramoBuenUsoAnt, Poliza poliza) throws HiperionException {
 		ramoBuenUsoAnticipoDao.persist(ramoBuenUsoAnt);
 	}
 

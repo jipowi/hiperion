@@ -9,6 +9,7 @@ import java.util.List;
 import javax.ejb.Local;
 
 import ec.com.avila.hiperion.comun.HiperionException;
+import ec.com.avila.hiperion.emision.entities.Poliza;
 import ec.com.avila.hiperion.emision.entities.RamoBuenUsoAnt;
 
 /**
@@ -31,7 +32,7 @@ public interface RamoBuenUsoAnticipoService {
 	 * @param ramoBuenUsoAnt
 	 * @throws HiperionException
 	 */
-	public void guardarRamoBuenUsoAnticipo(RamoBuenUsoAnt ramoBuenUsoAnt) throws HiperionException;
+	public void guardarRamoBuenUsoAnticipo(RamoBuenUsoAnt ramoBuenUsoAnt, Poliza poliza) throws HiperionException;
 
 	/**
 	 * 
