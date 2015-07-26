@@ -344,7 +344,6 @@ public class AccidentesPersonalesBacking implements Serializable {
 	 * 
 	 */
 	public void setearCoberturas() {
-		// Coberturas
 		int contCoberturas = 0;
 		List<CobertAccPer> coberturas = new ArrayList<>();
 		for (CoberturaDTO coberturaDTO : coberturasDTO) {

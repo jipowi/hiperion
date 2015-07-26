@@ -7,6 +7,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
 import java.io.StringReader;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -15,12 +16,15 @@ import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
 import org.apache.log4j.Logger;
+import org.primefaces.event.RowEditEvent;
 
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
@@ -36,10 +40,14 @@ import ec.com.avila.emision.web.beans.PolizaBean;
 import ec.com.avila.emision.web.beans.RamoBuenUsoAnticipoBean;
 import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.dto.CoberturaDTO;
+import ec.com.avila.hiperion.dto.TablaAmortizacionDTO;
 import ec.com.avila.hiperion.emision.entities.Catalogo;
 import ec.com.avila.hiperion.emision.entities.CobertBuenUsoAnt;
 import ec.com.avila.hiperion.emision.entities.DetalleAnexo;
 import ec.com.avila.hiperion.emision.entities.DetalleCatalogo;
+import ec.com.avila.hiperion.emision.entities.Financiamiento;
+import ec.com.avila.hiperion.emision.entities.PagoPoliza;
+import ec.com.avila.hiperion.emision.entities.Poliza;
 import ec.com.avila.hiperion.emision.entities.Ramo;
 import ec.com.avila.hiperion.emision.entities.RamoBuenUsoAnt;
 import ec.com.avila.hiperion.emision.entities.Usuario;
@@ -100,6 +108,8 @@ public class BuenUsoAnticipoBacking implements Serializable {
 	@ManagedProperty(value = "#{ramoBuenUsoAnticipoBean}")
 	private RamoBuenUsoAnticipoBean ramoBuenUsoAnticipoBean;
 
+	private Usuario usuario;
+
 	Logger log = Logger.getLogger(BuenUsoAnticipoBacking.class);
 
 	RamoBuenUsoAnt buenUsoAnt = new RamoBuenUsoAnt();
@@ -107,9 +117,14 @@ public class BuenUsoAnticipoBacking implements Serializable {
 	@PostConstruct
 	public void inicializar() {
 		try {
+
+			usuario = usuarioBean.getSessionUser();
+
 			Ramo ramo = ramoService.consultarRamoPorCodigo("BUA");
 			anexos = ramo.getDetalleAnexos();
+
 			obtenerCoberturas();
+
 		} catch (HiperionException e) {
 			e.printStackTrace();
 		}
@@ -117,7 +132,7 @@ public class BuenUsoAnticipoBacking implements Serializable {
 
 	/**
 	 * 
-	 * <b> Permite obtener las Coberturas de Ramo Accidentes Personales. </b>
+	 * <b> Permite obtener las Coberturas del ramo. </b>
 	 * <p>
 	 * [Author: Dario Vinueza, Date: 20/04/2014]
 	 * </p>
@@ -131,19 +146,75 @@ public class BuenUsoAnticipoBacking implements Serializable {
 				if (anexo.getAnexo().getIdAnexo() == 2) {
 					CobertBuenUsoAnt cobertura = new CobertBuenUsoAnt();
 					cobertura.setCoberturaAnticipo(anexo.getNombreDetalleAnexo());
-					
+
 					coberturas.add(cobertura);
 				}
 			}
-			for(CobertBuenUsoAnt cobertura:coberturas){
+			for (CobertBuenUsoAnt cobertura : coberturas) {
 				CoberturaDTO coberturaDTO = new CoberturaDTO();
 				coberturaDTO.setCobertura(cobertura.getCoberturaAnticipo());
-				
+
 				coberturasDTO.add(coberturaDTO);
 			}
 
 		}
 
+	}
+
+	/**
+	 * 
+	 * <b> Permite setear los datos de la poliza. </b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: 09/07/2015]
+	 * </p>
+	 * 
+	 * @return
+	 */
+	public Poliza setearDatosPoliza() {
+
+		Usuario usuario = usuarioBean.getSessionUser();
+		Poliza poliza = new Poliza();
+
+		poliza.setNumeroPoliza(polizaBean.getNumeroPoliza());
+		poliza.setNumeroAnexo(polizaBean.getNumeroAnexo());
+		poliza.setEjecutivo(polizaBean.getEjecutivo().getNombreUsuario());
+		poliza.setVigenciaDesde(polizaBean.getVigenciaDesde());
+		poliza.setVigenciaHasta(polizaBean.getVigenciaHasta());
+		poliza.setDiasCobertura(polizaBean.getDiasCobertura());
+		poliza.setSumaAsegurada(polizaBean.getSumaAsegurada());
+		poliza.setPrimaNeta(BigDecimal.valueOf(polizaBean.getPrimaNeta()));
+		poliza.setSuperBanSeguros(polizaBean.getSuperBanSeguros());
+		poliza.setSeguroCampesino(BigDecimal.valueOf(polizaBean.getSeguroCampesino()));
+		poliza.setDerechoEmision(BigDecimal.valueOf(polizaBean.getDerechoEmision()));
+		poliza.setRamo(1);
+		poliza.setEstadoPoliza("COTIZADO");
+
+		PagoPoliza pagoPoliza = new PagoPoliza();
+		pagoPoliza.setNumeroFactura(polizaBean.getNumeroFactura());
+		pagoPoliza.setSubtotal(polizaBean.getSubtotal());
+		pagoPoliza.setAdicionalSegCampesino(polizaBean.getAdicionalSegCampesino());
+		pagoPoliza.setIva(polizaBean.getIva());
+		pagoPoliza.setCuotaInicial(polizaBean.getCuotaInicial());
+		pagoPoliza.setValorTotalPagoPoliza(polizaBean.getTotal());
+		pagoPoliza.setEstado(EstadoEnum.A);
+		pagoPoliza.setFechaCreacion(new Date());
+		pagoPoliza.setIdUsuarioCreacion(usuario.getIdUsuario());
+
+		List<Financiamiento> financiamientos = new ArrayList<>();
+		for (TablaAmortizacionDTO financiamiento : polizaBean.getFinanciamientos()) {
+			Financiamiento financiamientoTemp = new Financiamiento();
+			financiamientoTemp.setNumeroCuota(financiamiento.getNumeroLetra());
+			financiamientoTemp.setValorLetra(BigDecimal.valueOf(financiamiento.getValor()));
+			financiamientoTemp.setFechaVencimiento(financiamiento.getFechaVencimiento());
+
+			financiamientos.add(financiamientoTemp);
+		}
+
+		pagoPoliza.setFinanciamientos(financiamientos);
+
+		poliza.setPagoPoliza(pagoPoliza);
+
+		return poliza;
 	}
 
 	public RamoBean getRamoBean() {
@@ -289,7 +360,8 @@ public class BuenUsoAnticipoBacking implements Serializable {
 	 * @throws IOException
 	 */
 	public void guardarRamo() throws HiperionException, IOException {
-		Usuario usuario = usuarioBean.getSessionUser();
+
+		Poliza poliza = setearDatosPoliza();
 
 		buenUsoAnt.setSectorAnticipo(ramoBuenUsoAnticipoBean.getSector());
 		buenUsoAnt.setObjAsegAnticipo(ramoBuenUsoAnticipoBean.getObjetoAsegurado());
@@ -301,9 +373,10 @@ public class BuenUsoAnticipoBacking implements Serializable {
 		buenUsoAnt.setEstado(EstadoEnum.A);
 
 		try {
-			ramoBuenUsoAnticipoService.guardarRamoBuenUsoAnticipo(buenUsoAnt);
+			ramoBuenUsoAnticipoService.guardarRamoBuenUsoAnticipo(buenUsoAnt, poliza);
+			MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.save"));
+
 			createPdfCotizacion(buenUsoAnt.getIndBuenUsoAnt().toString());
-			MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.save.sOjeto"));
 			MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.save.generate"));
 
 		} catch (HiperionException e) {
@@ -312,6 +385,49 @@ public class BuenUsoAnticipoBacking implements Serializable {
 			throw new HiperionException(e);
 		}
 
+	}
+
+	/**
+	 * 
+	 * <b> permite setear las coberturas seleccionadas en el Bean. </b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: 14/07/2015]
+	 * </p>
+	 * 
+	 */
+	public void setearCoberturas() {
+		int contCoberturas = 0;
+		List<CobertBuenUsoAnt> coberturas = new ArrayList<>();
+		for (CoberturaDTO coberturaDTO : coberturasDTO) {
+			if (coberturaDTO.getSeleccion()) {
+				contCoberturas++;
+				CobertBuenUsoAnt cobertura = new CobertBuenUsoAnt();
+				cobertura.setCoberturaAnticipo(coberturaDTO.getCobertura());
+
+				coberturas.add(cobertura);
+			}
+		}
+
+		if (contCoberturas == 0) {
+			MessagesController.addWarn(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.warn.coberturas"));
+		} else {
+			buenUsoAnt.setCobertBuenUsoAnts(coberturas);
+			MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.coberturas"));
+		}
+	}
+
+	/**
+	 * 
+	 * <b> Permite editar el registro de la tabla de coberturas. </b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: 26/07/2015]
+	 * </p>
+	 * 
+	 * @param event
+	 */
+	public void onEditCobertura(RowEditEvent event) {
+		FacesMessage msg = new FacesMessage("Item Edited", ((CoberturaDTO) event.getObject()).getCobertura());
+		FacesContext.getCurrentInstance().addMessage(null, msg);
 	}
 
 	/**

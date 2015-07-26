@@ -18,64 +18,63 @@
 						</div>
 					</ui:define>
 					<ui:define name="ramoContent">
-						<p:panel>
-							<p:tabView id="tabGeneral">
-								<p:tab id="tabRamo" title="#{emision['anticipo.tab.principal']}">
-									<p:messages id="messagesAnticipo" showDetail="true" autoUpdate="true" closable="true" />
-									<h:form id="formPrincipal">
-										<div align="center">
-											<h:panelGrid columns="1" id="ramoBuenUsoAnticipo">
-												<p:panel>
-													<h:panelGrid columns="2">
-														<p:outputLabel for="sectorId" value="#{emision['anticipo.sector']}" styleClass="negrita" />
-
-														<p:selectOneMenu id="sectorId" value="#{ramoBuenUsoAnticipoBean.sector}" effect="drop" required="true"
-															requiredMessage="#{emision['anticipo.sector.msn']}">
-															<f:selectItem itemLabel="Seleccione" noSelectionOption="true" />
-															<f:selectItems value="#{buenUsoAnticipoBacking.sectorItems}" />
-														</p:selectOneMenu>
-
-														<p:outputLabel for="valorContrato" value="#{emision['anticipo.valorContrato']}" styleClass="negrita" />
-														<p:inputText id="valorContrato" value="#{ramoBuenUsoAnticipoBean.valorContrato}" required="true"
-															requiredMessage="#{emision['anticipo.valorContrato.msn']}" />
-
-														<p:outputLabel for="valorPoliza" value="#{emision['anticipo.valorPoliza']}" styleClass="negrita" />
-														<p:inputText id="valorPoliza" value="#{ramoBuenUsoAnticipoBean.valorPoliza}" required="true"
-															requiredMessage="#{emision['anticipo.valorPoliza.msn']}" />
-
-														<p:outputLabel for="objetoAsegurado" value="#{emision['anticipo.objetoAsegurado']}" styleClass="negrita" />
-														<p:inputTextarea id="objetoAsegurado" cols="50" rows="2" value="#{ramoBuenUsoAnticipoBean.objetoAsegurado}" required="true"
-															requiredMessage="#{emision['anticipo.objetoAsegurado.msn']}" />
-													</h:panelGrid>
-													<h:panelGrid columns="1" cellpadding="3">
-														<p:outputLabel value="#{emision['anticipo.contrato']}" styleClass="negrita" />
-														<p:fileUpload fileLimit="1" />
-														<p:outputLabel value="#{emision['anticipo.polizaVigente']}" styleClass="negrita" />
-														<p:fileUpload fileLimit="1" />
-													</h:panelGrid>
-
-												</p:panel>
-											</h:panelGrid>
-											<p:spacer height="30px;" />
-
-											<p:commandButton id="guardarRamoId" actionListener="#{buenUsoAnticipoBacking.guardarRamo}" icon="icon-save"
-												value="#{emision['boton.guardar']}" update="formPrincipal, ramoBuenUsoAnticipo" title="Guardar" />
-											<p:commandButton id="cancelarBtnId" icon="icon-cancel" value="#{emision['boton.cancelar']}" title="Cancelar" />
-
-											<!-- DESCARGAR DOCUMENTOS -->
+						<p:tabView id="tabGeneral">
+							<p:tab id="tabRamo" title="#{emision['anticipo.tab.principal']}">
+								<p:messages id="messagesAnticipo" showDetail="true" autoUpdate="true" closable="true" />
+								<h:form id="formPrincipal">
+									<div align="center">
+										<h:panelGrid columns="1" id="ramoBuenUsoAnticipo">
 											<h:panelGrid columns="2">
-												<p:commandLink title="Descargar syllabus" actionListener="#{buenUsoAnticipoBacking.descargarBuenUsoAnticipoPDF()}">
-													<h:graphicImage name="pdf.png" library="img" />
-												</p:commandLink>
-											</h:panelGrid>
+												<p:outputLabel for="sectorId" value="#{emision['anticipo.sector']}" styleClass="negrita" />
 
-										</div>
-									</h:form>
-								</p:tab>
+												<p:selectOneMenu id="sectorId" value="#{ramoBuenUsoAnticipoBean.sector}" effect="drop" required="true"
+													requiredMessage="#{emision['anticipo.sector.msn']}">
+													<f:selectItem itemLabel="Seleccione" noSelectionOption="true" />
+													<f:selectItems value="#{buenUsoAnticipoBacking.sectorItems}" />
+												</p:selectOneMenu>
+
+												<p:outputLabel for="valorContrato" value="#{emision['anticipo.valorContrato']}" styleClass="negrita" />
+												<p:inputText id="valorContrato" value="#{ramoBuenUsoAnticipoBean.valorContrato}" required="true"
+													requiredMessage="#{emision['anticipo.valorContrato.msn']}" />
+
+												<p:outputLabel for="valorPoliza" value="#{emision['anticipo.valorPoliza']}" styleClass="negrita" />
+												<p:inputText id="valorPoliza" value="#{ramoBuenUsoAnticipoBean.valorPoliza}" required="true"
+													requiredMessage="#{emision['anticipo.valorPoliza.msn']}" />
+
+												<p:outputLabel for="objetoAsegurado" value="#{emision['anticipo.objetoAsegurado']}" styleClass="negrita" />
+												<p:inputTextarea id="objetoAsegurado" cols="50" rows="2" value="#{ramoBuenUsoAnticipoBean.objetoAsegurado}" required="true"
+													requiredMessage="#{emision['anticipo.objetoAsegurado.msn']}" />
+											</h:panelGrid>
+											<h:panelGrid columns="1" cellpadding="3">
+												<p:outputLabel value="#{emision['anticipo.contrato']}" styleClass="negrita" />
+												<p:fileUpload fileLimit="1" />
+												<p:outputLabel value="#{emision['anticipo.polizaVigente']}" styleClass="negrita" />
+												<p:fileUpload fileLimit="1" />
+											</h:panelGrid>
+										</h:panelGrid>
+										<p:spacer height="30px;" />
+
+										<!-- DESCARGAR DOCUMENTOS -->
+										<h:panelGrid columns="2">
+											<p:commandLink title="Descargar syllabus" actionListener="#{buenUsoAnticipoBacking.descargarBuenUsoAnticipoPDF()}">
+												<h:graphicImage name="pdf.png" library="img" />
+											</p:commandLink>
+										</h:panelGrid>
+
+									</div>
+								</h:form>
 								<!-- COBERTURAS -->
-								<p:tab title="#{emision['ap.tab.coberturas']}">
+								<h:panelGrid columns="2">
+									<p:outputLabel value="#{emision['lbl.seleccionarCoberturas']}" styleClass="negrita" />
+									<p:commandLink title="#{emision['lbl.seleccionarCoberturas']}" oncomplete="coberturas.show();" update="idCobertura">
+										<h:graphicImage name="check.png" library="img" />
+									</p:commandLink>
+								</h:panelGrid>
+								<p:dialog id="idCobertura" header="#{emision['anexo.titulo.tab.cob']}" widgetVar="coberturas" modal="true" position="center" showEffect="fade"
+									hideEffect="explode" resizable="false" closable="true" width="500" height="300">
 									<h:form id="coberturasForm">
-										<p:dataTable value="#{buenUsoAnticipoBacking.coberturasDTO}" var="cobertura" paginator="true">
+										<p:dataTable value="#{buenUsoAnticipoBacking.coberturasDTO}" var="cobertura" paginator="true" editable="true">
+											<p:ajax event="rowEdit" listener="#{buenUsoAnticipoBacking.onEditCobertura}" />
 											<p:column>
 												<f:facet name="header">
 													<h:outputLabel value="#{emision['anexo.titulo.cob']}" />
@@ -86,21 +85,58 @@
 												<f:facet name="header">
 													<h:outputLabel value="#{emision['lbl.seleccion']}" />
 												</f:facet>
-												<div align="center">
-													<p:selectBooleanCheckbox value="#{cobertura.seleccion}" />
-												</div>
+												<p:cellEditor>
+													<f:facet name="output">
+														<div align="center">
+															<p:selectBooleanCheckbox value="#{cobertura.seleccion}" disabled="true" />
+														</div>
+													</f:facet>
+													<f:facet name="input">
+														<div align="center">
+															<p:selectBooleanCheckbox value="#{cobertura.seleccion}" />
+														</div>
+													</f:facet>
+												</p:cellEditor>
+											</p:column>
+											<p:column headerText="Options" style="width:50px">
+												<p:rowEditor />
 											</p:column>
 										</p:dataTable>
+										<p:spacer height="15px;" />
+										<div align="center">
+											<p:commandButton id="guardarCoberturas" process="@this" actionListener="#{buenUsoAnticipoBacking.setearCoberturas()}" icon="icon-save"
+												value="#{emision['boton.guardar']}" title="Guardar" oncomplete="coberturas.hide()" />
+										</div>
 									</h:form>
-								</p:tab>
-							</p:tabView>
-
-
-						</p:panel>
+								</p:dialog>
+							</p:tab>
+						</p:tabView>
 					</ui:define>
 				</ui:decorate>
 			</ui:define>
 		</ui:decorate>
+	</ui:define>
+	<ui:define name="buttons">
+		<h:form>
+			<h:panelGrid columns="1">
+				<h:commandLink action="hiperion.xhtml">
+					<h:graphicImage name="home.png" library="img" />
+				</h:commandLink>
+				<p:commandLink title="Guardar Informacion poliza" actionListener="#{buenUsoAnticipoBacking.guardarRamo()}">
+					<h:graphicImage name="save.png" library="img" />
+				</p:commandLink>
+				<p:commandLink onclick="help.show()">
+					<h:graphicImage name="helpII.png" library="img" />
+				</p:commandLink>
+			</h:panelGrid>
+			<p:dialog header="Ramo Agropecuario" widgetVar="help" showEffect="explode" hideEffect="bounce" height="100">
+				<h:panelGrid columns="1">
+					<h:outputText value="Seguro agricola" />
+					<h:outputText value="Para soporte en cualqueira de las funcionalidades" />
+					<h:outputText value="Por favor comuniquese con Franklin Pozo, Administradr del Sitema Hiperion" />
+				</h:panelGrid>
+			</p:dialog>
+		</h:form>
 	</ui:define>
 </ui:composition>
 </html>

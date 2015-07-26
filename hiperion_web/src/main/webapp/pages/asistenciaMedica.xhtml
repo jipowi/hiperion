@@ -150,21 +150,15 @@
 								<p:dialog id="idMaternidad" header="#{emision['anexo.titulo.maternidad']}" widgetVar="maternidad" modal="true" position="center"
 									showEffect="fade" hideEffect="explode" resizable="false" closable="true" width="500" height="300">
 									<h:form id="maternidadForm">
-										<p:dataTable value="#{asistenciaMedicaBacking.limitesCostosMaternidadDTO}" var="beneficio" paginator="true">
+										<p:dataTable value="#{asistenciaMedicaBacking.limitesCostosMaternidadDTO}" var="beneficio" paginator="true" editable="true">
+											<p:ajax event="rowEdit" listener="#{asistenciaMedicaBacking.onEditBeneficios}" />
 											<p:column>
 												<f:facet name="header">
 													<h:outputLabel value="#{emision['anexo.titulo.maternidad']}" />
 												</f:facet>
 												<h:outputText value="#{beneficio.limitesCostos}" />
 											</p:column>
-											<p:column>
-												<f:facet name="header">
-													<h:outputLabel value="#{emision['lbl.seleccion']}" />
-												</f:facet>
-												<div align="center">
-													<p:selectBooleanCheckbox value="#{beneficio.seleccion}" />
-												</div>
-											</p:column>
+
 											<p:column>
 												<f:facet name="header">
 													<h:outputLabel value="#{emision['lbl.seleccion']}" />
@@ -757,7 +751,7 @@
 				<h:commandLink action="hiperion.xhtml">
 					<h:graphicImage name="home.png" library="img" />
 				</h:commandLink>
-				<p:commandLink title="Guardar Informacion poliza" actionListener="#{agropecuarioBacking.setearRamo()}">
+				<p:commandLink title="Guardar Informacion poliza" actionListener="#{asistenciaMedicaBacking.guardar()}">
 					<h:graphicImage name="save.png" library="img" />
 				</p:commandLink>
 				<p:commandLink onclick="help.show()">
