@@ -10,7 +10,14 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
 import ec.com.avila.hiperion.comun.HiperionException;
+import ec.com.avila.hiperion.dao.CoberturaBuenUsoAntDao;
+import ec.com.avila.hiperion.dao.FinanciamientoDao;
+import ec.com.avila.hiperion.dao.PagoPolizaDao;
+import ec.com.avila.hiperion.dao.PolizaDao;
 import ec.com.avila.hiperion.dao.RamoBuenUsoAnticipoDao;
+import ec.com.avila.hiperion.emision.entities.CobertBuenUsoAnt;
+import ec.com.avila.hiperion.emision.entities.Financiamiento;
+import ec.com.avila.hiperion.emision.entities.PagoPoliza;
 import ec.com.avila.hiperion.emision.entities.Poliza;
 import ec.com.avila.hiperion.emision.entities.RamoBuenUsoAnt;
 import ec.com.avila.hiperion.servicio.RamoBuenUsoAnticipoService;
@@ -23,10 +30,18 @@ import ec.com.avila.hiperion.servicio.RamoBuenUsoAnticipoService;
  * @since JDK1.6
  */
 @Stateless
-public class RamoBuenUsoAnticipoServiceImpl implements RamoBuenUsoAnticipoService{
+public class RamoBuenUsoAnticipoServiceImpl implements RamoBuenUsoAnticipoService {
 
 	@EJB
 	private RamoBuenUsoAnticipoDao ramoBuenUsoAnticipoDao;
+	@EJB
+	private PolizaDao polizaDao;
+	@EJB
+	private PagoPolizaDao pagoPolizaDao;
+	@EJB
+	private FinanciamientoDao financiamientoDao;
+	@EJB
+	private CoberturaBuenUsoAntDao coberturaBuenUsoAntDao;
 
 	/*
 	 * (non-Javadoc)
@@ -36,6 +51,25 @@ public class RamoBuenUsoAnticipoServiceImpl implements RamoBuenUsoAnticipoServic
 	@Override
 	public void guardarRamoBuenUsoAnticipo(RamoBuenUsoAnt ramoBuenUsoAnt, Poliza poliza) throws HiperionException {
 		ramoBuenUsoAnticipoDao.persist(ramoBuenUsoAnt);
+
+		PagoPoliza pagoPoliza = poliza.getPagoPoliza();
+		pagoPolizaDao.persist(pagoPoliza);
+
+		for (Financiamiento financiamiento : pagoPoliza.getFinanciamientos()) {
+			financiamiento.setPagoPoliza(pagoPoliza);
+			financiamientoDao.persist(financiamiento);
+		}
+
+		polizaDao.persist(poliza);
+		ramoBuenUsoAnt.setPoliza(poliza);
+
+		ramoBuenUsoAnticipoDao.persist(ramoBuenUsoAnt);
+
+		for (CobertBuenUsoAnt cobertura : ramoBuenUsoAnt.getCobertBuenUsoAnts()) {
+			cobertura.setRamoBuenUsoAnt(ramoBuenUsoAnt);
+			coberturaBuenUsoAntDao.persist(cobertura);
+		}
+
 	}
 
 	/*
