@@ -50,7 +50,6 @@ public class RamoBuenUsoAnticipoServiceImpl implements RamoBuenUsoAnticipoServic
 	 */
 	@Override
 	public void guardarRamoBuenUsoAnticipo(RamoBuenUsoAnt ramoBuenUsoAnt, Poliza poliza) throws HiperionException {
-		ramoBuenUsoAnticipoDao.persist(ramoBuenUsoAnt);
 
 		PagoPoliza pagoPoliza = poliza.getPagoPoliza();
 		pagoPolizaDao.persist(pagoPoliza);
