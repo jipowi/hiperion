@@ -145,7 +145,6 @@
 											<p:column headerText="Options" style="width:50px">
 												<p:rowEditor />
 											</p:column>
-
 										</p:dataTable>
 										<p:spacer height="15px;" />
 										<div align="center">
@@ -169,7 +168,7 @@
 										<p:messages id="messagesClausulas" showDetail="true" autoUpdate="true" closable="true" />
 										<p:dataTable id="tablaClausulas" value="#{accidentesPersonalesBacking.clausulasAdicionalesDTO}" var="clausula" paginator="true"
 											editable="true">
-											<p:ajax event="rowEdit" listener="#{accidentesPersonalesBacking.onEditCLausulasAdd}" />
+											<p:ajax event="rowEdit" listener="#{accidentesPersonalesBacking.onEditClausulasAdd}" />
 											<p:column>
 												<f:facet name="header">
 													<h:outputLabel value="#{emision['anexo.titulo.cad']}" />

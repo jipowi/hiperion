@@ -387,7 +387,7 @@ public class AccidentesPersonalesBacking implements Serializable {
 	 * 
 	 * @param event
 	 */
-	public void onEditCLausulasAdd(RowEditEvent event) {
+	public void onEditClausulasAdd(RowEditEvent event) {
 		FacesMessage msg = new FacesMessage("Item Edited", ((ClausulaAdicionalDTO) event.getObject()).getClausula());
 		FacesContext.getCurrentInstance().addMessage(null, msg);
 	}

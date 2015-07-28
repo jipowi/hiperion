@@ -18,201 +18,63 @@
 						</div>
 					</ui:define>
 					<ui:define name="ramoContent">
-						<p:panel>
-							<p:tabView effect="blind" effectDuration="normal">
-								<p:tab title="#{emision['dineroValores.tab.principal']}">
-									<p:outputPanel>
-										<p:messages id="messageDineroValores" showDetail="true" autoUpdate="true" closable="true" />
-									</p:outputPanel>
-									<div align="center">
-										<h:panelGrid columns="1">
-											<h:form id="formPricipal">
-												<p:panel>
-													<h:panelGrid columns="2" cellpadding="3" id="ramoDineroValores">
-														<p:outputLabel for="idTasa" value="#{emision['dineroValores.tasa']}" styleClass="negrita" />
-														<p:inputText id="idTasa" value="#{ramoDineroValoresBean.tasa}" required="true" requiredMessage="#{emision['dineroValores.tasa.msn']}" />
+						<p:tabView effect="blind" effectDuration="normal">
+							<p:tab title="#{emision['dineroValores.tab.principal']}">
+								<p:outputPanel>
+									<p:messages id="messageDineroValores" showDetail="true" autoUpdate="true" closable="true" />
+								</p:outputPanel>
+								<div align="center">
+									<h:panelGrid columns="1">
+										<h:form id="formPricipal">
+											<p:panel>
+												<h:panelGrid columns="2" cellpadding="3" id="ramoDineroValores">
+													<p:outputLabel for="idTasa" value="#{emision['dineroValores.tasa']}" styleClass="negrita" />
+													<p:inputText id="idTasa" value="#{ramoDineroValoresBean.tasa}" required="true" requiredMessage="#{emision['dineroValores.tasa.msn']}" />
 
-													</h:panelGrid>
-													<h:panelGrid columns="1" cellpadding="3">
-														<p:outputLabel value="#{emision['dineroValores.filePolizaVigente']}" styleClass="negrita" />
-														<p:fileUpload fileLimit="1" />
-													</h:panelGrid>
-
-													<p:spacer height="30px;" />
-
-													<h:panelGrid columns="2">
-														<h:outputLabel value="#{emision['emision.deducibles']}" />
-														<h:graphicImage name="deducibles.jpg" library="img" />
-													</h:panelGrid>
-													<h:panelGrid columns="2">
-														<h:outputLabel for="idPorcentajeSiniestro" value="#{emision['dineroValores.deducible.porcentajeSiniestro']}" styleClass="negrita" />
-														<p:inputText id="idPorcentajeSiniestro" value="#{ramoDineroValoresBean.porcentajeSiniestro}" required="true"
-															requiredMessage="#{emision['dineroValores.deducible.porcentajeSiniestro.msn']}" />
-
-														<h:outputLabel value="#{emision['dineroValores.deducible.minimoSiniestro']}" styleClass="negrita" />
-														<p:inputText value="#{ramoDineroValoresBean.valorMinimo}" />
-
-														<h:outputLabel value="#{emision['dineroValores.deducible.porcentajeEmbarque']}" styleClass="negrita" />
-														<p:inputText value="#{ramoDineroValoresBean.porcentajeEmbarque}" />
-
-														<h:outputLabel value="#{emision['dineroValores.deducible.minimoPorcentaje']}" styleClass="negrita" />
-														<p:inputText value="#{ramoDineroValoresBean.minimoPorcentaje}" />
-													</h:panelGrid>
-												</p:panel>
-												<div align="center">
-													<p:commandButton id="guardarBtnId" actionListener="#{dineroValoresBacking.setearInfRamo()}" icon="icon-save"
-														value="#{emision['boton.aceptar']}" title="Guardar" update="formPricipal, ramoDineroValores" />
-													<p:commandButton id="cancelarBtnId" icon="icon-cancel" value="#{emision['boton.cancelar']}" process="@this" title="Cancelar" />
-												</div>
-											</h:form>
-										</h:panelGrid>
-									</div>
-								</p:tab>
-								<!-- OBJETO ASEGURADO -->
-								<p:tab title="#{emision['dineroValores.tab.objetoAsegurado']}">
-									<div align="center">
-										<h:form id="form1">
-											<h:panelGrid columns="1">
-												<f:facet name="header">
-													<p:outputLabel value="#{emision['dineroValores.objeto.tituloPantalla']}" styleClass="negrita" />
-												</f:facet>
-												<p:separator id="customSeparator" style="width:auto;height:1px" />
-												<p:growl id="messages" showDetail="true" />
-												<p:panelGrid columns="4">
-													<h:outputLabel for="idItem" value="#{emision['dineroValores.objeto.item']}" styleClass="negrita" />
-													<p:inputText id="idItem" value="#{ramoDineroValoresBean.item}" required="true"
-														requiredMessage="#{emision['dineroValores.objeto.item.msn']}" />
-													<h:outputLabel value="#{emision['dineroValores.objeto.dineroValores']}" styleClass="negrita" />
-													<p:inputText value="#{ramoDineroValoresBean.dineroValores}" />
-
-													<h:outputLabel value="#{emision['dineroValores.objeto.limiteEstimadoAnual']}" styleClass="negrita" />
-													<p:inputText value="#{ramoDineroValoresBean.limiteEstimadoAnual}" />
-													<h:outputLabel value="#{emision['dineroValores.objeto.limiteEmbarque']}" styleClass="negrita" />
-													<p:inputText value="#{ramoDineroValoresBean.limiteEmbarque}" />
-
-													<h:outputLabel value="#{emision['dineroValores.objeto.trayectoriaDesde']}" styleClass="negrita" />
-													<p:inputText value="#{ramoDineroValoresBean.trayectoDesde}" />
-													<h:outputLabel value="#{emision['dineroValores.objeto.trayectoriaHasta']}" styleClass="negrita" />
-													<p:inputText value="#{ramoDineroValoresBean.trayectoHasta}" />
-
-													<h:outputLabel value="#{emision['dineroValores.objeto.medioTransporte']}" styleClass="negrita" />
-													<p:inputText value="#{ramoDineroValoresBean.medioTransporte}" />
-
-												</p:panelGrid>
-												<f:facet name="footer">
-													<div align="center">
-														<p:commandButton id="agregarObjeto" update="form1, messages" icon="icon-add" value="#{emision['boton.agregar']}"
-															actionListener="#{ramoDineroValoresBean.addActionObjetoAsegurado}" title="Agregar" />
-													</div>
-												</f:facet>
-											</h:panelGrid>
-											<p:spacer height="30px;" />
-											<p:dataTable value="#{ramoDineroValoresBean.objetoaseguradolist}" var="obj" widgetVar="50" editable="true">
-												<p:ajax event="rowEdit" listener="#{ramoDineroValoresBean.onEditObjetoAsegurado}" />
-												<p:ajax event="rowEditCancel" listener="#{ramoDineroValoresBean.onCancelObjetoAsegurado}" />
-												<p:column>
-													<f:facet name="header">
-														<h:outputText value="#{emision['dineroValores.objeto.item']}" />
-													</f:facet>
-													<p:cellEditor>
-														<f:facet name="output">
-															<h:outputText value="#{obj.item}" />
-														</f:facet>
-														<f:facet name="input">
-															<p:inputText value="#{obj.item}" style="width:100%" />
-														</f:facet>
-													</p:cellEditor>
-												</p:column>
-												<p:column>
-													<f:facet name="header">
-														<h:outputText value="#{emision['dineroValores.objeto.dineroValores']}" />
-													</f:facet>
-													<p:cellEditor>
-														<f:facet name="output">
-															<h:outputText value="#{obj.dineroValores}" />
-														</f:facet>
-														<f:facet name="input">
-															<p:inputText value="#{obj.dineroValores}" style="width:100%" />
-														</f:facet>
-													</p:cellEditor>
-												</p:column>
-												<p:column>
-													<f:facet name="header">
-														<h:outputText value="#{emision['dineroValores.objeto.limiteEstimadoAnual']}" />
-													</f:facet>
-													<p:cellEditor>
-														<f:facet name="output">
-															<h:outputText value="#{obj.limiteEstimadoAnual}" />
-														</f:facet>
-														<f:facet name="input">
-															<p:inputText value="#{obj.limiteEstimadoAnual}" style="width:100%" />
-														</f:facet>
-													</p:cellEditor>
-												</p:column>
-												<p:column>
-													<f:facet name="header">
-														<h:outputText value="#{emision['dineroValores.objeto.limiteEmbarque']}" />
-													</f:facet>
-													<p:cellEditor>
-														<f:facet name="output">
-															<h:outputText value="#{obj.limiteEmbarque}" />
-														</f:facet>
-														<f:facet name="input">
-															<p:inputText value="#{obj.limiteEmbarque}" style="width:100%" />
-														</f:facet>
-													</p:cellEditor>
-												</p:column>
-												<p:column>
-													<f:facet name="header">
-														<h:outputText value="#{emision['dineroValores.objeto.trayectoriaDesde']}" />
-													</f:facet>
-													<p:cellEditor>
-														<f:facet name="output">
-															<h:outputText value="#{obj.trayectoDesde}" />
-														</f:facet>
-														<f:facet name="input">
-															<p:inputText value="#{obj.trayectoHasta}" style="width:100%" />
-														</f:facet>
-													</p:cellEditor>
-												</p:column>
-												<p:column>
-													<f:facet name="header">
-														<h:outputText value="#{emision['dineroValores.objeto.medioTransporte']}" />
-													</f:facet>
-													<p:cellEditor>
-														<f:facet name="output">
-															<h:outputText value="#{obj.medioTransporte}" />
-														</f:facet>
-														<f:facet name="input">
-															<p:inputText value="#{obj.medioTransporte}" style="width:100%" />
-														</f:facet>
-													</p:cellEditor>
-												</p:column>
-												<p:column headerText="Options" style="width:50px">
-													<p:rowEditor />
-												</p:column>
-											</p:dataTable>
-											<p:spacer height="30px;" />
-											<div align="center">
-												<p:commandButton id="guardarBtnId" actionListener="#{dineroValoresBacking.guardarRamo()}" icon="icon-save"
-													value="#{emision['boton.guardar']}" title="Guardar" update="form1" />
-												<p:commandButton id="cancelarBtnId" icon="icon-cancel" value="#{emision['boton.cancelar']}" process="@this" title="Cancelar" />
-
-												<!-- DESCARGAR DOCUMENTOS -->
-												<h:panelGrid columns="2">
-													<p:commandLink title="Descargar syllabus" actionListener="#{dineroValoresBacking.descargarDineroValoresPDF()}">
-														<h:graphicImage name="pdf.png" library="img" />
-													</p:commandLink>
 												</h:panelGrid>
-											</div>
+												<h:panelGrid columns="1" cellpadding="3">
+													<p:outputLabel value="#{emision['dineroValores.filePolizaVigente']}" styleClass="negrita" />
+													<p:fileUpload fileLimit="1" />
+												</h:panelGrid>
+
+												<p:spacer height="30px;" />
+
+												<h:panelGrid columns="2">
+													<h:outputLabel value="#{emision['emision.deducibles']}" />
+													<h:graphicImage name="deducibles.jpg" library="img" />
+												</h:panelGrid>
+												<h:panelGrid columns="2">
+													<h:outputLabel for="idPorcentajeSiniestro" value="#{emision['dineroValores.deducible.porcentajeSiniestro']}" styleClass="negrita" />
+													<p:inputText id="idPorcentajeSiniestro" value="#{ramoDineroValoresBean.porcentajeSiniestro}" required="true"
+														requiredMessage="#{emision['dineroValores.deducible.porcentajeSiniestro.msn']}" />
+
+													<h:outputLabel value="#{emision['dineroValores.deducible.minimoSiniestro']}" styleClass="negrita" />
+													<p:inputText value="#{ramoDineroValoresBean.valorMinimo}" />
+
+													<h:outputLabel value="#{emision['dineroValores.deducible.porcentajeEmbarque']}" styleClass="negrita" />
+													<p:inputText value="#{ramoDineroValoresBean.porcentajeEmbarque}" />
+
+													<h:outputLabel value="#{emision['dineroValores.deducible.minimoPorcentaje']}" styleClass="negrita" />
+													<p:inputText value="#{ramoDineroValoresBean.minimoPorcentaje}" />
+												</h:panelGrid>
+											</p:panel>
+
 										</h:form>
-									</div>
-								</p:tab>
+									</h:panelGrid>
+								</div>
 
 								<!-- COBERTURAS -->
-								<p:tab title="#{emision['ap.tab.coberturas']}">
+								<h:panelGrid columns="2">
+									<p:outputLabel value="#{emision['lbl.seleccionarCoberturas']}" styleClass="negrita" />
+									<p:commandLink title="#{emision['lbl.seleccionarCoberturas']}" oncomplete="coberturas.show();" update="idCobertura">
+										<h:graphicImage name="check.png" library="img" />
+									</p:commandLink>
+								</h:panelGrid>
+								<p:dialog id="idCobertura" header="#{emision['anexo.titulo.tab.cob']}" widgetVar="coberturas" modal="true" position="center" showEffect="fade"
+									hideEffect="explode" resizable="false" closable="true" width="500" height="300">
 									<h:form id="coberturaForm">
-										<p:dataTable value="#{dineroValoresBacking.coberturasDTO}" var="cobertura" paginator="true" rows="4">
+										<p:dataTable value="#{dineroValoresBacking.coberturasDTO}" var="cobertura" paginator="true" editable="true" rows="4">
+											<p:ajax event="rowEdit" listener="#{dineroValoresBacking.onEditCobertura}" />
 											<p:column>
 												<f:facet name="header">
 													<h:outputLabel value="#{emision['anexo.titulo.cob']}" />
@@ -223,17 +85,44 @@
 												<f:facet name="header">
 													<h:outputLabel value="#{emision['lbl.seleccion']}" />
 												</f:facet>
-												<div align="center">
-													<p:selectBooleanCheckbox value="#{cobertura.seleccion}" />
-												</div>
+												<p:cellEditor>
+													<f:facet name="output">
+														<div align="center">
+															<p:selectBooleanCheckbox value="#{cobertura.seleccion}" disabled="true" />
+														</div>
+													</f:facet>
+													<f:facet name="input">
+														<div align="center">
+															<p:selectBooleanCheckbox value="#{cobertura.seleccion}" />
+														</div>
+													</f:facet>
+												</p:cellEditor>
+											</p:column>
+											<p:column headerText="Options" style="width:50px">
+												<p:rowEditor />
 											</p:column>
 										</p:dataTable>
+										<p:spacer height="15px;" />
+										<div align="center">
+											<p:commandButton id="guardarCoberturas" process="@this" actionListener="#{dineroValoresBacking.setearCoberturas()}" icon="icon-save"
+												value="#{emision['boton.guardar']}" title="Guardar" oncomplete="coberturas.hide()" />
+										</div>
 									</h:form>
-								</p:tab>
+								</p:dialog>
+
 								<!-- CLAUSULAS ADICIONALES -->
-								<p:tab title="#{emision['ap.tab.clausulasAdicionales']}">
+								<h:panelGrid columns="2">
+									<p:outputLabel value="#{emision['lbl.seleccionarClausulasAdd']}" styleClass="negrita" />
+									<p:commandLink title="#{emision['lbl.seleccionarClausulasAdd']}" oncomplete="clausulasAdd.show();"
+										actionListener="#{accidentesPersonalesBacking.obtenerClausulasAdicionales()}" update="idClausulasAdd">
+										<h:graphicImage name="check.png" library="img" />
+									</p:commandLink>
+								</h:panelGrid>
+								<p:dialog id="idClausulasAdd" header="#{emision['ap.tab.clausulasAdicionales']}" widgetVar="clausulasAdd" modal="true" position="center"
+									showEffect="fade" hideEffect="explode" resizable="false" closable="true" width="500" height="300">
 									<h:form id="clausulaAddForm">
-										<p:dataTable value="#{dineroValoresBacking.clausulasAdicionalesDTO}" var="clausula" paginator="true" rows="4">
+										<p:dataTable value="#{dineroValoresBacking.clausulasAdicionalesDTO}" var="clausula" paginator="true" rows="4" editable="true">
+											<p:ajax event="rowEdit" listener="#{dineroValoresBacking.onEditClausulasAdd}" />
 											<p:column>
 												<f:facet name="header">
 													<h:outputLabel value="#{emision['anexo.titulo.cad']}" />
@@ -244,21 +133,195 @@
 												<f:facet name="header">
 													<h:outputLabel value="#{emision['lbl.seleccion']}" />
 												</f:facet>
-												<div align="center">
-													<p:selectBooleanCheckbox value="#{clausula.seleccion}" />
-												</div>
+												<p:cellEditor>
+													<f:facet name="output">
+														<div align="center">
+															<p:selectBooleanCheckbox value="#{clausula.seleccion}" disabled="true" />
+														</div>
+													</f:facet>
+													<f:facet name="input">
+														<div align="center">
+															<p:selectBooleanCheckbox value="#{clausula.seleccion}" />
+														</div>
+													</f:facet>
+												</p:cellEditor>
+											</p:column>
+											<p:column headerText="Options" style="width:50px">
+												<p:rowEditor />
 											</p:column>
 										</p:dataTable>
+										<p:spacer height="15px;" />
+										<div align="center">
+											<p:commandButton id="guardarClausulas" process="@this" actionListener="#{dineroValoresBacking.setearClausulasAdd()}" icon="icon-save"
+												value="#{emision['boton.guardar']}" title="Guardar" oncomplete="clausulasAdd.hide()" />
+										</div>
 									</h:form>
-								</p:tab>
+								</p:dialog>
+							</p:tab>
 
-							</p:tabView>
+							<!-- OBJETO ASEGURADO -->
+							<p:tab title="#{emision['dineroValores.tab.objetoAsegurado']}">
+								<div align="center">
+									<h:form id="form1">
+										<h:panelGrid columns="1">
+											<f:facet name="header">
+												<p:outputLabel value="#{emision['dineroValores.objeto.tituloPantalla']}" styleClass="negrita" />
+											</f:facet>
+											<p:separator id="customSeparator" style="width:auto;height:1px" />
+											<p:growl id="messages" showDetail="true" />
+											<p:panelGrid columns="4">
+												<h:outputLabel for="idItem" value="#{emision['dineroValores.objeto.item']}" styleClass="negrita" />
+												<p:inputText id="idItem" value="#{ramoDineroValoresBean.item}" required="true"
+													requiredMessage="#{emision['dineroValores.objeto.item.msn']}" />
+												<h:outputLabel value="#{emision['dineroValores.objeto.dineroValores']}" styleClass="negrita" />
+												<p:inputText value="#{ramoDineroValoresBean.dineroValores}" />
 
-						</p:panel>
+												<h:outputLabel value="#{emision['dineroValores.objeto.limiteEstimadoAnual']}" styleClass="negrita" />
+												<p:inputText value="#{ramoDineroValoresBean.limiteEstimadoAnual}" />
+												<h:outputLabel value="#{emision['dineroValores.objeto.limiteEmbarque']}" styleClass="negrita" />
+												<p:inputText value="#{ramoDineroValoresBean.limiteEmbarque}" />
+
+												<h:outputLabel value="#{emision['dineroValores.objeto.trayectoriaDesde']}" styleClass="negrita" />
+												<p:inputText value="#{ramoDineroValoresBean.trayectoDesde}" />
+												<h:outputLabel value="#{emision['dineroValores.objeto.trayectoriaHasta']}" styleClass="negrita" />
+												<p:inputText value="#{ramoDineroValoresBean.trayectoHasta}" />
+
+												<h:outputLabel value="#{emision['dineroValores.objeto.medioTransporte']}" styleClass="negrita" />
+												<p:inputText value="#{ramoDineroValoresBean.medioTransporte}" />
+
+											</p:panelGrid>
+											<f:facet name="footer">
+												<div align="center">
+													<p:commandButton id="agregarObjeto" update="form1, messages" icon="icon-add" value="#{emision['boton.agregar']}"
+														actionListener="#{ramoDineroValoresBean.addActionObjetoAsegurado}" title="Agregar" />
+												</div>
+											</f:facet>
+										</h:panelGrid>
+										<p:spacer height="30px;" />
+										<p:dataTable value="#{ramoDineroValoresBean.objetoaseguradolist}" var="obj" widgetVar="50" editable="true">
+											<p:ajax event="rowEdit" listener="#{ramoDineroValoresBean.onEditObjetoAsegurado}" />
+											<p:ajax event="rowEditCancel" listener="#{ramoDineroValoresBean.onCancelObjetoAsegurado}" />
+											<p:column>
+												<f:facet name="header">
+													<h:outputText value="#{emision['dineroValores.objeto.item']}" />
+												</f:facet>
+												<p:cellEditor>
+													<f:facet name="output">
+														<h:outputText value="#{obj.item}" />
+													</f:facet>
+													<f:facet name="input">
+														<p:inputText value="#{obj.item}" style="width:100%" />
+													</f:facet>
+												</p:cellEditor>
+											</p:column>
+											<p:column>
+												<f:facet name="header">
+													<h:outputText value="#{emision['dineroValores.objeto.dineroValores']}" />
+												</f:facet>
+												<p:cellEditor>
+													<f:facet name="output">
+														<h:outputText value="#{obj.dineroValores}" />
+													</f:facet>
+													<f:facet name="input">
+														<p:inputText value="#{obj.dineroValores}" style="width:100%" />
+													</f:facet>
+												</p:cellEditor>
+											</p:column>
+											<p:column>
+												<f:facet name="header">
+													<h:outputText value="#{emision['dineroValores.objeto.limiteEstimadoAnual']}" />
+												</f:facet>
+												<p:cellEditor>
+													<f:facet name="output">
+														<h:outputText value="#{obj.limiteEstimadoAnual}" />
+													</f:facet>
+													<f:facet name="input">
+														<p:inputText value="#{obj.limiteEstimadoAnual}" style="width:100%" />
+													</f:facet>
+												</p:cellEditor>
+											</p:column>
+											<p:column>
+												<f:facet name="header">
+													<h:outputText value="#{emision['dineroValores.objeto.limiteEmbarque']}" />
+												</f:facet>
+												<p:cellEditor>
+													<f:facet name="output">
+														<h:outputText value="#{obj.limiteEmbarque}" />
+													</f:facet>
+													<f:facet name="input">
+														<p:inputText value="#{obj.limiteEmbarque}" style="width:100%" />
+													</f:facet>
+												</p:cellEditor>
+											</p:column>
+											<p:column>
+												<f:facet name="header">
+													<h:outputText value="#{emision['dineroValores.objeto.trayectoriaDesde']}" />
+												</f:facet>
+												<p:cellEditor>
+													<f:facet name="output">
+														<h:outputText value="#{obj.trayectoDesde}" />
+													</f:facet>
+													<f:facet name="input">
+														<p:inputText value="#{obj.trayectoHasta}" style="width:100%" />
+													</f:facet>
+												</p:cellEditor>
+											</p:column>
+											<p:column>
+												<f:facet name="header">
+													<h:outputText value="#{emision['dineroValores.objeto.medioTransporte']}" />
+												</f:facet>
+												<p:cellEditor>
+													<f:facet name="output">
+														<h:outputText value="#{obj.medioTransporte}" />
+													</f:facet>
+													<f:facet name="input">
+														<p:inputText value="#{obj.medioTransporte}" style="width:100%" />
+													</f:facet>
+												</p:cellEditor>
+											</p:column>
+											<p:column headerText="Options" style="width:50px">
+												<p:rowEditor />
+											</p:column>
+										</p:dataTable>
+										<p:spacer height="30px;" />
+										<div align="center">
+											<!-- DESCARGAR DOCUMENTOS -->
+											<h:panelGrid columns="2">
+												<p:commandLink title="Descargar syllabus" actionListener="#{dineroValoresBacking.descargarDineroValoresPDF()}">
+													<h:graphicImage name="pdf.png" library="img" />
+												</p:commandLink>
+											</h:panelGrid>
+										</div>
+									</h:form>
+								</div>
+							</p:tab>
+						</p:tabView>
 					</ui:define>
 				</ui:decorate>
 			</ui:define>
 		</ui:decorate>
+	</ui:define>
+	<ui:define name="buttons">
+		<h:form>
+			<h:panelGrid columns="1">
+				<h:commandLink action="hiperion.xhtml">
+					<h:graphicImage name="home.png" library="img" />
+				</h:commandLink>
+				<p:commandLink title="Guardar Informacion poliza" actionListener="#{dineroValoresBacking.guardarRamo()}">
+					<h:graphicImage name="save.png" library="img" />
+				</p:commandLink>
+				<p:commandLink onclick="help.show()">
+					<h:graphicImage name="helpII.png" library="img" />
+				</p:commandLink>
+			</h:panelGrid>
+			<p:dialog header="Ramo Agropecuario" widgetVar="help" showEffect="explode" hideEffect="bounce" height="100">
+				<h:panelGrid columns="1">
+					<h:outputText value="Seguro agricola" />
+					<h:outputText value="Para soporte en cualqueira de las funcionalidades" />
+					<h:outputText value="Por favor comuniquese con Franklin Pozo, Administradr del Sitema Hiperion" />
+				</h:panelGrid>
+			</p:dialog>
+		</h:form>
 	</ui:define>
 </ui:composition>
 </html>

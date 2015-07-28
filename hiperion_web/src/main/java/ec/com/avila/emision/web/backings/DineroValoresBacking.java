@@ -5,6 +5,7 @@
 package ec.com.avila.emision.web.backings;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -13,21 +14,29 @@ import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 
 import org.apache.log4j.Logger;
+import org.primefaces.event.RowEditEvent;
 
+import ec.com.avila.emision.web.beans.PolizaBean;
 import ec.com.avila.emision.web.beans.RamoDineroValoresBean;
 import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.dto.ClausulaAdicionalDTO;
 import ec.com.avila.hiperion.dto.CoberturaDTO;
 import ec.com.avila.hiperion.dto.ObjetoAseguradoDineroValoresDTO;
+import ec.com.avila.hiperion.dto.TablaAmortizacionDTO;
 import ec.com.avila.hiperion.emision.entities.ClausulasAddDinero;
 import ec.com.avila.hiperion.emision.entities.CobertDineroVal;
 import ec.com.avila.hiperion.emision.entities.DetalleAnexo;
+import ec.com.avila.hiperion.emision.entities.Financiamiento;
 import ec.com.avila.hiperion.emision.entities.ObjAsegDineroVal;
+import ec.com.avila.hiperion.emision.entities.PagoPoliza;
+import ec.com.avila.hiperion.emision.entities.Poliza;
 import ec.com.avila.hiperion.emision.entities.Ramo;
 import ec.com.avila.hiperion.emision.entities.RamoDineroValore;
 import ec.com.avila.hiperion.emision.entities.Usuario;
@@ -58,6 +67,9 @@ public class DineroValoresBacking implements Serializable {
 	@ManagedProperty(value = "#{ramoBean}")
 	private RamoBean ramoBean;
 
+	@ManagedProperty(value = "#{polizaBean}")
+	private PolizaBean polizaBean;
+
 	@EJB
 	private RamoService ramoService;
 	@EJB
@@ -80,10 +92,13 @@ public class DineroValoresBacking implements Serializable {
 
 	RamoDineroValore ramoDineroValores = new RamoDineroValore();
 
+	private Usuario usuario;
+
 	@PostConstruct
 	public void inicializar() {
 		try {
 
+			usuario = usuarioBean.getSessionUser();
 			Ramo ramo = ramoService.consultarRamoPorCodigo("DV");
 
 			anexos = ramo.getDetalleAnexos();
@@ -132,6 +147,98 @@ public class DineroValoresBacking implements Serializable {
 
 	/**
 	 * 
+	 * <b> Permite editar un registro de la tabla coberturas. </b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: 27/07/2015]
+	 * </p>
+	 * 
+	 * @param event
+	 */
+	public void onEditCobertura(RowEditEvent event) {
+		FacesMessage msg = new FacesMessage("Item Edited", ((CoberturaDTO) event.getObject()).getCobertura());
+		FacesContext.getCurrentInstance().addMessage(null, msg);
+	}
+
+	/**
+	 * 
+	 * <b> Permite editar un registro de la tabla clausulas adicionales. </b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: 27/07/2015]
+	 * </p>
+	 * 
+	 * @param event
+	 */
+	public void onEditClausulasAdd(RowEditEvent event) {
+		FacesMessage msg = new FacesMessage("Item Edited", ((ClausulaAdicionalDTO) event.getObject()).getClausula());
+		FacesContext.getCurrentInstance().addMessage(null, msg);
+	}
+
+	/**
+	 * 
+	 * <b> Permite registrar las coberturas seleccionadas. </b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: 27/07/2015]
+	 * </p>
+	 * 
+	 */
+	public void setearCoberturas() {
+		int contCoberturas = 0;
+		List<CobertDineroVal> coberturas = new ArrayList<>();
+		for (CoberturaDTO coberturaDTO : coberturasDTO) {
+			if (coberturaDTO.getSeleccion()) {
+				contCoberturas++;
+				CobertDineroVal cobertura = new CobertDineroVal();
+				cobertura.setCoberturaDinero(coberturaDTO.getCobertura());
+				cobertura.setEstado(EstadoEnum.A);
+				cobertura.setFechaCreacion(new Date());
+				cobertura.setIdUsuarioCreacion(usuario.getIdUsuario());
+				
+				coberturas.add(cobertura);
+			}
+		}
+
+		if (contCoberturas == 0) {
+			MessagesController.addWarn(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.warn.coberturas"));
+		} else {
+			ramoDineroValores.setCobertDineroVals(coberturas);
+			MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.coberturas"));
+		}
+	}
+
+	/**
+	 * 
+	 * <b> Permite setear las clausulas seleccionadas. </b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: 27/07/2015]
+	 * </p>
+	 * 
+	 */
+	public void setearClausulasAdd() {
+		int contClausulas = 0;
+		List<ClausulasAddDinero> clausulas = new ArrayList<>();
+		for (ClausulaAdicionalDTO clausualaDTO : clausulasAdicionalesDTO) {
+			if (clausualaDTO.getSeleccion()) {
+				contClausulas++;
+				ClausulasAddDinero clausula = new ClausulasAddDinero();
+				clausula.setClausulaAddDinero(clausualaDTO.getClausula());
+				clausula.setEstado(EstadoEnum.A);
+				clausula.setFechaCreacion(new Date());
+				clausula.setIdUsuarioCreacion(usuario.getIdUsuario());
+
+				clausulas.add(clausula);
+			}
+		}
+		if (contClausulas == 0) {
+			MessagesController.addWarn(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.warn.clausulasAdd"));
+		} else {
+			ramoDineroValores.setClausulasAddDineros(clausulas);
+			MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.clausulasAdd"));
+		}
+
+	}
+
+	/**
+	 * 
 	 * <b> Permite obtener las clausulas adicionales del ramo. </b>
 	 * <p>
 	 * [Author: Paul Jimenez, Date: 17/06/2015]
@@ -164,29 +271,83 @@ public class DineroValoresBacking implements Serializable {
 
 	/**
 	 * 
-	 * <b> Permite setear la informacion del ramo Dinero y valores</b>
+	 * <b> Permite setear los datos de la poliza. </b>
 	 * <p>
-	 * [Author: Franklin Pozo, Date: 26/08/2014]
+	 * [Author: Paul Jimenez, Date: 09/07/2015]
 	 * </p>
 	 * 
+	 * @return
 	 */
-	public void setearInfRamo() throws HiperionException {
+	public Poliza setearDatosPoliza() {
+
 		Usuario usuario = usuarioBean.getSessionUser();
+		Poliza poliza = new Poliza();
 
-		ramoDineroValores.setTasaDinero(ramoDineroValoresBean.getTasa());
-		ramoDineroValores.setPorcentajeEmbarqueDinero(ramoDineroValoresBean.getPorcentajeEmbarque());
-		ramoDineroValores.setDeducPorSiniestroDinero(ramoDineroValoresBean.getPorcentajeSiniestro());
-		ramoDineroValores.setDeducMinimoDinero(ramoDineroValoresBean.getValorMinimo());
+		poliza.setNumeroPoliza(polizaBean.getNumeroPoliza());
+		poliza.setNumeroAnexo(polizaBean.getNumeroAnexo());
+		poliza.setEjecutivo(polizaBean.getEjecutivo().getNombreUsuario());
+		poliza.setVigenciaDesde(polizaBean.getVigenciaDesde());
+		poliza.setVigenciaHasta(polizaBean.getVigenciaHasta());
+		poliza.setDiasCobertura(polizaBean.getDiasCobertura());
+		poliza.setSumaAsegurada(polizaBean.getSumaAsegurada());
+		poliza.setPrimaNeta(BigDecimal.valueOf(polizaBean.getPrimaNeta()));
+		poliza.setSuperBanSeguros(polizaBean.getSuperBanSeguros());
+		poliza.setSeguroCampesino(BigDecimal.valueOf(polizaBean.getSeguroCampesino()));
+		poliza.setDerechoEmision(BigDecimal.valueOf(polizaBean.getDerechoEmision()));
+		poliza.setRamo(1);
+		poliza.setEstadoPoliza("COTIZADO");
 
-		ramoDineroValores.setIdUsuarioCreacion(usuario.getIdUsuario());
-		ramoDineroValores.setFechaCreacion(new Date());
-		ramoDineroValores.setEstado(EstadoEnum.A);
+		PagoPoliza pagoPoliza = new PagoPoliza();
+		pagoPoliza.setNumeroFactura(polizaBean.getNumeroFactura());
+		pagoPoliza.setSubtotal(polizaBean.getSubtotal());
+		pagoPoliza.setAdicionalSegCampesino(polizaBean.getAdicionalSegCampesino());
+		pagoPoliza.setIva(polizaBean.getIva());
+		pagoPoliza.setCuotaInicial(polizaBean.getCuotaInicial());
+		pagoPoliza.setValorTotalPagoPoliza(polizaBean.getTotal());
+		pagoPoliza.setEstado(EstadoEnum.A);
+		pagoPoliza.setFechaCreacion(new Date());
+		pagoPoliza.setIdUsuarioCreacion(usuario.getIdUsuario());
 
-		MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.setearInformacion"));
+		List<Financiamiento> financiamientos = new ArrayList<>();
+		for (TablaAmortizacionDTO financiamiento : polizaBean.getFinanciamientos()) {
+			Financiamiento financiamientoTemp = new Financiamiento();
+			financiamientoTemp.setNumeroCuota(financiamiento.getNumeroLetra());
+			financiamientoTemp.setValorLetra(BigDecimal.valueOf(financiamiento.getValor()));
+			financiamientoTemp.setFechaVencimiento(financiamiento.getFechaVencimiento());
+
+			financiamientos.add(financiamientoTemp);
+		}
+
+		pagoPoliza.setFinanciamientos(financiamientos);
+
+		poliza.setPagoPoliza(pagoPoliza);
+
+		return poliza;
 	}
 
+	/**
+	 * 
+	 * <b> Permite guardar la informacion del ramo en la base de datos. </b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: 27/07/2015]
+	 * </p>
+	 * 
+	 * @throws HiperionException
+	 */
 	public void guardarRamo() throws HiperionException {
 		try {
+
+			Poliza poliza = setearDatosPoliza();
+
+			ramoDineroValores.setTasaDinero(ramoDineroValoresBean.getTasa());
+			ramoDineroValores.setPorcentajeEmbarqueDinero(ramoDineroValoresBean.getPorcentajeEmbarque());
+			ramoDineroValores.setDeducPorSiniestroDinero(ramoDineroValoresBean.getPorcentajeSiniestro());
+			ramoDineroValores.setDeducMinimoDinero(ramoDineroValoresBean.getValorMinimo());
+
+			ramoDineroValores.setIdUsuarioCreacion(usuario.getIdUsuario());
+			ramoDineroValores.setFechaCreacion(new Date());
+			ramoDineroValores.setEstado(EstadoEnum.A);
+
 			if (!ramoDineroValoresBean.getObjetoaseguradolist().isEmpty()) {
 				List<ObjAsegDineroVal> listObjetos = new ArrayList<>();
 				for (ObjetoAseguradoDineroValoresDTO objeto : ramoDineroValoresBean.getObjetoaseguradolist()) {
@@ -201,7 +362,6 @@ public class DineroValoresBacking implements Serializable {
 					objAsegDineroVal.setHasta(objeto.getTrayectoHasta());
 					objAsegDineroVal.setMedioTransporteDinero(objeto.getMedioTransporte());
 
-					Usuario usuario = usuarioBean.getSessionUser();
 					objAsegDineroVal.setIdUsuarioCreacion(usuario.getIdUsuario());
 					objAsegDineroVal.setFechaCreacion(new Date());
 					objAsegDineroVal.setEstado(EstadoEnum.A);
@@ -213,10 +373,14 @@ public class DineroValoresBacking implements Serializable {
 			} else {
 				MessagesController.addError(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.error.save.Obj"));
 			}
-			ramoDineroValoreService.guardarRamoDineroValore(ramoDineroValores);
+
+			ramoDineroValoreService.guardarRamoDineroValore(ramoDineroValores, poliza);
+
 			MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.save"));
+
 			ramoDineroValores = new RamoDineroValore();
 			ramoDineroValoresBean.getObjetoaseguradolist().clear();
+
 		} catch (HiperionException e) {
 			log.error("Error al momento de guardar el ramo de dinero y valores", e);
 			MessagesController.addError(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.error.save"));
@@ -319,6 +483,21 @@ public class DineroValoresBacking implements Serializable {
 	 */
 	public void setClausulasAdicionalesDTO(List<ClausulaAdicionalDTO> clausulasAdicionalesDTO) {
 		this.clausulasAdicionalesDTO = clausulasAdicionalesDTO;
+	}
+
+	/**
+	 * @return the polizaBean
+	 */
+	public PolizaBean getPolizaBean() {
+		return polizaBean;
+	}
+
+	/**
+	 * @param polizaBean
+	 *            the polizaBean to set
+	 */
+	public void setPolizaBean(PolizaBean polizaBean) {
+		this.polizaBean = polizaBean;
 	}
 
 }

@@ -403,7 +403,9 @@ public class BuenUsoAnticipoBacking implements Serializable {
 				contCoberturas++;
 				CobertBuenUsoAnt cobertura = new CobertBuenUsoAnt();
 				cobertura.setCoberturaAnticipo(coberturaDTO.getCobertura());
-
+				cobertura.setEstado(EstadoEnum.A);
+				cobertura.setFechaCreacion(new Date());
+				cobertura.setIdUsuarioCreacion(usuario.getIdUsuario());
 				coberturas.add(cobertura);
 			}
 		}
