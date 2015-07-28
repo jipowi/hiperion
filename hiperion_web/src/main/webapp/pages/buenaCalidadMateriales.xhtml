@@ -18,64 +18,66 @@
 						</div>
 					</ui:define>
 					<ui:define name="ramoContent">
-						<p:panel>
-							<p:tabView effect="blind" effectDuration="normal">
-								<p:tab title="#{emision['calidadMateriales.tab.principal']}">
-									<p:outputPanel id="messageMateriales">
-										<p:messages id="messagesMateriales" showDetail="true" autoUpdate="true" closable="true" />
-									</p:outputPanel>
-									<h:form id="formPrincipal">
-										<div align="center">
-											<h:panelGrid columns="1" id="ramoMateriales">
-												<p:panel>
-													<h:panelGrid columns="2" cellpadding="3">
-														<p:outputLabel value="#{emision['calidadMateriales.sector']}" styleClass="negrita" />
-														<p:selectOneMenu id="sectorId" value="#{ramoBuenaCalMatBean.sector}" effect="drop" required="true"
-															requiredMessage="#{emision['calidadMateriales.sector.msn']}">
-															<f:selectItem itemLabel="Seleccione" noSelectionOption="true" />
-															<f:selectItems value="#{buenaCalidadMaterialesBacking.sectorItems}" />
-														</p:selectOneMenu>
+						<p:tabView effect="blind" effectDuration="normal">
+							<p:tab title="#{emision['calidadMateriales.tab.principal']}">
+								<p:outputPanel id="messageMateriales">
+									<p:messages id="messagesMateriales" showDetail="true" autoUpdate="true" closable="true" />
+								</p:outputPanel>
+								<h:form id="formPrincipal">
+									<div align="center">
+										<h:panelGrid columns="1" id="ramoMateriales">
+											<p:panel>
+												<h:panelGrid columns="2" cellpadding="3">
+													<p:outputLabel value="#{emision['calidadMateriales.sector']}" styleClass="negrita" />
+													<p:selectOneMenu id="sectorId" value="#{ramoBuenaCalMatBean.sector}" effect="drop" required="true"
+														requiredMessage="#{emision['calidadMateriales.sector.msn']}">
+														<f:selectItem itemLabel="Seleccione" noSelectionOption="true" />
+														<f:selectItems value="#{buenaCalidadMaterialesBacking.sectorItems}" />
+													</p:selectOneMenu>
 
-														<p:outputLabel for="valorContrato" value="#{emision['calidadMateriales.valorContrato']}" styleClass="negrita" />
-														<p:inputText id="valorContrato" value="#{ramoBuenaCalMatBean.valorContrato}" required="true"
-															requiredMessage="#{emision['calidadMateriales.valorContrato.msn']}" />
+													<p:outputLabel for="valorContrato" value="#{emision['calidadMateriales.valorContrato']}" styleClass="negrita" />
+													<p:inputText id="valorContrato" value="#{ramoBuenaCalMatBean.valorContrato}" required="true"
+														requiredMessage="#{emision['calidadMateriales.valorContrato.msn']}" />
 
-														<p:outputLabel for="valorPoliza" value="#{emision['calidadMateriales.valorPoliza']}" styleClass="negrita" />
-														<p:inputText id="valorPoliza" value="#{ramoBuenaCalMatBean.valorPoliza}" required="true"
-															requiredMessage="#{emision['calidadMateriales.valorPoliza.msn']}" />
+													<p:outputLabel for="valorPoliza" value="#{emision['calidadMateriales.valorPoliza']}" styleClass="negrita" />
+													<p:inputText id="valorPoliza" value="#{ramoBuenaCalMatBean.valorPoliza}" required="true"
+														requiredMessage="#{emision['calidadMateriales.valorPoliza.msn']}" />
 
-														<p:outputLabel for="objetoAsegurado" value="#{emision['calidadMateriales.objetoAsegurado']}" styleClass="negrita" />
-														<p:inputTextarea id="objetoAsegurado" cols="50" rows="2" value="#{ramoBuenaCalMatBean.objetoAsegurado}" required="true"
-															requiredMessage="#{emision['calidadMateriales.objetoAsegurado.msn']}" />
+													<p:outputLabel for="objetoAsegurado" value="#{emision['calidadMateriales.objetoAsegurado']}" styleClass="negrita" />
+													<p:inputTextarea id="objetoAsegurado" cols="50" rows="2" value="#{ramoBuenaCalMatBean.objetoAsegurado}" required="true"
+														requiredMessage="#{emision['calidadMateriales.objetoAsegurado.msn']}" />
 
-													</h:panelGrid>
-													<h:panelGrid columns="1" cellpadding="3">
-														<p:outputLabel value="#{emision['calidadMateriales.fileContrato']}" styleClass="negrita" />
-														<p:fileUpload fileLimit="1" />
-														<p:outputLabel for="filePoliza" value="#{emision['calidadMateriales.filePoliza']}" styleClass="negrita" />
-														<p:fileUpload id="filePoliza" fileLimit="1" />
-													</h:panelGrid>
-												</p:panel>
-											</h:panelGrid>
-											<p:spacer height="30px;" />
-											<p:commandButton id="guardarBtnId" actionListener="#{buenaCalidadMaterialesBacking.guardarRamo}" icon="icon-save"
-												value="#{emision['boton.guardar']}" title="Guardar" update="ramoMateriales, formPrincipal" />
-											<p:commandButton id="cancelarBtnId" oncomplete="materialesDlg.hide();" icon="icon-cancel" value="#{emision['boton.cancelar']}"
-												process="@this" title="Cancelar" />
+												</h:panelGrid>
+												<h:panelGrid columns="1" cellpadding="3">
+													<p:outputLabel value="#{emision['calidadMateriales.fileContrato']}" styleClass="negrita" />
+													<p:fileUpload fileLimit="1" />
+													<p:outputLabel for="filePoliza" value="#{emision['calidadMateriales.filePoliza']}" styleClass="negrita" />
+													<p:fileUpload id="filePoliza" fileLimit="1" />
+												</h:panelGrid>
+											</p:panel>
+										</h:panelGrid>
+										<p:spacer height="30px;" />
+										<!-- DESCARGAR DOCUMENTOS -->
+										<h:panelGrid columns="2">
+											<p:commandLink title="Descargar syllabus" actionListener="#{buenaCalidadMaterialesBacking.descargarBuenaCalidadMaterialesPDF()}">
+												<h:graphicImage name="pdf.png" library="img" />
+											</p:commandLink>
+										</h:panelGrid>
+									</div>
+								</h:form>
 
-											<!-- DESCARGAR DOCUMENTOS -->
-											<h:panelGrid columns="2">
-												<p:commandLink title="Descargar syllabus" actionListener="#{buenaCalidadMaterialesBacking.descargarBuenaCalidadMaterialesPDF()}">
-													<h:graphicImage name="pdf.png" library="img" />
-												</p:commandLink>
-											</h:panelGrid>
-										</div>
-									</h:form>
-								</p:tab>
 								<!-- COBERTURAS -->
-								<p:tab title="#{emision['ap.tab.coberturas']}">
+								<h:panelGrid columns="2">
+									<p:outputLabel value="#{emision['lbl.seleccionarCoberturas']}" styleClass="negrita" />
+									<p:commandLink title="#{emision['lbl.seleccionarCoberturas']}" oncomplete="coberturas.show();" update="idCobertura">
+										<h:graphicImage name="check.png" library="img" />
+									</p:commandLink>
+								</h:panelGrid>
+								<p:dialog id="idCobertura" header="#{emision['anexo.titulo.tab.cob']}" widgetVar="coberturas" modal="true" position="center" showEffect="fade"
+									hideEffect="explode" resizable="false" closable="true" width="500" height="300">
 									<h:form id="coberturasForm">
-										<p:dataTable value="#{buenaCalidadMaterialesBacking.coberturasDTO}" var="cobertura" paginator="true">
+										<p:dataTable value="#{buenaCalidadMaterialesBacking.coberturasDTO}" var="cobertura" paginator="true" editable="true">
+											<p:ajax event="rowEdit" listener="#{buenaCalidadMaterialesBacking.onEditCobertura}" />
 											<p:column>
 												<f:facet name="header">
 													<h:outputLabel value="#{emision['anexo.titulo.cob']}" />
@@ -86,15 +88,32 @@
 												<f:facet name="header">
 													<h:outputLabel value="#{emision['lbl.seleccion']}" />
 												</f:facet>
-												<div align="center">
-													<p:selectBooleanCheckbox value="#{cobertura.seleccion}" />
-												</div>
+												<p:cellEditor>
+													<f:facet name="output">
+														<div align="center">
+															<p:selectBooleanCheckbox value="#{cobertura.seleccion}" disabled="true" />
+														</div>
+													</f:facet>
+													<f:facet name="input">
+														<div align="center">
+															<p:selectBooleanCheckbox value="#{cobertura.seleccion}" />
+														</div>
+													</f:facet>
+												</p:cellEditor>
+											</p:column>
+											<p:column headerText="Options" style="width:50px">
+												<p:rowEditor />
 											</p:column>
 										</p:dataTable>
+										<p:spacer height="15px;" />
+										<div align="center">
+											<p:commandButton id="guardarCoberturas" process="@this" actionListener="#{buenaCalidadMaterialesBacking.setearCoberturas()}"
+												icon="icon-save" value="#{emision['boton.guardar']}" title="Guardar" oncomplete="coberturas.hide()" />
+										</div>
 									</h:form>
-								</p:tab>
-							</p:tabView>
-						</p:panel>
+								</p:dialog>
+							</p:tab>
+						</p:tabView>
 					</ui:define>
 				</ui:decorate>
 			</ui:define>

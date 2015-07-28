@@ -415,7 +415,6 @@ public class AccidentesPersonalesBacking implements Serializable {
 	 * 
 	 */
 	public void setearCondiciones() {
-		// Condiciones Especiales
 		int contCondicion = 0;
 		List<CondEspAccPer> condiciones = new ArrayList<>();
 		for (CondicionEspecialDTO condicionDTO : condicionesEspecialesDTO) {
