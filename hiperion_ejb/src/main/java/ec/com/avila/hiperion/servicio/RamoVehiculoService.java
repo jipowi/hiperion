@@ -9,6 +9,7 @@ import java.util.List;
 import javax.ejb.Local;
 
 import ec.com.avila.hiperion.comun.HiperionException;
+import ec.com.avila.hiperion.emision.entities.Poliza;
 import ec.com.avila.hiperion.emision.entities.RamoVehiculo;
 
 /**
@@ -31,7 +32,7 @@ public interface RamoVehiculoService {
 	 * @param vehiculo
 	 * @throws HiperionException
 	 */
-	public void guardarRamoVehiculo(RamoVehiculo ramoVehiculo) throws HiperionException;
+	public void guardarRamoVehiculo(RamoVehiculo ramoVehiculo,  Poliza poliza) throws HiperionException;
 
 	/**
 	 * 
