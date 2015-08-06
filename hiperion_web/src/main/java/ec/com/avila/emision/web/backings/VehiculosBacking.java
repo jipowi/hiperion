@@ -1,6 +1,7 @@
 package ec.com.avila.emision.web.backings;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -9,22 +10,32 @@ import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
 import org.apache.log4j.Logger;
+import org.primefaces.event.RowEditEvent;
 
+import ec.com.avila.emision.web.beans.PolizaBean;
 import ec.com.avila.emision.web.beans.RamoVehiculoBean;
 import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.dto.ClausulaAdicionalDTO;
 import ec.com.avila.hiperion.dto.CondicionEspecialDTO;
+import ec.com.avila.hiperion.dto.TablaAmortizacionDTO;
 import ec.com.avila.hiperion.emision.entities.Catalogo;
+import ec.com.avila.hiperion.emision.entities.ClausulasAddAccPer;
 import ec.com.avila.hiperion.emision.entities.ClausulasAddVh;
+import ec.com.avila.hiperion.emision.entities.CondEspAccPer;
 import ec.com.avila.hiperion.emision.entities.CondEspVh;
 import ec.com.avila.hiperion.emision.entities.DetalleAnexo;
 import ec.com.avila.hiperion.emision.entities.DetalleCatalogo;
+import ec.com.avila.hiperion.emision.entities.Financiamiento;
+import ec.com.avila.hiperion.emision.entities.PagoPoliza;
+import ec.com.avila.hiperion.emision.entities.Poliza;
 import ec.com.avila.hiperion.emision.entities.Ramo;
 import ec.com.avila.hiperion.emision.entities.RamoVehiculo;
 import ec.com.avila.hiperion.emision.entities.Usuario;
@@ -64,6 +75,9 @@ public class VehiculosBacking implements Serializable {
 	@ManagedProperty(value = "#{usuarioBean}")
 	private UsuarioBean usuarioBean;
 
+	@ManagedProperty(value = "#{polizaBean}")
+	private PolizaBean polizaBean;
+
 	@EJB
 	private CatalogoService catalogoService;
 
@@ -93,11 +107,12 @@ public class VehiculosBacking implements Serializable {
 	private Boolean activarMarcaAuto;
 	private Boolean activarMarcaPesado;
 	private Boolean activarMarcaMoto;
+	private Usuario usuario;
 
 	@PostConstruct
 	public void inicializar() {
 		try {
-
+			usuario = usuarioBean.getSessionUser();
 			Ramo ramo = ramoService.consultarRamoPorCodigo("VH");
 
 			anexos = ramo.getDetalleAnexos();
@@ -141,7 +156,98 @@ public class VehiculosBacking implements Serializable {
 		}
 
 	}
+	
+	/**
+	 * 
+	 * <b>
+	 * Permite editar un registro de la tabla clausulas adicionales.
+	 * </b>
+	 * <p>[Author: Jonathan, Date: 05/08/2015]</p>
+	 *
+	 * @param event
+	 */
+	
+	public void onEditClausulasAdd(RowEditEvent event) {
+		FacesMessage msg = new FacesMessage("Item Edited", ((ClausulaAdicionalDTO) event.getObject()).getClausula());
+		FacesContext.getCurrentInstance().addMessage(null, msg);
+	}
+/**
+ * 
+ * <b>
+ * Permite editar un registro de la tabla condiciones especiales
+ * </b>
+ * <p>[Author: Jonathan, Date: 05/08/2015]</p>
+ *
+ * @param event
+ */
+	public void onEditCondicionesEsp(RowEditEvent event) {
+		FacesMessage msg = new FacesMessage("Item Edited", ((CondicionEspecialDTO) event.getObject()).getCondicionEspecial());
+		FacesContext.getCurrentInstance().addMessage(null, msg);
+	}
+	
+	/**
+	 * 
+	 * <b>
+	 *  permite setear las clausualas adicionales seleccionadas.
+	 * </b>
+	 * <p>[Author: Jonathan, Date: 05/08/2015]</p>
+	 *
+	 */
+	public void setearClausulasAdd() {
 
+		// Clausulas Adicionales
+		int contClausulas = 0;
+		List<ClausulasAddVh> clausulas = new ArrayList<>();
+		for (ClausulaAdicionalDTO clausualaDTO : clausulasAdicionalesDTO) {
+			if (clausualaDTO.getSeleccion()) {
+				contClausulas++;
+				ClausulasAddVh clausula = new ClausulasAddVh();
+				clausula.setClausulaAddVh(clausualaDTO.getClausula());
+				clausula.setEstado(EstadoEnum.A);
+				clausula.setFechaCreacion(new Date());
+				clausula.setIdUsuarioCreacion(usuario.getIdUsuario());
+
+				clausulas.add(clausula);
+			}
+		}
+		if (contClausulas == 0) {
+			MessagesController.addWarn(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.warn.clausulasAdd"));
+		} else {
+			ramoVehiculo.setClausulasAddVhs(clausulas);
+			MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.clausulasAdd"));
+		}
+
+	}
+	
+	
+	/**
+	 * 
+	 * <b>
+	 * Permite setear las condiciones especiales seleccionadas en el Bean
+	 * </b>
+	 * <p>[Author: Jona, Date: 05/08/2015]</p>
+	 *
+	 */
+	public void setearCondiciones() {
+		int contCondicion = 0;
+		List<CondEspVh> condiciones = new ArrayList<>();
+		for (CondicionEspecialDTO condicionDTO : condicionesEspecialesDTO) {
+			if (condicionDTO.getSeleccion()) {
+				contCondicion++;
+				CondEspVh condicion = new CondEspVh();
+				condicion.setCondicionEspVh(condicionDTO.getCondicionEspecial());
+
+				condiciones.add(condicion);
+			}
+		}
+		if (contCondicion == 0) {
+			MessagesController.addWarn(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.warn.condicionesEsp"));
+		} else {
+			ramoVehiculo.setCondEspVhs(condiciones);
+			MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.condicionesEsp"));
+		}
+	}
+	
 	/**
 	 * 
 	 * <b> Permite obtener las condiciones especiales del ramo Vehiculos. </b>
@@ -173,6 +279,53 @@ public class VehiculosBacking implements Serializable {
 		}
 
 	}
+	
+	public Poliza setearDatosPoliza() {
+
+		Usuario usuario = usuarioBean.getSessionUser();
+		Poliza poliza = new Poliza();
+
+		poliza.setNumeroPoliza(polizaBean.getNumeroPoliza());
+		poliza.setNumeroAnexo(polizaBean.getNumeroAnexo());
+		poliza.setEjecutivo(polizaBean.getEjecutivo().getNombreUsuario());
+		poliza.setVigenciaDesde(polizaBean.getVigenciaDesde());
+		poliza.setVigenciaHasta(polizaBean.getVigenciaHasta());
+		poliza.setDiasCobertura(polizaBean.getDiasCobertura());
+		poliza.setSumaAsegurada(polizaBean.getSumaAsegurada());
+		poliza.setPrimaNeta(BigDecimal.valueOf(polizaBean.getPrimaNeta()));
+		poliza.setSuperBanSeguros(polizaBean.getSuperBanSeguros());
+		poliza.setSeguroCampesino(BigDecimal.valueOf(polizaBean.getSeguroCampesino()));
+		poliza.setDerechoEmision(BigDecimal.valueOf(polizaBean.getDerechoEmision()));
+		poliza.setRamo(1);
+		poliza.setEstadoPoliza("COTIZADO");
+
+		PagoPoliza pagoPoliza = new PagoPoliza();
+		pagoPoliza.setNumeroFactura(polizaBean.getNumeroFactura());
+		pagoPoliza.setSubtotal(polizaBean.getSubtotal());
+		pagoPoliza.setAdicionalSegCampesino(polizaBean.getAdicionalSegCampesino());
+		pagoPoliza.setIva(polizaBean.getIva());
+		pagoPoliza.setCuotaInicial(polizaBean.getCuotaInicial());
+		pagoPoliza.setValorTotalPagoPoliza(polizaBean.getTotal());
+		pagoPoliza.setEstado(EstadoEnum.A);
+		pagoPoliza.setFechaCreacion(new Date());
+		pagoPoliza.setIdUsuarioCreacion(usuario.getIdUsuario());
+
+		List<Financiamiento> financiamientos = new ArrayList<>();
+		for (TablaAmortizacionDTO financiamiento : polizaBean.getFinanciamientos()) {
+			Financiamiento financiamientoTemp = new Financiamiento();
+			financiamientoTemp.setNumeroCuota(financiamiento.getNumeroLetra());
+			financiamientoTemp.setValorLetra(BigDecimal.valueOf(financiamiento.getValor()));
+			financiamientoTemp.setFechaVencimiento(financiamiento.getFechaVencimiento());
+
+			financiamientos.add(financiamientoTemp);
+		}
+
+		pagoPoliza.setFinanciamientos(financiamientos);
+
+		poliza.setPagoPoliza(pagoPoliza);
+
+		return poliza;
+	}
 
 	/**
 	 * 
@@ -183,7 +336,7 @@ public class VehiculosBacking implements Serializable {
 	 * 
 	 */
 	public void guardarRamo() throws HiperionException {
-		Usuario usuario = usuarioBean.getSessionUser();
+		Poliza poliza = setearDatosPoliza();
 
 		ramoVehiculo.setClaseVh(ramoVehiculoBean.getClaseVehiculo());
 		ramoVehiculo.setTipoVh(ramoVehiculoBean.getTipoVehiculo());
@@ -214,7 +367,7 @@ public class VehiculosBacking implements Serializable {
 		ramoVehiculo.setEstado(EstadoEnum.A);
 
 		try {
-			ramoVehiculoService.guardarRamoVehiculo(ramoVehiculo);
+			ramoVehiculoService.guardarRamoVehiculo(ramoVehiculo, poliza);
 			MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.save.sOjeto"));
 
 		} catch (HiperionException e) {
@@ -516,6 +669,22 @@ public class VehiculosBacking implements Serializable {
 			throw new HiperionException(e);
 		}
 
+	}
+
+	
+	
+	/**
+	 * @return the polizaBean
+	 */
+	public PolizaBean getPolizaBean() {
+		return polizaBean;
+	}
+
+	/**
+	 * @param polizaBean the polizaBean to set
+	 */
+	public void setPolizaBean(PolizaBean polizaBean) {
+		this.polizaBean = polizaBean;
 	}
 
 	/**
