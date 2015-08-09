@@ -2629,7 +2629,7 @@ INSERT INTO MENU VALUES (31, 2, 'Soat', '/pages/soat.jsf','A');
 INSERT INTO MENU VALUES (32, 2, 'Todo Riesgo Contratista', '/pages/todoRiesgoContratista.jsf','A');
 INSERT INTO MENU VALUES (33, 2, 'Todo Riesgo Montaje', '/pages/todoRiesgoMontaje.jsf','A');
 INSERT INTO MENU VALUES (34, 2, 'Transporte', '/pages/transporte.jsf','A');
-INSERT INTO MENU VALUES (35, 2, 'VEHÍCULOS', '/pages/VEHÍCULOS.jsf','A');
+INSERT INTO MENU VALUES (35, 2, 'Vehículos', '/pages/vehiculos.jsf','A');
 INSERT INTO MENU VALUES (36, 2, 'vida', '/pages/vida.jsf','A');
 INSERT INTO MENU VALUES (37, 1, 'Ingresar Cliente', '/pages/cliente.jsf','A');
 INSERT INTO MENU VALUES (38, 3, 'Ingresar Aseguradora', '/pages/aseguradoras.jsf','A');
