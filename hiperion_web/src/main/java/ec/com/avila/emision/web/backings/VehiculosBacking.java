@@ -27,9 +27,7 @@ import ec.com.avila.hiperion.dto.ClausulaAdicionalDTO;
 import ec.com.avila.hiperion.dto.CondicionEspecialDTO;
 import ec.com.avila.hiperion.dto.TablaAmortizacionDTO;
 import ec.com.avila.hiperion.emision.entities.Catalogo;
-import ec.com.avila.hiperion.emision.entities.ClausulasAddAccPer;
 import ec.com.avila.hiperion.emision.entities.ClausulasAddVh;
-import ec.com.avila.hiperion.emision.entities.CondEspAccPer;
 import ec.com.avila.hiperion.emision.entities.CondEspVh;
 import ec.com.avila.hiperion.emision.entities.DetalleAnexo;
 import ec.com.avila.hiperion.emision.entities.DetalleCatalogo;
@@ -336,6 +334,7 @@ public class VehiculosBacking implements Serializable {
 	 * 
 	 */
 	public void guardarRamo() throws HiperionException {
+		
 		Poliza poliza = setearDatosPoliza();
 
 		ramoVehiculo.setClaseVh(ramoVehiculoBean.getClaseVehiculo());
