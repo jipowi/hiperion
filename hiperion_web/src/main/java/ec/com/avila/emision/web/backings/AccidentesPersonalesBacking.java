@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package ec.com.avila.emision.web.backings;
 
 import java.io.Serializable;
@@ -127,7 +125,6 @@ public class AccidentesPersonalesBacking implements Serializable {
 	 */
 	public Poliza setearDatosPoliza() {
 
-		Usuario usuario = usuarioBean.getSessionUser();
 		Poliza poliza = new Poliza();
 
 		poliza.setNumeroPoliza(polizaBean.getNumeroPoliza());
@@ -311,7 +308,6 @@ public class AccidentesPersonalesBacking implements Serializable {
 	 */
 	public void setearClausulasAdd() {
 
-		// Clausulas Adicionales
 		int contClausulas = 0;
 		List<ClausulasAddAccPer> clausulas = new ArrayList<>();
 		for (ClausulaAdicionalDTO clausualaDTO : clausulasAdicionalesDTO) {

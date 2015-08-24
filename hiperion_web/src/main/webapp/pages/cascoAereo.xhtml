@@ -18,195 +18,248 @@
 						</div>
 					</ui:define>
 					<ui:define name="ramoContent">
-						<p:tabView effect="blind" effectDuration="normal">
-							<p:tab title="#{emision['cascoAereo.tab.principal']}">
-								<p:outputPanel id="messageCascoAereo">
-									<p:messages id="messagesCascoAereo" showDetail="true" autoUpdate="true" closable="true" />
-								</p:outputPanel>
+						<p:outputPanel id="messageCascoAereo">
+							<p:messages id="messagesCascoAereo" showDetail="true" autoUpdate="true" closable="true" />
+						</p:outputPanel>
+
+						<h:form id="formPricipal">
+							<h:panelGrid columns="1">
+								<p:spacer height="15px;" />
+								<p:panel>
+									<h:panelGrid columns="4" cellpadding="3">
+										<p:outputLabel for="item" value="#{emision['cascoAereo.item']}" styleClass="negrita" />
+										<p:inputText id="item" value="#{ramoCascoAereoBean.item}" required="true" requiredMessage="#{emision['cascoAereo.item.msn']}" />
+										<p:outputLabel for="matricula" value="#{emision['cascoAereo.matricula']}" styleClass="negrita" />
+										<p:inputText id="matricula" value="#{ramoCascoAereoBean.matricula}" required="true" requiredMessage="#{emision['cascoAereo.matricula.msn']}" />
+
+										<p:outputLabel value="#{emision['cascoAereo.anioConstruccion']}" styleClass="negrita" />
+										<p:inputText value="#{ramoCascoAereoBean.anioConstruccion}" />
+										<p:outputLabel value="#{emision['cascoAereo.pesoMaximoTotal']}" styleClass="negrita" />
+										<p:inputText value="#{ramoCascoAereoBean.pesoMaximo}" />
+
+										<p:outputLabel value="#{emision['cascoAereo.valorCasco']}" styleClass="negrita" />
+										<p:inputText value="#{ramoCascoAereoBean.valorCasco}" />
+										<p:outputLabel for="marca" value="#{emision['cascoAereo.marca']}" styleClass="negrita" />
+										<p:inputText id="marca" value="#{ramoCascoAereoBean.marca}" required="true" requiredMessage="#{emision['cascoAereo.marca.msn']}" />
+
+										<p:outputLabel value="#{emision['cascoAereo.tipoModelo']}" styleClass="negrita" />
+										<p:inputText value="#{ramoCascoAereoBean.tipoModelo}" />
+										<p:outputLabel value="#{emision['cascoAereo.horasVoladas']}" styleClass="negrita" />
+										<p:inputText value="#{ramoCascoAereoBean.horasVoladas}" />
+
+										<p:outputLabel value="#{emision['cascoAereo.maximaCargaAutorizada']}" styleClass="negrita" />
+										<p:inputText value="#{ramoCascoAereoBean.maximaCarga}" />
+										<p:outputLabel value="#{emision['cascoAereo.marcaMotor']}" styleClass="negrita" />
+										<p:inputText value="#{ramoCascoAereoBean.marcaMotor}" />
+
+										<p:outputLabel value="#{emision['cascoAereo.tipoMotor']}" styleClass="negrita" />
+										<p:inputText value="#{ramoCascoAereoBean.tipoMotor}" />
+										<p:outputLabel for="totalAsegurado" value="#{emision['cascoAereo.totalAsegurado']}" styleClass="negrita" />
+										<p:inputText id="totalAsegurado" value="#{ramoCascoAereoBean.totalAsegurado}" required="true"
+											requiredMessage="#{emision['cascoAereo.totalAsegurado.msn']}" />
+
+										<p:outputLabel for="tasa" value="#{emision['cascoAereo.tasa']}" styleClass="negrita" />
+										<p:inputText id="tasa" value="#{ramoCascoAereoBean.tasa}" required="true" requiredMessage="#{emision['cascoAereo.tasa.msn']}" />
+										<p:outputLabel value="#{emision['cascoAereo.porcentajeSiniestro']}" styleClass="negrita" />
+										<p:inputText value="#{ramoCascoAereoBean.porcentajeSiniestro}" />
+
+										<p:outputLabel value="#{emision['cascoAereo.minimoSiniestro']}" styleClass="negrita" />
+										<p:inputText value="#{ramoCascoAereoBean.minimoSiniestro}" />
+									</h:panelGrid>
+								</p:panel>
+								<p:spacer height="30px;" />
+							</h:panelGrid>
+						</h:form>
+
+						<!-- EXTRAS -->
+						<h:panelGrid columns="2">
+							<p:outputLabel value="#{emision['lbl.extras']}" styleClass="negrita" />
+							<p:commandLink title="#{emision['lbl.extras']}" oncomplete="extras.show();" update="idExtras">
+								<h:graphicImage name="extras.png" library="img" />
+							</p:commandLink>
+						</h:panelGrid>
+						<p:dialog id="idExtras" header="#{emision['lbl.extras']}" widgetVar="extras" modal="true" position="center" showEffect="fade"
+							hideEffect="explode" resizable="false" closable="true" width="500" height="300">
+							<h:form id="extrasForm">
+								<h:panelGrid columns="1">
+									<h:panelGrid columns="2" style="text-align:center">
+										<h:outputLabel value="#{emision['cascoAereo.extra.detalle']}" styleClass="negrita" />
+										<p:inputText value="#{ramoCascoAereoBean.extra}" />
+
+										<h:outputLabel value="#{emision['cascoAereo.extra.valorExtra']}" styleClass="negrita" />
+										<p:inputText value="#{ramoCascoAereoBean.valorExtra}" />
+									</h:panelGrid>
+									<p:spacer height="20px;" />
+									<f:facet name="footer">
+										<div align="center">
+											<p:commandButton id="agregarExtra" update="extrasForm" icon="icon-add" value="#{emision['boton.agregar']}"
+												actionListener="#{ramoCascoAereoBean.addAction}" title="Agregar" />
+										</div>
+									</f:facet>
+								</h:panelGrid>
+								<p:spacer height="30px;" />
+								<p:dataTable value="#{ramoCascoAereoBean.extraslist}" var="obj" widgetVar="50" editable="true">
+									<p:ajax event="rowEdit" listener="#{ramoCascoAereoBean.onEdit}" />
+									<p:ajax event="rowEditCancel" listener="#{ramoCascoAereoBean.onCancel}" />
+									<p:column>
+										<f:facet name="header">
+											<h:outputText value="#{emision['cascoAereo.extra.detalle']}" />
+										</f:facet>
+										<p:cellEditor>
+											<f:facet name="output">
+												<h:outputText value="#{obj.extra}" />
+											</f:facet>
+											<f:facet name="input">
+												<p:inputText value="#{obj.extra}" style="width:100%" />
+											</f:facet>
+										</p:cellEditor>
+									</p:column>
+									<p:column>
+										<f:facet name="header">
+											<h:outputText value="#{emision['cascoAereo.extra.valorExtra']}" />
+										</f:facet>
+										<p:cellEditor>
+											<f:facet name="output">
+												<h:outputText value="#{obj.valor}" />
+											</f:facet>
+											<f:facet name="input">
+												<p:inputText value="#{obj.valor}" style="width:100%" />
+											</f:facet>
+										</p:cellEditor>
+									</p:column>
+
+									<p:column headerText="Options" style="width:50px">
+										<p:rowEditor />
+									</p:column>
+								</p:dataTable>
+								<p:spacer height="15px;" />
 								<div align="center">
-									<h:form id="formPricipal">
-										<h:panelGrid columns="1" id="ramoCascoAereo">
-											<p:spacer height="15px;" />
-											<h:form id="formPricipal">
-												<p:panel>
-													<h:panelGrid columns="4" cellpadding="3">
-														<p:outputLabel for="item" value="#{emision['cascoAereo.item']}" styleClass="negrita" />
-														<p:inputText id="item" value="#{ramoCascoAereoBean.item}" required="true" requiredMessage="#{emision['cascoAereo.item.msn']}" />
-														<p:outputLabel for="matricula" value="#{emision['cascoAereo.matricula']}" styleClass="negrita" />
-														<p:inputText id="matricula" value="#{ramoCascoAereoBean.matricula}" required="true"
-															requiredMessage="#{emision['cascoAereo.matricula.msn']}" />
-
-														<p:outputLabel value="#{emision['cascoAereo.anioConstruccion']}" styleClass="negrita" />
-														<p:inputText value="#{ramoCascoAereoBean.anioConstruccion}" />
-														<p:outputLabel value="#{emision['cascoAereo.pesoMaximoTotal']}" styleClass="negrita" />
-														<p:inputText value="#{ramoCascoAereoBean.pesoMaximo}" />
-
-														<p:outputLabel value="#{emision['cascoAereo.valorCasco']}" styleClass="negrita" />
-														<p:inputText value="#{ramoCascoAereoBean.valorCasco}" />
-														<p:outputLabel for="marca" value="#{emision['cascoAereo.marca']}" styleClass="negrita" />
-														<p:inputText id="marca" value="#{ramoCascoAereoBean.marca}" required="true" requiredMessage="#{emision['cascoAereo.marca.msn']}" />
-
-														<p:outputLabel value="#{emision['cascoAereo.tipoModelo']}" styleClass="negrita" />
-														<p:inputText value="#{ramoCascoAereoBean.tipoModelo}" />
-														<p:outputLabel value="#{emision['cascoAereo.horasVoladas']}" styleClass="negrita" />
-														<p:inputText value="#{ramoCascoAereoBean.horasVoladas}" />
-
-														<p:outputLabel value="#{emision['cascoAereo.maximaCargaAutorizada']}" styleClass="negrita" />
-														<p:inputText value="#{ramoCascoAereoBean.maximaCarga}" />
-														<p:outputLabel value="#{emision['cascoAereo.marcaMotor']}" styleClass="negrita" />
-														<p:inputText value="#{ramoCascoAereoBean.marcaMotor}" />
-
-														<p:outputLabel value="#{emision['cascoAereo.tipoMotor']}" styleClass="negrita" />
-														<p:inputText value="#{ramoCascoAereoBean.tipoMotor}" />
-														<p:outputLabel for="totalAsegurado" value="#{emision['cascoAereo.totalAsegurado']}" styleClass="negrita" />
-														<p:inputText id="totalAsegurado" value="#{ramoCascoAereoBean.totalAsegurado}" required="true"
-															requiredMessage="#{emision['cascoAereo.totalAsegurado.msn']}" />
-
-														<p:outputLabel for="tasa" value="#{emision['cascoAereo.tasa']}" styleClass="negrita" />
-														<p:inputText id="tasa" value="#{ramoCascoAereoBean.tasa}" required="true" requiredMessage="#{emision['cascoAereo.tasa.msn']}" />
-														<p:outputLabel value="#{emision['cascoAereo.porcentajeSiniestro']}" styleClass="negrita" />
-														<p:inputText value="#{ramoCascoAereoBean.porcentajeSiniestro}" />
-
-														<p:outputLabel value="#{emision['cascoAereo.minimoSiniestro']}" styleClass="negrita" />
-														<p:inputText value="#{ramoCascoAereoBean.minimoSiniestro}" />
-
-													</h:panelGrid>
-													<h:panelGrid columns="1" cellpadding="3">
-														<p:outputLabel value="#{emision['cascoAereo.fileFormulario']}" styleClass="negrita" />
-														<p:fileUpload fileLimit="1" />
-														<p:outputLabel value="#{emision['cascoAereo.filePolizaVigente']}" styleClass="negrita" />
-														<p:fileUpload fileLimit="1" />
-													</h:panelGrid>
-												</p:panel>
-
-												<p:spacer height="30px;" />
-												<!-- EXTRAS -->
-
-												<p:panel id="pnl" header="Extras" toggleable="true" closable="true" toggleSpeed="500" closeSpeed="500" widgetVar="panel"
-													style="text-align:center">
-													<div align="center">
-														<h:panelGrid columns="1">
-															<p:growl id="messagesExtras" showDetail="true" />
-															<p:panelGrid columns="2" style="text-align:center">
-																<h:outputLabel value="#{emision['cascoAereo.extra.detalle']}" styleClass="negrita" />
-																<p:inputText value="#{ramoCascoAereoBean.extra}" />
-
-																<h:outputLabel value="#{emision['cascoAereo.extra.valorExtra']}" styleClass="negrita" />
-																<p:inputText value="#{ramoCascoAereoBean.valorExtra}" />
-															</p:panelGrid>
-															<f:facet name="footer">
-																<div align="center">
-																	<p:commandButton id="agregarExtra" update="formPricipal,pnl, messagesExtras" icon="icon-add" value="#{emision['boton.agregar']}"
-																		actionListener="#{ramoCascoAereoBean.addAction}" title="Agregar" />
-																</div>
-															</f:facet>
-														</h:panelGrid>
-														<p:spacer height="30px;" />
-														<p:dataTable value="#{ramoCascoAereoBean.extraslist}" var="obj" widgetVar="50" style="width: 700px;" editable="true">
-															<p:ajax event="rowEdit" listener="#{ramoCascoAereoBean.onEdit}" />
-															<p:ajax event="rowEditCancel" listener="#{ramoCascoAereoBean.onCancel}" />
-															<p:column>
-																<f:facet name="header">
-																	<h:outputText value="#{emision['cascoAereo.extra.detalle']}" />
-																</f:facet>
-																<p:cellEditor>
-																	<f:facet name="output">
-																		<h:outputText value="#{obj.extra}" />
-																	</f:facet>
-																	<f:facet name="input">
-																		<p:inputText value="#{obj.extra}" style="width:100%" />
-																	</f:facet>
-																</p:cellEditor>
-															</p:column>
-															<p:column>
-																<f:facet name="header">
-																	<h:outputText value="#{emision['cascoAereo.extra.valorExtra']}" />
-																</f:facet>
-																<p:cellEditor>
-																	<f:facet name="output">
-																		<h:outputText value="#{obj.valor}" />
-																	</f:facet>
-																	<f:facet name="input">
-																		<p:inputText value="#{obj.valor}" style="width:100%" />
-																	</f:facet>
-																</p:cellEditor>
-															</p:column>
-
-															<p:column headerText="Options" style="width:50px">
-																<p:rowEditor />
-															</p:column>
-														</p:dataTable>
-													</div>
-												</p:panel>
-												<p:spacer height="30px;" />
-											</h:form>
-
-											<!-- Footer del Formulario -->
-											<f:facet name="footer">
+									<p:commandButton id="guardarExtras" process="@this" actionListener="#{cascoAereoBacking.setearExtras()}" icon="icon-save"
+										value="#{emision['boton.guardar']}" title="Guardar" oncomplete="extras.hide()" />
+								</div>
+							</h:form>
+						</p:dialog>
+						<!-- COBERTURAS ADICONALES-->
+						<h:panelGrid columns="2">
+							<p:outputLabel value="#{emision['lbl.seleccionarCoberturas']}" styleClass="negrita" />
+							<p:commandLink title="#{emision['lbl.seleccionarCoberturas']}" oncomplete="coberturasAdd.show();" update="idCoberturaAdd">
+								<h:graphicImage name="check.png" library="img" />
+							</p:commandLink>
+						</h:panelGrid>
+						<p:dialog id="idCoberturaAdd" header="#{emision['anexo.titulo.tab.cob']}" widgetVar="coberturasAdd" modal="true" position="center"
+							showEffect="fade" hideEffect="explode" resizable="false" closable="true" width="500" height="300">
+							<h:form id="coberturaAddForm">
+								<p:messages id="messagesCoberturas" showDetail="true" autoUpdate="true" closable="true" />
+								<p:dataTable id="tablaCoberturas" value="#{cascoAereoBacking.coberturasAddDTO}" var="coberturaAdd" paginator="true" rows="4" editable="true">
+									<p:ajax event="rowEdit" listener="#{cascoAereoBacking.onEditCoberturaAdd}" />
+									<p:column>
+										<f:facet name="header">
+											<h:outputLabel value="#{emision['anexo.titulo.cobad']}" />
+										</f:facet>
+										<h:outputText value="#{coberturaAdd.cobertura}" />
+									</p:column>
+									<p:column>
+										<f:facet name="header">
+											<h:outputLabel value="#{emision['lbl.seleccion']}" />
+										</f:facet>
+										<p:cellEditor>
+											<f:facet name="output">
 												<div align="center">
-													<p:commandButton id="guardarBtnId" actionListener="#{cascoAereoBacking.guardarRamo}" icon="icon-save" value="#{emision['boton.guardar']}"
-														title="Guardar" update="ramoCascoAereo, formPricipal" />
-													<p:commandButton id="cancelarBtnId" icon="icon-cancel" value="#{emision['boton.cancelar']}" process="@this" title="Cancelar" />
-
-													<!-- DESCARGAR DOCUMENTOS -->
-													<h:panelGrid columns="2">
-														<p:commandLink title="Descargar syllabus" actionListener="#{cascoAereoBacking.descargarCascoAereoPDF()}">
-															<h:graphicImage name="pdf.png" library="img" />
-														</p:commandLink>
-													</h:panelGrid>
+													<p:selectBooleanCheckbox value="#{coberturaAdd.seleccion}" disabled="true" />
 												</div>
 											</f:facet>
-										</h:panelGrid>
-									</h:form>
+											<f:facet name="input">
+												<div align="center">
+													<p:selectBooleanCheckbox value="#{coberturaAdd.seleccion}" />
+												</div>
+											</f:facet>
+										</p:cellEditor>
+									</p:column>
+									<p:column headerText="Options" style="width:50px">
+										<p:rowEditor />
+									</p:column>
+								</p:dataTable>
+								<p:spacer height="15px;" />
+								<div align="center">
+									<p:commandButton id="guardarCoberturas" process="@this" actionListener="#{cascoAereoBacking.setearCoberturasAdd()}" icon="icon-save"
+										value="#{emision['boton.guardar']}" title="Guardar" oncomplete="coberturasAdd.hide()" />
 								</div>
-							</p:tab>
-							<!-- COBERTURAS ADICIONALES -->
-							<p:tab title="#{emision['cascoAereo.tab.coberturasAdicionales']}">
-								<h:form id="coberturaAddForm">
-									<p:dataTable value="#{cascoAereoBacking.coberturasAddDTO}" var="cobertura" paginator="true" rows="4">
-										<p:column>
-											<f:facet name="header">
-												<h:outputLabel value="#{emision['anexo.titulo.cob']}" />
+							</h:form>
+						</p:dialog>
+						<!-- CLAUSULAS ADICIONALES -->
+						<h:panelGrid columns="2">
+							<p:outputLabel value="#{emision['lbl.seleccionarClausulasAdd']}" styleClass="negrita" />
+							<p:commandLink title="#{emision['lbl.seleccionarClausulasAdd']}" oncomplete="clausulasAdd.show();"
+								actionListener="#{cascoAereoBacking.obtenerClausulasAdicionales()}" update="idClausulasAdd">
+								<h:graphicImage name="check.png" library="img" />
+							</p:commandLink>
+						</h:panelGrid>
+						<p:dialog id="idClausulasAdd" header="#{emision['ap.tab.clausulasAdicionales']}" widgetVar="clausulasAdd" modal="true" position="center"
+							showEffect="fade" hideEffect="explode" resizable="false" closable="true" width="500" height="300">
+							<h:form id="clausulaAddEspForm">
+								<p:messages id="messagesClausulas" showDetail="true" autoUpdate="true" closable="true" />
+								<p:dataTable id="tablaClausulas" value="#{cascoAereoBacking.clausulasAdicionalesDTO}" var="clausula" paginator="true" editable="true">
+									<p:ajax event="rowEdit" listener="#{cascoAereoBacking.onEditClausulasAdd}" />
+									<p:column>
+										<f:facet name="header">
+											<h:outputLabel value="#{emision['anexo.titulo.cad']}" />
+										</f:facet>
+										<h:outputText value="#{clausula.clausula}" />
+									</p:column>
+									<p:column>
+										<f:facet name="header">
+											<h:outputLabel value="#{emision['lbl.seleccion']}" />
+										</f:facet>
+										<p:cellEditor>
+											<f:facet name="output">
+												<div align="center">
+													<p:selectBooleanCheckbox value="#{clausula.seleccion}" disabled="true" />
+												</div>
 											</f:facet>
-											<h:outputText value="#{cobertura.cobertura}" />
-										</p:column>
-										<p:column>
-											<f:facet name="header">
-												<h:outputLabel value="#{emision['lbl.seleccion']}" />
+											<f:facet name="input">
+												<div align="center">
+													<p:selectBooleanCheckbox value="#{clausula.seleccion}" />
+												</div>
 											</f:facet>
-											<div align="center">
-												<p:selectBooleanCheckbox value="#{cobertura.seleccion}" />
-											</div>
-										</p:column>
-									</p:dataTable>
-								</h:form>
-							</p:tab>
-							<!--  CLAUSULAS ADCIONALES -->
-							<p:tab title="#{emision['cascoAereo.tab.clausulasAdicionales']}">
-								<h:form id="clausulaAddForm">
-									<p:dataTable value="#{cascoAereoBacking.clausulasAdicionalesDTO}" var="clausula" paginator="true" rows="4">
-										<p:column>
-											<f:facet name="header">
-												<h:outputLabel value="#{emision['anexo.titulo.cad']}" />
-											</f:facet>
-											<h:outputText value="#{clausula.clausula}" />
-										</p:column>
-										<p:column>
-											<f:facet name="header">
-												<h:outputLabel value="#{emision['lbl.seleccion']}" />
-											</f:facet>
-											<div align="center">
-												<p:selectBooleanCheckbox value="#{clausula.seleccion}" />
-											</div>
-										</p:column>
-									</p:dataTable>
-								</h:form>
-							</p:tab>
-						</p:tabView>
+										</p:cellEditor>
+									</p:column>
+									<p:column headerText="Options" style="width:50px">
+										<p:rowEditor />
+									</p:column>
+								</p:dataTable>
+								<p:spacer height="15px;" />
+								<div align="center">
+									<p:commandButton id="guardarClausulas" process="@this" actionListener="#{cascoAereoBacking.setearClausulasAdd()}" icon="icon-save"
+										value="#{emision['boton.guardar']}" title="Guardar" oncomplete="clausulasAdd.hide()" />
+								</div>
+							</h:form>
+						</p:dialog>
 					</ui:define>
 				</ui:decorate>
 			</ui:define>
 		</ui:decorate>
+	</ui:define>
+	<ui:define name="buttons">
+		<h:form>
+			<h:panelGrid columns="1">
+				<h:commandLink action="hiperion.xhtml">
+					<h:graphicImage name="home.png" library="img" />
+				</h:commandLink>
+				<p:commandLink title="Guardar Informacion poliza" actionListener="#{cascoAereoBacking.guardarRamo()}">
+					<h:graphicImage name="save.png" library="img" />
+				</p:commandLink>
+				<p:commandLink onclick="help.show()">
+					<h:graphicImage name="helpII.png" library="img" />
+				</p:commandLink>
+			</h:panelGrid>
+			<p:dialog header="Ramo Casco Aereo" widgetVar="help" showEffect="explode" hideEffect="bounce" height="100">
+				<h:panelGrid columns="1">
+					<h:outputText value="Seguro agricola" />
+					<h:outputText value="Para soporte en cualqueira de las funcionalidades" />
+					<h:outputText value="Por favor comuniquese con Franklin Pozo, Administradr del Sitema Hiperion" />
+				</h:panelGrid>
+			</p:dialog>
+		</h:form>
 	</ui:define>
 </ui:composition>
 </html>

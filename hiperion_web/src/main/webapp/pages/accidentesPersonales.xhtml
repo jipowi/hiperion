@@ -24,7 +24,7 @@
 						<p:tabView effect="blind" effectDuration="normal">
 							<!-- RAMO ACCIDENTES PERSONALES -->
 							<p:tab title="#{emision['ap.tab.principal']}">
-								<h:form id="formPrincipal">
+								
 									<div align="center">
 										<h:panelGrid columns="1">
 											<p:panel>
@@ -55,7 +55,7 @@
 											</p:panel>
 										</h:panelGrid>
 									</div>
-								</h:form>
+								
 								<!-- COBERTURAS -->
 								<h:panelGrid columns="2">
 									<p:outputLabel value="#{emision['lbl.seleccionarCoberturas']}" styleClass="negrita" />
@@ -353,7 +353,6 @@
 												<p:inputText value="#{ramoAccidentesPersonalesBean.edad}" />
 											</h:panelGrid>
 										</h:panelGrid>
-
 									</h:form>
 								</div>
 							</p:tab>
@@ -369,7 +368,7 @@
 				<h:commandLink action="hiperion.xhtml">
 					<h:graphicImage name="home.png" library="img" />
 				</h:commandLink>
-				<p:commandLink title="Guardar Informacion poliza" actionListener="#{accidentesPersonalesBacking.guardarRamo()}">
+				<p:commandLink title="Guardar Informacion poliza" process="@this" actionListener="#{accidentesPersonalesBacking.guardarRamo()}">
 					<h:graphicImage name="save.png" library="img" />
 				</p:commandLink>
 				<p:commandLink onclick="help.show()">

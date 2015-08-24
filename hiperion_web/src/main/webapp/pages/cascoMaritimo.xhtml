@@ -18,155 +18,211 @@
 						</div>
 					</ui:define>
 					<ui:define name="ramoContent">
-						<p:tabView effect="blind" effectDuration="normal">
-							<p:tab title="#{emision['cascoMaritimo.tab.principal']}">
-								<p:outputPanel>
-									<p:messages id="messagesCascoMaritimo" showDetail="true" autoUpdate="true" closable="true" />
-								</p:outputPanel>
-								<h:form id="formPrincipal">
-									<h:panelGrid columns="1" id="ramoCascoMaritimo">
-										<p:panel>
-											<h:panelGrid columns="6" cellpadding="3">
-												<p:outputLabel for="nombreNave" value="#{emision['cascoMaritimo.nombreNave']}" styleClass="negrita" />
-												<p:inputText id="nombreNave" value="#{ramoCascoMaritimoBean.nombreNave}" required="true"
-													requiredMessage="#{emision['cascoMaritimo.nombreNave.msn']}" />
-												<p:outputLabel value="#{emision['cascoMaritimo.registroNumero']}" styleClass="negrita" />
-												<p:inputText value="#{ramoCascoMaritimoBean.numeroRegistro}" />
-												<p:outputLabel value="#{emision['cascoMaritimo.tonelajeBruto']}" styleClass="negrita" />
-												<p:inputText value="#{ramoCascoMaritimoBean.tonelajeBruto}" />
 
-												<p:outputLabel for="claseId" value="#{emision['cascoMaritimo.claseEmbarcacion']}" styleClass="negrita" />
-												<p:selectOneMenu id="claseId" value="#{ramoCascoMaritimoBean.claseEmbarcacion}" effect="drop" required="true"
-													requiredMessage="#{emision['cascoMaritimo.claseEmbarcacion.msn']}">
-													<f:selectItem itemLabel="Seleccione" noSelectionOption="true" />
-													<f:selectItems value="#{cascoMaritimoBacking.embarcacionItems}" />
-												</p:selectOneMenu>
-												<p:outputLabel value="#{emision['cascoMaritimo.bandera']}" styleClass="negrita" />
-												<p:selectOneMenu value="#{autoCompleteBean.selectedPais}" converter="pais" height="250" effect="fade" var="p" required="true"
-													requiredMessage="#{emision['cascoMaritimo.bandera.msn']}">
+						<p:outputPanel>
+							<p:messages id="messagesCascoMaritimo" showDetail="true" autoUpdate="true" closable="true" />
+						</p:outputPanel>
+						<h:form id="formPrincipal">
+							<h:panelGrid columns="1" id="ramoCascoMaritimo">
+								<p:panel>
+									<h:panelGrid columns="6" cellpadding="3">
+										<p:outputLabel for="nombreNave" value="#{emision['cascoMaritimo.nombreNave']}" styleClass="negrita" />
+										<p:inputText id="nombreNave" value="#{ramoCascoMaritimoBean.nombreNave}" required="true"
+											requiredMessage="#{emision['cascoMaritimo.nombreNave.msn']}" />
+										<p:outputLabel value="#{emision['cascoMaritimo.registroNumero']}" styleClass="negrita" />
+										<p:inputText value="#{ramoCascoMaritimoBean.numeroRegistro}" />
+										<p:outputLabel value="#{emision['cascoMaritimo.tonelajeBruto']}" styleClass="negrita" />
+										<p:inputText value="#{ramoCascoMaritimoBean.tonelajeBruto}" />
 
-													<f:selectItem itemLabel="Select One" itemValue="" />
-													<f:selectItems value="#{autoCompleteBean.paises}" var="pais" itemLabel="#{pais.nombre}" itemValue="#{pais}" />
+										<p:outputLabel for="claseId" value="#{emision['cascoMaritimo.claseEmbarcacion']}" styleClass="negrita" />
+										<p:selectOneMenu id="claseId" value="#{ramoCascoMaritimoBean.claseEmbarcacion}" effect="drop" required="true"
+											requiredMessage="#{emision['cascoMaritimo.claseEmbarcacion.msn']}">
+											<f:selectItem itemLabel="Seleccione" noSelectionOption="true" />
+											<f:selectItems value="#{cascoMaritimoBacking.embarcacionItems}" />
+										</p:selectOneMenu>
+										<p:outputLabel value="#{emision['cascoMaritimo.bandera']}" styleClass="negrita" />
+										<p:selectOneMenu value="#{autoCompleteBean.selectedPais}" converter="pais" height="250" effect="fade" var="p" required="true"
+											requiredMessage="#{emision['cascoMaritimo.bandera.msn']}">
 
-													<p:column>
-														<p:graphicImage name="#{p.bandera}" library="img/banderas" />
-													</p:column>
+											<f:selectItem itemLabel="Select One" itemValue="" />
+											<f:selectItems value="#{autoCompleteBean.paises}" var="pais" itemLabel="#{pais.nombre}" itemValue="#{pais}" />
 
-													<p:column>  
+											<p:column>
+												<p:graphicImage name="#{p.bandera}" library="img/banderas" />
+											</p:column>
+
+											<p:column>  
 									                #{p.nombre} 
 									            </p:column>
-												</p:selectOneMenu>
+										</p:selectOneMenu>
 
-												<p:outputLabel for="zonaId" value="#{emision['cascoMaritimo.zonaNavegacion']}" styleClass="negrita" />
-												<p:selectOneMenu id="zonaId" value="#{ramoCascoMaritimoBean.zonaNavegacion}" effect="drop" required="true"
-													requiredMessage="#{emision['cascoMaritimo.zonaNavegacion.msn']}">
-													<f:selectItem itemLabel="Seleccione" noSelectionOption="true" />
-													<f:selectItems value="#{cascoMaritimoBacking.zonasItems}" />
-												</p:selectOneMenu>
+										<p:outputLabel for="zonaId" value="#{emision['cascoMaritimo.zonaNavegacion']}" styleClass="negrita" />
+										<p:selectOneMenu id="zonaId" value="#{ramoCascoMaritimoBean.zonaNavegacion}" effect="drop" required="true"
+											requiredMessage="#{emision['cascoMaritimo.zonaNavegacion.msn']}">
+											<f:selectItem itemLabel="Seleccione" noSelectionOption="true" />
+											<f:selectItems value="#{cascoMaritimoBacking.zonasItems}" />
+										</p:selectOneMenu>
 
 
-												<p:outputLabel value="#{emision['cascoMaritimo.eslora']}" styleClass="negrita" />
-												<p:inputText value="#{ramoCascoMaritimoBean.eslora}" />
-												<p:outputLabel value="#{emision['cascoMaritimo.puntal']}" styleClass="negrita" />
-												<p:inputText value="#{ramoCascoMaritimoBean.puntal}" />
-												<p:outputLabel value="#{emision['cascoMaritimo.anioConstruccion']}" styleClass="negrita" />
-												<p:inputText value="#{ramoCascoMaritimoBean.anioConstruccion}" />
+										<p:outputLabel value="#{emision['cascoMaritimo.eslora']}" styleClass="negrita" />
+										<p:inputText value="#{ramoCascoMaritimoBean.eslora}" />
+										<p:outputLabel value="#{emision['cascoMaritimo.puntal']}" styleClass="negrita" />
+										<p:inputText value="#{ramoCascoMaritimoBean.puntal}" />
+										<p:outputLabel value="#{emision['cascoMaritimo.anioConstruccion']}" styleClass="negrita" />
+										<p:inputText value="#{ramoCascoMaritimoBean.anioConstruccion}" />
 
-												<p:outputLabel value="#{emision['cascoMaritimo.manga']}" styleClass="negrita" />
-												<p:inputText value="#{ramoCascoMaritimoBean.manga}" />
-												<p:outputLabel value="#{emision['cascoMaritimo.marcaMotor']}" styleClass="negrita" />
-												<p:inputText value="#{ramoCascoMaritimoBean.marcaMotor}" />
-												<p:outputLabel value="#{emision['cascoMaritimo.avaluo']}" styleClass="negrita" />
-												<p:inputText value="#{ramoCascoMaritimoBean.avaluo}" />
-												<p:outputLabel for="valorCasco" value="#{emision['cascoMaritimo.valorCasco']}" styleClass="negrita" />
-												<p:inputText id="valorCasco" value="#{ramoCascoMaritimoBean.valorCasco}" required="true"
-													requiredMessage="#{emision['cascoMaritimo.valorCasco.msn']}" />
+										<p:outputLabel value="#{emision['cascoMaritimo.manga']}" styleClass="negrita" />
+										<p:inputText value="#{ramoCascoMaritimoBean.manga}" />
+										<p:outputLabel value="#{emision['cascoMaritimo.marcaMotor']}" styleClass="negrita" />
+										<p:inputText value="#{ramoCascoMaritimoBean.marcaMotor}" />
+										<p:outputLabel value="#{emision['cascoMaritimo.avaluo']}" styleClass="negrita" />
+										<p:inputText value="#{ramoCascoMaritimoBean.avaluo}" />
+										<p:outputLabel for="valorCasco" value="#{emision['cascoMaritimo.valorCasco']}" styleClass="negrita" />
+										<p:inputText id="valorCasco" value="#{ramoCascoMaritimoBean.valorCasco}" required="true"
+											requiredMessage="#{emision['cascoMaritimo.valorCasco.msn']}" />
 
-												<p:outputLabel value="#{emision['cascoMaritimo.valorMaquinaria']}" styleClass="negrita" />
-												<p:inputText value="#{ramoCascoMaritimoBean.valorMaquina}" />
-												<p:outputLabel value="#{emision['cascoMaritimo.valorRedes']}" styleClass="negrita" />
-												<p:inputText value="#{ramoCascoMaritimoBean.valorRedes}" />
-												<p:outputLabel value="#{emision['cascoMaritimo.otros']}" styleClass="negrita" />
-												<p:inputText value="#{ramoCascoMaritimoBean.otros}" />
+										<p:outputLabel value="#{emision['cascoMaritimo.valorMaquinaria']}" styleClass="negrita" />
+										<p:inputText value="#{ramoCascoMaritimoBean.valorMaquina}" />
+										<p:outputLabel value="#{emision['cascoMaritimo.valorRedes']}" styleClass="negrita" />
+										<p:inputText value="#{ramoCascoMaritimoBean.valorRedes}" />
+										<p:outputLabel value="#{emision['cascoMaritimo.otros']}" styleClass="negrita" />
+										<p:inputText value="#{ramoCascoMaritimoBean.otros}" />
 
-												<p:outputLabel value="#{emision['cascoMaritimo.total']}" styleClass="negrita" />
-												<p:inputText value="#{ramoCascoMaritimoBean.total}" />
-												<p:outputLabel value="#{emision['cascoMaritimo.porcentajeSiniestro']}" styleClass="negrita" />
-												<p:inputText value="#{ramoCascoMaritimoBean.porcentajeSiniestro}" />
-												<p:outputLabel value="#{emision['cascoMaritimo.minimoSiniestro']}" styleClass="negrita" />
-												<p:inputText value="#{ramoCascoMaritimoBean.minimoSiniestro}" />
+										<p:outputLabel value="#{emision['cascoMaritimo.total']}" styleClass="negrita" />
+										<p:inputText value="#{ramoCascoMaritimoBean.total}" />
+										<p:outputLabel value="#{emision['cascoMaritimo.porcentajeSiniestro']}" styleClass="negrita" />
+										<p:inputText value="#{ramoCascoMaritimoBean.porcentajeSiniestro}" />
+										<p:outputLabel value="#{emision['cascoMaritimo.minimoSiniestro']}" styleClass="negrita" />
+										<p:inputText value="#{ramoCascoMaritimoBean.minimoSiniestro}" />
 
-											</h:panelGrid>
-											<h:panelGrid columns="1" cellpadding="3">
-												<p:outputLabel value="#{emision['cascoMaritimo.filePolizaVigente']}" styleClass="negrita" />
-												<p:fileUpload fileLimit="1" />
-											</h:panelGrid>
-										</p:panel>
-										<!-- Footer del Formulario -->
-										<f:facet name="footer">
-											<div align="center">
-												<p:commandButton id="guardarBtnId" actionListener="#{cascoMaritimoBacking.guardarRamo()}" icon="icon-save"
-													value="#{emision['boton.guardar']}" title="Guardar" update="ramoCascoMaritimo, formPrincipal" />
-												<p:commandButton id="cancelarBtnId" icon="icon-cancel" value="#{emision['boton.cancelar']}" process="@this" title="Cancelar" />
-
-												<!-- DESCARGAR DOCUMENTOS -->
-												<h:panelGrid columns="2">
-													<p:commandLink title="Descargar syllabus" actionListener="#{cascoMaritimoBacking.descargarCascoMaritimoPDF()}">
-														<h:graphicImage name="pdf.png" library="img" />
-													</p:commandLink>
-												</h:panelGrid>
-											</div>
-										</f:facet>
 									</h:panelGrid>
-								</h:form>
-							</p:tab>
-							<!-- COBERTURAS -->
-							<p:tab title="#{emision['cascoMaritimo.tab.coberturasAdicionales']}">
-								<h:form id="coberturasForm">
-									<p:dataTable value="#{cascoMaritimoBacking.coberturasAddDTO}" var="cobertura" paginator="true">
-										<p:column>
-											<f:facet name="header">
-												<h:outputLabel value="#{emision['anexo.titulo.cob']}" />
+
+								</p:panel>
+
+							</h:panelGrid>
+						</h:form>
+						<!-- COBERTURAS ADICONALES-->
+						<h:panelGrid columns="2">
+							<p:outputLabel value="#{emision['lbl.seleccionarCoberturas']}" styleClass="negrita" />
+							<p:commandLink title="#{emision['lbl.seleccionarCoberturas']}" oncomplete="coberturasAdd.show();" update="idCoberturaAdd">
+								<h:graphicImage name="check.png" library="img" />
+							</p:commandLink>
+						</h:panelGrid>
+						<p:dialog id="idCoberturaAdd" header="#{emision['anexo.titulo.tab.cob']}" widgetVar="coberturasAdd" modal="true" position="center"
+							showEffect="fade" hideEffect="explode" resizable="false" closable="true" width="500" height="300">
+							<h:form id="coberturaAddForm">
+								<p:messages id="messagesCoberturas" showDetail="true" autoUpdate="true" closable="true" />
+								<p:dataTable id="tablaCoberturas" value="#{cascoMaritimoBacking.coberturasAddDTO}" var="coberturaAdd" paginator="true" rows="4"
+									editable="true">
+									<p:ajax event="rowEdit" listener="#{cascoMaritimoBacking.onEditCoberturaAdd}" />
+									<p:column>
+										<f:facet name="header">
+											<h:outputLabel value="#{emision['anexo.titulo.cobad']}" />
+										</f:facet>
+										<h:outputText value="#{coberturaAdd.cobertura}" />
+									</p:column>
+									<p:column>
+										<f:facet name="header">
+											<h:outputLabel value="#{emision['lbl.seleccion']}" />
+										</f:facet>
+										<p:cellEditor>
+											<f:facet name="output">
+												<div align="center">
+													<p:selectBooleanCheckbox value="#{coberturaAdd.seleccion}" disabled="true" />
+												</div>
 											</f:facet>
-											<h:outputText value="#{cobertura.cobertura}" />
-										</p:column>
-										<p:column>
-											<f:facet name="header">
-												<h:outputLabel value="#{emision['lbl.seleccion']}" />
+											<f:facet name="input">
+												<div align="center">
+													<p:selectBooleanCheckbox value="#{coberturaAdd.seleccion}" />
+												</div>
 											</f:facet>
-											<div align="center">
-												<p:selectBooleanCheckbox value="#{cobertura.seleccion}" />
-											</div>
-										</p:column>
-									</p:dataTable>
-								</h:form>
-							</p:tab>
-							<!-- CLAUSULAS ADICIONALAES -->
-							<p:tab title="#{emision['cascoMaritimo.tab.clausulasAdicionales']}">
-								<h:form id="clausulaAddForm">
-									<p:dataTable value="#{cascoMaritimoBacking.clausulasAdicionalesDTO}" var="clausula" paginator="true" rows="4">
-										<p:column>
-											<f:facet name="header">
-												<h:outputLabel value="#{emision['anexo.titulo.cad']}" />
+										</p:cellEditor>
+									</p:column>
+									<p:column headerText="Options" style="width:50px">
+										<p:rowEditor />
+									</p:column>
+								</p:dataTable>
+								<p:spacer height="15px;" />
+								<div align="center">
+									<p:commandButton id="guardarCoberturas" process="@this" actionListener="#{cascoMaritimoBacking.setearCoberturasAdd()}" icon="icon-save"
+										value="#{emision['boton.guardar']}" title="Guardar" oncomplete="coberturasAdd.hide()" />
+								</div>
+							</h:form>
+						</p:dialog>
+						<!-- CLAUSULAS ADICIONALES -->
+						<h:panelGrid columns="2">
+							<p:outputLabel value="#{emision['lbl.seleccionarClausulasAdd']}" styleClass="negrita" />
+							<p:commandLink title="#{emision['lbl.seleccionarClausulasAdd']}" oncomplete="clausulasAdd.show();"
+								actionListener="#{cascoMaritimoBacking.obtenerClausulasAdicionales()}" update="idClausulasAdd">
+								<h:graphicImage name="check.png" library="img" />
+							</p:commandLink>
+						</h:panelGrid>
+						<p:dialog id="idClausulasAdd" header="#{emision['ap.tab.clausulasAdicionales']}" widgetVar="clausulasAdd" modal="true" position="center"
+							showEffect="fade" hideEffect="explode" resizable="false" closable="true" width="500" height="300">
+							<h:form id="clausulaAddEspForm">
+								<p:messages id="messagesClausulas" showDetail="true" autoUpdate="true" closable="true" />
+								<p:dataTable id="tablaClausulas" value="#{cascoMaritimoBacking.clausulasAdicionalesDTO}" var="clausula" paginator="true" editable="true">
+									<p:ajax event="rowEdit" listener="#{cascoMaritimoBacking.onEditClausulasAdd}" />
+									<p:column>
+										<f:facet name="header">
+											<h:outputLabel value="#{emision['anexo.titulo.cad']}" />
+										</f:facet>
+										<h:outputText value="#{clausula.clausula}" />
+									</p:column>
+									<p:column>
+										<f:facet name="header">
+											<h:outputLabel value="#{emision['lbl.seleccion']}" />
+										</f:facet>
+										<p:cellEditor>
+											<f:facet name="output">
+												<div align="center">
+													<p:selectBooleanCheckbox value="#{clausula.seleccion}" disabled="true" />
+												</div>
 											</f:facet>
-											<h:outputText value="#{clausula.clausula}" />
-										</p:column>
-										<p:column>
-											<f:facet name="header">
-												<h:outputLabel value="#{emision['lbl.seleccion']}" />
+											<f:facet name="input">
+												<div align="center">
+													<p:selectBooleanCheckbox value="#{clausula.seleccion}" />
+												</div>
 											</f:facet>
-											<div align="center">
-												<p:selectBooleanCheckbox value="#{clausula.seleccion}" />
-											</div>
-										</p:column>
-									</p:dataTable>
-								</h:form>
-							</p:tab>
-						</p:tabView>
+										</p:cellEditor>
+									</p:column>
+									<p:column headerText="Options" style="width:50px">
+										<p:rowEditor />
+									</p:column>
+								</p:dataTable>
+								<p:spacer height="15px;" />
+								<div align="center">
+									<p:commandButton id="guardarClausulas" process="@this" actionListener="#{cascoMaritimoBacking.setearClausulasAdd()}" icon="icon-save"
+										value="#{emision['boton.guardar']}" title="Guardar" oncomplete="clausulasAdd.hide()" />
+								</div>
+							</h:form>
+						</p:dialog>
 					</ui:define>
 				</ui:decorate>
 			</ui:define>
 		</ui:decorate>
+	</ui:define>
+	<ui:define name="buttons">
+		<h:form>
+			<h:panelGrid columns="1">
+				<h:commandLink action="hiperion.xhtml">
+					<h:graphicImage name="home.png" library="img" />
+				</h:commandLink>
+				<p:commandLink title="Guardar Informacion poliza" actionListener="#{cascoMaritimoBacking.guardarRamo()}">
+					<h:graphicImage name="save.png" library="img" />
+				</p:commandLink>
+				<p:commandLink onclick="help.show()">
+					<h:graphicImage name="helpII.png" library="img" />
+				</p:commandLink>
+			</h:panelGrid>
+			<p:dialog header="Ramo Casco Aereo" widgetVar="help" showEffect="explode" hideEffect="bounce" height="100">
+				<h:panelGrid columns="1">
+					<h:outputText value="Seguro agricola" />
+					<h:outputText value="Para soporte en cualqueira de las funcionalidades" />
+					<h:outputText value="Por favor comuniquese con Franklin Pozo, Administradr del Sitema Hiperion" />
+				</h:panelGrid>
+			</p:dialog>
+		</h:form>
 	</ui:define>
 </ui:composition>
 </html>
