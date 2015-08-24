@@ -32,6 +32,9 @@ public class ExtrasCascoAereo extends Auditoria implements Serializable {
 	@Column(name = "valor_extra_aereo")
 	private BigDecimal valorExtraAereo;
 
+	@Column(name = "extra_casco_aereo")
+	private String extra;
+
 	// bi-directional many-to-one association to RamoCascoAereo
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_casco_aereo")
@@ -62,6 +65,21 @@ public class ExtrasCascoAereo extends Auditoria implements Serializable {
 
 	public void setRamoCascoAereo(RamoCascoAereo ramoCascoAereo) {
 		this.ramoCascoAereo = ramoCascoAereo;
+	}
+
+	/**
+	 * @return the extra
+	 */
+	public String getExtra() {
+		return extra;
+	}
+
+	/**
+	 * @param extra
+	 *            the extra to set
+	 */
+	public void setExtra(String extra) {
+		this.extra = extra;
 	}
 
 }
