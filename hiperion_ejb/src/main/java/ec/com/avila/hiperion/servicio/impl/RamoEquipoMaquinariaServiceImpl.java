@@ -13,6 +13,7 @@ import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.dao.ObjAsegEquipoMaquinariaDao;
 import ec.com.avila.hiperion.dao.RamoEquipoMaquinariaDao;
 import ec.com.avila.hiperion.emision.entities.ObjAsegEquipoMaq;
+import ec.com.avila.hiperion.emision.entities.Poliza;
 import ec.com.avila.hiperion.emision.entities.RamoEquipoMaquinaria;
 import ec.com.avila.hiperion.servicio.RamoEquipoMaquinariaService;
 
@@ -31,8 +32,10 @@ public class RamoEquipoMaquinariaServiceImpl implements RamoEquipoMaquinariaServ
 	@EJB
 	private RamoEquipoMaquinariaDao ramoEquipoMaquinariaDao;
 
-	public void guardarRamoEquipoMaquinaria(RamoEquipoMaquinaria ramoEquipoMaquinaria) throws HiperionException {
+	public void guardarRamoEquipoMaquinaria(RamoEquipoMaquinaria ramoEquipoMaquinaria, Poliza poliza) throws HiperionException {
+		
 		ramoEquipoMaquinariaDao.persist(ramoEquipoMaquinaria);
+		
 		for (ObjAsegEquipoMaq objeto : ramoEquipoMaquinaria.getObjAsegEquipoMaqs()) {
 			asegEquipoMaquinariaDao.persist(objeto);
 		}
