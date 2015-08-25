@@ -6,9 +6,7 @@ package ec.com.avila.hiperion.dao.impl;
 
 import javax.ejb.Stateless;
 
-import ec.com.avila.hiperion.dao.ClausulaAddAccPerDao;
 import ec.com.avila.hiperion.dao.ClausulaAddVehiculoDao;
-import ec.com.avila.hiperion.emision.entities.ClausulasAddAccPer;
 import ec.com.avila.hiperion.emision.entities.ClausulasAddVh;
 
 /**
