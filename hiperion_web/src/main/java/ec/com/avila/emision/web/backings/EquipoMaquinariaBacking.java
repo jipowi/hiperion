@@ -5,6 +5,7 @@
 package ec.com.avila.emision.web.backings;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -13,21 +14,30 @@ import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 
 import org.apache.log4j.Logger;
+import org.primefaces.event.RowEditEvent;
 
+import ec.com.avila.emision.web.beans.PolizaBean;
 import ec.com.avila.emision.web.beans.RamoEquipoMaquinaraBean;
 import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.dto.CoberturaAdicionalDTO;
 import ec.com.avila.hiperion.dto.CoberturaDTO;
 import ec.com.avila.hiperion.dto.ObjetoAseguradoEquipoMaqDTO;
+import ec.com.avila.hiperion.dto.TablaAmortizacionDTO;
+import ec.com.avila.hiperion.emision.entities.CobertAddEqMaq;
 import ec.com.avila.hiperion.emision.entities.CobertAddRobo;
 import ec.com.avila.hiperion.emision.entities.CobertEqMaq;
 import ec.com.avila.hiperion.emision.entities.DetalleAnexo;
+import ec.com.avila.hiperion.emision.entities.Financiamiento;
 import ec.com.avila.hiperion.emision.entities.ObjAsegEquipoMaq;
+import ec.com.avila.hiperion.emision.entities.PagoPoliza;
+import ec.com.avila.hiperion.emision.entities.Poliza;
 import ec.com.avila.hiperion.emision.entities.Ramo;
 import ec.com.avila.hiperion.emision.entities.RamoEquipoMaquinaria;
 import ec.com.avila.hiperion.emision.entities.Usuario;
@@ -69,12 +79,18 @@ public class EquipoMaquinariaBacking implements Serializable {
 	@ManagedProperty(value = "#{usuarioBean}")
 	private UsuarioBean usuarioBean;
 
+	@ManagedProperty(value = "#{polizaBean}")
+	private PolizaBean polizaBean;
+
 	RamoEquipoMaquinaria ramoEquipoMaquinaria = new RamoEquipoMaquinaria();
 	private List<CobertEqMaq> coberturas;
 	private List<CoberturaDTO> coberturasDTO = new ArrayList<>();
 	private List<CobertAddRobo> coberturasAdd;
 	private List<CoberturaAdicionalDTO> coberturasAddDTO = new ArrayList<>();
+
 	Logger log = Logger.getLogger(EquipoMaquinariaBacking.class);
+
+	private Usuario usuario;
 
 	private List<DetalleAnexo> anexos;
 
@@ -97,6 +113,8 @@ public class EquipoMaquinariaBacking implements Serializable {
 	public void inicializar() {
 		try {
 
+			usuario = usuarioBean.getSessionUser();
+
 			Ramo ramo = ramoService.consultarRamoPorCodigo("EM");
 
 			anexos = ramo.getDetalleAnexos();
@@ -107,6 +125,61 @@ public class EquipoMaquinariaBacking implements Serializable {
 		} catch (HiperionException e) {
 			e.printStackTrace();
 		}
+	}
+
+	/**
+	 * 
+	 * <b> Permite setear los datos de la poliza. </b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: 09/07/2015]
+	 * </p>
+	 * 
+	 * @return
+	 */
+	public Poliza setearDatosPoliza() {
+
+		Poliza poliza = new Poliza();
+
+		poliza.setNumeroPoliza(polizaBean.getNumeroPoliza());
+		poliza.setNumeroAnexo(polizaBean.getNumeroAnexo());
+		poliza.setEjecutivo(polizaBean.getEjecutivo().getNombreUsuario());
+		poliza.setVigenciaDesde(polizaBean.getVigenciaDesde());
+		poliza.setVigenciaHasta(polizaBean.getVigenciaHasta());
+		poliza.setDiasCobertura(polizaBean.getDiasCobertura());
+		poliza.setSumaAsegurada(polizaBean.getSumaAsegurada());
+		poliza.setPrimaNeta(BigDecimal.valueOf(polizaBean.getPrimaNeta()));
+		poliza.setSuperBanSeguros(polizaBean.getSuperBanSeguros());
+		poliza.setSeguroCampesino(BigDecimal.valueOf(polizaBean.getSeguroCampesino()));
+		poliza.setDerechoEmision(BigDecimal.valueOf(polizaBean.getDerechoEmision()));
+		poliza.setRamo(1);
+		poliza.setEstadoPoliza("COTIZADO");
+
+		PagoPoliza pagoPoliza = new PagoPoliza();
+		pagoPoliza.setNumeroFactura(polizaBean.getNumeroFactura());
+		pagoPoliza.setSubtotal(polizaBean.getSubtotal());
+		pagoPoliza.setAdicionalSegCampesino(polizaBean.getAdicionalSegCampesino());
+		pagoPoliza.setIva(polizaBean.getIva());
+		pagoPoliza.setCuotaInicial(polizaBean.getCuotaInicial());
+		pagoPoliza.setValorTotalPagoPoliza(polizaBean.getTotal());
+		pagoPoliza.setEstado(EstadoEnum.A);
+		pagoPoliza.setFechaCreacion(new Date());
+		pagoPoliza.setIdUsuarioCreacion(usuario.getIdUsuario());
+
+		List<Financiamiento> financiamientos = new ArrayList<>();
+		for (TablaAmortizacionDTO financiamiento : polizaBean.getFinanciamientos()) {
+			Financiamiento financiamientoTemp = new Financiamiento();
+			financiamientoTemp.setNumeroCuota(financiamiento.getNumeroLetra());
+			financiamientoTemp.setValorLetra(BigDecimal.valueOf(financiamiento.getValor()));
+			financiamientoTemp.setFechaVencimiento(financiamiento.getFechaVencimiento());
+
+			financiamientos.add(financiamientoTemp);
+		}
+
+		pagoPoliza.setFinanciamientos(financiamientos);
+
+		poliza.setPagoPoliza(pagoPoliza);
+
+		return poliza;
 	}
 
 	/**
@@ -178,29 +251,6 @@ public class EquipoMaquinariaBacking implements Serializable {
 
 	/**
 	 * 
-	 * <b> Permite guardar los datos en el Ramo Equipo y Maquinaria en la base de datos </b>
-	 * <p>
-	 * [Author: Franklin Pozo, Date: 27/08/2014]
-	 * </p>
-	 * 
-	 */
-	public void setearInfRamo() throws HiperionException {
-
-		Usuario usuario = usuarioBean.getSessionUser();
-
-		ramoEquipoMaquinaria.setTasaEquipoMaq(ramoEquipoMaquinaraBean.getTasa());
-		ramoEquipoMaquinaria.setDeducMinimoSiniestroMaq(ramoEquipoMaquinaraBean.getMinimoSiniestro());
-		ramoEquipoMaquinaria.setDeducMinAsegMaq(ramoEquipoMaquinaraBean.getMinimoAsegurado());
-		ramoEquipoMaquinaria.setDeducPorcSiniestroMaq(ramoEquipoMaquinaraBean.getPorcentajeSiniestro());
-
-		ramoEquipoMaquinaria.setIdUsuarioCreacion(usuario.getIdUsuario());
-		ramoEquipoMaquinaria.setFechaCreacion(new Date());
-		ramoEquipoMaquinaria.setEstado(EstadoEnum.A);
-		MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.setearDatos"));
-	}
-
-	/**
-	 * 
 	 * <b> Permite guardar los datos en el Ramo Equipo y Maquinaria en sus respectivas tablas </b>
 	 * <p>
 	 * [Author: Franklin Pozo, Date: 09/11/2014]
@@ -211,6 +261,18 @@ public class EquipoMaquinariaBacking implements Serializable {
 	public void guardarRamo() throws HiperionException {
 
 		try {
+
+			Poliza poliza = setearDatosPoliza();
+
+			ramoEquipoMaquinaria.setTasaEquipoMaq(ramoEquipoMaquinaraBean.getTasa());
+			ramoEquipoMaquinaria.setDeducMinimoSiniestroMaq(ramoEquipoMaquinaraBean.getMinimoSiniestro());
+			ramoEquipoMaquinaria.setDeducMinAsegMaq(ramoEquipoMaquinaraBean.getMinimoAsegurado());
+			ramoEquipoMaquinaria.setDeducPorcSiniestroMaq(ramoEquipoMaquinaraBean.getPorcentajeSiniestro());
+
+			ramoEquipoMaquinaria.setIdUsuarioCreacion(usuario.getIdUsuario());
+			ramoEquipoMaquinaria.setFechaCreacion(new Date());
+			ramoEquipoMaquinaria.setEstado(EstadoEnum.A);
+
 			if (!ramoEquipoMaquinaraBean.getObjetoAseguradoList().isEmpty()) {
 				List<ObjAsegEquipoMaq> listObjetos = new ArrayList<>();
 				for (ObjetoAseguradoEquipoMaqDTO objeto : ramoEquipoMaquinaraBean.getObjetoAseguradoList()) {
@@ -226,7 +288,6 @@ public class EquipoMaquinariaBacking implements Serializable {
 					objAsegEquipoMaq.setValorAsegObjEqMaq(objeto.getValorAsegurado());
 					objAsegEquipoMaq.setNumeroSerieObjMaq(objeto.getSerie());
 
-					Usuario usuario = usuarioBean.getSessionUser();
 					objAsegEquipoMaq.setIdUsuarioCreacion(usuario.getIdUsuario());
 					objAsegEquipoMaq.setFechaCreacion(new Date());
 					objAsegEquipoMaq.setEstado(EstadoEnum.A);
@@ -234,18 +295,111 @@ public class EquipoMaquinariaBacking implements Serializable {
 				}
 				ramoEquipoMaquinaria.setObjAsegEquipoMaqs(listObjetos);
 			} else {
+
 				MessagesController.addError(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.error.save.Obj"));
 			}
-			ramoEquipoMaquinariaService.guardarRamoEquipoMaquinaria(ramoEquipoMaquinaria);
+
+			ramoEquipoMaquinariaService.guardarRamoEquipoMaquinaria(ramoEquipoMaquinaria, poliza);
+
 			MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.save"));
+
 			ramoEquipoMaquinaria = new RamoEquipoMaquinaria();
 			ramoEquipoMaquinaraBean.getObjetoAseguradoList().clear();
+
 		} catch (HiperionException e) {
+
 			log.error("Error al momento de guardar el ramo equipo y maquinaria", e);
+
 			MessagesController.addError(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.error.save"));
 			throw new HiperionException(e);
 
 		}
+	}
+
+	/**
+	 * 
+	 * <b> permite setear las coberturas seleccionadas en el Bean. </b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: 14/07/2015]
+	 * </p>
+	 * 
+	 */
+	public void setearCoberturas() {
+		int contCoberturas = 0;
+		List<CobertEqMaq> coberturas = new ArrayList<>();
+		for (CoberturaDTO coberturaDTO : coberturasDTO) {
+			if (coberturaDTO.getSeleccion()) {
+				contCoberturas++;
+				CobertEqMaq cobertura = new CobertEqMaq();
+				cobertura.setCoberturaEqMaq(coberturaDTO.getCobertura());
+
+				coberturas.add(cobertura);
+			}
+		}
+
+		if (contCoberturas == 0) {
+			MessagesController.addWarn(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.warn.coberturas"));
+		} else {
+			ramoEquipoMaquinaria.setCobertEqMaqs(coberturas);
+			MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.coberturas"));
+		}
+	}
+
+	/**
+	 * 
+	 * <b> permite setear las coberturas adicionales seleccionadas en el Bean. </b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: 14/07/2015]
+	 * </p>
+	 * 
+	 */
+	public void setearCoberturasAdd() {
+		int contCoberturas = 0;
+		List<CobertAddEqMaq> coberturas = new ArrayList<>();
+		for (CoberturaAdicionalDTO coberturaDTO : coberturasAddDTO) {
+			if (coberturaDTO.getSeleccion()) {
+				contCoberturas++;
+				CobertAddEqMaq cobertura = new CobertAddEqMaq();
+				cobertura.setCoberturaAddEqMaq(coberturaDTO.getCobertura());
+
+				coberturas.add(cobertura);
+			}
+		}
+
+		if (contCoberturas == 0) {
+			MessagesController.addWarn(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.warn.coberturasAdd"));
+		} else {
+			ramoEquipoMaquinaria.setCobertAddEqMaqs(coberturas);
+			MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.coberturasAdd"));
+		}
+	}
+
+	/**
+	 * 
+	 * <b> Permite editar un registro de la tabla</b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: Aug 3, 2014]
+	 * </p>
+	 * 
+	 * @param event
+	 */
+	public void onEditCobertura(RowEditEvent event) {
+		FacesMessage msg = new FacesMessage("Item Edited", ((CoberturaDTO) event.getObject()).getCobertura());
+		FacesContext.getCurrentInstance().addMessage(null, msg);
+	}
+
+	/**
+	 * 
+	 * <b> Permite editar un registro de la tabla</b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: Aug 3, 2014]
+	 * </p>
+	 * 
+	 * @param event
+	 */
+	public void onEditCoberturaAdd(RowEditEvent event) {
+		FacesMessage msg = new FacesMessage("Item Edited", ((CoberturaAdicionalDTO) event.getObject()).getCobertura());
+		FacesContext.getCurrentInstance().addMessage(null, msg);
 	}
 
 	/**
@@ -328,6 +482,21 @@ public class EquipoMaquinariaBacking implements Serializable {
 	 */
 	public void setCoberturasAddDTO(List<CoberturaAdicionalDTO> coberturasAddDTO) {
 		this.coberturasAddDTO = coberturasAddDTO;
+	}
+
+	/**
+	 * @return the polizaBean
+	 */
+	public PolizaBean getPolizaBean() {
+		return polizaBean;
+	}
+
+	/**
+	 * @param polizaBean
+	 *            the polizaBean to set
+	 */
+	public void setPolizaBean(PolizaBean polizaBean) {
+		this.polizaBean = polizaBean;
 	}
 
 }

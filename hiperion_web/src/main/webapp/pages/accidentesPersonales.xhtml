@@ -24,38 +24,37 @@
 						<p:tabView effect="blind" effectDuration="normal">
 							<!-- RAMO ACCIDENTES PERSONALES -->
 							<p:tab title="#{emision['ap.tab.principal']}">
-								
-									<div align="center">
-										<h:panelGrid columns="1">
-											<p:panel>
-												<h:panelGrid columns="4" cellpadding="5">
-													<p:outputLabel value="#{emision['ap.primaNetaPorPersona']}" styleClass="negrita" />
-													<p:inputText value="#{ramoAccidentesPersonalesBean.primaNetaPersona}" />
-													<p:outputLabel value="#{emision['ap.primaTotal']}" styleClass="negrita" />
-													<p:inputText value="#{ramoAccidentesPersonalesBean.primaTotalPersona}" />
-													<p:outputLabel value="#{emision['ap.facturacion']}" styleClass="negrita" />
-													<p:inputText value="#{ramoAccidentesPersonalesBean.facturacion}" />
-													<p:outputLabel value="#{emision['ap.tasa']}" styleClass="negrita" />
-													<p:inputText value="#{ramoAccidentesPersonalesBean.tasa}" />
-												</h:panelGrid>
-												<h:panelGrid columns="1">
-													<p:outputLabel value="#{emision['ap.polizaVigente']}" styleClass="negrita" />
-													<p:fileUpload fileLimit="1" />
-												</h:panelGrid>
+								<div align="center">
+									<h:panelGrid columns="1">
+										<p:panel>
+											<h:panelGrid columns="4" cellpadding="5">
+												<p:outputLabel value="#{emision['ap.primaNetaPorPersona']}" styleClass="negrita" />
+												<p:inputText value="#{ramoAccidentesPersonalesBean.primaNetaPersona}" />
+												<p:outputLabel value="#{emision['ap.primaTotal']}" styleClass="negrita" />
+												<p:inputText value="#{ramoAccidentesPersonalesBean.primaTotalPersona}" />
+												<p:outputLabel value="#{emision['ap.facturacion']}" styleClass="negrita" />
+												<p:inputText value="#{ramoAccidentesPersonalesBean.facturacion}" />
+												<p:outputLabel value="#{emision['ap.tasa']}" styleClass="negrita" />
+												<p:inputText value="#{ramoAccidentesPersonalesBean.tasa}" />
+											</h:panelGrid>
+											<h:panelGrid columns="1">
+												<p:outputLabel value="#{emision['ap.polizaVigente']}" styleClass="negrita" />
+												<p:fileUpload fileLimit="1" />
+											</h:panelGrid>
 
-												<h:panelGrid columns="2">
-													<h:outputLabel value="#{emision['emision.deducibles']}" />
-													<h:graphicImage name="deducibles.jpg" library="img" />
-												</h:panelGrid>
+											<h:panelGrid columns="2">
+												<h:outputLabel value="#{emision['emision.deducibles']}" />
+												<h:graphicImage name="deducibles.jpg" library="img" />
+											</h:panelGrid>
 
-												<h:panelGrid columns="2">
-													<p:outputLabel value="#{emision['ap.deducible']}" styleClass="negrita" />
-													<p:inputText value="#{ramoAccidentesPersonalesBean.deducible}" />
-												</h:panelGrid>
-											</p:panel>
-										</h:panelGrid>
-									</div>
-								
+											<h:panelGrid columns="2">
+												<p:outputLabel value="#{emision['ap.deducible']}" styleClass="negrita" />
+												<p:inputText value="#{ramoAccidentesPersonalesBean.deducible}" />
+											</h:panelGrid>
+										</p:panel>
+									</h:panelGrid>
+								</div>
+
 								<!-- COBERTURAS -->
 								<h:panelGrid columns="2">
 									<p:outputLabel value="#{emision['lbl.seleccionarCoberturas']}" styleClass="negrita" />
