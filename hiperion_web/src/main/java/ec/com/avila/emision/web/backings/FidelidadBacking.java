@@ -5,6 +5,7 @@
 package ec.com.avila.emision.web.backings;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -23,15 +24,20 @@ import javax.faces.model.SelectItem;
 import org.apache.log4j.Logger;
 import org.primefaces.event.RowEditEvent;
 
+import ec.com.avila.emision.web.beans.PolizaBean;
 import ec.com.avila.emision.web.beans.RamoFidelidadBean;
 import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.dto.ClausulaAdicionalDTO;
 import ec.com.avila.hiperion.dto.CoberturaDTO;
+import ec.com.avila.hiperion.dto.TablaAmortizacionDTO;
 import ec.com.avila.hiperion.emision.entities.Catalogo;
 import ec.com.avila.hiperion.emision.entities.ClausulasAddFidelidad;
 import ec.com.avila.hiperion.emision.entities.CobertFidelidad;
 import ec.com.avila.hiperion.emision.entities.DetalleAnexo;
 import ec.com.avila.hiperion.emision.entities.DetalleCatalogo;
+import ec.com.avila.hiperion.emision.entities.Financiamiento;
+import ec.com.avila.hiperion.emision.entities.PagoPoliza;
+import ec.com.avila.hiperion.emision.entities.Poliza;
 import ec.com.avila.hiperion.emision.entities.Ramo;
 import ec.com.avila.hiperion.emision.entities.RamoFidelidad;
 import ec.com.avila.hiperion.emision.entities.Usuario;
@@ -85,6 +91,9 @@ public class FidelidadBacking implements Serializable {
 	@ManagedProperty(value = "#{ramoFidelidadBean}")
 	private RamoFidelidadBean ramoFidelidadBean;
 
+	@ManagedProperty(value = "#{polizaBean}")
+	private PolizaBean polizaBean;
+
 	private Usuario usuario;
 	Logger log = Logger.getLogger(FidelidadBacking.class);
 
@@ -102,6 +111,8 @@ public class FidelidadBacking implements Serializable {
 	@PostConstruct
 	public void inicializar() {
 		try {
+
+			usuario = usuarioBean.getSessionUser();
 
 			Ramo ramo = ramoService.consultarRamoPorCodigo("FD");
 
@@ -208,7 +219,7 @@ public class FidelidadBacking implements Serializable {
 		FacesMessage msg = new FacesMessage("Item Edited", ((ClausulaAdicionalDTO) event.getObject()).getClausula());
 		FacesContext.getCurrentInstance().addMessage(null, msg);
 	}
-	
+
 	/**
 	 * 
 	 * <b> permite setear las coberturas seleccionadas en el Bean. </b>
@@ -237,7 +248,7 @@ public class FidelidadBacking implements Serializable {
 			MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.coberturas"));
 		}
 	}
-	
+
 	/**
 	 * 
 	 * <b> permite setear las clausualas adicionales seleccionadas. </b>
@@ -270,7 +281,7 @@ public class FidelidadBacking implements Serializable {
 		}
 
 	}
-	
+
 	/**
 	 * 
 	 * <b> Permite guardar datos en el Ramo Fidelidad en la base datos </b>
@@ -280,7 +291,8 @@ public class FidelidadBacking implements Serializable {
 	 * 
 	 */
 	public void guardarRamo() throws HiperionException {
-		Usuario usuario = usuarioBean.getSessionUser();
+
+		Poliza poliza = setearDatosPoliza();
 
 		ramoFidelidad.setValorColusorio(ramoFidelidadBean.getValorColusorio());
 		ramoFidelidad.setValorIndividual(ramoFidelidadBean.getValorIndividual());
@@ -291,7 +303,64 @@ public class FidelidadBacking implements Serializable {
 		ramoFidelidad.setIdUsuarioCreacion(usuario.getIdUsuario());
 		ramoFidelidad.setFechaCreacion(new Date());
 		ramoFidelidad.setEstado(EstadoEnum.A);
-		MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.setearInformacion"));
+
+		ramoFidelidadService.guardarRamoFidelidad(ramoFidelidad, poliza);
+		MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.save"));
+	}
+
+	/**
+	 * 
+	 * <b> Permite setear los datos de la poliza. </b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: 09/07/2015]
+	 * </p>
+	 * 
+	 * @return
+	 */
+	public Poliza setearDatosPoliza() {
+
+		Poliza poliza = new Poliza();
+
+		poliza.setNumeroPoliza(polizaBean.getNumeroPoliza());
+		poliza.setNumeroAnexo(polizaBean.getNumeroAnexo());
+		poliza.setEjecutivo(polizaBean.getEjecutivo().getNombreUsuario());
+		poliza.setVigenciaDesde(polizaBean.getVigenciaDesde());
+		poliza.setVigenciaHasta(polizaBean.getVigenciaHasta());
+		poliza.setDiasCobertura(polizaBean.getDiasCobertura());
+		poliza.setSumaAsegurada(polizaBean.getSumaAsegurada());
+		poliza.setPrimaNeta(BigDecimal.valueOf(polizaBean.getPrimaNeta()));
+		poliza.setSuperBanSeguros(polizaBean.getSuperBanSeguros());
+		poliza.setSeguroCampesino(BigDecimal.valueOf(polizaBean.getSeguroCampesino()));
+		poliza.setDerechoEmision(BigDecimal.valueOf(polizaBean.getDerechoEmision()));
+		poliza.setRamo(1);
+		poliza.setEstadoPoliza("COTIZADO");
+
+		PagoPoliza pagoPoliza = new PagoPoliza();
+		pagoPoliza.setNumeroFactura(polizaBean.getNumeroFactura());
+		pagoPoliza.setSubtotal(polizaBean.getSubtotal());
+		pagoPoliza.setAdicionalSegCampesino(polizaBean.getAdicionalSegCampesino());
+		pagoPoliza.setIva(polizaBean.getIva());
+		pagoPoliza.setCuotaInicial(polizaBean.getCuotaInicial());
+		pagoPoliza.setValorTotalPagoPoliza(polizaBean.getTotal());
+		pagoPoliza.setEstado(EstadoEnum.A);
+		pagoPoliza.setFechaCreacion(new Date());
+		pagoPoliza.setIdUsuarioCreacion(usuario.getIdUsuario());
+
+		List<Financiamiento> financiamientos = new ArrayList<>();
+		for (TablaAmortizacionDTO financiamiento : polizaBean.getFinanciamientos()) {
+			Financiamiento financiamientoTemp = new Financiamiento();
+			financiamientoTemp.setNumeroCuota(financiamiento.getNumeroLetra());
+			financiamientoTemp.setValorLetra(BigDecimal.valueOf(financiamiento.getValor()));
+			financiamientoTemp.setFechaVencimiento(financiamiento.getFechaVencimiento());
+
+			financiamientos.add(financiamientoTemp);
+		}
+
+		pagoPoliza.setFinanciamientos(financiamientos);
+
+		poliza.setPagoPoliza(pagoPoliza);
+
+		return poliza;
 	}
 
 	/**
@@ -493,5 +562,19 @@ public class FidelidadBacking implements Serializable {
 		this.clausulasAdicionalesDTO = clausulasAdicionalesDTO;
 	}
 
-	
+	/**
+	 * @return the polizaBean
+	 */
+	public PolizaBean getPolizaBean() {
+		return polizaBean;
+	}
+
+	/**
+	 * @param polizaBean
+	 *            the polizaBean to set
+	 */
+	public void setPolizaBean(PolizaBean polizaBean) {
+		this.polizaBean = polizaBean;
+	}
+
 }
