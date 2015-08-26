@@ -11,7 +11,7 @@ import ec.com.avila.hiperion.emision.entities.ClausulasAddIncendio;
 
 /**
  * 
- * <b> Permite implementar las operaciones de la tabla ClausulasAddDinero </b>
+ * <b> Permite implementar las operaciones de la tabla ClausulasAddIncendio </b>
  * 
  * @author Franklin Pozo B.
  * @version 1.0,15/01/14

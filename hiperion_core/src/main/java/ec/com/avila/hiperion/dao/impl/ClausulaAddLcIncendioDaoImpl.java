@@ -6,8 +6,8 @@ package ec.com.avila.hiperion.dao.impl;
 
 import javax.ejb.Stateless;
 
-import ec.com.avila.hiperion.dao.ClausulaAddLcIncendioDao;
-import ec.com.avila.hiperion.emision.entities.ClausulasAddLcIn;
+import ec.com.avila.hiperion.dao.ClausulaAddIncendioDao;
+import ec.com.avila.hiperion.emision.entities.ClausulasAddIncendio;
 
 /**
  * 
@@ -18,6 +18,6 @@ import ec.com.avila.hiperion.emision.entities.ClausulasAddLcIn;
  * @since JDK1.6
  */
 @Stateless
-public class ClausulaAddLcIncendioDaoImpl extends GenericDAOImpl<ClausulasAddLcIn, Long> implements ClausulaAddLcIncendioDao {
+public class ClausulaAddLcIncendioDaoImpl extends GenericDAOImpl<ClausulasAddIncendio, Long> implements ClausulaAddIncendioDao {
 
 }
