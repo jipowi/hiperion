@@ -38,7 +38,6 @@ public class RamoAccidentesPersonalesServiceImpl implements RamoAccidentesPerson
 
 	@EJB
 	private RamoAccidentesPersonalesDao ramoAccidentesPersonalesDao;
-
 	@EJB
 	private PolizaDao polizaDao;
 	@EJB
