@@ -172,8 +172,8 @@
 									</p:dialog>
 									<!-- COBERTURAS ADICONALES-->
 									<h:panelGrid columns="2">
-										<p:outputLabel value="#{emision['lbl.seleccionarCoberturas']}" styleClass="negrita" />
-										<p:commandLink title="#{emision['lbl.seleccionarCoberturas']}" oncomplete="coberturasAdd.show();" update="idCoberturaAdd">
+										<p:outputLabel value="#{emision['lbl.seleccionarCoberturasAdd']}" styleClass="negrita" />
+										<p:commandLink title="#{emision['lbl.seleccionarCoberturasAdd']}" oncomplete="coberturasAdd.show();" update="idCoberturaAdd">
 											<h:graphicImage name="check.png" library="img" />
 										</p:commandLink>
 									</h:panelGrid>
@@ -422,6 +422,28 @@
 				</ui:decorate>
 			</ui:define>
 		</ui:decorate>
+	</ui:define>
+	<ui:define name="buttons">
+		<h:form>
+			<h:panelGrid columns="1">
+				<h:commandLink action="hiperion.xhtml">
+					<h:graphicImage name="home.png" library="img" />
+				</h:commandLink>
+				<p:commandLink title="Guardar Informacion poliza" process="@this" actionListener="#{incendioLineasAliadasBacking.guardarRamo()}">
+					<h:graphicImage name="save.png" library="img" />
+				</p:commandLink>
+				<p:commandLink onclick="help.show()">
+					<h:graphicImage name="helpII.png" library="img" />
+				</p:commandLink>
+			</h:panelGrid>
+			<p:dialog header="Ramo Agropecuario" widgetVar="help" showEffect="explode" hideEffect="bounce" height="100">
+				<h:panelGrid columns="1">
+					<h:outputText value="Seguro agricola" />
+					<h:outputText value="Para soporte en cualqueira de las funcionalidades" />
+					<h:outputText value="Por favor comuniquese con Franklin Pozo, Administradr del Sitema Hiperion" />
+				</h:panelGrid>
+			</p:dialog>
+		</h:form>
 	</ui:define>
 </ui:composition>
 </html>
