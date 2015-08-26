@@ -6,8 +6,8 @@ package ec.com.avila.hiperion.dao.impl;
 
 import javax.ejb.Stateless;
 
-import ec.com.avila.hiperion.dao.CoberturaAddLcRoturaMaquinariaDao;
-import ec.com.avila.hiperion.emision.entities.CobertAddLcRot;
+import ec.com.avila.hiperion.dao.CoberturaAddIncendioDao;
+import ec.com.avila.hiperion.emision.entities.CobertAddIncendio;
 
 /**
  * 
@@ -18,6 +18,6 @@ import ec.com.avila.hiperion.emision.entities.CobertAddLcRot;
  * @since JDK1.6
  */
 @Stateless
-public class CoberturaAddIncendioDaoImpl extends GenericDAOImpl<CobertAddLcRot, Long> implements CoberturaAddLcRoturaMaquinariaDao {
+public class CoberturaAddIncendioDaoImpl extends GenericDAOImpl<CobertAddIncendio, Long> implements CoberturaAddIncendioDao {
 
 }
