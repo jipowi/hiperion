@@ -6,10 +6,11 @@ package ec.com.avila.hiperion.dao;
 
 import javax.ejb.Local;
 
+import ec.com.avila.hiperion.emision.entities.CobertAddIncendio;
 import ec.com.avila.hiperion.emision.entities.CobertIncendio;
 
 /**
- * <b> Interface local de la tabla CobertIncendio que permite realizar las operaciones necesarias </b>
+ * <b> Interface local de la tabla CobertAddIncendio que permite realizar las operaciones necesarias </b>
  * 
  * @author Franklin Pozo B
  * @version 1.0,15/01/2014
