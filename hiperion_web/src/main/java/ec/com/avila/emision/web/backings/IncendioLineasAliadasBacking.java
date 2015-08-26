@@ -4,6 +4,7 @@
 package ec.com.avila.emision.web.backings;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -12,12 +13,16 @@ import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 
 import org.apache.log4j.Logger;
+import org.primefaces.event.RowEditEvent;
 
+import ec.com.avila.emision.web.beans.PolizaBean;
 import ec.com.avila.emision.web.beans.RamoIncendioLineasAliadaBean;
 import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.dto.ClausulaAdicionalDTO;
@@ -25,12 +30,16 @@ import ec.com.avila.hiperion.dto.CoberturaAdicionalDTO;
 import ec.com.avila.hiperion.dto.CoberturaDTO;
 import ec.com.avila.hiperion.dto.CondicionEspecialDTO;
 import ec.com.avila.hiperion.dto.ObjetoAseguradoIlaDTO;
+import ec.com.avila.hiperion.dto.TablaAmortizacionDTO;
 import ec.com.avila.hiperion.emision.entities.ClausulasAddIncendio;
 import ec.com.avila.hiperion.emision.entities.CobertAddIncendio;
 import ec.com.avila.hiperion.emision.entities.CobertIncendio;
 import ec.com.avila.hiperion.emision.entities.CondEspIncendio;
 import ec.com.avila.hiperion.emision.entities.DetalleAnexo;
+import ec.com.avila.hiperion.emision.entities.Financiamiento;
 import ec.com.avila.hiperion.emision.entities.ObjAsegIncendio;
+import ec.com.avila.hiperion.emision.entities.PagoPoliza;
+import ec.com.avila.hiperion.emision.entities.Poliza;
 import ec.com.avila.hiperion.emision.entities.Ramo;
 import ec.com.avila.hiperion.emision.entities.RamoIncendioLineasAliada;
 import ec.com.avila.hiperion.emision.entities.Usuario;
@@ -88,6 +97,9 @@ public class IncendioLineasAliadasBacking implements Serializable {
 	@EJB
 	private RamoIncendioLineasAliadaService ramoIncendioLineasAliadaService;
 
+	@ManagedProperty(value = "#{polizaBean}")
+	private PolizaBean polizaBean;
+
 	Logger log = Logger.getLogger(IncendioLineasAliadasBacking.class);
 
 	private List<CobertIncendio> coberturas;
@@ -100,11 +112,14 @@ public class IncendioLineasAliadasBacking implements Serializable {
 	private List<CondicionEspecialDTO> condicionesEspecialesDTO = new ArrayList<>();
 	private List<DetalleAnexo> anexos;
 
+	private Usuario usuario;
 	RamoIncendioLineasAliada ramoIncendioLineasAliada = new RamoIncendioLineasAliada();
 
 	@PostConstruct
 	public void inicializar() {
 		try {
+
+			usuario = usuarioBean.getSessionUser();
 
 			Ramo ramo = ramoService.consultarRamoPorCodigo("ILA");
 
@@ -212,7 +227,6 @@ public class IncendioLineasAliadasBacking implements Serializable {
 				clausulaDTO.setClausula(clausula.getClausulaAddIncendio());
 				clausulaDTO.setSeleccion(false);
 
-				
 				clausulasAdicionalesDTO.add(clausulaDTO);
 			}
 
@@ -251,6 +265,7 @@ public class IncendioLineasAliadasBacking implements Serializable {
 		}
 
 	}
+
 	/**
 	 * 
 	 * <b> Permite Ingresar Datos del ramo Incendio y Lineas Aliadas </b>
@@ -263,6 +278,30 @@ public class IncendioLineasAliadasBacking implements Serializable {
 	public void guardarRamo() throws HiperionException {
 		try {
 
+			Poliza poliza = setearDatosPoliza();
+
+			ramoIncendioLineasAliada.setValorItemsIncendio(ramoIncendioLineasAliadaBean.getValorItems());
+			ramoIncendioLineasAliada.setConsideracionesImpIncendio(ramoIncendioLineasAliadaBean.getConsideracionesImp());
+			ramoIncendioLineasAliada.setDeducTerremoto(ramoIncendioLineasAliadaBean.getMinimoTerremoto());
+			ramoIncendioLineasAliada.setDeducLluvia(ramoIncendioLineasAliadaBean.getMinimoLluvia());
+			ramoIncendioLineasAliada.setDeducOtros(ramoIncendioLineasAliadaBean.getMinimoOtrosEventos());
+			ramoIncendioLineasAliada.setDeducVidrios(ramoIncendioLineasAliadaBean.getPorcentajeVidrios());
+			ramoIncendioLineasAliada.setTasaComprensivaIncendio(ramoIncendioLineasAliadaBean.getTasaComprensiva());
+			ramoIncendioLineasAliada.setTasaRemocion(ramoIncendioLineasAliadaBean.getTasaRemocionEscombros());
+			ramoIncendioLineasAliada.setTasaDocumentos(ramoIncendioLineasAliadaBean.getTasaDocumentosModelos());
+			ramoIncendioLineasAliada.setTasaHonorarios(ramoIncendioLineasAliadaBean.getTasaHonorarios());
+			ramoIncendioLineasAliada.setTasaClaElectrica(ramoIncendioLineasAliadaBean.getTasaClausulaElectrica());
+			ramoIncendioLineasAliada.setTasaAutoexplosion(ramoIncendioLineasAliadaBean.getTasaAutoexplosion());
+			ramoIncendioLineasAliada.setTasaVidrios(ramoIncendioLineasAliadaBean.getTasaVidrios());
+			ramoIncendioLineasAliada.setDeducMinimoTerremoto(ramoIncendioLineasAliadaBean.getMinimoTerremoto());
+			ramoIncendioLineasAliada.setDeducMinimoLluvia(ramoIncendioLineasAliadaBean.getMinimoLluvia());
+			ramoIncendioLineasAliada.setDeducMinimoOtros(ramoIncendioLineasAliadaBean.getMinimoOtrosEventos());
+			ramoIncendioLineasAliada.setDeducMinimoVidrios(ramoIncendioLineasAliadaBean.getMinimoOtrosEventos());
+
+			ramoIncendioLineasAliada.setIdUsuarioCreacion(usuario.getIdUsuario());
+			ramoIncendioLineasAliada.setFechaCreacion(new Date());
+			ramoIncendioLineasAliada.setEstado(EstadoEnum.A);
+
 			if (!ramoIncendioLineasAliadaBean.getObjetolist().isEmpty()) {
 				List<ObjAsegIncendio> objetosList = new ArrayList<>();
 				for (ObjetoAseguradoIlaDTO objeto : ramoIncendioLineasAliadaBean.getObjetolist()) {
@@ -272,7 +311,6 @@ public class IncendioLineasAliadasBacking implements Serializable {
 					objAsegIncendio.setDetalleIncendio(objeto.getDetalle());
 					objAsegIncendio.setValorObjAsegIncendio(objeto.getValor());
 
-					Usuario usuario = usuarioBean.getSessionUser();
 					objAsegIncendio.setIdUsuarioCreacion(usuario.getIdUsuario());
 					objAsegIncendio.setFechaCreacion(new Date());
 					objAsegIncendio.setEstado(EstadoEnum.A);
@@ -284,55 +322,251 @@ public class IncendioLineasAliadasBacking implements Serializable {
 				MessagesController.addError(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.error.incendio.Obj"));
 			}
 
-			ramoIncendioLineasAliadaService.guardarRamoIncendioLineasAliada(ramoIncendioLineasAliada);
+			ramoIncendioLineasAliadaService.guardarRamoIncendioLineasAliada(ramoIncendioLineasAliada, poliza);
 
-			MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.incendioLineasAliadas"));
+			MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.save"));
 
 			ramoIncendioLineasAliada = new RamoIncendioLineasAliada();
 			ramoIncendioLineasAliadaBean.getObjetolist().clear();
 
 		} catch (HiperionException e) {
 			log.error("Error al momento de guardar el Ramo Incendio y Lineas Aliadas", e);
-			MessagesController.addError(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.error.incendioLineasAliadas"));
+			MessagesController.addError(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.error.save"));
+
 			throw new HiperionException(e);
 		}
 	}
 
 	/**
 	 * 
-	 * <b> Permite guardar en memoria los datos del ramo </b>
+	 * <b> permite setear las coberturas seleccionadas en el Bean. </b>
 	 * <p>
-	 * [Author: Paul Jimenez, Date: Oct 25, 2014]
+	 * [Author: Paul Jimenez, Date: 14/07/2015]
 	 * </p>
 	 * 
 	 */
-	public void setearInfRamo() {
+	public void setearCoberturas() {
+		int contCoberturas = 0;
+		List<CobertIncendio> coberturas = new ArrayList<>();
+		for (CoberturaDTO coberturaDTO : coberturasDTO) {
+			if (coberturaDTO.getSeleccion()) {
+				contCoberturas++;
+				CobertIncendio cobertura = new CobertIncendio();
+				cobertura.setCoberturaIncendio(coberturaDTO.getCobertura());
 
-		Usuario usuario = usuarioBean.getSessionUser();
+				coberturas.add(cobertura);
+			}
+		}
 
-		ramoIncendioLineasAliada.setValorItemsIncendio(ramoIncendioLineasAliadaBean.getValorItems());
-		ramoIncendioLineasAliada.setConsideracionesImpIncendio(ramoIncendioLineasAliadaBean.getConsideracionesImp());
-		ramoIncendioLineasAliada.setDeducTerremoto(ramoIncendioLineasAliadaBean.getMinimoTerremoto());
-		ramoIncendioLineasAliada.setDeducLluvia(ramoIncendioLineasAliadaBean.getMinimoLluvia());
-		ramoIncendioLineasAliada.setDeducOtros(ramoIncendioLineasAliadaBean.getMinimoOtrosEventos());
-		ramoIncendioLineasAliada.setDeducVidrios(ramoIncendioLineasAliadaBean.getPorcentajeVidrios());
-		ramoIncendioLineasAliada.setTasaComprensivaIncendio(ramoIncendioLineasAliadaBean.getTasaComprensiva());
-		ramoIncendioLineasAliada.setTasaRemocion(ramoIncendioLineasAliadaBean.getTasaRemocionEscombros());
-		ramoIncendioLineasAliada.setTasaDocumentos(ramoIncendioLineasAliadaBean.getTasaDocumentosModelos());
-		ramoIncendioLineasAliada.setTasaHonorarios(ramoIncendioLineasAliadaBean.getTasaHonorarios());
-		ramoIncendioLineasAliada.setTasaClaElectrica(ramoIncendioLineasAliadaBean.getTasaClausulaElectrica());
-		ramoIncendioLineasAliada.setTasaAutoexplosion(ramoIncendioLineasAliadaBean.getTasaAutoexplosion());
-		ramoIncendioLineasAliada.setTasaVidrios(ramoIncendioLineasAliadaBean.getTasaVidrios());
-		ramoIncendioLineasAliada.setDeducMinimoTerremoto(ramoIncendioLineasAliadaBean.getMinimoTerremoto());
-		ramoIncendioLineasAliada.setDeducMinimoLluvia(ramoIncendioLineasAliadaBean.getMinimoLluvia());
-		ramoIncendioLineasAliada.setDeducMinimoOtros(ramoIncendioLineasAliadaBean.getMinimoOtrosEventos());
-		ramoIncendioLineasAliada.setDeducMinimoVidrios(ramoIncendioLineasAliadaBean.getMinimoOtrosEventos());
+		if (contCoberturas == 0) {
+			MessagesController.addWarn(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.warn.coberturas"));
+		} else {
+			ramoIncendioLineasAliada.setCobertIncendios(coberturas);
+			MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.coberturas"));
+		}
+	}
 
-		ramoIncendioLineasAliada.setIdUsuarioCreacion(usuario.getIdUsuario());
-		ramoIncendioLineasAliada.setFechaCreacion(new Date());
-		ramoIncendioLineasAliada.setEstado(EstadoEnum.A);
-		MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.setearDatos"));
+	/**
+	 * 
+	 * <b> permite setear las coberturas adicionales seleccionadas en el Bean. </b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: 14/07/2015]
+	 * </p>
+	 * 
+	 */
+	public void setearCoberturasAdd() {
 
+		int contCoberturas = 0;
+
+		List<CobertAddIncendio> coberturas = new ArrayList<>();
+		for (CoberturaAdicionalDTO coberturaDTO : coberturasAddDTO) {
+			if (coberturaDTO.getSeleccion()) {
+				contCoberturas++;
+				CobertAddIncendio cobertura = new CobertAddIncendio();
+				cobertura.setCoberturaAddIncendio(coberturaDTO.getCobertura());
+
+				coberturas.add(cobertura);
+			}
+		}
+
+		if (contCoberturas == 0) {
+			MessagesController.addWarn(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.warn.coberturasAdd"));
+		} else {
+			ramoIncendioLineasAliada.setCobertAddIncendios(coberturas);
+			MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.coberturasAdd"));
+		}
+	}
+
+	/**
+	 * 
+	 * <b> permite setear las condiciones especiales seleccionadas en el Bean. </b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: 14/07/2015]
+	 * </p>
+	 * 
+	 */
+	public void setearCondiciones() {
+		int contCondicion = 0;
+		List<CondEspIncendio> condiciones = new ArrayList<>();
+		for (CondicionEspecialDTO condicionDTO : condicionesEspecialesDTO) {
+			if (condicionDTO.getSeleccion()) {
+				contCondicion++;
+				CondEspIncendio condicion = new CondEspIncendio();
+				condicion.setCondicionEspIncendio(condicionDTO.getCondicionEspecial());
+
+				condiciones.add(condicion);
+			}
+		}
+		if (contCondicion == 0) {
+			MessagesController.addWarn(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.warn.condicionesEsp"));
+		} else {
+			ramoIncendioLineasAliada.setCondEspIncendios(condiciones);
+			MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.condicionesEsp"));
+		}
+	}
+
+	/**
+	 * 
+	 * <b> permite setear las clausualas adicionales seleccionadas. </b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: 14/07/2015]
+	 * </p>
+	 * 
+	 */
+	public void setearClausulasAdd() {
+
+		int contClausulas = 0;
+		List<ClausulasAddIncendio> clausulas = new ArrayList<>();
+		for (ClausulaAdicionalDTO clausualaDTO : clausulasAdicionalesDTO) {
+			if (clausualaDTO.getSeleccion()) {
+				contClausulas++;
+				ClausulasAddIncendio clausula = new ClausulasAddIncendio();
+				clausula.setClausulaAddIncendio(clausualaDTO.getClausula());
+				clausula.setEstado(EstadoEnum.A);
+				clausula.setFechaCreacion(new Date());
+				clausula.setIdUsuarioCreacion(usuario.getIdUsuario());
+
+				clausulas.add(clausula);
+			}
+		}
+		if (contClausulas == 0) {
+			MessagesController.addWarn(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.warn.clausulasAdd"));
+		} else {
+			ramoIncendioLineasAliada.setClausulasAddIncendios(clausulas);
+			MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.clausulasAdd"));
+		}
+
+	}
+
+	/**
+	 * 
+	 * <b> Permite setear los datos de la poliza. </b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: 09/07/2015]
+	 * </p>
+	 * 
+	 * @return
+	 */
+	public Poliza setearDatosPoliza() {
+
+		Poliza poliza = new Poliza();
+
+		poliza.setNumeroPoliza(polizaBean.getNumeroPoliza());
+		poliza.setNumeroAnexo(polizaBean.getNumeroAnexo());
+		poliza.setEjecutivo(polizaBean.getEjecutivo().getNombreUsuario());
+		poliza.setVigenciaDesde(polizaBean.getVigenciaDesde());
+		poliza.setVigenciaHasta(polizaBean.getVigenciaHasta());
+		poliza.setDiasCobertura(polizaBean.getDiasCobertura());
+		poliza.setSumaAsegurada(polizaBean.getSumaAsegurada());
+		poliza.setPrimaNeta(BigDecimal.valueOf(polizaBean.getPrimaNeta()));
+		poliza.setSuperBanSeguros(polizaBean.getSuperBanSeguros());
+		poliza.setSeguroCampesino(BigDecimal.valueOf(polizaBean.getSeguroCampesino()));
+		poliza.setDerechoEmision(BigDecimal.valueOf(polizaBean.getDerechoEmision()));
+		poliza.setRamo(1);
+		poliza.setEstadoPoliza("COTIZADO");
+
+		PagoPoliza pagoPoliza = new PagoPoliza();
+		pagoPoliza.setNumeroFactura(polizaBean.getNumeroFactura());
+		pagoPoliza.setSubtotal(polizaBean.getSubtotal());
+		pagoPoliza.setAdicionalSegCampesino(polizaBean.getAdicionalSegCampesino());
+		pagoPoliza.setIva(polizaBean.getIva());
+		pagoPoliza.setCuotaInicial(polizaBean.getCuotaInicial());
+		pagoPoliza.setValorTotalPagoPoliza(polizaBean.getTotal());
+		pagoPoliza.setEstado(EstadoEnum.A);
+		pagoPoliza.setFechaCreacion(new Date());
+		pagoPoliza.setIdUsuarioCreacion(usuario.getIdUsuario());
+
+		List<Financiamiento> financiamientos = new ArrayList<>();
+		for (TablaAmortizacionDTO financiamiento : polizaBean.getFinanciamientos()) {
+			Financiamiento financiamientoTemp = new Financiamiento();
+			financiamientoTemp.setNumeroCuota(financiamiento.getNumeroLetra());
+			financiamientoTemp.setValorLetra(BigDecimal.valueOf(financiamiento.getValor()));
+			financiamientoTemp.setFechaVencimiento(financiamiento.getFechaVencimiento());
+
+			financiamientos.add(financiamientoTemp);
+		}
+
+		pagoPoliza.setFinanciamientos(financiamientos);
+
+		poliza.setPagoPoliza(pagoPoliza);
+
+		return poliza;
+	}
+
+	/**
+	 * 
+	 * <b> Permite editar un registro de la tabla</b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: Aug 3, 2014]
+	 * </p>
+	 * 
+	 * @param event
+	 */
+	public void onEditCoberturaAdd(RowEditEvent event) {
+		FacesMessage msg = new FacesMessage("Item Edited", ((CoberturaAdicionalDTO) event.getObject()).getCobertura());
+		FacesContext.getCurrentInstance().addMessage(null, msg);
+	}
+
+	/**
+	 * 
+	 * <b> Permite editar un registro de la tabla</b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: Aug 3, 2014]
+	 * </p>
+	 * 
+	 * @param event
+	 */
+	public void onEditClausulasAdd(RowEditEvent event) {
+		FacesMessage msg = new FacesMessage("Item Edited", ((ClausulaAdicionalDTO) event.getObject()).getClausula());
+		FacesContext.getCurrentInstance().addMessage(null, msg);
+	}
+
+	/**
+	 * 
+	 * <b> Permite editar un registro de la tabla</b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: Aug 3, 2014]
+	 * </p>
+	 * 
+	 * @param event
+	 */
+	public void onEditCobertura(RowEditEvent event) {
+		FacesMessage msg = new FacesMessage("Item Edited", ((CoberturaDTO) event.getObject()).getCobertura());
+		FacesContext.getCurrentInstance().addMessage(null, msg);
+	}
+
+	/**
+	 * 
+	 * <b> Permite editar un registro de la tabla</b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: Aug 3, 2014]
+	 * </p>
+	 * 
+	 * @param event
+	 */
+	public void onEditCondicionesEsp(RowEditEvent event) {
+		FacesMessage msg = new FacesMessage("Item Edited", ((CondicionEspecialDTO) event.getObject()).getCondicionEspecial());
+		FacesContext.getCurrentInstance().addMessage(null, msg);
 	}
 
 	/**
