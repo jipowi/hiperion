@@ -6,16 +6,16 @@ package ec.com.avila.hiperion.dao;
 
 import javax.ejb.Local;
 
-import ec.com.avila.hiperion.emision.entities.CobertIncendio;
+import ec.com.avila.hiperion.emision.entities.CobertTran;
 
 /**
- * <b> Interface local de la tabla CobertAddIncendio que permite realizar las operaciones necesarias </b>
+ * <b> Interface local de la tabla CoberturaTransporte que permite realizar las operaciones necesarias </b>
  * 
  * @author Franklin Pozo B
  * @version 1.0,15/01/2014
  * @since JDK1.6
  */
 @Local
-public interface CoberturaIncendioDao extends GenericDAO<CobertIncendio, Long> {
+public interface CoberturaTransporteDao extends GenericDAO<CobertTran, Long> {
 
 }
