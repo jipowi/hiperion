@@ -43,10 +43,13 @@ public class ContactoBacking implements Serializable {
 	private DetalleCatalogoService detalleCatalogoService;
 
 	private List<SelectItem> tipoContactosItems;
+	private boolean activarCelular;
+	private boolean activarMail;
+	private boolean activarTelefono;
+	private boolean activarSkype;
 
 	@PostConstruct
 	public void inicializar() {
-		contactoBean.setActivarContacto(true);
 		contactoBean.setContactosDTO(new ArrayList<ContactoDTO>());
 		obtenerContactos();
 	}
@@ -68,24 +71,56 @@ public class ContactoBacking implements Serializable {
 		return tipoContactosItems;
 	}
 
+	/**
+	 * 
+	 * <b> Permite saber el contacto seleccionado. </b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: 29/08/2015]
+	 * </p>
+	 * 
+	 */
 	public void validarContacto() {
-		if (!contactoBean.getTipoContacto().equals("")) {
-			contactoBean.setActivarContacto(false);
-			if (contactoBean.getTipoContacto().equals("CELULAR"))
-				contactoBean.setLongitudDescripcionContacto(10);
-			else if (contactoBean.getTipoContacto().equals("EMAIL"))
-				contactoBean.setLongitudDescripcionContacto(50);
-		} else {
-			contactoBean.setActivarContacto(true);
+
+		if (contactoBean.getTipoContacto().equals("CELULAR")) {
+			activarCelular = true;
+		}
+		if (contactoBean.getTipoContacto().equals("EMAIL")) {
+			activarMail = true;
+		}
+		if (contactoBean.getTipoContacto().equals("TELEFONO")) {
+			activarTelefono = true;
+		}
+		if (contactoBean.getTipoContacto().equals("SKYPE")) {
+			activarSkype = true;
 		}
 	}
 
+	/**
+	 * 
+	 * <b> Permite refrescar los campos del contacto. </b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: 29/08/2015]
+	 * </p>
+	 * 
+	 */
 	public void refreshContacto() {
-		contactoBean.setActivarContacto(true);
+		activarCelular = false;
+		activarMail = false;
+		activarSkype = false;
+		activarTelefono = false;
+
 		contactoBean.setDescripcionContacto("");
 		contactoBean.setTipoContacto("");
 	}
 
+	/**
+	 * 
+	 * <b> Permite guardar el contacto del cliente. </b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: 29/08/2015]
+	 * </p>
+	 * 
+	 */
 	public void guardarContacto() {
 		ContactoDTO contactoDTO = new ContactoDTO();
 		contactoDTO.setTipoContacto(contactoBean.getTipoContacto());
@@ -140,4 +175,65 @@ public class ContactoBacking implements Serializable {
 	public void setTipoContactosItems(List<SelectItem> tipoContactosItems) {
 		this.tipoContactosItems = tipoContactosItems;
 	}
+
+	/**
+	 * @return the activarCelular
+	 */
+	public boolean isActivarCelular() {
+		return activarCelular;
+	}
+
+	/**
+	 * @param activarCelular
+	 *            the activarCelular to set
+	 */
+	public void setActivarCelular(boolean activarCelular) {
+		this.activarCelular = activarCelular;
+	}
+
+	/**
+	 * @return the activarMail
+	 */
+	public boolean isActivarMail() {
+		return activarMail;
+	}
+
+	/**
+	 * @param activarMail
+	 *            the activarMail to set
+	 */
+	public void setActivarMail(boolean activarMail) {
+		this.activarMail = activarMail;
+	}
+
+	/**
+	 * @return the activarTelefono
+	 */
+	public boolean isActivarTelefono() {
+		return activarTelefono;
+	}
+
+	/**
+	 * @param activarTelefono
+	 *            the activarTelefono to set
+	 */
+	public void setActivarTelefono(boolean activarTelefono) {
+		this.activarTelefono = activarTelefono;
+	}
+
+	/**
+	 * @return the activarSkype
+	 */
+	public boolean isActivarSkype() {
+		return activarSkype;
+	}
+
+	/**
+	 * @param activarSkype
+	 *            the activarSkype to set
+	 */
+	public void setActivarSkype(boolean activarSkype) {
+		this.activarSkype = activarSkype;
+	}
+
 }

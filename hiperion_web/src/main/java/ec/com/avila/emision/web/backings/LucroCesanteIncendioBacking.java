@@ -4,26 +4,42 @@
 package ec.com.avila.emision.web.backings;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
 import org.apache.log4j.Logger;
+import org.primefaces.event.RowEditEvent;
 
+import ec.com.avila.emision.web.beans.PolizaBean;
 import ec.com.avila.emision.web.beans.RamoLucroCesanteIncendioBean;
 import ec.com.avila.hiperion.comun.HiperionException;
+import ec.com.avila.hiperion.dto.ClausulaAdicionalDTO;
+import ec.com.avila.hiperion.dto.CoberturaDTO;
 import ec.com.avila.hiperion.dto.ObjetoAseguradoCesanteIlaDTO;
+import ec.com.avila.hiperion.dto.TablaAmortizacionDTO;
 import ec.com.avila.hiperion.emision.entities.Catalogo;
+import ec.com.avila.hiperion.emision.entities.ClausulasAddLcIn;
+import ec.com.avila.hiperion.emision.entities.CobertLcIn;
+import ec.com.avila.hiperion.emision.entities.DetalleAnexo;
 import ec.com.avila.hiperion.emision.entities.DetalleCatalogo;
+import ec.com.avila.hiperion.emision.entities.Financiamiento;
 import ec.com.avila.hiperion.emision.entities.ObjAsegLcIn;
+import ec.com.avila.hiperion.emision.entities.PagoPoliza;
+import ec.com.avila.hiperion.emision.entities.Poliza;
+import ec.com.avila.hiperion.emision.entities.Ramo;
 import ec.com.avila.hiperion.emision.entities.RamoLcIncendio;
 import ec.com.avila.hiperion.emision.entities.Usuario;
 import ec.com.avila.hiperion.enumeration.EstadoEnum;
@@ -76,33 +92,68 @@ public class LucroCesanteIncendioBacking implements Serializable {
 	@ManagedProperty(value = "#{usuarioBean}")
 	private UsuarioBean usuarioBean;
 
+	@ManagedProperty(value = "#{polizaBean}")
+	private PolizaBean polizaBean;
+
+	private Usuario usuario;
 	Logger log = Logger.getLogger(LucroCesanteIncendioBacking.class);
+	private List<DetalleAnexo> anexos;
+	private List<CobertLcIn> coberturas;
+	private List<CoberturaDTO> coberturasDTO = new ArrayList<>();
+	private List<ClausulasAddLcIn> clausulasAdicionales;
+	private List<ClausulaAdicionalDTO> clausulasAdicionalesDTO = new ArrayList<>();
 
 	RamoLcIncendio ramoLucroCesanteIncendio = new RamoLcIncendio();
 
+	@PostConstruct
+	public void inicializar() {
+		try {
+
+			usuario = usuarioBean.getSessionUser();
+
+			Ramo ramo = ramoService.consultarRamoPorCodigo("LCILA");
+
+			anexos = ramo.getDetalleAnexos();
+
+			obtenerCoberturas();
+
+		} catch (HiperionException e) {
+			e.printStackTrace();
+		}
+	}
+
 	/**
 	 * 
-	 * <b> Permite guardar datos en el Ramo Lucro Cesante Incendio </b>
+	 * <b> Permite obtener las coberturas del ramo. </b>
 	 * <p>
-	 * [Author: Franklin Pozo, Date: 04/09/2014]
+	 * [Author: Paul Jimenez, Date: 17/06/2015]
 	 * </p>
 	 * 
+	 * @param anexos
 	 */
-	public void setearInfRamo() throws HiperionException {
+	public void obtenerCoberturas() {
 
-		Usuario usuario = usuarioBean.getSessionUser();
+		coberturas = new ArrayList<CobertLcIn>();
+		if (anexos != null && anexos.size() > 0) {
+			for (DetalleAnexo anexo : anexos) {
+				if (anexo.getAnexo().getIdAnexo() == 2) {
+					CobertLcIn cobertura = new CobertLcIn();
+					cobertura.setCoberturaLcIncendio(anexo.getNombreDetalleAnexo());
 
-		ramoLucroCesanteIncendio.setValorItemsLc(ramoLucroCesanteIncendioBean.getValorItems());
-		ramoLucroCesanteIncendio.setPeriodoIndemnizacion(ramoLucroCesanteIncendioBean.getPeriodoIndemnizacion());
-		ramoLucroCesanteIncendio.setTasaComprensivaLc(ramoLucroCesanteIncendioBean.getTasaComprensiva());
-		ramoLucroCesanteIncendio.setDeducCatastroficoLc(ramoLucroCesanteIncendioBean.getDeducibleCatastrofico());
-		ramoLucroCesanteIncendio.setDeducOtrosLc(ramoLucroCesanteIncendioBean.getDeducibleOtros());
+					coberturas.add(cobertura);
+				}
 
-		ramoLucroCesanteIncendio.setIdUsuarioCreacion(usuario.getIdUsuario());
-		ramoLucroCesanteIncendio.setFechaCreacion(new Date());
-		ramoLucroCesanteIncendio.setEstado(EstadoEnum.A);
+			}
 
-		MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.setearInformacion"));
+			for (CobertLcIn cobertura : coberturas) {
+				CoberturaDTO coberturaDTO = new CoberturaDTO();
+				coberturaDTO.setCobertura(cobertura.getCoberturaLcIncendio());
+				coberturaDTO.setSeleccion(false);
+
+				coberturasDTO.add(coberturaDTO);
+			}
+		}
+
 	}
 
 	/**
@@ -115,7 +166,21 @@ public class LucroCesanteIncendioBacking implements Serializable {
 	 * @throws HiperionException
 	 */
 	public void guardarRamo() throws HiperionException {
+		
 		try {
+
+			Poliza poliza = setearDatosPoliza();
+
+			ramoLucroCesanteIncendio.setValorItemsLc(ramoLucroCesanteIncendioBean.getValorItems());
+			ramoLucroCesanteIncendio.setPeriodoIndemnizacion(ramoLucroCesanteIncendioBean.getPeriodoIndemnizacion());
+			ramoLucroCesanteIncendio.setTasaComprensivaLc(ramoLucroCesanteIncendioBean.getTasaComprensiva());
+			ramoLucroCesanteIncendio.setDeducCatastroficoLc(ramoLucroCesanteIncendioBean.getDeducibleCatastrofico());
+			ramoLucroCesanteIncendio.setDeducOtrosLc(ramoLucroCesanteIncendioBean.getDeducibleOtros());
+
+			ramoLucroCesanteIncendio.setIdUsuarioCreacion(usuario.getIdUsuario());
+			ramoLucroCesanteIncendio.setFechaCreacion(new Date());
+			ramoLucroCesanteIncendio.setEstado(EstadoEnum.A);
+
 			if (!ramoLucroCesanteIncendioBean.getOrderlist().isEmpty()) {
 				List<ObjAsegLcIn> listObjetos = new ArrayList<>();
 				for (ObjetoAseguradoCesanteIlaDTO objeto : ramoLucroCesanteIncendioBean.getOrderlist()) {
@@ -137,11 +202,14 @@ public class LucroCesanteIncendioBacking implements Serializable {
 			} else {
 				MessagesController.addError(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.error.save.Obj"));
 			}
-			ramoLucroCesanteIncendioService.guardarRamoLucroCesanteIncendio(ramoLucroCesanteIncendio);
+			ramoLucroCesanteIncendioService.guardarRamoLucroCesanteIncendio(ramoLucroCesanteIncendio, poliza);
 			MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.save"));
+
 			ramoLucroCesanteIncendio = new RamoLcIncendio();
 			ramoLucroCesanteIncendioBean.getOrderlist().clear();
+
 		} catch (HiperionException e) {
+
 			log.error("Error al momento de guardar el ramo lucro cesante incendio", e);
 			MessagesController.addError(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.error.save"));
 			throw new HiperionException(e);
@@ -149,6 +217,184 @@ public class LucroCesanteIncendioBacking implements Serializable {
 
 	}
 
+	/**
+	 * 
+	 * <b> Permite setear los datos de la poliza. </b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: 09/07/2015]
+	 * </p>
+	 * 
+	 * @return
+	 */
+	public Poliza setearDatosPoliza() {
+
+		Poliza poliza = new Poliza();
+
+		poliza.setNumeroPoliza(polizaBean.getNumeroPoliza());
+		poliza.setNumeroAnexo(polizaBean.getNumeroAnexo());
+		poliza.setEjecutivo(polizaBean.getEjecutivo().getNombreUsuario());
+		poliza.setVigenciaDesde(polizaBean.getVigenciaDesde());
+		poliza.setVigenciaHasta(polizaBean.getVigenciaHasta());
+		poliza.setDiasCobertura(polizaBean.getDiasCobertura());
+		poliza.setSumaAsegurada(polizaBean.getSumaAsegurada());
+		poliza.setPrimaNeta(BigDecimal.valueOf(polizaBean.getPrimaNeta()));
+		poliza.setSuperBanSeguros(polizaBean.getSuperBanSeguros());
+		poliza.setSeguroCampesino(BigDecimal.valueOf(polizaBean.getSeguroCampesino()));
+		poliza.setDerechoEmision(BigDecimal.valueOf(polizaBean.getDerechoEmision()));
+		poliza.setRamo(1);
+		poliza.setEstadoPoliza("COTIZADO");
+
+		PagoPoliza pagoPoliza = new PagoPoliza();
+		pagoPoliza.setNumeroFactura(polizaBean.getNumeroFactura());
+		pagoPoliza.setSubtotal(polizaBean.getSubtotal());
+		pagoPoliza.setAdicionalSegCampesino(polizaBean.getAdicionalSegCampesino());
+		pagoPoliza.setIva(polizaBean.getIva());
+		pagoPoliza.setCuotaInicial(polizaBean.getCuotaInicial());
+		pagoPoliza.setValorTotalPagoPoliza(polizaBean.getTotal());
+		pagoPoliza.setEstado(EstadoEnum.A);
+		pagoPoliza.setFechaCreacion(new Date());
+		pagoPoliza.setIdUsuarioCreacion(usuario.getIdUsuario());
+
+		List<Financiamiento> financiamientos = new ArrayList<>();
+		for (TablaAmortizacionDTO financiamiento : polizaBean.getFinanciamientos()) {
+			Financiamiento financiamientoTemp = new Financiamiento();
+			financiamientoTemp.setNumeroCuota(financiamiento.getNumeroLetra());
+			financiamientoTemp.setValorLetra(BigDecimal.valueOf(financiamiento.getValor()));
+			financiamientoTemp.setFechaVencimiento(financiamiento.getFechaVencimiento());
+
+			financiamientos.add(financiamientoTemp);
+		}
+
+		pagoPoliza.setFinanciamientos(financiamientos);
+
+		poliza.setPagoPoliza(pagoPoliza);
+
+		return poliza;
+	}
+
+	/**
+	 * 
+	 * <b> Permite obtener las clausulas adicionales del ramo. </b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: 17/06/2015]
+	 * </p>
+	 * 
+	 */
+	public void obtenerClausulasAdicionales() {
+		clausulasAdicionales = new ArrayList<ClausulasAddLcIn>();
+		if (anexos != null && anexos.size() > 0) {
+			for (DetalleAnexo anexo : anexos) {
+				if (anexo.getAnexo().getIdAnexo() == 1) {
+					ClausulasAddLcIn clausula = new ClausulasAddLcIn();
+					clausula.setClausulaAddLcIncendio(anexo.getNombreDetalleAnexo());
+
+					clausulasAdicionales.add(clausula);
+				}
+
+			}
+			for (ClausulasAddLcIn clausula : clausulasAdicionales) {
+				ClausulaAdicionalDTO clausulaDTO = new ClausulaAdicionalDTO();
+				clausulaDTO.setClausula(clausula.getClausulaAddLcIncendio());
+				clausulaDTO.setSeleccion(false);
+
+				clausulasAdicionalesDTO.add(clausulaDTO);
+			}
+
+		}
+
+	}
+
+	/**
+	 * 
+	 * <b> Permite editar un registro de la tabla</b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: Aug 3, 2014]
+	 * </p>
+	 * 
+	 * @param event
+	 */
+	public void onEditClausulasAdd(RowEditEvent event) {
+		FacesMessage msg = new FacesMessage("Item Edited", ((ClausulaAdicionalDTO) event.getObject()).getClausula());
+		FacesContext.getCurrentInstance().addMessage(null, msg);
+	}
+
+	/**
+	 * 
+	 * <b> Permite editar un registro de la tabla</b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: Aug 3, 2014]
+	 * </p>
+	 * 
+	 * @param event
+	 */
+	public void onEditCobertura(RowEditEvent event) {
+		FacesMessage msg = new FacesMessage("Item Edited", ((CoberturaDTO) event.getObject()).getCobertura());
+		FacesContext.getCurrentInstance().addMessage(null, msg);
+	}
+
+	/**
+	 * 
+	 * <b> permite setear las coberturas seleccionadas en el Bean. </b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: 14/07/2015]
+	 * </p>
+	 * 
+	 */
+	public void setearCoberturas() {
+		int contCoberturas = 0;
+		List<CobertLcIn> coberturas = new ArrayList<>();
+		for (CoberturaDTO coberturaDTO : coberturasDTO) {
+			if (coberturaDTO.getSeleccion()) {
+				contCoberturas++;
+				CobertLcIn cobertura = new CobertLcIn();
+				cobertura.setCoberturaLcIncendio(coberturaDTO.getCobertura());
+
+				coberturas.add(cobertura);
+			}
+		}
+
+		if (contCoberturas == 0) {
+			MessagesController.addWarn(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.warn.coberturas"));
+		} else {
+			ramoLucroCesanteIncendio.setCobertLcIns(coberturas);
+			MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.coberturas"));
+		}
+	}
+
+	/**
+	 * 
+	 * <b> permite setear las clausualas adicionales seleccionadas. </b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: 14/07/2015]
+	 * </p>
+	 * 
+	 */
+	public void setearClausulasAdd() {
+
+		int contClausulas = 0;
+		List<ClausulasAddLcIn> clausulas = new ArrayList<>();
+		for (ClausulaAdicionalDTO clausualaDTO : clausulasAdicionalesDTO) {
+			if (clausualaDTO.getSeleccion()) {
+				contClausulas++;
+				ClausulasAddLcIn clausula = new ClausulasAddLcIn();
+				clausula.setClausulaAddLcIncendio(clausualaDTO.getClausula());
+				clausula.setEstado(EstadoEnum.A);
+				clausula.setFechaCreacion(new Date());
+				clausula.setIdUsuarioCreacion(usuario.getIdUsuario());
+
+				clausulas.add(clausula);
+			}
+		}
+		if (contClausulas == 0) {
+			MessagesController.addWarn(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.warn.clausulasAdd"));
+		} else {
+			ramoLucroCesanteIncendio.setClausulasAddLcIns(clausulas);
+			MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.clausulasAdd"));
+		}
+
+	}
+
+	
 	/**
 	 * @return the ramoLucroCesanteIncendioBean
 	 */
@@ -218,8 +464,8 @@ public class LucroCesanteIncendioBacking implements Serializable {
 	public void setUsuarioBean(UsuarioBean usuarioBean) {
 		this.usuarioBean = usuarioBean;
 	}
-	
-	public void descargarLucCesIncendioLineasAliadasPDF()throws HiperionException{
+
+	public void descargarLucCesIncendioLineasAliadasPDF() throws HiperionException {
 		try {
 			Map<String, Object> parametrosReporte = new HashMap<String, Object>();
 
@@ -235,6 +481,51 @@ public class LucroCesanteIncendioBacking implements Serializable {
 			log.error("Error al momento generar el documento Cumplimiento Contrato en PDF", e);
 			throw new HiperionException(e);
 		}
+	}
+
+	/**
+	 * @return the polizaBean
+	 */
+	public PolizaBean getPolizaBean() {
+		return polizaBean;
+	}
+
+	/**
+	 * @param polizaBean
+	 *            the polizaBean to set
+	 */
+	public void setPolizaBean(PolizaBean polizaBean) {
+		this.polizaBean = polizaBean;
+	}
+
+	/**
+	 * @return the coberturasDTO
+	 */
+	public List<CoberturaDTO> getCoberturasDTO() {
+		return coberturasDTO;
+	}
+
+	/**
+	 * @param coberturasDTO
+	 *            the coberturasDTO to set
+	 */
+	public void setCoberturasDTO(List<CoberturaDTO> coberturasDTO) {
+		this.coberturasDTO = coberturasDTO;
+	}
+
+	/**
+	 * @return the clausulasAdicionalesDTO
+	 */
+	public List<ClausulaAdicionalDTO> getClausulasAdicionalesDTO() {
+		return clausulasAdicionalesDTO;
+	}
+
+	/**
+	 * @param clausulasAdicionalesDTO
+	 *            the clausulasAdicionalesDTO to set
+	 */
+	public void setClausulasAdicionalesDTO(List<ClausulaAdicionalDTO> clausulasAdicionalesDTO) {
+		this.clausulasAdicionalesDTO = clausulasAdicionalesDTO;
 	}
 
 }

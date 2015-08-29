@@ -18,221 +18,168 @@
 						</div>
 					</ui:define>
 					<ui:define name="ramoContent">
-						<p:panel>
-							<p:tabView id="tabGeneral">
-								<p:tab id="tabRamo" title="#{emision['cesanteRoturaMaq.tab.principal']}">
-									<p:outputPanel>
-										<p:messages id="messageLucroCesanteMaquinaria" showDetail="true" autoUpdate="true" closable="true" />
-									</p:outputPanel>
-									<h:form id="formPrincipal">
-										<div align="center">
+						<p:tabView id="tabGeneral">
+							<p:tab id="tabRamo" title="#{emision['cesanteRoturaMaq.tab.principal']}">
+								<p:outputPanel>
+									<p:messages id="messageLucroCesanteMaquinaria" showDetail="true" autoUpdate="true" closable="true" />
+								</p:outputPanel>
+								<h:form id="formPrincipal">
+									<div align="center">
 
-											<h:panelGrid columns="1" id="ramoLucroCesanteRoturMaquinaria">
-												<p:panel>
-													<h:panelGrid columns="2">
-														<p:outputLabel for="idUtilidadBruta" value="#{emision['cesanteRoturaMaq.utilidadBruta']}" styleClass="negrita" />
-														<p:inputText id="idUtilidadBruta" value="#{ramoCesanteRoturaMaqBean.utilidadBruta}" required="true"
-															requiredMessage="#{emision['cesanteRoturaMaq.utilidadBruta.msn']}" />
+										<h:panelGrid columns="1" id="ramoLucroCesanteRoturMaquinaria">
+											<p:panel>
+												<h:panelGrid columns="2">
+													<p:outputLabel for="idUtilidadBruta" value="#{emision['cesanteRoturaMaq.utilidadBruta']}" styleClass="negrita" />
+													<p:inputText id="idUtilidadBruta" value="#{ramoCesanteRoturaMaqBean.utilidadBruta}" required="true"
+														requiredMessage="#{emision['cesanteRoturaMaq.utilidadBruta.msn']}" />
 
-														<p:outputLabel for="idTasa" value="#{emision['cesanteRoturaMaq.tasa']}" styleClass="negrita" />
-														<p:inputText id="idTasa" value="#{ramoCesanteRoturaMaqBean.tasa}" required="true"
-															requiredMessage="#{emision['cesanteRoturaMaq.tasa.msn']}" />
+													<p:outputLabel for="idTasa" value="#{emision['cesanteRoturaMaq.tasa']}" styleClass="negrita" />
+													<p:inputText id="idTasa" value="#{ramoCesanteRoturaMaqBean.tasa}" required="true"
+														requiredMessage="#{emision['cesanteRoturaMaq.tasa.msn']}" />
 
-														<p:outputLabel value="#{emision['cesanteRoturaMaq.periodoIndem']}" styleClass="negrita" />
-														<p:inputText value="#{ramoCesanteRoturaMaqBean.periodoIndemnizacion}" />
-													</h:panelGrid>
-													<h:panelGrid columns="1" cellpadding="3">
-														<p:outputLabel value="#{emision['cesanteRoturaMaq.filePolizaVigente']}" styleClass="negrita" />
-														<p:fileUpload fileLimit="1" />
-													</h:panelGrid>
+													<p:outputLabel value="#{emision['cesanteRoturaMaq.periodoIndem']}" styleClass="negrita" />
+													<p:inputText value="#{ramoCesanteRoturaMaqBean.periodoIndemnizacion}" />
+												</h:panelGrid>
+												<h:panelGrid columns="1" cellpadding="3">
+													<p:outputLabel value="#{emision['cesanteRoturaMaq.filePolizaVigente']}" styleClass="negrita" />
+													<p:fileUpload fileLimit="1" />
+												</h:panelGrid>
 
-													<p:spacer height="15px;" />
+												<p:spacer height="15px;" />
 
-													<h:panelGrid columns="2">
-														<h:outputLabel value="#{emision['emision.deducibles']}" />
-														<h:graphicImage name="deducibles.jpg" library="img" />
-													</h:panelGrid>
+												<h:panelGrid columns="2">
+													<h:outputLabel value="#{emision['emision.deducibles']}" />
+													<h:graphicImage name="deducibles.jpg" library="img" />
+												</h:panelGrid>
 
-													<p:spacer height="15px;" />
+												<p:spacer height="15px;" />
 
-													<h:panelGrid columns="2">
-														<p:outputLabel value="#{emision['cesanteRoturaMaq.deducible.numeroDias']}" styleClass="negrita" />
-														<p:inputText value="#{ramoCesanteRoturaMaqBean.minimo}" />
+												<h:panelGrid columns="2">
+													<p:outputLabel value="#{emision['cesanteRoturaMaq.deducible.numeroDias']}" styleClass="negrita" />
+													<p:inputText value="#{ramoCesanteRoturaMaqBean.minimo}" />
 
-														<p:outputLabel value="#{emision['cesanteRoturaMaq.deducible.porcentajeValorSiniestro']}" styleClass="negrita" />
-														<p:inputText value="#{ramoCesanteRoturaMaqBean.minPorcentajeValorAsegurado}" />
+													<p:outputLabel value="#{emision['cesanteRoturaMaq.deducible.porcentajeValorSiniestro']}" styleClass="negrita" />
+													<p:inputText value="#{ramoCesanteRoturaMaqBean.minPorcentajeValorAsegurado}" />
 
-														<p:outputLabel value="#{emision['cesanteRoturaMaq.deducible.minimo']}" styleClass="negrita" />
-														<p:inputText value="#{ramoCesanteRoturaMaqBean.minimo}" />
-													</h:panelGrid>
-												</p:panel>
-												<!-- Footer del Formulario -->
-												<f:facet name="footer">
-													<div align="center">
-														<p:commandButton id="guardarBtnId" actionListener="#{lucroCesanteRoturaMaquinariaBacking.setearInfRamo()}" icon="icon-save"
-															value="#{emision['boton.aceptar']}" title="Guardar" update="formPrincipal, ramoLucroCesanteRoturMaquinaria " />
-														<p:commandButton id="cancelarBtnId" icon="icon-cancel" value="#{emision['boton.cancelar']}" process="@this" title="Cancelar" />
-
-														<!-- DESCARGAR DOCUMENTOS -->
-														<h:panelGrid columns="2">
-															<p:commandLink title="Descargar syllabus"
-																actionListener="#{lucroCesanteRoturaMaquinariaBacking.descargarLucroCesanteRoturaMaquinariaPDF()}">
-																<h:graphicImage name="pdf.png" library="img" />
-															</p:commandLink>
-														</h:panelGrid>
-													</div>
+													<p:outputLabel value="#{emision['cesanteRoturaMaq.deducible.minimo']}" styleClass="negrita" />
+													<p:inputText value="#{ramoCesanteRoturaMaqBean.minimo}" />
+												</h:panelGrid>
+											</p:panel>
+										</h:panelGrid>
+									</div>
+								</h:form>
+								<p:spacer height="30px;" />
+								<!-- COBERTURAS -->
+								<h:panelGrid columns="2">
+									<p:outputLabel value="#{emision['lbl.seleccionarCoberturas']}" styleClass="negrita" />
+									<p:commandLink title="#{emision['lbl.seleccionarCoberturas']}" oncomplete="coberturas.show();" update="idCobertura">
+										<h:graphicImage name="check.png" library="img" />
+									</p:commandLink>
+								</h:panelGrid>
+								<p:dialog id="idCobertura" header="#{emision['anexo.titulo.tab.cob']}" widgetVar="coberturas" modal="true" position="center" showEffect="fade"
+									hideEffect="explode" resizable="false" closable="true" width="500" height="300">
+									<h:form id="coberturaForm">
+										<p:messages id="messagesCoberturas" showDetail="true" autoUpdate="true" closable="true" />
+										<p:dataTable id="tablaCoberturas" value="#{lucroCesanteRoturaMaquinariaBacking.coberturasDTO}" var="cobertura" paginator="true" rows="4"
+											editable="true">
+											<p:ajax event="rowEdit" listener="#{lucroCesanteRoturaMaquinariaBacking.onEditCobertura}" />
+											<p:column>
+												<f:facet name="header">
+													<h:outputLabel value="#{emision['anexo.titulo.cob']}" />
 												</f:facet>
-
-											</h:panelGrid>
+												<h:outputText value="#{cobertura.cobertura}" />
+											</p:column>
+											<p:column>
+												<f:facet name="header">
+													<h:outputLabel value="#{emision['lbl.seleccion']}" />
+												</f:facet>
+												<p:cellEditor>
+													<f:facet name="output">
+														<div align="center">
+															<p:selectBooleanCheckbox value="#{cobertura.seleccion}" disabled="true" />
+														</div>
+													</f:facet>
+													<f:facet name="input">
+														<div align="center">
+															<p:selectBooleanCheckbox value="#{cobertura.seleccion}" />
+														</div>
+													</f:facet>
+												</p:cellEditor>
+											</p:column>
+											<p:column headerText="Options" style="width:50px">
+												<p:rowEditor />
+											</p:column>
+										</p:dataTable>
+										<p:spacer height="15px;" />
+										<div align="center">
+											<p:commandButton id="guardarCoberturas" process="@this" actionListener="#{lucroCesanteRoturaMaquinariaBacking.setearCoberturas()}"
+												icon="icon-save" value="#{emision['boton.guardar']}" title="Guardar" oncomplete="coberturas.hide()" />
 										</div>
 									</h:form>
-
-								</p:tab>
-								<!-- OBJETO ASEGURADO -->
-								<p:tab title="#{emision['cesanteRoturaMaq.tab.objetoAsegurado']}">
-									<div align="center">
-										<h:form id="form1">
-											<h:panelGrid columns="1">
-												<f:facet name="header">
-													<p:outputLabel value="#{emision['cesanteRoturaMaq.objeto.tituloPantalla']}" styleClass="negrita" />
-												</f:facet>
-												<p:separator id="customSeparator" style="width:auto;height:1px" />
-												<p:growl id="messages" showDetail="true" />
-												<p:panelGrid columns="2">
-													<h:outputLabel value="#{emision['cesanteRoturaMaq.objeto.item']}" styleClass="negrita" />
-													<p:inputText value="#{ramoCesanteRoturaMaqBean.numeroItem}" />
-
-													<h:outputLabel value="#{emision['cesanteRoturaMaq.objeto.ubicacion']}" styleClass="negrita" />
-													<p:inputText value="#{ramoCesanteRoturaMaqBean.ubicacionRiesgo}" />
-
-													<h:outputLabel value="#{emision['cesanteRoturaMaq.objeto.valorAsegurado']}" styleClass="negrita" />
-													<p:inputText value="#{ramoCesanteRoturaMaqBean.valorAsegurado}" />
-
-													<h:outputLabel value="#{emision['cesanteRoturaMaq.objeto.descripcion']}" styleClass="negrita" />
-													<p:inputText value="#{ramoCesanteRoturaMaqBean.descripcionObjeto}" />
-												</p:panelGrid>
-												<f:facet name="footer">
-													<div align="center">
-														<p:commandButton id="agregarObjeto" update="form1, messages" icon="icon-add" value="#{emision['boton.agregar']}"
-															actionListener="#{ramoCesanteRoturaMaqBean.addAction}" title="Agregar" />
-													</div>
-												</f:facet>
-											</h:panelGrid>
-											<p:spacer height="30px;" />
-											<p:dataTable value="#{ramoCesanteRoturaMaqBean.objetolist}" var="obj" widgetVar="50" style="width: 50%;" editable="true">
-												<p:ajax event="rowEdit" listener="#{ramoCesanteRoturaMaqBean.onEdit}" />
-												<p:ajax event="rowEditCancel" listener="#{ramoCesanteRoturaMaqBean.onCancel}" />
-												<p:column>
-													<f:facet name="header">
-														<h:outputText value="#{emision['cesanteRoturaMaq.objeto.item']}" />
-													</f:facet>
-													<p:cellEditor>
-														<f:facet name="output">
-															<h:outputText value="#{obj.numeroItem}" />
-														</f:facet>
-														<f:facet name="input">
-															<p:inputText value="#{obj.numeroItem}" style="width:100%" />
-														</f:facet>
-													</p:cellEditor>
-												</p:column>
-												<p:column>
-													<f:facet name="header">
-														<h:outputText value="#{emision['cesanteRoturaMaq.objeto.ubicacion']}" />
-													</f:facet>
-													<p:cellEditor>
-														<f:facet name="output">
-															<h:outputText value="#{obj.ubicacionRiesgo}" />
-														</f:facet>
-														<f:facet name="input">
-															<p:inputText value="#{obj.ubicacionRiesgo}" style="width:100%" />
-														</f:facet>
-													</p:cellEditor>
-												</p:column>
-												<p:column>
-													<f:facet name="header">
-														<h:outputText value="#{emision['cesanteRoturaMaq.objeto.valorAsegurado']}" />
-													</f:facet>
-													<p:cellEditor>
-														<f:facet name="output">
-															<h:outputText value="#{obj.valorAsegurado}" />
-														</f:facet>
-														<f:facet name="input">
-															<p:inputText value="#{obj.valorAsegurado}" style="width:100%" />
-														</f:facet>
-													</p:cellEditor>
-												</p:column>
-												<p:column>
-													<f:facet name="header">
-														<h:outputText value="#{emision['cesanteRoturaMaq.objeto.descripcion']}" />
-													</f:facet>
-													<p:cellEditor>
-														<f:facet name="output">
-															<h:outputText value="#{obj.descripcionObjeto}" />
-														</f:facet>
-														<f:facet name="input">
-															<p:inputText value="#{obj.descripcionObjeto}" style="width:100%" />
-														</f:facet>
-													</p:cellEditor>
-												</p:column>
-												<p:column headerText="Options" style="width:50px">
-													<p:rowEditor />
-												</p:column>
-											</p:dataTable>
-
-											<p:spacer height="30px;" />
-											<p:commandButton id="guardarObjAseguradoBtnId" actionListener="#{lucroCesanteRoturaMaquinariaBacking.guardarRamo()}" icon="icon-save"
-												value="#{emision['boton.guardar']}" update="form1" title="Guardar" />
-											<p:commandButton id="cancelarBtnId" icon="icon-cancel" value="#{emision['boton.cancelar']}" title="Cancelar" />
-										</h:form>
-									</div>
-								</p:tab>
-
-								<!-- COBERTURAS -->
-								<p:tab title="#{emision['anexo.titulo.tab.cob']}">
-									<h:form id="coberturaForm">
-										<p:dataTable value="#{lucroCesanteRoturaMaquinariaBacking.coberturasDTO}" var="cobertura" paginator="true" rows="4">
-											<p:column>
-												<f:facet name="header">
-													<h:outputLabel value="#{emision['anexo.titulo.cob']}" />
-												</f:facet>
-												<h:outputText value="#{cobertura.cobertura}" />
-											</p:column>
-											<p:column>
-												<f:facet name="header">
-													<h:outputLabel value="#{emision['lbl.seleccion']}" />
-												</f:facet>
-												<div align="center">
-													<p:selectBooleanCheckbox value="#{cobertura.seleccion}" />
-												</div>
-											</p:column>
-										</p:dataTable>
-									</h:form>
-								</p:tab>
-								<!-- COBERTURAS ADICIONALES -->
-								<p:tab title="#{emision['anexo.titulo.tab.cobad']}">
+								</p:dialog>
+								<!-- COBERTURAS ADICONALES-->
+								<h:panelGrid columns="2">
+									<p:outputLabel value="#{emision['lbl.seleccionarCoberturasAdd']}" styleClass="negrita" />
+									<p:commandLink title="#{emision['lbl.seleccionarCoberturasAdd']}" oncomplete="coberturasAdd.show();" update="idCoberturaAdd">
+										<h:graphicImage name="check.png" library="img" />
+									</p:commandLink>
+								</h:panelGrid>
+								<p:dialog id="idCoberturaAdd" header="#{emision['anexo.titulo.tab.cob']}" widgetVar="coberturasAdd" modal="true" position="center"
+									showEffect="fade" hideEffect="explode" resizable="false" closable="true" width="500" height="300">
 									<h:form id="coberturaAddForm">
-										<p:dataTable value="#{lucroCesanteRoturaMaquinariaBacking.coberturasAddDTO}" var="cobertura" paginator="true" rows="4">
+										<p:messages id="messagesCoberturas" showDetail="true" autoUpdate="true" closable="true" />
+										<p:dataTable id="tablaCoberturas" value="#{lucroCesanteRoturaMaquinariaBacking.coberturasAddDTO}" var="coberturaAdd" paginator="true"
+											rows="4" editable="true">
+											<p:ajax event="rowEdit" listener="#{lucroCesanteRoturaMaquinariaBacking.onEditCoberturaAdd}" />
 											<p:column>
 												<f:facet name="header">
-													<h:outputLabel value="#{emision['anexo.titulo.cob']}" />
+													<h:outputLabel value="#{emision['anexo.titulo.cobad']}" />
 												</f:facet>
-												<h:outputText value="#{cobertura.cobertura}" />
+												<h:outputText value="#{coberturaAdd.cobertura}" />
 											</p:column>
 											<p:column>
 												<f:facet name="header">
 													<h:outputLabel value="#{emision['lbl.seleccion']}" />
 												</f:facet>
-												<div align="center">
-													<p:selectBooleanCheckbox value="#{cobertura.seleccion}" />
-												</div>
+												<p:cellEditor>
+													<f:facet name="output">
+														<div align="center">
+															<p:selectBooleanCheckbox value="#{coberturaAdd.seleccion}" disabled="true" />
+														</div>
+													</f:facet>
+													<f:facet name="input">
+														<div align="center">
+															<p:selectBooleanCheckbox value="#{coberturaAdd.seleccion}" />
+														</div>
+													</f:facet>
+												</p:cellEditor>
+											</p:column>
+											<p:column headerText="Options" style="width:50px">
+												<p:rowEditor />
 											</p:column>
 										</p:dataTable>
+										<p:spacer height="15px;" />
+										<div align="center">
+											<p:commandButton id="guardarCoberturas" process="@this" actionListener="#{lucroCesanteRoturaMaquinariaBacking.setearCoberturasAdd()}"
+												icon="icon-save" value="#{emision['boton.guardar']}" title="Guardar" oncomplete="coberturasAdd.hide()" />
+										</div>
 									</h:form>
-								</p:tab>
+								</p:dialog>
 								<!-- CLAUSULAS ADICIONALES -->
-								<p:tab title="#{emision['anexo.titulo.tab.cad']}">
-									<h:form id="clausulaAddForm">
-										<p:dataTable value="#{lucroCesanteRoturaMaquinariaBacking.clausulasAdicionalesDTO}" var="clausula" paginator="true" rows="4">
+								<h:panelGrid columns="2">
+									<p:outputLabel value="#{emision['lbl.seleccionarClausulasAdd']}" styleClass="negrita" />
+									<p:commandLink title="#{emision['lbl.seleccionarClausulasAdd']}" oncomplete="clausulasAdd.show();"
+										actionListener="#{lucroCesanteRoturaMaquinariaBacking.obtenerClausulasAdicionales()}" update="idClausulasAdd">
+										<h:graphicImage name="check.png" library="img" />
+									</p:commandLink>
+								</h:panelGrid>
+								<p:dialog id="idClausulasAdd" header="#{emision['ap.tab.clausulasAdicionales']}" widgetVar="clausulasAdd" modal="true" position="center"
+									showEffect="fade" hideEffect="explode" resizable="false" closable="true" width="500" height="300">
+									<h:form id="clausulaAddEspForm">
+										<p:messages id="messagesClausulas" showDetail="true" autoUpdate="true" closable="true" />
+										<p:dataTable id="tablaClausulas" value="#{lucroCesanteRoturaMaquinariaBacking.clausulasAdicionalesDTO}" var="clausula" paginator="true"
+											editable="true">
+											<p:ajax event="rowEdit" listener="#{lucroCesanteRoturaMaquinariaBacking.onEditClausulasAdd}" />
 											<p:column>
 												<f:facet name="header">
 													<h:outputLabel value="#{emision['anexo.titulo.cad']}" />
@@ -243,20 +190,156 @@
 												<f:facet name="header">
 													<h:outputLabel value="#{emision['lbl.seleccion']}" />
 												</f:facet>
-												<div align="center">
-													<p:selectBooleanCheckbox value="#{clausula.seleccion}" />
-												</div>
+												<p:cellEditor>
+													<f:facet name="output">
+														<div align="center">
+															<p:selectBooleanCheckbox value="#{clausula.seleccion}" disabled="true" />
+														</div>
+													</f:facet>
+													<f:facet name="input">
+														<div align="center">
+															<p:selectBooleanCheckbox value="#{clausula.seleccion}" />
+														</div>
+													</f:facet>
+												</p:cellEditor>
+											</p:column>
+											<p:column headerText="Options" style="width:50px">
+												<p:rowEditor />
 											</p:column>
 										</p:dataTable>
+										<p:spacer height="15px;" />
+										<div align="center">
+											<p:commandButton id="guardarClausulas" process="@this" actionListener="#{lucroCesanteRoturaMaquinariaBacking.setearClausulasAdd()}"
+												icon="icon-save" value="#{emision['boton.guardar']}" title="Guardar" oncomplete="clausulasAdd.hide()" />
+										</div>
 									</h:form>
-								</p:tab>
-							</p:tabView>
+								</p:dialog>
+							</p:tab>
+							<!-- OBJETO ASEGURADO -->
+							<p:tab title="#{emision['cesanteRoturaMaq.tab.objetoAsegurado']}">
+								<div align="center">
+									<h:form id="form1">
+										<h:panelGrid columns="1">
+											<f:facet name="header">
+												<p:outputLabel value="#{emision['cesanteRoturaMaq.objeto.tituloPantalla']}" styleClass="negrita" />
+											</f:facet>
+											<p:separator id="customSeparator" style="width:auto;height:1px" />
+											<p:growl id="messages" showDetail="true" />
+											<p:panelGrid columns="2">
+												<h:outputLabel value="#{emision['cesanteRoturaMaq.objeto.item']}" styleClass="negrita" />
+												<p:inputText value="#{ramoCesanteRoturaMaqBean.numeroItem}" />
 
-						</p:panel>
+												<h:outputLabel value="#{emision['cesanteRoturaMaq.objeto.ubicacion']}" styleClass="negrita" />
+												<p:inputText value="#{ramoCesanteRoturaMaqBean.ubicacionRiesgo}" />
+
+												<h:outputLabel value="#{emision['cesanteRoturaMaq.objeto.valorAsegurado']}" styleClass="negrita" />
+												<p:inputText value="#{ramoCesanteRoturaMaqBean.valorAsegurado}" />
+
+												<h:outputLabel value="#{emision['cesanteRoturaMaq.objeto.descripcion']}" styleClass="negrita" />
+												<p:inputText value="#{ramoCesanteRoturaMaqBean.descripcionObjeto}" />
+											</p:panelGrid>
+											<f:facet name="footer">
+												<div align="center">
+													<p:commandButton id="agregarObjeto" update="form1, messages" icon="icon-add" value="#{emision['boton.agregar']}"
+														actionListener="#{ramoCesanteRoturaMaqBean.addAction}" title="Agregar" />
+												</div>
+											</f:facet>
+										</h:panelGrid>
+										<p:spacer height="30px;" />
+										<p:dataTable value="#{ramoCesanteRoturaMaqBean.objetolist}" var="obj" widgetVar="50" style="width: 50%;" editable="true">
+											<p:ajax event="rowEdit" listener="#{ramoCesanteRoturaMaqBean.onEdit}" />
+											<p:ajax event="rowEditCancel" listener="#{ramoCesanteRoturaMaqBean.onCancel}" />
+											<p:column>
+												<f:facet name="header">
+													<h:outputText value="#{emision['cesanteRoturaMaq.objeto.item']}" />
+												</f:facet>
+												<p:cellEditor>
+													<f:facet name="output">
+														<h:outputText value="#{obj.numeroItem}" />
+													</f:facet>
+													<f:facet name="input">
+														<p:inputText value="#{obj.numeroItem}" style="width:100%" />
+													</f:facet>
+												</p:cellEditor>
+											</p:column>
+											<p:column>
+												<f:facet name="header">
+													<h:outputText value="#{emision['cesanteRoturaMaq.objeto.ubicacion']}" />
+												</f:facet>
+												<p:cellEditor>
+													<f:facet name="output">
+														<h:outputText value="#{obj.ubicacionRiesgo}" />
+													</f:facet>
+													<f:facet name="input">
+														<p:inputText value="#{obj.ubicacionRiesgo}" style="width:100%" />
+													</f:facet>
+												</p:cellEditor>
+											</p:column>
+											<p:column>
+												<f:facet name="header">
+													<h:outputText value="#{emision['cesanteRoturaMaq.objeto.valorAsegurado']}" />
+												</f:facet>
+												<p:cellEditor>
+													<f:facet name="output">
+														<h:outputText value="#{obj.valorAsegurado}" />
+													</f:facet>
+													<f:facet name="input">
+														<p:inputText value="#{obj.valorAsegurado}" style="width:100%" />
+													</f:facet>
+												</p:cellEditor>
+											</p:column>
+											<p:column>
+												<f:facet name="header">
+													<h:outputText value="#{emision['cesanteRoturaMaq.objeto.descripcion']}" />
+												</f:facet>
+												<p:cellEditor>
+													<f:facet name="output">
+														<h:outputText value="#{obj.descripcionObjeto}" />
+													</f:facet>
+													<f:facet name="input">
+														<p:inputText value="#{obj.descripcionObjeto}" style="width:100%" />
+													</f:facet>
+												</p:cellEditor>
+											</p:column>
+											<p:column headerText="Options" style="width:50px">
+												<p:rowEditor />
+											</p:column>
+										</p:dataTable>
+
+										<p:spacer height="30px;" />
+										<p:commandButton id="guardarObjAseguradoBtnId" actionListener="#{lucroCesanteRoturaMaquinariaBacking.guardarRamo()}" icon="icon-save"
+											value="#{emision['boton.guardar']}" update="form1" title="Guardar" />
+										<p:commandButton id="cancelarBtnId" icon="icon-cancel" value="#{emision['boton.cancelar']}" title="Cancelar" />
+									</h:form>
+								</div>
+							</p:tab>
+						</p:tabView>
 					</ui:define>
 				</ui:decorate>
 			</ui:define>
 		</ui:decorate>
+	</ui:define>
+	<ui:define name="buttons">
+		<h:form>
+			<h:panelGrid columns="1">
+				<h:commandLink action="hiperion.xhtml">
+					<h:graphicImage name="home.png" library="img" />
+				</h:commandLink>
+				<p:commandLink title="Guardar Informacion poliza" process="@this" actionListener="#{lucroCesanteRoturaMaquinariaBacking.guardarRamo()}">
+					<h:graphicImage name="save.png" library="img" />
+				</p:commandLink>
+				<p:commandLink onclick="help.show()">
+					<h:graphicImage name="helpII.png" library="img" />
+				</p:commandLink>
+			</h:panelGrid>
+			<p:dialog header="Ramo Agropecuario" widgetVar="help" showEffect="explode" hideEffect="bounce" height="100">
+				<h:panelGrid columns="1">
+					<h:outputText value="Seguro agricola" />
+					<h:outputText value="Para soporte en cualqueira de las funcionalidades" />
+					<h:outputText value="Por favor comuniquese con Franklin Pozo, Administradr del Sitema Hiperion" />
+				</h:panelGrid>
+			</p:dialog>
+		</h:form>
 	</ui:define>
 </ui:composition>
 </html>

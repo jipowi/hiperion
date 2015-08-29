@@ -204,10 +204,10 @@ public class ClienteBacking implements Serializable {
 					clientesObtenidos.add(clienteObtenido);
 				}
 			} else {
-				if (clienteBean.getNombre().equals("")) {
+				if (clienteBean.getApePaterno().equals("")) {
 					MessagesController.addWarn(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.warn.buscar"));
 				} else {
-					clientesObtenidos = clienteService.consultarClienteByApellido(clienteBean.getNombre());
+					clientesObtenidos = clienteService.consultarClienteByApellido(clienteBean.getApePaterno());
 				}
 			}
 
@@ -234,65 +234,72 @@ public class ClienteBacking implements Serializable {
 			if (tipoIdentificacion == 2 && clienteBean.getIdentificacion().length() != 13) {
 				MessagesController.addError(null, HiperionMensajes.getInstancia().getString("hiperion.mensage.error.tamanioRuc"));
 			} else {
+				Cliente clienteObtenido = clienteService.consultarClienteByIdentificacion(clienteBean.getIdentificacion());
 
-				if (validarDocumentos(clienteBean.getIdentificacion(), tipoIdentificacion)) {
-					// Direccion del Cliente
-					if (direccionBean.getDireccionesRegistradas() != null && direccionBean.getDireccionesRegistradas().size() > 0) {
-						Cliente cliente = new Cliente();
-						cliente.setCodigoCliente(clienteBean.getCodigoCliente());
+				if (clienteObtenido == null) {
+					if (validarDocumentos(clienteBean.getIdentificacion(), tipoIdentificacion)) {
+						// Direccion del Cliente
+						if (direccionBean.getDireccionesRegistradas() != null && direccionBean.getDireccionesRegistradas().size() > 0) {
+							Cliente cliente = new Cliente();
+							cliente.setCodigoCliente(clienteBean.getCodigoCliente());
 
-						cliente.setTipoIdentificacion(clienteBean.getTipoIdentificacion());
-						cliente.setIdentificacionPersona(clienteBean.getIdentificacion());
-						// Tipo de Persona
-						int tipoPersona = clienteBean.getTipoPersona();
-						if (tipoPersona == 1) {
-							// Persona Natural
+							cliente.setTipoIdentificacion(clienteBean.getTipoIdentificacion());
 							cliente.setIdentificacionPersona(clienteBean.getIdentificacion());
-							cliente.setNombrePersona(clienteBean.getNombre());
-							cliente.setApellidoPaterno(clienteBean.getApePaterno());
-							cliente.setApellidoMaterno(clienteBean.getApeMaterno());
-							cliente.setActividadProfesion(clienteBean.getActividadProfecion());
-							cliente.setFechaNacimiento(clienteBean.getFechaNacimiento());
+							// Tipo de Persona
+							int tipoPersona = clienteBean.getTipoPersona();
+							if (tipoPersona == 1) {
+								// Persona Natural
+								cliente.setIdentificacionPersona(clienteBean.getIdentificacion());
+								cliente.setNombrePersona(clienteBean.getNombre());
+								cliente.setApellidoPaterno(clienteBean.getApePaterno());
+								cliente.setApellidoMaterno(clienteBean.getApeMaterno());
+								cliente.setActividadProfesion(clienteBean.getActividadProfecion());
+								cliente.setFechaNacimiento(clienteBean.getFechaNacimiento());
+							} else {
+								// Persona Juridica
+								cliente.setRazonSocial(clienteBean.getRazonSocial());
+							}
+							cliente.setTipoPersona(clienteBean.getTipoPersona().toString());
+							// Direcciones del Cliente
+							List<Direccion> direcciones = new ArrayList<Direccion>();
+							for (DireccionDTO direccionDto : direccionBean.getDireccionesRegistradas()) {
+								Direccion direccion = new Direccion();
+								direccion.setCliente(cliente);
+								// Tipo Direccion
+								TipoDireccion tipoDireccion = tipoDireccionService.consultarTipoDireccionByDescripcion(direccionDto
+										.getTipoDireccion());
+								direccion.setTipoDireccion(tipoDireccion);
+
+								// Provincia
+								Provincia provincia = provinciaService.consultarProvinciaPorCodigo(direccionDto.getProvinciaDTO().getCodProvincia());
+								direccion.setProvincia(provincia);
+
+								// Calles y Numeracion
+								direccion.setCallePrincipal(direccionDto.getCallePrincipal());
+								direccion.setNumeracion(direccionDto.getNumeracion());
+								direccion.setCalleSecundaria(direccionDto.getCalleSecundaria());
+								direccion.setReferencia(direccionDto.getReferencia());
+
+								direcciones.add(direccion);
+							}
+
+							cliente.setDireccions(direcciones);
+							// Guardamos al Cliente
+							Usuario usuario = usuarioBean.getSessionUser();
+							cliente.setIdUsuarioCreacion(usuario.getIdUsuario());
+							cliente.setFechaCreacion(new Date());
+							cliente.setEstado(EstadoEnum.A);
+							clienteService.guardarCliente(cliente);
+							MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.cliente"));
 						} else {
-							// Persona Juridica
-							cliente.setRazonSocial(clienteBean.getRazonSocial());
+							MessagesController.addWarn(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.warn.direccion"));
 						}
-						cliente.setTipoPersona(clienteBean.getTipoPersona().toString());
-						// Direcciones del Cliente
-						List<Direccion> direcciones = new ArrayList<Direccion>();
-						for (DireccionDTO direccionDto : direccionBean.getDireccionesRegistradas()) {
-							Direccion direccion = new Direccion();
-							direccion.setCliente(cliente);
-							// Tipo Direccion
-							TipoDireccion tipoDireccion = tipoDireccionService.consultarTipoDireccionByDescripcion(direccionDto.getTipoDireccion());
-							direccion.setTipoDireccion(tipoDireccion);
-
-							// Provincia
-							Provincia provincia = provinciaService.consultarProvinciaPorCodigo(direccionDto.getProvinciaDTO().getCodProvincia());
-							direccion.setProvincia(provincia);
-
-							// Calles y Numeracion
-							direccion.setCallePrincipal(direccionDto.getCallePrincipal());
-							direccion.setNumeracion(direccionDto.getNumeracion());
-							direccion.setCalleSecundaria(direccionDto.getCalleSecundaria());
-							direccion.setReferencia(direccionDto.getReferencia());
-
-							direcciones.add(direccion);
-						}
-
-						cliente.setDireccions(direcciones);
-						// Guardamos al Cliente
-						Usuario usuario = usuarioBean.getSessionUser();
-						cliente.setIdUsuarioCreacion(usuario.getIdUsuario());
-						cliente.setFechaCreacion(new Date());
-						cliente.setEstado(EstadoEnum.A);
-						clienteService.guardarCliente(cliente);
-						MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.cliente"));
 					} else {
-						MessagesController.addWarn(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.warn.direccion"));
+						MessagesController.addError(null, HiperionMensajes.getInstancia().getString("hiperion.mensage.error.identificacionNoValido"));
 					}
 				} else {
-					MessagesController.addError(null, HiperionMensajes.getInstancia().getString("hiperion.mensage.error.identificacionNoValido"));
+
+					MessagesController.addWarn(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.warn.clienteDuplicado"));
 				}
 			}
 
@@ -321,7 +328,7 @@ public class ClienteBacking implements Serializable {
 			} else if (tipoIdentificacion == 2) {
 				pasaValidacion = ValidatorRuc.getInstancia().validateRUC(identificacion);
 			}
-		}else{
+		} else {
 			pasaValidacion = ValidatorRuc.getInstancia().validateRUC(identificacion);
 		}
 

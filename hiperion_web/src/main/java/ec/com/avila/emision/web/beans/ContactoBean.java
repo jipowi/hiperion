@@ -28,26 +28,9 @@ public class ContactoBean implements Serializable {
 	private String tipoContacto;
 	private String descripcionContacto;
 
-	private Boolean activarContacto;
-
 	private Integer longitudDescripcionContacto;
 
 	private List<ContactoDTO> contactosDTO;
-
-	/**
-	 * @return the activarContacto
-	 */
-	public Boolean getActivarContacto() {
-		return activarContacto;
-	}
-
-	/**
-	 * @param activarContacto
-	 *            the activarContacto to set
-	 */
-	public void setActivarContacto(Boolean activarContacto) {
-		this.activarContacto = activarContacto;
-	}
 
 	/**
 	 * @return the contactosDTO

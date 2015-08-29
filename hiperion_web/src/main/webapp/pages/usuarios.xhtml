@@ -21,11 +21,11 @@
 
 						<p:outputLabel  value="#{emision['usuario.identificacion']}:" styleClass="negrita" />
 						<p:inputText id="idIdentificacion" value="#{usuarioBean.identificacion}" validatorMessage="#{emision['msg.cedula.error']}">
-						 <f:validateRegex pattern="#{emision['msg.cedula.ok']}" />
+						 <f:validateRegex pattern="#{emision['msg.formato.cedula']}" />
 						</p:inputText>
 						<p:outputLabel value="#{emision['usuario.correo']}:" styleClass="negrita" />
 						<p:inputText id="idCorreo" value="#{usuarioBean.correo}" validatorMessage="#{emision['msg.correo.error']}" >
-						<f:validateRegex pattern="#{emision['msg.correo.ok']}" />
+						<f:validateRegex pattern="#{emision['msg.formato.correo']}" />
 						</p:inputText>
 
 						<p:outputLabel value="#{emision['usuario.clave']}:" styleClass="negrita" />

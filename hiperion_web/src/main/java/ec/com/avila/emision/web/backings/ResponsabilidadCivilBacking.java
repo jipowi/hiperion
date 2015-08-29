@@ -162,9 +162,13 @@ public class ResponsabilidadCivilBacking implements Serializable {
 					objAsegResponsabilidad.setEstado(EstadoEnum.A);
 					listObjetos.add(objAsegResponsabilidad);
 				}
+				
 				responsabilidadCivil.setObjAsegResponsabilidads(listObjetos);
+				
 				ramoResponsabilidadCivilService.guardarRamoResponsabilidadCivil(responsabilidadCivil);
+				
 				MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.save"));
+				
 				responsabilidadCivil = new RamoResponsabilidadCivil();
 				ramoResponsabilidadCivilBean.getObjetolist().clear();
 			} else {
