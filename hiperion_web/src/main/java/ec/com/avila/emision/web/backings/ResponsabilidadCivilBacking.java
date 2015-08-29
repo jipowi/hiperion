@@ -4,6 +4,7 @@
 package ec.com.avila.emision.web.backings;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -12,19 +13,27 @@ import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 
 import org.apache.log4j.Logger;
+import org.primefaces.event.RowEditEvent;
 
+import ec.com.avila.emision.web.beans.PolizaBean;
 import ec.com.avila.emision.web.beans.RamoResponsabilidadCivilBean;
 import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.dto.ClausulaAdicionalDTO;
 import ec.com.avila.hiperion.dto.ObjetoAseguradoResponsabilidadDTO;
+import ec.com.avila.hiperion.dto.TablaAmortizacionDTO;
 import ec.com.avila.hiperion.emision.entities.ClausulasAddResp;
 import ec.com.avila.hiperion.emision.entities.DetalleAnexo;
+import ec.com.avila.hiperion.emision.entities.Financiamiento;
 import ec.com.avila.hiperion.emision.entities.ObjAsegResponsabilidad;
+import ec.com.avila.hiperion.emision.entities.PagoPoliza;
+import ec.com.avila.hiperion.emision.entities.Poliza;
 import ec.com.avila.hiperion.emision.entities.Ramo;
 import ec.com.avila.hiperion.emision.entities.RamoResponsabilidadCivil;
 import ec.com.avila.hiperion.emision.entities.Usuario;
@@ -67,6 +76,9 @@ public class ResponsabilidadCivilBacking implements Serializable {
 	@ManagedProperty(value = "#{ramoResponsabilidadCivilBean}")
 	private RamoResponsabilidadCivilBean ramoResponsabilidadCivilBean;
 
+	@ManagedProperty(value = "#{polizaBean}")
+	private PolizaBean polizaBean;
+
 	RamoResponsabilidadCivil responsabilidadCivil = new RamoResponsabilidadCivil();
 
 	Logger log = Logger.getLogger(ResponsabilidadCivilBacking.class);
@@ -74,11 +86,13 @@ public class ResponsabilidadCivilBacking implements Serializable {
 	private List<ClausulasAddResp> clausulasAdicionales;
 	private List<ClausulaAdicionalDTO> clausulasAdicionalesDTO = new ArrayList<>();
 	private List<DetalleAnexo> anexos;
+	private Usuario usuario;
 
 	@PostConstruct
 	public void inicializar() {
 		try {
 
+			usuario = usuarioBean.getSessionUser();
 			Ramo ramo = ramoService.consultarRamoPorCodigo("RC");
 
 			anexos = ramo.getDetalleAnexos();
@@ -122,17 +136,59 @@ public class ResponsabilidadCivilBacking implements Serializable {
 
 	}
 
-	public void setearInfRamo() {
-		Usuario usuario = usuarioBean.getSessionUser();
+	/**
+	 * 
+	 * <b> Permite setear los datos de la poliza. </b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: 09/07/2015]
+	 * </p>
+	 * 
+	 * @return
+	 */
+	public Poliza setearDatosPoliza() {
 
-		responsabilidadCivil.setLimiteUnicoAnualResp(Integer.parseInt(ramoResponsabilidadCivilBean.getLimiteUnico().toString()));
-		responsabilidadCivil.setTasaResp(ramoResponsabilidadCivilBean.getTasa());
-		responsabilidadCivil.setDeducSiniestroResp(ramoResponsabilidadCivilBean.getPorcentajeValorSiniestro());
-		responsabilidadCivil.setDeducMinimoResp(ramoResponsabilidadCivilBean.getMinimo());
-		responsabilidadCivil.setIdUsuarioCreacion(usuario.getIdUsuario());
-		responsabilidadCivil.setFechaCreacion(new Date());
-		responsabilidadCivil.setEstado(EstadoEnum.A);
-		MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.setearInformacion"));
+		Poliza poliza = new Poliza();
+
+		poliza.setNumeroPoliza(polizaBean.getNumeroPoliza());
+		poliza.setNumeroAnexo(polizaBean.getNumeroAnexo());
+		poliza.setEjecutivo(polizaBean.getEjecutivo().getNombreUsuario());
+		poliza.setVigenciaDesde(polizaBean.getVigenciaDesde());
+		poliza.setVigenciaHasta(polizaBean.getVigenciaHasta());
+		poliza.setDiasCobertura(polizaBean.getDiasCobertura());
+		poliza.setSumaAsegurada(polizaBean.getSumaAsegurada());
+		poliza.setPrimaNeta(BigDecimal.valueOf(polizaBean.getPrimaNeta()));
+		poliza.setSuperBanSeguros(polizaBean.getSuperBanSeguros());
+		poliza.setSeguroCampesino(BigDecimal.valueOf(polizaBean.getSeguroCampesino()));
+		poliza.setDerechoEmision(BigDecimal.valueOf(polizaBean.getDerechoEmision()));
+		poliza.setRamo(1);
+		poliza.setEstadoPoliza("COTIZADO");
+
+		PagoPoliza pagoPoliza = new PagoPoliza();
+		pagoPoliza.setNumeroFactura(polizaBean.getNumeroFactura());
+		pagoPoliza.setSubtotal(polizaBean.getSubtotal());
+		pagoPoliza.setAdicionalSegCampesino(polizaBean.getAdicionalSegCampesino());
+		pagoPoliza.setIva(polizaBean.getIva());
+		pagoPoliza.setCuotaInicial(polizaBean.getCuotaInicial());
+		pagoPoliza.setValorTotalPagoPoliza(polizaBean.getTotal());
+		pagoPoliza.setEstado(EstadoEnum.A);
+		pagoPoliza.setFechaCreacion(new Date());
+		pagoPoliza.setIdUsuarioCreacion(usuario.getIdUsuario());
+
+		List<Financiamiento> financiamientos = new ArrayList<>();
+		for (TablaAmortizacionDTO financiamiento : polizaBean.getFinanciamientos()) {
+			Financiamiento financiamientoTemp = new Financiamiento();
+			financiamientoTemp.setNumeroCuota(financiamiento.getNumeroLetra());
+			financiamientoTemp.setValorLetra(BigDecimal.valueOf(financiamiento.getValor()));
+			financiamientoTemp.setFechaVencimiento(financiamiento.getFechaVencimiento());
+
+			financiamientos.add(financiamientoTemp);
+		}
+
+		pagoPoliza.setFinanciamientos(financiamientos);
+
+		poliza.setPagoPoliza(pagoPoliza);
+
+		return poliza;
 	}
 
 	/**
@@ -147,6 +203,17 @@ public class ResponsabilidadCivilBacking implements Serializable {
 	public void guardarRamo() throws HiperionException {
 
 		try {
+
+			Poliza poliza = setearDatosPoliza();
+
+			responsabilidadCivil.setLimiteUnicoAnualResp(Integer.parseInt(ramoResponsabilidadCivilBean.getLimiteUnico().toString()));
+			responsabilidadCivil.setTasaResp(ramoResponsabilidadCivilBean.getTasa());
+			responsabilidadCivil.setDeducSiniestroResp(ramoResponsabilidadCivilBean.getPorcentajeValorSiniestro());
+			responsabilidadCivil.setDeducMinimoResp(ramoResponsabilidadCivilBean.getMinimo());
+			responsabilidadCivil.setIdUsuarioCreacion(usuario.getIdUsuario());
+			responsabilidadCivil.setFechaCreacion(new Date());
+			responsabilidadCivil.setEstado(EstadoEnum.A);
+
 			if (!ramoResponsabilidadCivilBean.getObjetolist().isEmpty()) {
 
 				List<ObjAsegResponsabilidad> listObjetos = new ArrayList<>();
@@ -162,13 +229,13 @@ public class ResponsabilidadCivilBacking implements Serializable {
 					objAsegResponsabilidad.setEstado(EstadoEnum.A);
 					listObjetos.add(objAsegResponsabilidad);
 				}
-				
+
 				responsabilidadCivil.setObjAsegResponsabilidads(listObjetos);
-				
-				ramoResponsabilidadCivilService.guardarRamoResponsabilidadCivil(responsabilidadCivil);
-				
+
+				ramoResponsabilidadCivilService.guardarRamoResponsabilidadCivil(responsabilidadCivil, poliza);
+
 				MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.save"));
-				
+
 				responsabilidadCivil = new RamoResponsabilidadCivil();
 				ramoResponsabilidadCivilBean.getObjetolist().clear();
 			} else {
@@ -180,6 +247,68 @@ public class ResponsabilidadCivilBacking implements Serializable {
 
 			throw new HiperionException(e);
 		}
+	}
+	
+	/**
+	 * 
+	 * <b> Permite editar un registro de la tabla</b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: Aug 3, 2014]
+	 * </p>
+	 * 
+	 * @param event
+	 */
+	public void onEditClausulasAdd(RowEditEvent event) {
+		FacesMessage msg = new FacesMessage("Item Edited", ((ClausulaAdicionalDTO) event.getObject()).getClausula());
+		FacesContext.getCurrentInstance().addMessage(null, msg);
+	}
+
+	/**
+	 * 
+	 * <b> permite setear las clausualas adicionales seleccionadas. </b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: 14/07/2015]
+	 * </p>
+	 * 
+	 */
+	public void setearClausulasAdd() {
+
+		int contClausulas = 0;
+		List<ClausulasAddResp> clausulas = new ArrayList<>();
+		for (ClausulaAdicionalDTO clausualaDTO : clausulasAdicionalesDTO) {
+			if (clausualaDTO.getSeleccion()) {
+				contClausulas++;
+				ClausulasAddResp clausula = new ClausulasAddResp();
+				clausula.setClausulaResp(clausualaDTO.getClausula());
+				clausula.setEstado(EstadoEnum.A);
+				clausula.setFechaCreacion(new Date());
+				clausula.setIdUsuarioCreacion(usuario.getIdUsuario());
+
+				clausulas.add(clausula);
+			}
+		}
+		if (contClausulas == 0) {
+			MessagesController.addWarn(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.warn.clausulasAdd"));
+		} else {
+			responsabilidadCivil.setClausulasAddResps(clausulas);
+			MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.clausulasAdd"));
+		}
+
+	}
+
+	/**
+	 * @return the polizaBean
+	 */
+	public PolizaBean getPolizaBean() {
+		return polizaBean;
+	}
+
+	/**
+	 * @param polizaBean
+	 *            the polizaBean to set
+	 */
+	public void setPolizaBean(PolizaBean polizaBean) {
+		this.polizaBean = polizaBean;
 	}
 
 	public RamoBean getRamoBean() {

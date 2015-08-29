@@ -71,21 +71,204 @@
 												</h:panelGrid>
 											</p:panel>
 										</h:panelGrid>
-										<p:spacer height="30px;" />
-										<p:commandButton id="guardarRoboBtnId" oncomplete="asmDlg.hide();" actionListener="#{roboAsaltoBacking.setearInfRamo()}" icon="icon-save"
-											value="#{emision['boton.aceptar']}" title="Guardar" />
-										<p:commandButton id="cancelarBtnId" oncomplete="asmDlg.hide();" icon="icon-cancel" value="#{emision['boton.cancelar']}" process="@this"
-											title="Cancelar" />
 
-										<!-- DESCARGAR DOCUMENTOS -->
-										<h:panelGrid columns="2">
-											<p:commandLink title="Descargar syllabus" actionListener="#{roboAsaltoBacking.descargarRoboAsPDF()}">
-												<h:graphicImage name="pdf.png" library="img" />
-											</p:commandLink>
-										</h:panelGrid>
 									</div>
 								</h:form>
 								<p:spacer height="30px;" />
+								<!-- COBERTURAS -->
+								<h:panelGrid columns="2">
+									<p:outputLabel value="#{emision['lbl.seleccionarCoberturas']}" styleClass="negrita" />
+									<p:commandLink title="#{emision['lbl.seleccionarCoberturas']}" oncomplete="coberturas.show();" update="idCobertura">
+										<h:graphicImage name="check.png" library="img" />
+									</p:commandLink>
+								</h:panelGrid>
+								<p:dialog id="idCobertura" header="#{emision['anexo.titulo.tab.cob']}" widgetVar="coberturas" modal="true" position="center" showEffect="fade"
+									hideEffect="explode" resizable="false" closable="true" width="500" height="300">
+									<h:form id="coberturaForm">
+										<p:messages id="messagesCoberturas" showDetail="true" autoUpdate="true" closable="true" />
+										<p:dataTable id="tablaCoberturas" value="#{roboAsaltoBacking.coberturasDTO}" var="cobertura" paginator="true" rows="4"
+											editable="true">
+											<p:ajax event="rowEdit" listener="#{roboAsaltoBacking.onEditCobertura}" />
+											<p:column>
+												<f:facet name="header">
+													<h:outputLabel value="#{emision['anexo.titulo.cob']}" />
+												</f:facet>
+												<h:outputText value="#{cobertura.cobertura}" />
+											</p:column>
+											<p:column>
+												<f:facet name="header">
+													<h:outputLabel value="#{emision['lbl.seleccion']}" />
+												</f:facet>
+												<p:cellEditor>
+													<f:facet name="output">
+														<div align="center">
+															<p:selectBooleanCheckbox value="#{cobertura.seleccion}" disabled="true" />
+														</div>
+													</f:facet>
+													<f:facet name="input">
+														<div align="center">
+															<p:selectBooleanCheckbox value="#{cobertura.seleccion}" />
+														</div>
+													</f:facet>
+												</p:cellEditor>
+											</p:column>
+											<p:column headerText="Options" style="width:50px">
+												<p:rowEditor />
+											</p:column>
+										</p:dataTable>
+										<p:spacer height="15px;" />
+										<div align="center">
+											<p:commandButton id="guardarCoberturas" process="@this" actionListener="#{roboAsaltoBacking.setearCoberturas()}" icon="icon-save"
+												value="#{emision['boton.guardar']}" title="Guardar" oncomplete="coberturas.hide()" />
+										</div>
+									</h:form>
+								</p:dialog>
+								<!-- COBERTURAS ADICONALES-->
+								<h:panelGrid columns="2">
+									<p:outputLabel value="#{emision['lbl.seleccionarCoberturasAdd']}" styleClass="negrita" />
+									<p:commandLink title="#{emision['lbl.seleccionarCoberturasAdd']}" oncomplete="coberturasAdd.show();" update="idCoberturaAdd">
+										<h:graphicImage name="check.png" library="img" />
+									</p:commandLink>
+								</h:panelGrid>
+								<p:dialog id="idCoberturaAdd" header="#{emision['anexo.titulo.tab.cob']}" widgetVar="coberturasAdd" modal="true" position="center"
+									showEffect="fade" hideEffect="explode" resizable="false" closable="true" width="500" height="300">
+									<h:form id="coberturaAddForm">
+										<p:messages id="messagesCoberturas" showDetail="true" autoUpdate="true" closable="true" />
+										<p:dataTable id="tablaCoberturas" value="#{roboAsaltoBacking.coberturasAddDTO}" var="coberturaAdd" paginator="true" rows="4" editable="true">
+											<p:ajax event="rowEdit" listener="#{roboAsaltoBacking.onEditCoberturaAdd}" />
+											<p:column>
+												<f:facet name="header">
+													<h:outputLabel value="#{emision['anexo.titulo.cobad']}" />
+												</f:facet>
+												<h:outputText value="#{coberturaAdd.cobertura}" />
+											</p:column>
+											<p:column>
+												<f:facet name="header">
+													<h:outputLabel value="#{emision['lbl.seleccion']}" />
+												</f:facet>
+												<p:cellEditor>
+													<f:facet name="output">
+														<div align="center">
+															<p:selectBooleanCheckbox value="#{coberturaAdd.seleccion}" disabled="true" />
+														</div>
+													</f:facet>
+													<f:facet name="input">
+														<div align="center">
+															<p:selectBooleanCheckbox value="#{coberturaAdd.seleccion}" />
+														</div>
+													</f:facet>
+												</p:cellEditor>
+											</p:column>
+											<p:column headerText="Options" style="width:50px">
+												<p:rowEditor />
+											</p:column>
+										</p:dataTable>
+										<p:spacer height="15px;" />
+										<div align="center">
+											<p:commandButton id="guardarCoberturas" process="@this" actionListener="#{roboAsaltoBacking.setearCoberturasAdd()}" icon="icon-save"
+												value="#{emision['boton.guardar']}" title="Guardar" oncomplete="coberturasAdd.hide()" />
+										</div>
+									</h:form>
+								</p:dialog>
+
+								<!-- CONDICIONES ESPECIALES -->
+								<h:panelGrid columns="2">
+									<p:outputLabel value="#{emision['lbl.seleccionarCondicionesEsp']}" styleClass="negrita" />
+									<p:commandLink title="#{emision['lbl.seleccionarCondicionesEsp']}" oncomplete="condiciones.show();"
+										actionListener="#{roboAsaltoBacking.obtenerCondicionesEspeciales()}" update="idCondicionesEspeciales">
+										<h:graphicImage name="check.png" library="img" />
+									</p:commandLink>
+								</h:panelGrid>
+								<p:dialog id="idCondicionesEspeciales" header="#{emision['anexo.titulo.tab.cep']}" widgetVar="condiciones" modal="true" position="center"
+									showEffect="fade" hideEffect="explode" resizable="false" closable="true" width="500" height="300">
+									<h:form id="condicionEspForm">
+										<p:messages id="messagesCondiciones" showDetail="true" autoUpdate="true" closable="true" />
+										<p:dataTable value="#{roboAsaltoBacking.condicionesEspecialesDTO}" var="condicion" paginator="true" editable="true">
+											<p:ajax event="rowEdit" listener="#{roboAsaltoBacking.onEditCondicionesEsp}" />
+											<p:column>
+												<f:facet name="header">
+													<h:outputLabel value="#{emision['anexo.titulo.cep']}" />
+												</f:facet>
+												<h:outputText value="#{condicion.condicionEspecial}" />
+											</p:column>
+											<p:column>
+												<f:facet name="header">
+													<h:outputLabel value="#{emision['lbl.seleccion']}" />
+												</f:facet>
+												<p:cellEditor>
+													<f:facet name="output">
+														<div align="center">
+															<p:selectBooleanCheckbox value="#{condicion.seleccion}" disabled="true" />
+														</div>
+													</f:facet>
+													<f:facet name="input">
+														<div align="center">
+															<p:selectBooleanCheckbox value="#{condicion.seleccion}" />
+														</div>
+													</f:facet>
+												</p:cellEditor>
+											</p:column>
+											<p:column headerText="Options" style="width:50px">
+												<p:rowEditor />
+											</p:column>
+										</p:dataTable>
+										<p:spacer height="15px;" />
+										<div align="center">
+											<p:commandButton id="guardarCondiciones" process="@this" actionListener="#{roboAsaltoBacking.setearCondiciones()}"
+												icon="icon-save" value="#{emision['boton.guardar']}" title="Guardar" oncomplete="condiciones.hide()" />
+										</div>
+									</h:form>
+								</p:dialog>
+
+								<!-- CLAUSULAS ADICIONALES -->
+								<h:panelGrid columns="2">
+									<p:outputLabel value="#{emision['lbl.seleccionarClausulasAdd']}" styleClass="negrita" />
+									<p:commandLink title="#{emision['lbl.seleccionarClausulasAdd']}" oncomplete="clausulasAdd.show();"
+										actionListener="#{roboAsaltoBacking.obtenerClausulasAdicionales()}" update="idClausulasAdd">
+										<h:graphicImage name="check.png" library="img" />
+									</p:commandLink>
+								</h:panelGrid>
+								<p:dialog id="idClausulasAdd" header="#{emision['ap.tab.clausulasAdicionales']}" widgetVar="clausulasAdd" modal="true" position="center"
+									showEffect="fade" hideEffect="explode" resizable="false" closable="true" width="500" height="300">
+									<h:form id="clausulaAddEspForm">
+										<p:messages id="messagesClausulas" showDetail="true" autoUpdate="true" closable="true" />
+										<p:dataTable id="tablaClausulas" value="#{roboAsaltoBacking.clausulasAdicionalesDTO}" var="clausula" paginator="true"
+											editable="true">
+											<p:ajax event="rowEdit" listener="#{roboAsaltoBacking.onEditClausulasAdd}" />
+											<p:column>
+												<f:facet name="header">
+													<h:outputLabel value="#{emision['anexo.titulo.cad']}" />
+												</f:facet>
+												<h:outputText value="#{clausula.clausula}" />
+											</p:column>
+											<p:column>
+												<f:facet name="header">
+													<h:outputLabel value="#{emision['lbl.seleccion']}" />
+												</f:facet>
+												<p:cellEditor>
+													<f:facet name="output">
+														<div align="center">
+															<p:selectBooleanCheckbox value="#{clausula.seleccion}" disabled="true" />
+														</div>
+													</f:facet>
+													<f:facet name="input">
+														<div align="center">
+															<p:selectBooleanCheckbox value="#{clausula.seleccion}" />
+														</div>
+													</f:facet>
+												</p:cellEditor>
+											</p:column>
+											<p:column headerText="Options" style="width:50px">
+												<p:rowEditor />
+											</p:column>
+										</p:dataTable>
+										<p:spacer height="15px;" />
+										<div align="center">
+											<p:commandButton id="guardarClausulas" process="@this" actionListener="#{roboAsaltoBacking.setearClausulasAdd()}"
+												icon="icon-save" value="#{emision['boton.guardar']}" title="Guardar" oncomplete="clausulasAdd.hide()" />
+										</div>
+									</h:form>
+								</p:dialog>
 							</p:tab>
 							<!-- OBJETO ASEGURADO -->
 							<p:tab title="#{emision['robo.tab.objetoAsegurado']}">
@@ -263,7 +446,7 @@
 											<f:facet name="footer">
 												<div align="center">
 													<p:commandButton id="guardarRoboBtnId" oncomplete="asmDlg.hide();" actionListener="#{roboAsaltoBacking.guadraRamo()}" icon="icon-save"
-														value="#{emision['boton.guardar']}" title="Guardar" update="coberturaForm"/>
+														value="#{emision['boton.guardar']}" title="Guardar" update="coberturaForm" />
 													<p:commandButton id="cancelarBtnId" oncomplete="asmDlg.hide();" icon="icon-cancel" value="#{emision['boton.cancelar']}" process="@this"
 														title="Cancelar" />
 												</div>
@@ -272,96 +455,33 @@
 									</h:form>
 								</div>
 							</p:tab>
-							<!-- COBERTURAS -->
-							<p:tab title="#{emision['robo.tab.coberturas']}">
-								<h:form id="coberturaForm">
-									<p:dataTable value="#{roboAsaltoBacking.coberturasDTO}" var="cobertura" paginator="true" rows="4">
-										<p:column>
-											<f:facet name="header">
-												<h:outputLabel value="#{emision['anexo.titulo.cob']}" />
-											</f:facet>
-											<h:outputText value="#{cobertura.cobertura}" />
-										</p:column>
-										<p:column>
-											<f:facet name="header">
-												<h:outputLabel value="#{emision['lbl.seleccion']}" />
-											</f:facet>
-											<div align="center">
-												<p:selectBooleanCheckbox value="#{cobertura.seleccion}" />
-											</div>
-										</p:column>
-									</p:dataTable>
-								</h:form>
-							</p:tab>
-							<!-- COBERTURAS ADICIONALES-->
-							<p:tab title="#{emision['robo.tab.coberturaAdicional']}">
-								<h:form id="coberturaAddForm">
-									<p:dataTable value="#{roboAsaltoBacking.coberturasAddDTO}" var="cobertura" paginator="true" rows="4">
-										<p:column>
-											<f:facet name="header">
-												<h:outputLabel value="#{emision['anexo.titulo.cob']}" />
-											</f:facet>
-											<h:outputText value="#{cobertura.cobertura}" />
-										</p:column>
-										<p:column>
-											<f:facet name="header">
-												<h:outputLabel value="#{emision['lbl.seleccion']}" />
-											</f:facet>
-											<div align="center">
-												<p:selectBooleanCheckbox value="#{cobertura.seleccion}" />
-											</div>
-										</p:column>
-									</p:dataTable>
-								</h:form>
-							</p:tab>
-							<!-- CLAUSULAS ADICIONALES -->
-							<p:tab title="#{emision['robo.tab.clausulasAdicionales']}">
-								<h:form id="clausulaAddForm">
-									<p:dataTable value="#{roboAsaltoBacking.clausulasAdicionalesDTO}" var="clausula" paginator="true" rows="4">
-										<p:column>
-											<f:facet name="header">
-												<h:outputLabel value="#{emision['anexo.titulo.cad']}" />
-											</f:facet>
-											<h:outputText value="#{clausula.clausula}" />
-										</p:column>
-										<p:column>
-											<f:facet name="header">
-												<h:outputLabel value="#{emision['lbl.seleccion']}" />
-											</f:facet>
-											<div align="center">
-												<p:selectBooleanCheckbox value="#{clausula.seleccion}" />
-											</div>
-										</p:column>
-									</p:dataTable>
-								</h:form>
-							</p:tab>
-							<!-- CONDICIONES ESPECIALES -->
-							<p:tab title="#{emision['robo.tab.condicionesEspeciales']}">
-								<h:form id="condicionEspForm">
-									<p:dataTable value="#{roboAsaltoBacking.condicionesEspecialesDTO}" var="condicion" paginator="true" rows="4">
-										<p:column>
-											<f:facet name="header">
-												<h:outputLabel value="#{emision['anexo.titulo.cep']}" />
-											</f:facet>
-											<h:outputText value="#{condicion.condicionEspecial}" />
-										</p:column>
-										<p:column>
-											<f:facet name="header">
-												<h:outputLabel value="#{emision['lbl.seleccion']}" />
-											</f:facet>
-											<div align="center">
-												<p:selectBooleanCheckbox value="#{condicion.condicionEspecial}" />
-											</div>
-										</p:column>
-									</p:dataTable>
-								</h:form>
-							</p:tab>
 						</p:tabView>
 					</ui:define>
 				</ui:decorate>
 			</ui:define>
 		</ui:decorate>
-
+	</ui:define>
+	<ui:define name="buttons">
+		<h:form>
+			<h:panelGrid columns="1">
+				<h:commandLink action="hiperion.xhtml">
+					<h:graphicImage name="home.png" library="img" />
+				</h:commandLink>
+				<p:commandLink title="Guardar Informacion poliza" process="@this" actionListener="#{roboAsaltoBacking.guardarRamo()}">
+					<h:graphicImage name="save.png" library="img" />
+				</p:commandLink>
+				<p:commandLink onclick="help.show()">
+					<h:graphicImage name="helpII.png" library="img" />
+				</p:commandLink>
+			</h:panelGrid>
+			<p:dialog header="Ramo Agropecuario" widgetVar="help" showEffect="explode" hideEffect="bounce" height="100">
+				<h:panelGrid columns="1">
+					<h:outputText value="Seguro agricola" />
+					<h:outputText value="Para soporte en cualqueira de las funcionalidades" />
+					<h:outputText value="Por favor comuniquese con Franklin Pozo, Administradr del Sitema Hiperion" />
+				</h:panelGrid>
+			</p:dialog>
+		</h:form>
 	</ui:define>
 </ui:composition>
 </html>

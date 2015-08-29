@@ -1,7 +1,7 @@
-
 package ec.com.avila.emision.web.backings;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -10,12 +10,16 @@ import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 
 import org.apache.log4j.Logger;
+import org.primefaces.event.RowEditEvent;
 
+import ec.com.avila.emision.web.beans.PolizaBean;
 import ec.com.avila.emision.web.beans.RamoRoboAsaltoBean;
 import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.dto.ClausulaAdicionalDTO;
@@ -23,12 +27,16 @@ import ec.com.avila.hiperion.dto.CoberturaAdicionalDTO;
 import ec.com.avila.hiperion.dto.CoberturaDTO;
 import ec.com.avila.hiperion.dto.CondicionEspecialDTO;
 import ec.com.avila.hiperion.dto.ObjetoAseguradoRoboDTO;
+import ec.com.avila.hiperion.dto.TablaAmortizacionDTO;
 import ec.com.avila.hiperion.emision.entities.ClausulasAddRobo;
 import ec.com.avila.hiperion.emision.entities.CobertAddRobo;
 import ec.com.avila.hiperion.emision.entities.CoberturaRobo;
 import ec.com.avila.hiperion.emision.entities.CondEspRobo;
 import ec.com.avila.hiperion.emision.entities.DetalleAnexo;
+import ec.com.avila.hiperion.emision.entities.Financiamiento;
 import ec.com.avila.hiperion.emision.entities.ObjAsegRobo;
+import ec.com.avila.hiperion.emision.entities.PagoPoliza;
+import ec.com.avila.hiperion.emision.entities.Poliza;
 import ec.com.avila.hiperion.emision.entities.Ramo;
 import ec.com.avila.hiperion.emision.entities.RamoRoboAsalto;
 import ec.com.avila.hiperion.emision.entities.Usuario;
@@ -63,6 +71,8 @@ public class RoboAsaltoBacking implements Serializable {
 
 	@ManagedProperty(value = "#{usuarioBean}")
 	private UsuarioBean usuarioBean;
+	@ManagedProperty(value = "#{polizaBean}")
+	private PolizaBean polizaBean;
 
 	@EJB
 	private RamoService ramoService;
@@ -72,7 +82,7 @@ public class RoboAsaltoBacking implements Serializable {
 	Logger log = Logger.getLogger(RoboAsaltoBacking.class);
 
 	RamoRoboAsalto ramoRoboAsalto = new RamoRoboAsalto();
-	
+
 	private List<CoberturaRobo> coberturas;
 	private List<CoberturaDTO> coberturasDTO = new ArrayList<>();
 	private List<CobertAddRobo> coberturasAdd;
@@ -82,12 +92,13 @@ public class RoboAsaltoBacking implements Serializable {
 	private List<CondEspRobo> condicionesEspeciales;
 	private List<CondicionEspecialDTO> condicionesEspecialesDTO = new ArrayList<>();
 	private List<DetalleAnexo> anexos;
+	private Usuario usuario;
 
-	
 	@PostConstruct
 	public void inicializar() {
 		try {
 
+			usuario = usuarioBean.getSessionUser();
 			Ramo ramo = ramoService.consultarRamoPorCodigo("RB");
 
 			anexos = ramo.getDetalleAnexos();
@@ -101,34 +112,61 @@ public class RoboAsaltoBacking implements Serializable {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * 
-	 * <b> Permite setear la informacion del ramo Robo Asalto </b>
+	 * <b> Permite setear los datos de la poliza. </b>
 	 * <p>
-	 * [Author: Franklin Pozo, Date: 08/09/2014]
+	 * [Author: Paul Jimenez, Date: 09/07/2015]
 	 * </p>
 	 * 
+	 * @return
 	 */
-	public void setearInfRamo() throws HiperionException {
+	public Poliza setearDatosPoliza() {
 
-		Usuario usuario = usuarioBean.getSessionUser();
+		Poliza poliza = new Poliza();
 
-		ramoRoboAsalto.setTasaRoboAsalto(ramoRoboAsaltoBean.getTasaRobo());
-		ramoRoboAsalto.setTasaHurtoRobo(ramoRoboAsaltoBean.getMinimoHurto());
-		ramoRoboAsalto.setTasaPropiedad(ramoRoboAsaltoBean.getTasaPropiedad());
-		ramoRoboAsalto.setTasaContenidos(ramoRoboAsaltoBean.getTasaContenidos());
-		// TODO agregar deducibles modelo
+		poliza.setNumeroPoliza(polizaBean.getNumeroPoliza());
+		poliza.setNumeroAnexo(polizaBean.getNumeroAnexo());
+		poliza.setEjecutivo(polizaBean.getEjecutivo().getNombreUsuario());
+		poliza.setVigenciaDesde(polizaBean.getVigenciaDesde());
+		poliza.setVigenciaHasta(polizaBean.getVigenciaHasta());
+		poliza.setDiasCobertura(polizaBean.getDiasCobertura());
+		poliza.setSumaAsegurada(polizaBean.getSumaAsegurada());
+		poliza.setPrimaNeta(BigDecimal.valueOf(polizaBean.getPrimaNeta()));
+		poliza.setSuperBanSeguros(polizaBean.getSuperBanSeguros());
+		poliza.setSeguroCampesino(BigDecimal.valueOf(polizaBean.getSeguroCampesino()));
+		poliza.setDerechoEmision(BigDecimal.valueOf(polizaBean.getDerechoEmision()));
+		poliza.setRamo(1);
+		poliza.setEstadoPoliza("COTIZADO");
 
-		ramoRoboAsalto.setIdUsuarioCreacion(usuario.getIdUsuario());
-		ramoRoboAsalto.setFechaCreacion(new Date());
-		ramoRoboAsalto.setEstado(EstadoEnum.A);
+		PagoPoliza pagoPoliza = new PagoPoliza();
+		pagoPoliza.setNumeroFactura(polizaBean.getNumeroFactura());
+		pagoPoliza.setSubtotal(polizaBean.getSubtotal());
+		pagoPoliza.setAdicionalSegCampesino(polizaBean.getAdicionalSegCampesino());
+		pagoPoliza.setIva(polizaBean.getIva());
+		pagoPoliza.setCuotaInicial(polizaBean.getCuotaInicial());
+		pagoPoliza.setValorTotalPagoPoliza(polizaBean.getTotal());
+		pagoPoliza.setEstado(EstadoEnum.A);
+		pagoPoliza.setFechaCreacion(new Date());
+		pagoPoliza.setIdUsuarioCreacion(usuario.getIdUsuario());
 
-		MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.setearInformacion"));
+		List<Financiamiento> financiamientos = new ArrayList<>();
+		for (TablaAmortizacionDTO financiamiento : polizaBean.getFinanciamientos()) {
+			Financiamiento financiamientoTemp = new Financiamiento();
+			financiamientoTemp.setNumeroCuota(financiamiento.getNumeroLetra());
+			financiamientoTemp.setValorLetra(BigDecimal.valueOf(financiamiento.getValor()));
+			financiamientoTemp.setFechaVencimiento(financiamiento.getFechaVencimiento());
 
+			financiamientos.add(financiamientoTemp);
+		}
+
+		pagoPoliza.setFinanciamientos(financiamientos);
+
+		poliza.setPagoPoliza(pagoPoliza);
+
+		return poliza;
 	}
-
-
 
 	/**
 	 * 
@@ -222,7 +260,6 @@ public class RoboAsaltoBacking implements Serializable {
 				clausulaDTO.setClausula(clausula.getClausulaAddRobo());
 				clausulaDTO.setSeleccion(false);
 
-				
 				clausulasAdicionalesDTO.add(clausulaDTO);
 			}
 
@@ -262,9 +299,31 @@ public class RoboAsaltoBacking implements Serializable {
 
 	}
 
-	
-	public void guadraRamo() throws HiperionException {
+	/**
+	 * 
+	 * <b> Permite guardar los datos de la poliza en la base de datos. </b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: 29/08/2015]
+	 * </p>
+	 * 
+	 * @throws HiperionException
+	 */
+	public void guadarRamo() throws HiperionException {
+
 		try {
+
+			Poliza poliza = setearDatosPoliza();
+
+			ramoRoboAsalto.setTasaRoboAsalto(ramoRoboAsaltoBean.getTasaRobo());
+			ramoRoboAsalto.setTasaHurtoRobo(ramoRoboAsaltoBean.getMinimoHurto());
+			ramoRoboAsalto.setTasaPropiedad(ramoRoboAsaltoBean.getTasaPropiedad());
+			ramoRoboAsalto.setTasaContenidos(ramoRoboAsaltoBean.getTasaContenidos());
+			// TODO agregar deducibles modelo
+
+			ramoRoboAsalto.setIdUsuarioCreacion(usuario.getIdUsuario());
+			ramoRoboAsalto.setFechaCreacion(new Date());
+			ramoRoboAsalto.setEstado(EstadoEnum.A);
+
 			if (ramoRoboAsaltoBean.getObjetoaseguradolist().isEmpty()) {
 				List<ObjAsegRobo> listObjetos = new ArrayList<>();
 				for (ObjetoAseguradoRoboDTO objeto : ramoRoboAsaltoBean.getObjetoaseguradolist()) {
@@ -291,10 +350,13 @@ public class RoboAsaltoBacking implements Serializable {
 			} else {
 				MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.error.save"));
 			}
-			ramoRoboAsaltoService.guardarRamoRoboAsalto(ramoRoboAsalto);
+			ramoRoboAsaltoService.guardarRamoRoboAsalto(ramoRoboAsalto, poliza);
+
 			MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.save"));
+
 			ramoRoboAsalto = new RamoRoboAsalto();
 			ramoRoboAsaltoBean.getObjetoaseguradolist().clear();
+
 		} catch (HiperionException e) {
 			log.error("Error al momento de guardar el ramo robo y/o asalto", e);
 			MessagesController.addError(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.error.save"));
@@ -302,6 +364,181 @@ public class RoboAsaltoBacking implements Serializable {
 			throw new HiperionException(e);
 		}
 
+	}
+
+	/**
+	 * 
+	 * <b> permite setear las coberturas seleccionadas en el Bean. </b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: 14/07/2015]
+	 * </p>
+	 * 
+	 */
+	public void setearCoberturas() {
+		int contCoberturas = 0;
+		List<CoberturaRobo> coberturas = new ArrayList<>();
+		for (CoberturaDTO coberturaDTO : coberturasDTO) {
+			if (coberturaDTO.getSeleccion()) {
+				contCoberturas++;
+				CoberturaRobo cobertura = new CoberturaRobo();
+				cobertura.setCoberturaRobo(coberturaDTO.getCobertura());
+
+				coberturas.add(cobertura);
+			}
+		}
+
+		if (contCoberturas == 0) {
+			MessagesController.addWarn(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.warn.coberturas"));
+		} else {
+			ramoRoboAsalto.setCoberturaRobos(coberturas);
+			MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.coberturas"));
+		}
+	}
+
+	/**
+	 * 
+	 * <b> permite setear las coberturas adicionales seleccionadas en el Bean. </b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: 14/07/2015]
+	 * </p>
+	 * 
+	 */
+	public void setearCoberturasAdd() {
+		int contCoberturas = 0;
+		List<CobertAddRobo> coberturas = new ArrayList<>();
+		for (CoberturaAdicionalDTO coberturaDTO : coberturasAddDTO) {
+			if (coberturaDTO.getSeleccion()) {
+				contCoberturas++;
+				CobertAddRobo cobertura = new CobertAddRobo();
+				cobertura.setCoberturaAddRobo(coberturaDTO.getCobertura());
+
+				coberturas.add(cobertura);
+			}
+		}
+
+		if (contCoberturas == 0) {
+			MessagesController.addWarn(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.warn.coberturasAdd"));
+		} else {
+			ramoRoboAsalto.setCobertAddRobos(coberturas);
+			MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.coberturasAdd"));
+		}
+	}
+
+	/**
+	 * 
+	 * <b> permite setear las clausualas adicionales seleccionadas. </b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: 14/07/2015]
+	 * </p>
+	 * 
+	 */
+	public void setearClausulasAdd() {
+
+		int contClausulas = 0;
+		List<ClausulasAddRobo> clausulas = new ArrayList<>();
+		for (ClausulaAdicionalDTO clausualaDTO : clausulasAdicionalesDTO) {
+			if (clausualaDTO.getSeleccion()) {
+				contClausulas++;
+				ClausulasAddRobo clausula = new ClausulasAddRobo();
+				clausula.setClausulaAddRobo(clausualaDTO.getClausula());
+				clausula.setEstado(EstadoEnum.A);
+				clausula.setFechaCreacion(new Date());
+				clausula.setIdUsuarioCreacion(usuario.getIdUsuario());
+
+				clausulas.add(clausula);
+			}
+		}
+		if (contClausulas == 0) {
+			MessagesController.addWarn(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.warn.clausulasAdd"));
+		} else {
+			ramoRoboAsalto.setClausulasAddRobos(clausulas);
+			MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.clausulasAdd"));
+		}
+
+	}
+
+	/**
+	 * 
+	 * <b> permite setear las condiciones especiales seleccionadas en el Bean. </b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: 14/07/2015]
+	 * </p>
+	 * 
+	 */
+	public void setearCondiciones() {
+		int contCondicion = 0;
+		List<CondEspRobo> condiciones = new ArrayList<>();
+		for (CondicionEspecialDTO condicionDTO : condicionesEspecialesDTO) {
+			if (condicionDTO.getSeleccion()) {
+				contCondicion++;
+				CondEspRobo condicion = new CondEspRobo();
+				condicion.setCondicionEspRobo(condicionDTO.getCondicionEspecial());
+
+				condiciones.add(condicion);
+			}
+		}
+		if (contCondicion == 0) {
+			MessagesController.addWarn(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.warn.condicionesEsp"));
+		} else {
+			ramoRoboAsalto.setCondEspRobos(condiciones);
+			MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.condicionesEsp"));
+		}
+	}
+
+	/**
+	 * 
+	 * <b> Permite editar un registro de la tabla</b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: Aug 3, 2014]
+	 * </p>
+	 * 
+	 * @param event
+	 */
+	public void onEditCobertura(RowEditEvent event) {
+		FacesMessage msg = new FacesMessage("Item Edited", ((CoberturaDTO) event.getObject()).getCobertura());
+		FacesContext.getCurrentInstance().addMessage(null, msg);
+	}
+
+	/**
+	 * 
+	 * <b> Permite editar un registro de la tabla</b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: Aug 3, 2014]
+	 * </p>
+	 * 
+	 * @param event
+	 */
+	public void onEditClausulasAdd(RowEditEvent event) {
+		FacesMessage msg = new FacesMessage("Item Edited", ((ClausulaAdicionalDTO) event.getObject()).getClausula());
+		FacesContext.getCurrentInstance().addMessage(null, msg);
+	}
+
+	/**
+	 * 
+	 * <b> Permite editar un registro de la tabla</b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: Aug 3, 2014]
+	 * </p>
+	 * 
+	 * @param event
+	 */
+	public void onEditCondicionesEsp(RowEditEvent event) {
+		FacesMessage msg = new FacesMessage("Item Edited", ((CondicionEspecialDTO) event.getObject()).getCondicionEspecial());
+		FacesContext.getCurrentInstance().addMessage(null, msg);
+	}
+
+	/**
+	 * 
+	 * <b> Permite editar un registro de la tabla</b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: Aug 3, 2014]
+	 * </p>
+	 * 
+	 * @param event
+	 */
+	public void onEditCoberturaAdd(RowEditEvent event) {
+		FacesMessage msg = new FacesMessage("Item Edited", ((CoberturaAdicionalDTO) event.getObject()).getCobertura());
+		FacesContext.getCurrentInstance().addMessage(null, msg);
 	}
 
 	/**
@@ -488,6 +725,21 @@ public class RoboAsaltoBacking implements Serializable {
 	 */
 	public void setCondicionesEspecialesDTO(List<CondicionEspecialDTO> condicionesEspecialesDTO) {
 		this.condicionesEspecialesDTO = condicionesEspecialesDTO;
+	}
+
+	/**
+	 * @return the polizaBean
+	 */
+	public PolizaBean getPolizaBean() {
+		return polizaBean;
+	}
+
+	/**
+	 * @param polizaBean
+	 *            the polizaBean to set
+	 */
+	public void setPolizaBean(PolizaBean polizaBean) {
+		this.polizaBean = polizaBean;
 	}
 
 }
