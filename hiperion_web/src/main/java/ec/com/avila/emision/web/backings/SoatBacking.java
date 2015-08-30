@@ -5,6 +5,7 @@
 package ec.com.avila.emision.web.backings;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -13,20 +14,28 @@ import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
 import org.apache.log4j.Logger;
+import org.primefaces.event.RowEditEvent;
 
+import ec.com.avila.emision.web.beans.PolizaBean;
 import ec.com.avila.emision.web.beans.RamoSoatBean;
 import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.dto.CoberturaDTO;
+import ec.com.avila.hiperion.dto.TablaAmortizacionDTO;
 import ec.com.avila.hiperion.emision.entities.Catalogo;
 import ec.com.avila.hiperion.emision.entities.CobertSoat;
 import ec.com.avila.hiperion.emision.entities.DetalleAnexo;
 import ec.com.avila.hiperion.emision.entities.DetalleCatalogo;
+import ec.com.avila.hiperion.emision.entities.Financiamiento;
+import ec.com.avila.hiperion.emision.entities.PagoPoliza;
+import ec.com.avila.hiperion.emision.entities.Poliza;
 import ec.com.avila.hiperion.emision.entities.Ramo;
 import ec.com.avila.hiperion.emision.entities.RamoSoat;
 import ec.com.avila.hiperion.emision.entities.Usuario;
@@ -87,13 +96,18 @@ public class SoatBacking implements Serializable {
 
 	@ManagedProperty(value = "#{ramoSoatBean}")
 	private RamoSoatBean ramoSoatBean;
+	@ManagedProperty(value = "#{polizaBean}")
+	private PolizaBean polizaBean;
 
 	Logger log = Logger.getLogger(SoatBacking.class);
 	RamoSoat ramoSoat = new RamoSoat();
+	private Usuario usuario;
 
 	@PostConstruct
 	public void inicializar() {
 		try {
+
+			usuario = usuarioBean.getSessionUser();
 
 			Ramo ramo = ramoService.consultarRamoPorCodigo("ST");
 
@@ -140,31 +154,141 @@ public class SoatBacking implements Serializable {
 
 	}
 
+	/**
+	 * 
+	 * <b> Permite setear los datos de la poliza. </b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: 09/07/2015]
+	 * </p>
+	 * 
+	 * @return
+	 */
+	public Poliza setearDatosPoliza() {
+
+		Poliza poliza = new Poliza();
+
+		poliza.setNumeroPoliza(polizaBean.getNumeroPoliza());
+		poliza.setNumeroAnexo(polizaBean.getNumeroAnexo());
+		poliza.setEjecutivo(polizaBean.getEjecutivo().getNombreUsuario());
+		poliza.setVigenciaDesde(polizaBean.getVigenciaDesde());
+		poliza.setVigenciaHasta(polizaBean.getVigenciaHasta());
+		poliza.setDiasCobertura(polizaBean.getDiasCobertura());
+		poliza.setSumaAsegurada(polizaBean.getSumaAsegurada());
+		poliza.setPrimaNeta(BigDecimal.valueOf(polizaBean.getPrimaNeta()));
+		poliza.setSuperBanSeguros(polizaBean.getSuperBanSeguros());
+		poliza.setSeguroCampesino(BigDecimal.valueOf(polizaBean.getSeguroCampesino()));
+		poliza.setDerechoEmision(BigDecimal.valueOf(polizaBean.getDerechoEmision()));
+		poliza.setRamo(1);
+		poliza.setEstadoPoliza("COTIZADO");
+
+		PagoPoliza pagoPoliza = new PagoPoliza();
+		pagoPoliza.setNumeroFactura(polizaBean.getNumeroFactura());
+		pagoPoliza.setSubtotal(polizaBean.getSubtotal());
+		pagoPoliza.setAdicionalSegCampesino(polizaBean.getAdicionalSegCampesino());
+		pagoPoliza.setIva(polizaBean.getIva());
+		pagoPoliza.setCuotaInicial(polizaBean.getCuotaInicial());
+		pagoPoliza.setValorTotalPagoPoliza(polizaBean.getTotal());
+		pagoPoliza.setEstado(EstadoEnum.A);
+		pagoPoliza.setFechaCreacion(new Date());
+		pagoPoliza.setIdUsuarioCreacion(usuario.getIdUsuario());
+
+		List<Financiamiento> financiamientos = new ArrayList<>();
+		for (TablaAmortizacionDTO financiamiento : polizaBean.getFinanciamientos()) {
+			Financiamiento financiamientoTemp = new Financiamiento();
+			financiamientoTemp.setNumeroCuota(financiamiento.getNumeroLetra());
+			financiamientoTemp.setValorLetra(BigDecimal.valueOf(financiamiento.getValor()));
+			financiamientoTemp.setFechaVencimiento(financiamiento.getFechaVencimiento());
+
+			financiamientos.add(financiamientoTemp);
+		}
+
+		pagoPoliza.setFinanciamientos(financiamientos);
+
+		poliza.setPagoPoliza(pagoPoliza);
+
+		return poliza;
+	}
+
+	/**
+	 * 
+	 * <b> Permite guaraadar la informacion de la poliza en la base de datos. </b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: 30/08/2015]
+	 * </p>
+	 * 
+	 * @throws HiperionException
+	 */
 	public void guardarRamo() throws HiperionException {
 
-		Usuario usuario = usuarioBean.getSessionUser();
-
-		ramoSoat.setAsegurado(ramoSoatBean.getAsegurado());
-		ramoSoat.setColorSoat(ramoSoatBean.getColor());
-		ramoSoat.setPlacaSoat(ramoSoatBean.getPlaca());
-		ramoSoat.setChasisSoat(ramoSoatBean.getChasis());
-		ramoSoat.setAnioSoat(ramoSoatBean.getAnio());
-		ramoSoat.setCilindrajeSoat(ramoSoatBean.getCilindraje());
-
-		ramoSoat.setIdUsuarioCreacion(usuario.getIdUsuario());
-		ramoSoat.setFechaCreacion(new Date());
-		ramoSoat.setEstado(EstadoEnum.A);
-
 		try {
-			ramoSoatService.guardarRamoSoat(ramoSoat);
-			MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.save.sOjeto"));
+
+			Poliza poliza = setearDatosPoliza();
+
+			ramoSoat.setAsegurado(ramoSoatBean.getAsegurado());
+			ramoSoat.setColorSoat(ramoSoatBean.getColor());
+			ramoSoat.setPlacaSoat(ramoSoatBean.getPlaca());
+			ramoSoat.setChasisSoat(ramoSoatBean.getChasis());
+			ramoSoat.setAnioSoat(ramoSoatBean.getAnio());
+			ramoSoat.setCilindrajeSoat(ramoSoatBean.getCilindraje());
+
+			ramoSoat.setIdUsuarioCreacion(usuario.getIdUsuario());
+			ramoSoat.setFechaCreacion(new Date());
+			ramoSoat.setEstado(EstadoEnum.A);
+
+			ramoSoatService.guardarRamoSoat(ramoSoat, poliza);
+			MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.save"));
+
 		} catch (HiperionException e) {
 			log.error("Error al momento de guardar el Ramo Soat", e);
-			MessagesController.addError(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.error.soat"));
+			MessagesController.addError(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.error.save"));
+
 			throw new HiperionException(e);
 
 		}
 
+	}
+
+	/**
+	 * 
+	 * <b> permite setear las coberturas seleccionadas en el Bean. </b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: 14/07/2015]
+	 * </p>
+	 * 
+	 */
+	public void setearCoberturas() {
+		int contCoberturas = 0;
+		List<CobertSoat> coberturas = new ArrayList<>();
+		for (CoberturaDTO coberturaDTO : coberturasDTO) {
+			if (coberturaDTO.getSeleccion()) {
+				contCoberturas++;
+				CobertSoat cobertura = new CobertSoat();
+				cobertura.setCoberturaSoat(coberturaDTO.getCobertura());
+
+				coberturas.add(cobertura);
+			}
+		}
+
+		if (contCoberturas == 0) {
+			MessagesController.addWarn(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.warn.coberturas"));
+		} else {
+			ramoSoat.setCobertSoats(coberturas);
+			MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.coberturas"));
+		}
+	}
+
+	/**
+	 * 
+	 * <b> Permite editar un registro de la tabla</b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: Aug 3, 2014]
+	 * </p>
+	 * 
+	 * @param event
+	 */
+	public void onEditCobertura(RowEditEvent event) {
+		FacesMessage msg = new FacesMessage("Item Edited", ((CoberturaDTO) event.getObject()).getCobertura());
+		FacesContext.getCurrentInstance().addMessage(null, msg);
 	}
 
 	/**
@@ -453,6 +577,21 @@ public class SoatBacking implements Serializable {
 	 */
 	public void setCoberturasDTO(List<CoberturaDTO> coberturasDTO) {
 		this.coberturasDTO = coberturasDTO;
+	}
+
+	/**
+	 * @return the polizaBean
+	 */
+	public PolizaBean getPolizaBean() {
+		return polizaBean;
+	}
+
+	/**
+	 * @param polizaBean
+	 *            the polizaBean to set
+	 */
+	public void setPolizaBean(PolizaBean polizaBean) {
+		this.polizaBean = polizaBean;
 	}
 
 }

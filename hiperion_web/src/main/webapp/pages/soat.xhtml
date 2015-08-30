@@ -121,51 +121,86 @@
 													<p:fileUpload fileLimit="1" />
 												</h:panelGrid>
 											</p:panel>
-											<!-- Footer del Formulario -->
-											<f:facet name="footer">
-												<div align="center">
-													<p:commandButton id="guardarBtnId" actionListener="#{soatBacking.guardarRamo}" icon="icon-save" value="#{emision['boton.guardar']}"
-														title="Guardar" update="formSoat, idPnlSoat" />
-													<p:commandButton id="cancelarBtnId" icon="icon-cancel" value="#{emision['boton.cancelar']}" process="@this" title="Cancelar" />
-
-													<!-- DESCARGAR DOCUMENTOS -->
-													<h:panelGrid columns="2">
-														<p:commandLink title="Descargar syllabus" actionListener="#{soatBacking.descargarSoatPDF()}">
-															<h:graphicImage name="pdf.png" library="img" />
-														</p:commandLink>
-													</h:panelGrid>
-												</div>
-											</f:facet>
+											
 										</h:panelGrid>
 									</div>
 								</h:form>
-							</p:tab>
-							<!-- COBERTURAS -->
-							<p:tab title="#{emision['soat.tab.coberturas']}">
-								<h:form id="coberturaForm">
-									<p:dataTable value="#{soatBacking.coberturasDTO}" var="cobertura" paginator="true" rows="4">
-										<p:column>
-											<f:facet name="header">
-												<h:outputLabel value="#{emision['anexo.titulo.cob']}" />
-											</f:facet>
-											<h:outputText value="#{cobertura.cobertura}" />
-										</p:column>
-										<p:column>
-											<f:facet name="header">
-												<h:outputLabel value="#{emision['lbl.seleccion']}" />
-											</f:facet>
-											<div align="center">
-												<p:selectBooleanCheckbox value="#{cobertura.seleccion}" />
-											</div>
-										</p:column>
-									</p:dataTable>
-								</h:form>
+								<p:spacer height="30px;" />
+								<!-- COBERTURAS -->
+								<h:panelGrid columns="2">
+									<p:outputLabel value="#{emision['lbl.seleccionarCoberturas']}" styleClass="negrita" />
+									<p:commandLink title="#{emision['lbl.seleccionarCoberturas']}" oncomplete="coberturas.show();" update="idCobertura">
+										<h:graphicImage name="check.png" library="img" />
+									</p:commandLink>
+								</h:panelGrid>
+								<p:dialog id="idCobertura" header="#{emision['anexo.titulo.tab.cob']}" widgetVar="coberturas" modal="true" position="center" showEffect="fade"
+									hideEffect="explode" resizable="false" closable="true" width="500" height="300">
+									<h:form id="coberturaForm">
+										<p:messages id="messagesCoberturas" showDetail="true" autoUpdate="true" closable="true" />
+										<p:dataTable id="tablaCoberturas" value="#{soatBacking.coberturasDTO}" var="cobertura" paginator="true" rows="4" editable="true">
+											<p:ajax event="rowEdit" listener="#{soatBacking.onEditCobertura}" />
+											<p:column>
+												<f:facet name="header">
+													<h:outputLabel value="#{emision['anexo.titulo.cob']}" />
+												</f:facet>
+												<h:outputText value="#{cobertura.cobertura}" />
+											</p:column>
+											<p:column>
+												<f:facet name="header">
+													<h:outputLabel value="#{emision['lbl.seleccion']}" />
+												</f:facet>
+												<p:cellEditor>
+													<f:facet name="output">
+														<div align="center">
+															<p:selectBooleanCheckbox value="#{cobertura.seleccion}" disabled="true" />
+														</div>
+													</f:facet>
+													<f:facet name="input">
+														<div align="center">
+															<p:selectBooleanCheckbox value="#{cobertura.seleccion}" />
+														</div>
+													</f:facet>
+												</p:cellEditor>
+											</p:column>
+											<p:column headerText="Options" style="width:50px">
+												<p:rowEditor />
+											</p:column>
+										</p:dataTable>
+										<p:spacer height="15px;" />
+										<div align="center">
+											<p:commandButton id="guardarCoberturas" process="@this" actionListener="#{soatBacking.setearCoberturas()}" icon="icon-save"
+												value="#{emision['boton.guardar']}" title="Guardar" oncomplete="coberturas.hide()" />
+										</div>
+									</h:form>
+								</p:dialog>
 							</p:tab>
 						</p:tabView>
 					</ui:define>
 				</ui:decorate>
 			</ui:define>
 		</ui:decorate>
+	</ui:define>
+	<ui:define name="buttons">
+		<h:form>
+			<h:panelGrid columns="1">
+				<h:commandLink action="hiperion.xhtml">
+					<h:graphicImage name="home.png" library="img" />
+				</h:commandLink>
+				<p:commandLink title="Guardar Informacion poliza" process="@this" actionListener="#{soatBacking.guardarRamo()}">
+					<h:graphicImage name="save.png" library="img" />
+				</p:commandLink>
+				<p:commandLink onclick="help.show()">
+					<h:graphicImage name="helpII.png" library="img" />
+				</p:commandLink>
+			</h:panelGrid>
+			<p:dialog header="Ramo Agropecuario" widgetVar="help" showEffect="explode" hideEffect="bounce" height="100">
+				<h:panelGrid columns="1">
+					<h:outputText value="Seguro agricola" />
+					<h:outputText value="Para soporte en cualqueira de las funcionalidades" />
+					<h:outputText value="Por favor comuniquese con Franklin Pozo, Administradr del Sitema Hiperion" />
+				</h:panelGrid>
+			</p:dialog>
+		</h:form>
 	</ui:define>
 </ui:composition>
 </html>
