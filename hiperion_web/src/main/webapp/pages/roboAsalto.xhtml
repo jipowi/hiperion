@@ -445,7 +445,7 @@
 											<p:spacer height="30px;" />
 											<f:facet name="footer">
 												<div align="center">
-													<p:commandButton id="guardarRoboBtnId" oncomplete="asmDlg.hide();" actionListener="#{roboAsaltoBacking.guadraRamo()}" icon="icon-save"
+													<p:commandButton id="guardarRoboBtnId" oncomplete="asmDlg.hide();" actionListener="#{roboAsaltoBacking.guadarRamo()}" icon="icon-save"
 														value="#{emision['boton.guardar']}" title="Guardar" update="coberturaForm" />
 													<p:commandButton id="cancelarBtnId" oncomplete="asmDlg.hide();" icon="icon-cancel" value="#{emision['boton.cancelar']}" process="@this"
 														title="Cancelar" />
@@ -467,7 +467,7 @@
 				<h:commandLink action="hiperion.xhtml">
 					<h:graphicImage name="home.png" library="img" />
 				</h:commandLink>
-				<p:commandLink title="Guardar Informacion poliza" process="@this" actionListener="#{roboAsaltoBacking.guardarRamo()}">
+				<p:commandLink title="Guardar Informacion poliza" process="@this" actionListener="#{roboAsaltoBacking.guadarRamo()}">
 					<h:graphicImage name="save.png" library="img" />
 				</p:commandLink>
 				<p:commandLink onclick="help.show()">

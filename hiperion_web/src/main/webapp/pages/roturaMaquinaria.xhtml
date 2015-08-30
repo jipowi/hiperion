@@ -61,24 +61,154 @@
 													<p:fileUpload fileLimit="1" />
 												</h:panelGrid>
 											</p:panel>
-
-											<!-- Footer del Formulario -->
-											<f:facet name="footer">
-												<div align="center">
-													<p:commandButton id="guardarBtnId" actionListener="#{roturaMaquinariaBacking.setearInfRamo()}" icon="icon-save"
-														value="#{emision['boton.aceptar']}" title="Guardar" update="formPrincipal, ramoRoturaMaquinaria" />
-													<p:commandButton id="cancelarBtnId" icon="icon-cancel" value="#{emision['boton.cancelar']}" process="@this" title="Cancelar" />
-													<!-- DESCARGAR DOCUMENTOS -->
-													<h:panelGrid columns="2">
-														<p:commandLink title="Descargar syllabus" actionListener="#{roturaMaquinariaBacking.descargarRoturaMaquinariaPDF()}">
-															<h:graphicImage name="pdf.png" library="img" />
-														</p:commandLink>
-													</h:panelGrid>
-												</div>
-											</f:facet>
 										</h:panelGrid>
 									</div>
 								</h:form>
+								<p:spacer height="30px;" />
+								<!-- COBERTURAS -->
+								<h:panelGrid columns="2">
+									<p:outputLabel value="#{emision['lbl.seleccionarCoberturas']}" styleClass="negrita" />
+									<p:commandLink title="#{emision['lbl.seleccionarCoberturas']}" oncomplete="coberturas.show();" update="idCobertura">
+										<h:graphicImage name="check.png" library="img" />
+									</p:commandLink>
+								</h:panelGrid>
+								<p:dialog id="idCobertura" header="#{emision['anexo.titulo.tab.cob']}" widgetVar="coberturas" modal="true" position="center" showEffect="fade"
+									hideEffect="explode" resizable="false" closable="true" width="500" height="300">
+									<h:form id="coberturaForm">
+										<p:messages id="messagesCoberturas" showDetail="true" autoUpdate="true" closable="true" />
+										<p:dataTable id="tablaCoberturas" value="#{roturaMaquinariaBacking.coberturasDTO}" var="cobertura" paginator="true" rows="4" editable="true">
+											<p:ajax event="rowEdit" listener="#{roturaMaquinariaBacking.onEditCobertura}" />
+											<p:column>
+												<f:facet name="header">
+													<h:outputLabel value="#{emision['anexo.titulo.cob']}" />
+												</f:facet>
+												<h:outputText value="#{cobertura.cobertura}" />
+											</p:column>
+											<p:column>
+												<f:facet name="header">
+													<h:outputLabel value="#{emision['lbl.seleccion']}" />
+												</f:facet>
+												<p:cellEditor>
+													<f:facet name="output">
+														<div align="center">
+															<p:selectBooleanCheckbox value="#{cobertura.seleccion}" disabled="true" />
+														</div>
+													</f:facet>
+													<f:facet name="input">
+														<div align="center">
+															<p:selectBooleanCheckbox value="#{cobertura.seleccion}" />
+														</div>
+													</f:facet>
+												</p:cellEditor>
+											</p:column>
+											<p:column headerText="Options" style="width:50px">
+												<p:rowEditor />
+											</p:column>
+										</p:dataTable>
+										<p:spacer height="15px;" />
+										<div align="center">
+											<p:commandButton id="guardarCoberturas" process="@this" actionListener="#{roturaMaquinariaBacking.setearCoberturas()}" icon="icon-save"
+												value="#{emision['boton.guardar']}" title="Guardar" oncomplete="coberturas.hide()" />
+										</div>
+									</h:form>
+								</p:dialog>
+								<!-- COBERTURAS ADICONALES-->
+								<h:panelGrid columns="2">
+									<p:outputLabel value="#{emision['lbl.seleccionarCoberturasAdd']}" styleClass="negrita" />
+									<p:commandLink title="#{emision['lbl.seleccionarCoberturasAdd']}" oncomplete="coberturasAdd.show();" update="idCoberturaAdd">
+										<h:graphicImage name="check.png" library="img" />
+									</p:commandLink>
+								</h:panelGrid>
+								<p:dialog id="idCoberturaAdd" header="#{emision['anexo.titulo.tab.cob']}" widgetVar="coberturasAdd" modal="true" position="center"
+									showEffect="fade" hideEffect="explode" resizable="false" closable="true" width="500" height="300">
+									<h:form id="coberturaAddForm">
+										<p:messages id="messagesCoberturas" showDetail="true" autoUpdate="true" closable="true" />
+										<p:dataTable id="tablaCoberturas" value="#{roturaMaquinariaBacking.coberturasAddDTO}" var="coberturaAdd" paginator="true" rows="4"
+											editable="true">
+											<p:ajax event="rowEdit" listener="#{roturaMaquinariaBacking.onEditCoberturaAdd}" />
+											<p:column>
+												<f:facet name="header">
+													<h:outputLabel value="#{emision['anexo.titulo.cobad']}" />
+												</f:facet>
+												<h:outputText value="#{coberturaAdd.cobertura}" />
+											</p:column>
+											<p:column>
+												<f:facet name="header">
+													<h:outputLabel value="#{emision['lbl.seleccion']}" />
+												</f:facet>
+												<p:cellEditor>
+													<f:facet name="output">
+														<div align="center">
+															<p:selectBooleanCheckbox value="#{coberturaAdd.seleccion}" disabled="true" />
+														</div>
+													</f:facet>
+													<f:facet name="input">
+														<div align="center">
+															<p:selectBooleanCheckbox value="#{coberturaAdd.seleccion}" />
+														</div>
+													</f:facet>
+												</p:cellEditor>
+											</p:column>
+											<p:column headerText="Options" style="width:50px">
+												<p:rowEditor />
+											</p:column>
+										</p:dataTable>
+										<p:spacer height="15px;" />
+										<div align="center">
+											<p:commandButton id="guardarCoberturas" process="@this" actionListener="#{roturaMaquinariaBacking.setearCoberturasAdd()}" icon="icon-save"
+												value="#{emision['boton.guardar']}" title="Guardar" oncomplete="coberturasAdd.hide()" />
+										</div>
+									</h:form>
+								</p:dialog>
+
+								<!-- CLAUSULAS ADICIONALES -->
+								<h:panelGrid columns="2">
+									<p:outputLabel value="#{emision['lbl.seleccionarClausulasAdd']}" styleClass="negrita" />
+									<p:commandLink title="#{emision['lbl.seleccionarClausulasAdd']}" oncomplete="clausulasAdd.show();"
+										actionListener="#{roturaMaquinariaBacking.obtenerClausulasAdicionales()}" update="idClausulasAdd">
+										<h:graphicImage name="check.png" library="img" />
+									</p:commandLink>
+								</h:panelGrid>
+								<p:dialog id="idClausulasAdd" header="#{emision['ap.tab.clausulasAdicionales']}" widgetVar="clausulasAdd" modal="true" position="center"
+									showEffect="fade" hideEffect="explode" resizable="false" closable="true" width="500" height="300">
+									<h:form id="clausulaAddEspForm">
+										<p:messages id="messagesClausulas" showDetail="true" autoUpdate="true" closable="true" />
+										<p:dataTable id="tablaClausulas" value="#{roturaMaquinariaBacking.clausulasAdicionalesDTO}" var="clausula" paginator="true" editable="true">
+											<p:ajax event="rowEdit" listener="#{roturaMaquinariaBacking.onEditClausulasAdd}" />
+											<p:column>
+												<f:facet name="header">
+													<h:outputLabel value="#{emision['anexo.titulo.cad']}" />
+												</f:facet>
+												<h:outputText value="#{clausula.clausula}" />
+											</p:column>
+											<p:column>
+												<f:facet name="header">
+													<h:outputLabel value="#{emision['lbl.seleccion']}" />
+												</f:facet>
+												<p:cellEditor>
+													<f:facet name="output">
+														<div align="center">
+															<p:selectBooleanCheckbox value="#{clausula.seleccion}" disabled="true" />
+														</div>
+													</f:facet>
+													<f:facet name="input">
+														<div align="center">
+															<p:selectBooleanCheckbox value="#{clausula.seleccion}" />
+														</div>
+													</f:facet>
+												</p:cellEditor>
+											</p:column>
+											<p:column headerText="Options" style="width:50px">
+												<p:rowEditor />
+											</p:column>
+										</p:dataTable>
+										<p:spacer height="15px;" />
+										<div align="center">
+											<p:commandButton id="guardarClausulas" process="@this" actionListener="#{roturaMaquinariaBacking.setearClausulasAdd()}" icon="icon-save"
+												value="#{emision['boton.guardar']}" title="Guardar" oncomplete="clausulasAdd.hide()" />
+										</div>
+									</h:form>
+								</p:dialog>
 
 								<!-- OBJETO ASEGURADO -->
 							</p:tab>
@@ -174,72 +304,7 @@
 												<p:rowEditor />
 											</p:column>
 										</p:dataTable>
-
-										<p:spacer height="30px;" />
-
 									</div>
-								</h:form>
-
-							</p:tab>
-							<!-- COBERTURAS -->
-							<p:tab title="#{emision['rotura.tab.coberturas']}">
-								<h:form id="coberturaForm">
-									<p:dataTable value="#{roturaMaquinariaBacking.coberturasDTO}" var="cobertura" paginator="true" rows="4">
-										<p:column>
-											<f:facet name="header">
-												<h:outputLabel value="#{emision['anexo.titulo.cob']}" />
-											</f:facet>
-											<h:outputText value="#{cobertura.cobertura}" />
-										</p:column>
-										<p:column>
-											<f:facet name="header">
-												<h:outputLabel value="#{emision['lbl.seleccion']}" />
-											</f:facet>
-											<div align="center">
-												<p:selectBooleanCheckbox value="#{cobertura.seleccion}" />
-											</div>
-										</p:column>
-									</p:dataTable>
-								</h:form>
-							</p:tab>
-							<p:tab title="#{emision['rotura.tab.coberturasAdicionales']}">
-								<h:form id="coberturaAddForm">
-									<p:dataTable value="#{roturaMaquinariaBacking.coberturasAddDTO}" var="cobertura" paginator="true" rows="4">
-										<p:column>
-											<f:facet name="header">
-												<h:outputLabel value="#{emision['anexo.titulo.cob']}" />
-											</f:facet>
-											<h:outputText value="#{cobertura.cobertura}" />
-										</p:column>
-										<p:column>
-											<f:facet name="header">
-												<h:outputLabel value="#{emision['lbl.seleccion']}" />
-											</f:facet>
-											<div align="center">
-												<p:selectBooleanCheckbox value="#{cobertura.seleccion}" />
-											</div>
-										</p:column>
-									</p:dataTable>
-								</h:form>
-							</p:tab>
-							<p:tab title="#{emision['rotura.tab.clausulasAdicionales']}">
-								<h:form id="clausulaAddForm">
-									<p:dataTable value="#{roturaMaquinariaBacking.clausulasAdicionalesDTO}" var="clausula" paginator="true" rows="4">
-										<p:column>
-											<f:facet name="header">
-												<h:outputLabel value="#{emision['anexo.titulo.cad']}" />
-											</f:facet>
-											<h:outputText value="#{clausula.clausula}" />
-										</p:column>
-										<p:column>
-											<f:facet name="header">
-												<h:outputLabel value="#{emision['lbl.seleccion']}" />
-											</f:facet>
-											<div align="center">
-												<p:selectBooleanCheckbox value="#{clausula.seleccion}" />
-											</div>
-										</p:column>
-									</p:dataTable>
 								</h:form>
 							</p:tab>
 						</p:tabView>
@@ -247,6 +312,28 @@
 				</ui:decorate>
 			</ui:define>
 		</ui:decorate>
+	</ui:define>
+	<ui:define name="buttons">
+		<h:form>
+			<h:panelGrid columns="1">
+				<h:commandLink action="hiperion.xhtml">
+					<h:graphicImage name="home.png" library="img" />
+				</h:commandLink>
+				<p:commandLink title="Guardar Informacion poliza" process="@this" actionListener="#{roturaMaquinariaBacking.guardarRamo()}">
+					<h:graphicImage name="save.png" library="img" />
+				</p:commandLink>
+				<p:commandLink onclick="help.show()">
+					<h:graphicImage name="helpII.png" library="img" />
+				</p:commandLink>
+			</h:panelGrid>
+			<p:dialog header="Ramo Agropecuario" widgetVar="help" showEffect="explode" hideEffect="bounce" height="100">
+				<h:panelGrid columns="1">
+					<h:outputText value="Seguro agricola" />
+					<h:outputText value="Para soporte en cualqueira de las funcionalidades" />
+					<h:outputText value="Por favor comuniquese con Franklin Pozo, Administradr del Sitema Hiperion" />
+				</h:panelGrid>
+			</p:dialog>
+		</h:form>
 	</ui:define>
 </ui:composition>
 </html>
