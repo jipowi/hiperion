@@ -10,7 +10,15 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
 import ec.com.avila.hiperion.comun.HiperionException;
+import ec.com.avila.hiperion.dao.CoberturaSoatDao;
+import ec.com.avila.hiperion.dao.FinanciamientoDao;
+import ec.com.avila.hiperion.dao.PagoPolizaDao;
+import ec.com.avila.hiperion.dao.PolizaDao;
 import ec.com.avila.hiperion.dao.RamoSoatDao;
+import ec.com.avila.hiperion.emision.entities.CobertSoat;
+import ec.com.avila.hiperion.emision.entities.Financiamiento;
+import ec.com.avila.hiperion.emision.entities.PagoPoliza;
+import ec.com.avila.hiperion.emision.entities.Poliza;
 import ec.com.avila.hiperion.emision.entities.RamoSoat;
 import ec.com.avila.hiperion.servicio.RamoSoatService;
 
@@ -22,13 +30,40 @@ import ec.com.avila.hiperion.servicio.RamoSoatService;
  * @since JDK1.6
  */
 @Stateless
-public class RamoSoatServiceImpl implements RamoSoatService{
+public class RamoSoatServiceImpl implements RamoSoatService {
 
 	@EJB
 	private RamoSoatDao ramoSoatDao;
+	@EJB
+	private PolizaDao polizaDao;
+	@EJB
+	private PagoPolizaDao pagoPolizaDao;
+	@EJB
+	private FinanciamientoDao financiamientoDao;
+	@EJB
+	private CoberturaSoatDao coberturaDao;
 
-	public void guardarRamoSoat(RamoSoat ramoSoat) throws HiperionException {
+	public void guardarRamoSoat(RamoSoat ramoSoat, Poliza poliza) throws HiperionException {
+
+		PagoPoliza pagoPoliza = poliza.getPagoPoliza();
+		pagoPolizaDao.persist(pagoPoliza);
+
+		for (Financiamiento financiamiento : pagoPoliza.getFinanciamientos()) {
+			financiamiento.setPagoPoliza(pagoPoliza);
+			financiamientoDao.persist(financiamiento);
+		}
+
+		polizaDao.persist(poliza);
+
+		ramoSoat.setPoliza(poliza);
+
 		ramoSoatDao.persist(ramoSoat);
+
+		for (CobertSoat cobertura : ramoSoat.getCobertSoats()) {
+			cobertura.setRamoSoat(ramoSoat);
+			coberturaDao.persist(cobertura);
+		}
+
 	}
 
 	public List<RamoSoat> consultarRamoSoat() throws HiperionException {
