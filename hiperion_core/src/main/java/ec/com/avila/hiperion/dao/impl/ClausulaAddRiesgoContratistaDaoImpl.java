@@ -7,7 +7,7 @@ package ec.com.avila.hiperion.dao.impl;
 import javax.ejb.Stateless;
 
 import ec.com.avila.hiperion.dao.ClausulaAddRiesgoContratistaDao;
-import ec.com.avila.hiperion.emision.entities.ClausulasAddRiesgo;
+import ec.com.avila.hiperion.emision.entities.ClausulasAddContratista;
 
 /**
  * 
@@ -18,6 +18,6 @@ import ec.com.avila.hiperion.emision.entities.ClausulasAddRiesgo;
  * @since JDK1.6
  */
 @Stateless
-public class ClausulaAddRiesgoContratistaDaoImpl extends GenericDAOImpl<ClausulasAddRiesgo, Long> implements ClausulaAddRiesgoContratistaDao {
+public class ClausulaAddRiesgoContratistaDaoImpl extends GenericDAOImpl<ClausulasAddContratista, Long> implements ClausulaAddRiesgoContratistaDao {
 
 }
