@@ -23,127 +23,194 @@
 								<p:outputPanel>
 									<p:messages id="messageTodoRiesgoMontaje" showDetail="true" autoUpdate="true" clossable="true" />
 								</p:outputPanel>
-								<div align="center">
-									<h:form id="formPrincipal">
-										<h:panelGrid columns="1" id="todoRiesgoMontaje">
+								<h:form id="formPrincipal">
+									<h:panelGrid columns="1" id="todoRiesgoMontaje">
+										<p:spacer height="15px;" />
+										<p:panel>
+											<h:panelGrid columns="2">
+												<p:outputLabel for="tasa" value="#{emision['montaje.tasa']}" styleClass="negrita" />
+												<p:inputText id="tasa" value="#{ramoTodoRiesgoMontajeBean.tasa}" required="true" requiredMessage="#{emision['montaje.tasa.msn']}" />
+
+												<p:outputLabel for="periodoConstruccion" value="#{emision['montaje.periodoConstruccion']}" styleClass="negrita" />
+												<p:inputText id="periodoConstruccion" value="#{ramoTodoRiesgoMontajeBean.periodoConstruccion}" required="true"
+													requiredMessage="#{emision['montaje.periodoConstruccion.msn']}" />
+
+												<p:outputLabel for="periodoMantenimiento" value="#{emision['montaje.periodoMantenimiento']}" styleClass="negrita" />
+												<p:inputText id="periodoMantenimiento" value="#{ramoTodoRiesgoMontajeBean.periodoMantenimiento}" required="true"
+													requiredMessage="#{emision['montaje.periodoMantenimiento.msn']}" />
+											</h:panelGrid>
+
 											<p:spacer height="15px;" />
-											<p:panel>
-												<h:panelGrid columns="2">
-													<p:outputLabel for="tasa" value="#{emision['montaje.tasa']}" styleClass="negrita" />
-													<p:inputText id="tasa" value="#{ramoTodoRiesgoMontajeBean.tasa}" required="true" requiredMessage="#{emision['montaje.tasa.msn']}" />
 
-													<p:outputLabel for="periodoConstruccion" value="#{emision['montaje.periodoConstruccion']}" styleClass="negrita" />
-													<p:inputText id="periodoConstruccion" value="#{ramoTodoRiesgoMontajeBean.periodoConstruccion}" required="true"
-														requiredMessage="#{emision['montaje.periodoConstruccion.msn']}" />
+											<h:panelGrid columns="2">
+												<h:outputLabel value="#{emision['emision.deducibles']}" />
+												<h:graphicImage name="deducibles.jpg" library="img" />
+											</h:panelGrid>
 
-													<p:outputLabel for="periodoMantenimiento" value="#{emision['montaje.periodoMantenimiento']}" styleClass="negrita" />
-													<p:inputText id="periodoMantenimiento" value="#{ramoTodoRiesgoMontajeBean.periodoMantenimiento}" required="true"
-														requiredMessage="#{emision['montaje.periodoMantenimiento.msn']}" />
+											<h:panelGrid columns="1">
+												<p:outputLabel value="#{emision['montaje.deducible.amparaA']}" styleClass="negrita" />
+												<h:panelGrid columns="4">
+													<p:outputLabel value="#{emision['montaje.deducible.porcentajeConstruccion']}" />
+													<p:inputText value="#{ramoTodoRiesgoMontajeBean.porcentajeConstruccionA}" />
+													<p:outputLabel value="#{emision['montaje.deducible.minimo']}" />
+													<p:inputText value="#{ramoTodoRiesgoMontajeBean.minimoA}" />
 												</h:panelGrid>
-
-												<p:spacer height="15px;" />
-
-												<h:panelGrid columns="2">
-													<h:outputLabel value="#{emision['emision.deducibles']}" />
-													<h:graphicImage name="deducibles.jpg" library="img" />
+											</h:panelGrid>
+											<p:spacer height="30px;" />
+											<h:panelGrid columns="1">
+												<p:outputLabel value="#{emision['montaje.deducible.amparoB']}" styleClass="negrita" />
+												<h:panelGrid columns="4">
+													<p:outputLabel value="#{emision['montaje.deducible.porcentajeConstruccion']}" />
+													<p:inputText value="#{ramoTodoRiesgoMontajeBean.porcentajeConstruccionB}" />
+													<p:outputLabel value="#{emision['montaje.deducible.minimo']}" />
+													<p:inputText value="#{ramoTodoRiesgoMontajeBean.minimoB}" />
 												</h:panelGrid>
-
-												<h:panelGrid columns="1">
-													<p:outputLabel value="#{emision['montaje.deducible.amparaA']}" styleClass="negrita" />
-													<h:panelGrid columns="4">
-														<p:outputLabel value="#{emision['montaje.deducible.porcentajeConstruccion']}" />
-														<p:inputText value="#{ramoTodoRiesgoMontajeBean.porcentajeConstruccionA}" />
-														<p:outputLabel value="#{emision['montaje.deducible.minimo']}" />
-														<p:inputText value="#{ramoTodoRiesgoMontajeBean.minimoA}" />
-													</h:panelGrid>
+											</h:panelGrid>
+											<p:spacer height="30px;" />
+											<h:panelGrid columns="1">
+												<p:outputLabel value="#{emision['montaje.deducible.amparoC']}" styleClass="negrita" />
+												<h:panelGrid columns="4">
+													<p:outputLabel value="#{emision['montaje.deducible.porcentajeConstruccion']}" />
+													<p:inputText value="#{ramoTodoRiesgoMontajeBean.porcentajeConstruccionC}" />
+													<p:outputLabel value="#{emision['montaje.deducible.minimo']}" />
+													<p:inputText value="#{ramoTodoRiesgoMontajeBean.minimoC}" />
 												</h:panelGrid>
-												<p:spacer height="30px;" />
-												<h:panelGrid columns="1">
-													<p:outputLabel value="#{emision['montaje.deducible.amparoB']}" styleClass="negrita" />
-													<h:panelGrid columns="4">
-														<p:outputLabel value="#{emision['montaje.deducible.porcentajeConstruccion']}" />
-														<p:inputText value="#{ramoTodoRiesgoMontajeBean.porcentajeConstruccionB}" />
-														<p:outputLabel value="#{emision['montaje.deducible.minimo']}" />
-														<p:inputText value="#{ramoTodoRiesgoMontajeBean.minimoB}" />
-													</h:panelGrid>
+											</h:panelGrid>
+											<p:spacer height="30px;" />
+											<h:panelGrid columns="1">
+												<p:outputLabel value="#{emision['montaje.deducible.amparoD']}" styleClass="negrita" />
+												<h:panelGrid columns="4">
+													<p:outputLabel value="#{emision['montaje.deducible.porcentajeConstruccion']}" />
+													<p:inputText value="#{ramoTodoRiesgoMontajeBean.porcentajeConstruccionD}" />
+													<p:outputLabel value="#{emision['montaje.deducible.minimo']}" />
+													<p:inputText value="#{ramoTodoRiesgoMontajeBean.minimoD}" />
 												</h:panelGrid>
-												<p:spacer height="30px;" />
-												<h:panelGrid columns="1">
-													<p:outputLabel value="#{emision['montaje.deducible.amparoC']}" styleClass="negrita" />
-													<h:panelGrid columns="4">
-														<p:outputLabel value="#{emision['montaje.deducible.porcentajeConstruccion']}" />
-														<p:inputText value="#{ramoTodoRiesgoMontajeBean.porcentajeConstruccionC}" />
-														<p:outputLabel value="#{emision['montaje.deducible.minimo']}" />
-														<p:inputText value="#{ramoTodoRiesgoMontajeBean.minimoC}" />
-													</h:panelGrid>
+											</h:panelGrid>
+											<p:spacer height="30px;" />
+											<h:panelGrid columns="1">
+												<p:outputLabel value="#{emision['montaje.deducible.amparoG']}" styleClass="negrita" />
+												<h:panelGrid columns="4">
+													<p:outputLabel value="#{emision['montaje.deducible.porcentajeConstruccion']}" />
+													<p:inputText value="#{ramoTodoRiesgoMontajeBean.porcentajeConstruccionG}" />
+													<p:outputLabel value="#{emision['montaje.deducible.minimo']}" />
+													<p:inputText value="#{ramoTodoRiesgoMontajeBean.minimoG}" />
 												</h:panelGrid>
-												<p:spacer height="30px;" />
-												<h:panelGrid columns="1">
-													<p:outputLabel value="#{emision['montaje.deducible.amparoD']}" styleClass="negrita" />
-													<h:panelGrid columns="4">
-														<p:outputLabel value="#{emision['montaje.deducible.porcentajeConstruccion']}" />
-														<p:inputText value="#{ramoTodoRiesgoMontajeBean.porcentajeConstruccionD}" />
-														<p:outputLabel value="#{emision['montaje.deducible.minimo']}" />
-														<p:inputText value="#{ramoTodoRiesgoMontajeBean.minimoD}" />
-													</h:panelGrid>
-												</h:panelGrid>
-												<p:spacer height="30px;" />
-												<h:panelGrid columns="1">
-													<p:outputLabel value="#{emision['montaje.deducible.amparoG']}" styleClass="negrita" />
-													<h:panelGrid columns="4">
-														<p:outputLabel value="#{emision['montaje.deducible.porcentajeConstruccion']}" />
-														<p:inputText value="#{ramoTodoRiesgoMontajeBean.porcentajeConstruccionG}" />
-														<p:outputLabel value="#{emision['montaje.deducible.minimo']}" />
-														<p:inputText value="#{ramoTodoRiesgoMontajeBean.minimoG}" />
-													</h:panelGrid>
-												</h:panelGrid>
-												<p:spacer height="30px;" />
+											</h:panelGrid>
+											<p:spacer height="30px;" />
 
-												<h:panelGrid columns="2">
-													<h:outputLabel value="#{emision['emision.checkDocumentos']}" />
-													<h:graphicImage name="checkbox.png" library="img" />
-												</h:panelGrid>
+											<h:panelGrid columns="2">
+												<h:outputLabel value="#{emision['emision.checkDocumentos']}" />
+												<h:graphicImage name="checkbox.png" library="img" />
+											</h:panelGrid>
 
-												<h:panelGrid columns="1" cellpadding="3">
-													<p:selectBooleanCheckbox value="#{ramoTodoRiesgoMontajeBean.cronograma}" itemLabel="#{emision['montaje.cronograma']}" />
+											<h:panelGrid columns="1" cellpadding="3">
+												<p:selectBooleanCheckbox value="#{ramoTodoRiesgoMontajeBean.cronograma}" itemLabel="#{emision['montaje.cronograma']}" />
 
-													<p:selectBooleanCheckbox value="#{ramoTodoRiesgoMontajeBean.estudioSuelo}" itemLabel="#{emision['montaje.estudioSuelos']}" />
+												<p:selectBooleanCheckbox value="#{ramoTodoRiesgoMontajeBean.estudioSuelo}" itemLabel="#{emision['montaje.estudioSuelos']}" />
 
-													<p:selectBooleanCheckbox value="#{ramoTodoRiesgoMontajeBean.formularioSeguro}" itemLabel="#{emision['montaje.formularioSeguro']}" />
-												</h:panelGrid>
-												<p:spacer height="20px;" />
-
-												<h:panelGrid columns="1" cellpadding="3">
-													<p:outputLabel value="#{emision['montaje.fileCronograma']}" styleClass="negrita" />
-													<p:fileUpload fileLimit="1" />
-													<p:outputLabel value="#{emision['montaje.filePolizaVigente']}" styleClass="negrita" />
-													<p:fileUpload fileLimit="1" />
-													<p:outputLabel value="#{emision['montaje.fileEstudiosSuelo']}" styleClass="negrita" />
-													<p:fileUpload fileLimit="1" />
-													<p:outputLabel value="#{emision['montaje.fileFormulatio']}" styleClass="negrita" />
-													<p:fileUpload fileLimit="1" />
-												</h:panelGrid>
-											</p:panel>
-
-											<!-- Footer del Formulario -->
-											<f:facet name="footer">
-												<div align="center">
-													<p:commandButton id="guardarBtnId" oncomplete="montajeDlg.hide();" actionListener="#{todoRiesgoMontajeBacking.guardarRamo}"
-														icon="icon-save" value="#{emision['boton.guardar']}" title="Guardar" update="formPrincipal,todoRiesgoMontaje" />
-													<p:commandButton id="cancelarBtnId" oncomplete="montajeDlg.hide();" icon="icon-cancel" value="#{emision['boton.cancelar']}"
-														process="@this" title="Cancelar" />
-
-													<!-- DESCARGAR DOCUMENTOS -->
-													<h:panelGrid columns="2">
-														<p:commandLink title="Descargar syllabus" actionListener="#{todoRiesgoMontajeBacking.descargarTodoRiesgoMontajePDF()}">
-															<h:graphicImage name="pdf.png" library="img" />
-														</p:commandLink>
-													</h:panelGrid>
-												</div>
-											</f:facet>
-										</h:panelGrid>
+												<p:selectBooleanCheckbox value="#{ramoTodoRiesgoMontajeBean.formularioSeguro}" itemLabel="#{emision['montaje.formularioSeguro']}" />
+											</h:panelGrid>
+										</p:panel>
+									</h:panelGrid>
+								</h:form>
+								<p:spacer height="30px;" />
+								<!-- COBERTURAS -->
+								<h:panelGrid columns="2">
+									<p:outputLabel value="#{emision['lbl.seleccionarCoberturas']}" styleClass="negrita" />
+									<p:commandLink title="#{emision['lbl.seleccionarCoberturas']}" oncomplete="coberturas.show();" update="idCobertura">
+										<h:graphicImage name="check.png" library="img" />
+									</p:commandLink>
+								</h:panelGrid>
+								<p:dialog id="idCobertura" header="#{emision['anexo.titulo.tab.cob']}" widgetVar="coberturas" modal="true" position="center" showEffect="fade"
+									hideEffect="explode" resizable="false" closable="true" width="500" height="300">
+									<h:form id="coberturaForm">
+										<p:messages id="messagesCoberturas" showDetail="true" autoUpdate="true" closable="true" />
+										<p:dataTable id="tablaCoberturas" value="#{riesgosContratistaBacking.coberturasDTO}" var="cobertura" paginator="true" rows="4"
+											editable="true">
+											<p:ajax event="rowEdit" listener="#{riesgosContratistaBacking.onEditCobertura}" />
+											<p:column>
+												<f:facet name="header">
+													<h:outputLabel value="#{emision['anexo.titulo.cob']}" />
+												</f:facet>
+												<h:outputText value="#{cobertura.cobertura}" />
+											</p:column>
+											<p:column>
+												<f:facet name="header">
+													<h:outputLabel value="#{emision['lbl.seleccion']}" />
+												</f:facet>
+												<p:cellEditor>
+													<f:facet name="output">
+														<div align="center">
+															<p:selectBooleanCheckbox value="#{cobertura.seleccion}" disabled="true" />
+														</div>
+													</f:facet>
+													<f:facet name="input">
+														<div align="center">
+															<p:selectBooleanCheckbox value="#{cobertura.seleccion}" />
+														</div>
+													</f:facet>
+												</p:cellEditor>
+											</p:column>
+											<p:column headerText="Options" style="width:50px">
+												<p:rowEditor />
+											</p:column>
+										</p:dataTable>
+										<p:spacer height="15px;" />
+										<div align="center">
+											<p:commandButton id="guardarCoberturas" process="@this" actionListener="#{riesgosContratistaBacking.setearCoberturas()}" icon="icon-save"
+												value="#{emision['boton.guardar']}" title="Guardar" oncomplete="coberturas.hide()" />
+										</div>
 									</h:form>
-								</div>
+								</p:dialog>
+								<!-- CLAUSULAS ADICIONALES -->
+								<h:panelGrid columns="2">
+									<p:outputLabel value="#{emision['lbl.seleccionarClausulasAdd']}" styleClass="negrita" />
+									<p:commandLink title="#{emision['lbl.seleccionarClausulasAdd']}" oncomplete="clausulasAdd.show();"
+										actionListener="#{riesgosContratistaBacking.obtenerClausulasAdicionales()}" update="idClausulasAdd">
+										<h:graphicImage name="check.png" library="img" />
+									</p:commandLink>
+								</h:panelGrid>
+								<p:dialog id="idClausulasAdd" header="#{emision['ap.tab.clausulasAdicionales']}" widgetVar="clausulasAdd" modal="true" position="center"
+									showEffect="fade" hideEffect="explode" resizable="false" closable="true" width="500" height="300">
+									<h:form id="clausulaAddEspForm">
+										<p:messages id="messagesClausulas" showDetail="true" autoUpdate="true" closable="true" />
+										<p:dataTable id="tablaClausulas" value="#{riesgosContratistaBacking.clausulasAdicionalesDTO}" var="clausula" paginator="true"
+											editable="true">
+											<p:ajax event="rowEdit" listener="#{riesgosContratistaBacking.onEditClausulasAdd}" />
+											<p:column>
+												<f:facet name="header">
+													<h:outputLabel value="#{emision['anexo.titulo.cad']}" />
+												</f:facet>
+												<h:outputText value="#{clausula.clausula}" />
+											</p:column>
+											<p:column>
+												<f:facet name="header">
+													<h:outputLabel value="#{emision['lbl.seleccion']}" />
+												</f:facet>
+												<p:cellEditor>
+													<f:facet name="output">
+														<div align="center">
+															<p:selectBooleanCheckbox value="#{clausula.seleccion}" disabled="true" />
+														</div>
+													</f:facet>
+													<f:facet name="input">
+														<div align="center">
+															<p:selectBooleanCheckbox value="#{clausula.seleccion}" />
+														</div>
+													</f:facet>
+												</p:cellEditor>
+											</p:column>
+											<p:column headerText="Options" style="width:50px">
+												<p:rowEditor />
+											</p:column>
+										</p:dataTable>
+										<p:spacer height="15px;" />
+										<div align="center">
+											<p:commandButton id="guardarClausulas" process="@this" actionListener="#{riesgosContratistaBacking.setearClausulasAdd()}" icon="icon-save"
+												value="#{emision['boton.guardar']}" title="Guardar" oncomplete="clausulasAdd.hide()" />
+										</div>
+									</h:form>
+								</p:dialog>
 							</p:tab>
 							<p:tab title="#{emision['montaje.tab.objetoAsegurado']}">
 								<div align="center">
@@ -189,52 +256,33 @@
 									</h:form>
 								</div>
 							</p:tab>
-							<!-- COBERTURAS -->
-							<p:tab title="#{emision['montaje.tab.coberturas']}">
-								<h:form id="coberturaForm">
-									<p:dataTable value="#{todoRiesgoMontajeBacking.coberturasDTO}" var="cobertura" paginator="true" rows="4">
-										<p:column>
-											<f:facet name="header">
-												<h:outputLabel value="#{emision['anexo.titulo.cob']}" />
-											</f:facet>
-											<h:outputText value="#{cobertura.cobertura}" />
-										</p:column>
-										<p:column>
-											<f:facet name="header">
-												<h:outputLabel value="#{emision['lbl.seleccion']}" />
-											</f:facet>
-											<div align="center">
-												<p:selectBooleanCheckbox value="#{cobertura.seleccion}" />
-											</div>
-										</p:column>
-									</p:dataTable>
-								</h:form>
-							</p:tab>
-							<p:tab title="#{emision['montaje.tab.clausulasAdicionales']}">
-								<h:form id="clausulaAddForm">
-									<p:dataTable value="#{todoRiesgoMontajeBacking.clausulasAdicionalesDTO}" var="clausula" paginator="true" rows="4">
-										<p:column>
-											<f:facet name="header">
-												<h:outputLabel value="#{emision['anexo.titulo.cad']}" />
-											</f:facet>
-											<h:outputText value="#{clausula.clausula}" />
-										</p:column>
-										<p:column>
-											<f:facet name="header">
-												<h:outputLabel value="#{emision['lbl.seleccion']}" />
-											</f:facet>
-											<div align="center">
-												<p:selectBooleanCheckbox value="#{clausula.seleccion}" />
-											</div>
-										</p:column>
-									</p:dataTable>
-								</h:form>
-							</p:tab>
 						</p:tabView>
 					</ui:define>
 				</ui:decorate>
 			</ui:define>
 		</ui:decorate>
+	</ui:define>
+	<ui:define name="buttons">
+		<h:form>
+			<h:panelGrid columns="1">
+				<h:commandLink action="hiperion.xhtml">
+					<h:graphicImage name="home.png" library="img" />
+				</h:commandLink>
+				<p:commandLink title="Guardar Informacion poliza" process="@this" actionListener="#{riesgosContratistaBacking.guardarRamo()}">
+					<h:graphicImage name="save.png" library="img" />
+				</p:commandLink>
+				<p:commandLink onclick="help.show()">
+					<h:graphicImage name="helpII.png" library="img" />
+				</p:commandLink>
+			</h:panelGrid>
+			<p:dialog header="Ramo Agropecuario" widgetVar="help" showEffect="explode" hideEffect="bounce" height="100">
+				<h:panelGrid columns="1">
+					<h:outputText value="Seguro agricola" />
+					<h:outputText value="Para soporte en cualqueira de las funcionalidades" />
+					<h:outputText value="Por favor comuniquese con Franklin Pozo, Administradr del Sitema Hiperion" />
+				</h:panelGrid>
+			</p:dialog>
+		</h:form>
 	</ui:define>
 </ui:composition>
 </html>
