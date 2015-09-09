@@ -187,6 +187,39 @@ public class LucroCesanteRoturaMaquinariaBacking implements Serializable {
 
 	/**
 	 * 
+	 * <b> permite setear las clausualas adicionales seleccionadas. </b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: 14/07/2015]
+	 * </p>
+	 * 
+	 */
+	public void setearClausulasAdd() {
+
+		int contClausulas = 0;
+		List<ClaAddLcRot> clausulas = new ArrayList<>();
+		for (ClausulaAdicionalDTO clausualaDTO : clausulasAdicionalesDTO) {
+			if (clausualaDTO.getSeleccion()) {
+				contClausulas++;
+				ClaAddLcRot clausula = new ClaAddLcRot();
+				clausula.setClausulaAddLcRotura(clausualaDTO.getClausula());
+				clausula.setEstado(EstadoEnum.A);
+				clausula.setFechaCreacion(new Date());
+				clausula.setIdUsuarioCreacion(usuario.getIdUsuario());
+
+				clausulas.add(clausula);
+			}
+		}
+		if (contClausulas == 0) {
+			MessagesController.addWarn(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.warn.clausulasAdd"));
+		} else {
+			ramoCesanteRoturaMaq.setClaAddLcRots(clausulas);
+			MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.clausulasAdd"));
+		}
+
+	}
+
+	/**
+	 * 
 	 * <b> Permite obtener las clausulas adicionales del ramo. </b>
 	 * <p>
 	 * [Author: Paul Jimenez, Date: 17/06/2015]
@@ -263,7 +296,7 @@ public class LucroCesanteRoturaMaquinariaBacking implements Serializable {
 			} else {
 				MessagesController.addError(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.error.save.Obj"));
 			}
-			ramoCesanteRoturaMaqService.guardarRamoCesanteRoturaMaq(ramoCesanteRoturaMaq);
+			ramoCesanteRoturaMaqService.guardarRamoCesanteRoturaMaq(ramoCesanteRoturaMaq, poliza);
 			MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.save"));
 
 			ramoCesanteRoturaMaq = new RamoLcRotMaq();

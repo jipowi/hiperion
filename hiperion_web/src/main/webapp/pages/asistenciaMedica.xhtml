@@ -418,7 +418,7 @@
 
 														<h:outputLabel value="#{emision['asm.modalidad.cedula']}" styleClass="negrita" />
 														<p:inputText id="idCedulaTitular" value="#{ramoAsistenciaMedicaBean.cedulaTitular}" validatorMessage="#{emision['msg.cedula.error']}">
-															<f:validateRegex pattern="#{emision['msg.cedula.ok']}" />
+															<f:validateRegex pattern="#{emision['msg.cedula.error']}" />
 														</p:inputText>
 														<h:outputLabel value="#{emision['asm.modalidad.edad']}" styleClass="negrita" />
 														<p:inputText value="#{ramoAsistenciaMedicaBean.edadTitular}" />
@@ -549,7 +549,7 @@
 
 														<h:outputLabel value="#{emision['asm.modalidad.cedula']}" styleClass="negrita" />
 														<p:inputText id="idCedula" value="#{ramoAsistenciaMedicaBean.cedulaDependiente}" validatorMessage="#{emision['msg.cedula.error']}">
-															<f:validateRegex pattern="#{emision['msg.cedula.ok']}" />
+															<f:validateRegex pattern="#{emision['msg.cedula.error']}" />
 														</p:inputText>
 														<h:outputLabel value="#{emision['asm.modalidad.edad']}" styleClass="negrita" />
 														<p:inputText value="#{ramoAsistenciaMedicaBean.edadDependiente}" />
@@ -641,7 +641,7 @@
 
 														<h:outputLabel value="#{emision['asm.modalidad.cedula']}" styleClass="negrita" />
 														<p:inputText id="idCedula" value="#{ramoAsistenciaMedicaBean.cedulaFamilia}" validatorMessage="#{emision['msg.cedula.error']}">
-															<f:validateRegex pattern="#{emision['msg.cedula.ok']}" />
+															<f:validateRegex pattern="#{emision['msg.cedula.error']}" />
 														</p:inputText>
 														<h:outputLabel value="#{emision['asm.modalidad.edad']}" styleClass="negrita" />
 														<p:inputText value="#{ramoAsistenciaMedicaBean.edadFamilia}" />
