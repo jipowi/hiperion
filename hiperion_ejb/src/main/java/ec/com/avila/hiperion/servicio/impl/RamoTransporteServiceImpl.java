@@ -11,8 +11,11 @@ import javax.ejb.Stateless;
 
 import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.dao.ObjAsegTransporteDao;
+import ec.com.avila.hiperion.dao.PagoPolizaDao;
 import ec.com.avila.hiperion.dao.RamoTransporteDao;
 import ec.com.avila.hiperion.emision.entities.ObjAsegTransporte;
+import ec.com.avila.hiperion.emision.entities.PagoPoliza;
+import ec.com.avila.hiperion.emision.entities.Poliza;
 import ec.com.avila.hiperion.emision.entities.RamoTransporte;
 import ec.com.avila.hiperion.servicio.RamoTransporteService;
 
@@ -30,8 +33,14 @@ public class RamoTransporteServiceImpl implements RamoTransporteService {
 	private RamoTransporteDao ramoTranspoteDao;
 	@EJB
 	private ObjAsegTransporteDao objAsegTransporteDao;
+	
+	@EJB
+	private PagoPolizaDao pagoPolizaDao;
 
-	public void guardarRamoTransporte(RamoTransporte transporte) throws HiperionException {
+	public void guardarRamoTransporte(RamoTransporte transporte, Poliza poliza) throws HiperionException {
+		
+		PagoPoliza pagoPoliza = poliza.getPagoPoliza();
+		pagoPolizaDao.persist(pagoPoliza);
 		ramoTranspoteDao.persist(transporte);
 		for (ObjAsegTransporte objeto : transporte.getObjAsegTransportes()) {
 			objAsegTransporteDao.persist(objeto);
