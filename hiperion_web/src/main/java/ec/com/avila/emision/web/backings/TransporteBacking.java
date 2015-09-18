@@ -109,10 +109,11 @@ public class TransporteBacking implements Serializable {
 	public void inicializar() {
 		try {
 
+			usuario = usuarioBean.getSessionUser();
 			Ramo ramo = ramoService.consultarRamoPorCodigo("TR");
-
 			anexos = ramo.getDetalleAnexos();
 
+			
 			obtenerClausulasAdicionales();
 			obtenerCoberturas();
 			obtenerCondicionesEspeciales();
