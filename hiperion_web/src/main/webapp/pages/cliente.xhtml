@@ -59,6 +59,12 @@
 								</f:facet>
 								<h:outputText value="#{cliente.nombrePersona} #{cliente.apellidoPaterno} #{cliente.apellidoMaterno}" />
 							</p:column>
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="#{emision['cliente.tabla.razonSocial']}" />
+								</f:facet>
+								<h:outputText value="#{cliente.razonSocial}" />
+							</p:column>
 						</p:dataTable>
 					</h:panelGrid>
 				</div>
@@ -136,7 +142,7 @@
 								requiredMessage="emi" styleClass="DialogCliente-giroNegocio" />
 						</h:panelGrid>
 						<h:panelGrid columns="2" cellpadding="2" cellspacing="2">
-							<p:outputLabel  value="#{administrador['cliente.dlg.agregar.contacto']}" styleClass="negrita" />
+							<p:outputLabel value="#{administrador['cliente.dlg.agregar.contacto']}" styleClass="negrita" />
 							<p:commandLink id="contactoIdJuridica">
 								<h:graphicImage name="icono-contacto.jpg" onclick="contactosDlg.show()" library="img" height="30px;" />
 							</p:commandLink>
