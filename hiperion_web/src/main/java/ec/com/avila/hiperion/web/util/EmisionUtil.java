@@ -25,4 +25,26 @@ public class EmisionUtil {
 
 		return sb.toString() + codigo;
 	}
+
+	/**
+	 * 
+	 * <b> Permite obtener el codigo de sinistro. </b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: 13/12/2015]
+	 * </p>
+	 * 
+	 * @param codigo
+	 * @return codigo de siniestro
+	 */
+	public static String obtenerCodigoSiniestro(Integer codigo) {
+		int codigoLength = String.valueOf(codigo).length();
+		int cantCeros = longitudClientes - codigoLength;
+		StringBuffer sb = new StringBuffer(cantCeros + 1);
+		sb.append("AV-S");
+		for (int i = 0; i <= cantCeros; i++) {
+			sb.append("0");
+		}
+
+		return sb.toString() + codigo;
+	}
 }

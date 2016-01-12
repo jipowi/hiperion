@@ -364,6 +364,7 @@ public class PolizaBacking implements Serializable {
 			polizaBean.setSubtotal(BigDecimal.valueOf(subtotal));
 			polizaBean.setIva(BigDecimal.valueOf(iva));
 			polizaBean.setTotal(BigDecimal.valueOf(total));
+			obtenerDias();
 		}
 		selectFormaDePago();
 	}
@@ -587,6 +588,21 @@ public class PolizaBacking implements Serializable {
 			cuentaBancoItems.add(selectItem);
 		}
 		return cuentaBancoItems;
+	}
+
+	/**
+	 * 
+	 * <b> Permite obtener el numero de dias de cobertura. </b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: 11/01/2016]
+	 * </p>
+	 * 
+	 */
+	public void obtenerDias() {
+		long dias = FechasUtil.getInstancia().restarFechas(polizaBean.getVigenciaDesde(), polizaBean.getVigenciaHasta());
+
+		polizaBean.setDiasCobertura(Integer.parseInt(Long.toString(dias)));
+
 	}
 
 	/**

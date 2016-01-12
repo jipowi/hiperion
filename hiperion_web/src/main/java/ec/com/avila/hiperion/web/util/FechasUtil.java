@@ -91,14 +91,68 @@ public class FechasUtil implements Serializable {
 
 	}
 
+	/**
+	 * 
+	 * <b> Permite sumar meses a una fecha. </b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: 11/01/2016]
+	 * </p>
+	 * 
+	 * @param fecha
+	 * @param meses
+	 * @return
+	 */
 	public Date sumarMeses(Date fecha, int meses) {
 
 		Calendar calendar = Calendar.getInstance();
 
-		calendar.setTime(fecha); 
+		calendar.setTime(fecha);
 
 		calendar.add(Calendar.MONTH, meses);
 
 		return calendar.getTime();
 	}
+
+	/**
+	 * 
+	 * <b> Permite retornar el numero de dias en la diferencia entre dos fechas </b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: 11/01/2016]
+	 * </p>
+	 * 
+	 * @param fechaInicio
+	 * @param fechaFin
+	 * @return
+	 */
+	public long restarFechas(Date fechaInicio, Date fechaFin) {
+
+		Calendar cal1 = Calendar.getInstance();
+		Calendar cal2 = Calendar.getInstance();
+
+		cal1.setTime(fechaInicio);
+		cal2.setTime(fechaFin);
+
+		// conseguir la representacion de la fecha en milisegundos
+		long milis1 = cal1.getTimeInMillis();
+
+		long milis2 = cal2.getTimeInMillis();
+
+		// calcular la diferencia en milisengundos
+		long diff = milis2 - milis1;
+
+		// calcular la diferencia en segundos
+		long diffSeconds = diff / 1000;
+
+		// calcular la diferencia en minutos
+		long diffMinutes = diff / (60 * 1000);
+
+		// calcular la diferencia en horas
+		long diffHours = diff / (60 * 60 * 1000);
+
+		// calcular la diferencia en dias
+		long diffDays = diff / (24 * 60 * 60 * 1000);
+
+		return diffDays;
+	}
+
 }

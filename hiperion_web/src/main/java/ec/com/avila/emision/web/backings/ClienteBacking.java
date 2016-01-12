@@ -207,7 +207,11 @@ public class ClienteBacking implements Serializable {
 				if (clienteBean.getApePaterno().equals("")) {
 					MessagesController.addWarn(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.warn.buscar"));
 				} else {
-					clientesObtenidos = clienteService.consultarClienteByApellido(clienteBean.getApePaterno());
+					if (!clienteBean.getNombre().equals("")) {
+						clientesObtenidos = clienteService.consultarClienteByNombres(clienteBean.getNombre(), clienteBean.getApePaterno());
+					} else {
+						clientesObtenidos = clienteService.consultarClienteByApellido(clienteBean.getApePaterno());
+					}
 				}
 			}
 

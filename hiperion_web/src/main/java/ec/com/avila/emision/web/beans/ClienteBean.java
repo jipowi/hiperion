@@ -32,6 +32,9 @@ public class ClienteBean implements Serializable {
 	private String actividadProfecion;
 	private String giroNegocio;
 	private String ejecutivo;
+	private boolean activarCedula;
+	private boolean activarNombre;
+	private boolean activarApellido;
 
 	private Integer tipoPersona;
 	private Integer longitudIdentificacion;
@@ -179,5 +182,49 @@ public class ClienteBean implements Serializable {
 		this.longitudIdentificacion = longitudIdentificacion;
 	}
 
-	
+	/**
+	 * @return the activarCedula
+	 */
+	public boolean isActivarCedula() {
+		return activarCedula;
+	}
+
+	/**
+	 * @param activarCedula
+	 *            the activarCedula to set
+	 */
+	public void setActivarCedula(boolean activarCedula) {
+		this.activarCedula = activarCedula;
+	}
+
+	/**
+	 * @return the activarNombre
+	 */
+	public boolean isActivarNombre() {
+		return activarNombre;
+	}
+
+	/**
+	 * @param activarNombre
+	 *            the activarNombre to set
+	 */
+	public void setActivarNombre(boolean activarNombre) {
+		this.activarNombre = activarNombre;
+	}
+
+	/**
+	 * @return the activarApellido
+	 */
+	public boolean isActivarApellido() {
+		return activarApellido;
+	}
+
+	/**
+	 * @param activarApellido
+	 *            the activarApellido to set
+	 */
+	public void setActivarApellido(boolean activarApellido) {
+		this.activarApellido = activarApellido;
+	}
+
 }
