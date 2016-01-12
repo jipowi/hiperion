@@ -71,4 +71,18 @@ public interface ClienteService {
 	 * @throws HiperionException
 	 */
 	public List<Cliente> consultarClienteByApellido(String apellido) throws HiperionException;
+	
+	/**
+	 * 
+	 * <b> Permite buscar clientes por nombre y apellido. </b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: 11/01/2016]
+	 * </p>
+	 * 
+	 * @param nombre
+	 * @param apellido
+	 * @return
+	 * @throws HiperionException
+	 */
+	public List<Cliente> consultarClienteByNombres(String nombre, String apellido) throws HiperionException;
 }

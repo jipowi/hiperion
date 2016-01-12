@@ -50,12 +50,24 @@ public class ClienteServiceImpl implements ClienteService {
 		clienteDao.persist(cliente);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see ec.com.avila.hiperion.servicio.ClienteService#consultarClientes()
 	 */
 	@Override
 	public List<Cliente> consultarClientes() throws HiperionException {
 		return clienteDao.findAll();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see ec.com.avila.hiperion.servicio.ClienteService#consultarClienteByNombres(java.lang.String, java.lang.String)
+	 */
+	@Override
+	public List<Cliente> consultarClienteByNombres(String nombre, String apellido) throws HiperionException {
+		return clienteDao.consultarClienteByNombres(nombre, apellido);
 	}
 
 }
