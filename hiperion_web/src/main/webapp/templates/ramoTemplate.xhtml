@@ -112,10 +112,10 @@
 									<p:calendar value="#{polizaBean.vigenciaDesde}" pattern="dd/MM/yyyy HH:mm" locale="es" navigator="true" />
 
 									<p:outputLabel value="#{emision['poliza.atributo.vigenciaHasta']}" styleClass="negrita" />
-									<p:calendar value="#{polizaBean.vigenciaHasta}" pattern="dd/MM/yyyy HH:mm" locale="es" navigator="true" />
-
+									<p:calendar value="#{polizaBean.vigenciaHasta}" pattern="dd/MM/yyyy HH:mm" locale="es" navigator="true"/>
+								
 									<p:outputLabel value="#{emision['poliza.atributo.diasCobertura']}" styleClass="negrita" />
-									<p:inputText value="#{polizaBean.diasCobertura}" />
+									<p:inputText id="diasCoberturaId" value="#{polizaBean.diasCobertura}" disabled="true"/>
 
 									<p:outputLabel value="#{emision['poliza.atributo.suma']}" styleClass="negrita" />
 									<p:inputText value="#{polizaBean.sumaAsegurada}" />

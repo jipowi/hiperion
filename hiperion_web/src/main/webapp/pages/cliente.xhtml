@@ -16,12 +16,39 @@
 								<h:outputText value="#{emision['cliente.buscar']}" />
 							</f:facet>
 							<h:panelGrid columns="2">
-								<h:panelGrid columns="2">
-									<p:outputLabel value="#{emision['cliente.identificacion']}:" styleClass="negrita" />
-									<p:inputText value="#{clienteBean.identificacion}" />
+								<h:panelGrid columns="3">
+									<h:outputText value="#{emision['cliente.identificacion']}: " />
+									<p:selectBooleanCheckbox value="#{clienteBean.activarCedula}">
+										<p:ajax update="pnlCedula" />
+									</p:selectBooleanCheckbox>
 
-									<p:outputLabel value="Apellido:" styleClass="negrita" />
-									<p:inputText value="#{clienteBean.apeMaterno}" />
+									<p:panel id="pnlCedula" visible="#{clienteBean.activarCedula}">
+										<p:inputText value="#{clienteBean.identificacion}" validatorMessage="#{emision['msg.cedula.error']}">
+											<f:validateRegex pattern="#{emision['msg.formato.cedula']}" disabled="#{!clienteBean.activarCedula}"/>
+										</p:inputText>
+									</p:panel>
+
+									<h:outputText value="Apellido: " />
+									<p:selectBooleanCheckbox value="#{clienteBean.activarApellido}">
+										<p:ajax update="pnlApellido" />
+									</p:selectBooleanCheckbox>
+
+									<p:panel id="pnlApellido" visible="#{clienteBean.activarApellido}">
+										<p:inputText value="#{clienteBean.apePaterno}" validatorMessage="#{emision['msg.texto.error']}">
+											<f:validateRegex pattern="#{emision['msg.formato.texto']}" disabled="#{!clienteBean.activarApellido}"/>
+										</p:inputText>
+									</p:panel>
+
+									<h:outputText value="Nombres: " />
+									<p:selectBooleanCheckbox value="#{clienteBean.activarNombre}">
+										<p:ajax update="pnlNombres" />
+									</p:selectBooleanCheckbox>
+
+									<p:panel id="pnlNombres" visible="#{clienteBean.activarNombre}">
+										<p:inputText value="#{clienteBean.nombre}" validatorMessage="#{emision['msg.texto.error']}">
+											<f:validateRegex pattern="#{emision['msg.formato.texto']}" disabled="#{!clienteBean.activarNombre}"/>
+										</p:inputText>
+									</p:panel>
 								</h:panelGrid>
 								<p:commandLink title="Buscar clientes" action="#{clienteBacking.buscarCliente}" update="tablaClientes">
 									<h:graphicImage name="search.png" library="img/icon" />
