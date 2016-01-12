@@ -61,7 +61,7 @@ public class ClienteDaoImpl extends GenericDAOImpl<Cliente, Long> implements Cli
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Cliente> consultarClienteByApellido(String apellido) throws HiperionException {
-		Query query = em.createNamedQuery("Cliente.findByNombre");
+		Query query = em.createNamedQuery("Cliente.findByApellido");
 		query.setParameter("apellido", "%" + apellido + "%");
 		List<Cliente> clientes = query.getResultList();
 		return clientes;
@@ -85,6 +85,19 @@ public class ClienteDaoImpl extends GenericDAOImpl<Cliente, Long> implements Cli
 		} else {
 			return null;
 		}
+	}
+
+	/* (non-Javadoc)
+	 * @see ec.com.avila.hiperion.dao.ClienteDao#consultarClienteByNombres(java.lang.String, java.lang.String)
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Cliente> consultarClienteByNombres(String nombre, String apellido) throws HiperionException {
+		Query query = em.createNamedQuery("Cliente.findByNombres");
+		query.setParameter("apellido", "%" + apellido + "%");
+		query.setParameter("nombre", "%" + nombre + "%");
+		List<Cliente> clientes = query.getResultList();
+		return clientes;
 	}
 
 }

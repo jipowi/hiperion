@@ -50,6 +50,20 @@ public interface ClienteDao extends GenericDAO<Cliente, Long> {
 
 	/**
 	 * 
+	 * <b> Permite buscar clientes por nombre y apellido. </b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: 11/01/2016]
+	 * </p>
+	 * 
+	 * @param nombre
+	 * @param apellido
+	 * @return
+	 * @throws HiperionException
+	 */
+	public List<Cliente> consultarClienteByNombres(String nombre, String apellido) throws HiperionException;
+
+	/**
+	 * 
 	 * <b> Permite consultar la lista de clientes que posee una aseguradora. </b>
 	 * <p>
 	 * [Author: Paul Jimenez, Date: 06/07/2015]
