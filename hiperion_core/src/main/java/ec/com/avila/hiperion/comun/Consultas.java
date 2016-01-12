@@ -17,7 +17,8 @@ import javax.persistence.NamedQuery;
 		@NamedQuery(name = "Catalogo.findById", query = "SELECT c FROM Catalogo c WHERE c.idCatalogo =:idCatalogo"),
 		// CLIENTE
 		@NamedQuery(name = "Cliente.findByIdentificacion", query = "SELECT c FROM Cliente c WHERE c.identificacionPersona =:identificacion"),
-		@NamedQuery(name = "Cliente.findByNombre", query = "SELECT c FROM Cliente c WHERE lower(c.apellidoPaterno) like :apellido"),
+		@NamedQuery(name = "Cliente.findByApellido", query = "SELECT c FROM Cliente c WHERE lower(c.apellidoPaterno) like :apellido"),
+		@NamedQuery(name = "Cliente.findByNombres", query = "SELECT c FROM Cliente c WHERE lower(c.apellidoPaterno) like :apellido AND lower(c.nombrePersona) like :nombre" ),
 		@NamedQuery(name = "Cliente.findByAseguradora", query = "SELECT c FROM Cliente c WHERE c.aseguradora.codigoAseguradora =:aseguradora"),
 
 		// TIPO_DIRECCION
