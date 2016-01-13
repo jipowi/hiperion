@@ -23,8 +23,8 @@
 									</p:selectBooleanCheckbox>
 
 									<p:panel id="pnlCedula" visible="#{clienteBean.activarCedula}">
-										<p:inputText value="#{clienteBean.identificacion}" validatorMessage="#{emision['msg.cedula.error']}">
-											<f:validateRegex pattern="#{emision['msg.formato.cedula']}" disabled="#{!clienteBean.activarCedula}"/>
+										<p:inputText value="#{clienteBean.identificacion}" validatorMessage="#{emision['msg.cedula.error']}" maxlength="10">
+											<f:validateRegex pattern="#{emision['msg.formato.cedula']}" disabled="#{!clienteBean.activarCedula}" />
 										</p:inputText>
 									</p:panel>
 
@@ -35,7 +35,7 @@
 
 									<p:panel id="pnlApellido" visible="#{clienteBean.activarApellido}">
 										<p:inputText value="#{clienteBean.apePaterno}" validatorMessage="#{emision['msg.texto.error']}">
-											<f:validateRegex pattern="#{emision['msg.formato.texto']}" disabled="#{!clienteBean.activarApellido}"/>
+											<f:validateRegex pattern="#{emision['msg.formato.texto']}" disabled="#{!clienteBean.activarApellido}" />
 										</p:inputText>
 									</p:panel>
 
@@ -46,7 +46,7 @@
 
 									<p:panel id="pnlNombres" visible="#{clienteBean.activarNombre}">
 										<p:inputText value="#{clienteBean.nombre}" validatorMessage="#{emision['msg.texto.error']}">
-											<f:validateRegex pattern="#{emision['msg.formato.texto']}" disabled="#{!clienteBean.activarNombre}"/>
+											<f:validateRegex pattern="#{emision['msg.formato.texto']}" disabled="#{!clienteBean.activarNombre}" />
 										</p:inputText>
 									</p:panel>
 								</h:panelGrid>
@@ -138,11 +138,20 @@
 							<p:outputLabel for="apePaterno" value="#{administrador['cliente.dlg.agregar.appPaterno']}" styleClass="negrita" />
 							<p:outputLabel for="apeMaterno" value="#{administrador['cliente.dlg.agregar.appMaterno']}" styleClass="negrita" />
 							<p:inputText id="nombreId" value="#{clienteBean.nombre}" required="#{clienteBacking.activarPanelPersonaNatural}"
-								requiredMessage="#{administrador['cliente.dlg.agregar.msg.nombres']}" styleClass="DialogoCliente-nombre" />
+								requiredMessage="#{administrador['cliente.dlg.agregar.msg.nombres']}" styleClass="DialogoCliente-nombre"
+								validatorMessage="#{emision['msg.texto.error']}">
+								<f:validateRegex pattern="#{emision['msg.formato.texto']}" />
+							</p:inputText>
 							<p:inputText id="apePaterno" value="#{clienteBean.apePaterno}" required="#{clienteBacking.activarPanelPersonaNatural}"
-								requiredMessage="#{administrador['cliente.dlg.agregar.msg.appPaterno']}" styleClass="DialogoCliente-apePaterno" />
+								requiredMessage="#{administrador['cliente.dlg.agregar.msg.appPaterno']}" styleClass="DialogoCliente-apePaterno"
+								validatorMessage="#{emision['msg.texto.error']}">
+								<f:validateRegex pattern="#{emision['msg.formato.texto']}" />
+							</p:inputText>
 							<p:inputText id="apeMaterno" value="#{clienteBean.apeMaterno}" required="#{clienteBacking.activarPanelPersonaNatural}"
-								requiredMessage="#{administrador['cliente.dlg.agregar.msg.appMaterno']}" styleClass="DialogoCliente-apeMaterno" />
+								requiredMessage="#{administrador['cliente.dlg.agregar.msg.appMaterno']}" styleClass="DialogoCliente-apeMaterno"
+								validatorMessage="#{emision['msg.texto.error']}">
+								<f:validateRegex pattern="#{emision['msg.formato.texto']}" />
+							</p:inputText>
 						</h:panelGrid>
 						<h:panelGrid columns="3" cellpadding="2" cellspacing="2">
 							<p:outputLabel for="actProfecionId" value="#{administrador['cliente.dlg.agregar.actProfesion']}" styleClass="negrita" />
