@@ -8,7 +8,7 @@
 				<p:messages></p:messages>
 			</p:outputPanel>
 
-			<!-- PANEL DE BUSQUEDAA -->
+			<!-- PANEL DE BUSQUEDA -->
 			<h:panelGrid columns="1">
 				<p:panel>
 					<h:panelGrid columns="2">
@@ -20,9 +20,13 @@
 						</p:selectOneMenu>
 
 						<p:outputLabel value="#{emision['cliente.identificacion']}:" styleClass="negrita" />
-						<p:inputText value="#{ingresarDatosSiniestroBean.identificacion}">
-							<p:ajax event="onblur" listener="#{siniestrosBacking.buscarCliente()}" update=" @form" />
-						</p:inputText>
+						<h:panelGrid columns="2">
+							<p:inputText value="#{ingresarDatosSiniestroBean.identificacion}" />
+
+							<p:commandLink title="Buscar clientes" action="#{siniestrosBacking.buscarCliente()}" >
+								<h:graphicImage name="buscador.png" library="img" />
+							</p:commandLink>
+						</h:panelGrid>
 
 						<h:outputLabel value="#{siniestros['lbl.nombreCliente']}" styleClass="negrita" />
 						<p:inputText value="#{ingresarDatosSiniestroBean.nombreCliente}" />
