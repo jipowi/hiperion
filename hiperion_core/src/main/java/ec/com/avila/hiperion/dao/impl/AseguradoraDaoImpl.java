@@ -62,7 +62,7 @@ public class AseguradoraDaoImpl extends GenericDAOImpl<Aseguradora, Long> implem
 			if (!ruc.equals("") && aseguradora != 0) {
 				query = em.createNamedQuery("Aseguradora.find");
 				query.setParameter("ruc", ruc);
-				query.setParameter("aseguradora", aseguradora);
+				query.setParameter("aseguradora", aseguradora.toString());
 			}
 			if (!ruc.equals("") && aseguradora == 0) {
 				query = em.createNamedQuery("Aseguradora.findByRuc");
@@ -70,7 +70,7 @@ public class AseguradoraDaoImpl extends GenericDAOImpl<Aseguradora, Long> implem
 			}
 			if (ruc.equals("") && aseguradora != 0) {
 				query = em.createNamedQuery("Aseguradora.findByAseguradora");
-				query.setParameter("aseguradora", aseguradora);
+				query.setParameter("aseguradora", aseguradora.toString());
 			}
 			if (ruc.equals("") && aseguradora == 0) {
 				query = em.createNamedQuery("Aseguradora.findAll");
