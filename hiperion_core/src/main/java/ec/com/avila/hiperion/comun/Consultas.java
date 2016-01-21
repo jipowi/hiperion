@@ -11,8 +11,8 @@ import javax.persistence.NamedQuery;
 @NamedQueries({
 		// ASEGURADORA
 		@NamedQuery(name = "Aseguradora.findByRuc", query = "SELECT c FROM Aseguradora c WHERE c.ruc =:ruc"),
-		@NamedQuery(name = "Aseguradora.findByAseguradora", query = "SELECT c FROM Aseguradora c WHERE c.idAseguradora =:aseguradora"),
-		@NamedQuery(name = "Aseguradora.find", query = "SELECT c FROM Aseguradora c WHERE c.ruc =:ruc AND c.idAseguradora =:aseguradora"),
+		@NamedQuery(name = "Aseguradora.findByAseguradora", query = "SELECT c FROM Aseguradora c WHERE c.codigoAseguradora =:aseguradora"),
+		@NamedQuery(name = "Aseguradora.find", query = "SELECT c FROM Aseguradora c WHERE c.ruc =:ruc AND c.codigoAseguradora =:aseguradora"),
 		// CATALOGO
 		@NamedQuery(name = "Catalogo.findById", query = "SELECT c FROM Catalogo c WHERE c.idCatalogo =:idCatalogo"),
 		// CLIENTE
