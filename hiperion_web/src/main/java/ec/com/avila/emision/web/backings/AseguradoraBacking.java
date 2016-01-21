@@ -115,6 +115,7 @@ public class AseguradoraBacking implements Serializable {
 	 * 
 	 * @throws HiperionException
 	 */
+	@SuppressWarnings("static-access")
 	public void guardarAseguradora() throws HiperionException {
 		Usuario usuario = usuarioBean.getSessionUser();
 
@@ -162,8 +163,9 @@ public class AseguradoraBacking implements Serializable {
 		}
 
 		aseguradoraService.guardarAseguradora(aseguradora, contactosAseguradora);
+		
 		MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.save.aseguradora"));
-
+		aseguradoraBean.setContactoList(null);
 		aseguradora = new Aseguradora();
 		contactosAseguradora = new ArrayList<>();
 	}
@@ -193,7 +195,7 @@ public class AseguradoraBacking implements Serializable {
 				AseguradoraDTO aseguradoraDTO = new AseguradoraDTO();
 
 				DetalleCatalogo detalleCatalogo = detalleCatalogoService.consultarDetalleByCatalogoAndDetalle(HiperionMensajes.getInstancia()
-						.getInteger("ec.gob.avila.hiperion.recursos.catalogoAseguradoras"), aseguradora.getIdAseguradora());
+						.getInteger("ec.gob.avila.hiperion.recursos.catalogoAseguradoras"), Integer.parseInt(aseguradora.getCodigoAseguradora()));
 
 				aseguradoraDTO.setNombreAseguradora(detalleCatalogo.getDescDetCatalogo());
 				aseguradoraDTO.setRuc(aseguradora.getRuc());
