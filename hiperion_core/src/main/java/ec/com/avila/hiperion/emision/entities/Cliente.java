@@ -81,7 +81,7 @@ public class Cliente extends Auditoria implements Serializable {
 	}
 
 	public void setActividadProfesion(String actividadProfesion) {
-		this.actividadProfesion = actividadProfesion;
+		this.actividadProfesion = actividadProfesion.toUpperCase();
 	}
 
 	public String getApellidoMaterno() {
@@ -89,7 +89,7 @@ public class Cliente extends Auditoria implements Serializable {
 	}
 
 	public void setApellidoMaterno(String apellidoMaterno) {
-		this.apellidoMaterno = apellidoMaterno;
+		this.apellidoMaterno = apellidoMaterno.toUpperCase();
 	}
 
 	public String getApellidoPaterno() {
@@ -97,7 +97,7 @@ public class Cliente extends Auditoria implements Serializable {
 	}
 
 	public void setApellidoPaterno(String apellidoPaterno) {
-		this.apellidoPaterno = apellidoPaterno;
+		this.apellidoPaterno = apellidoPaterno.toUpperCase();
 	}
 
 	public String getCodigoCliente() {
@@ -129,7 +129,7 @@ public class Cliente extends Auditoria implements Serializable {
 	}
 
 	public void setNombrePersona(String nombrePersona) {
-		this.nombrePersona = nombrePersona;
+		this.nombrePersona = nombrePersona.toUpperCase();
 	}
 
 	public String getRazonSocial() {
@@ -137,7 +137,7 @@ public class Cliente extends Auditoria implements Serializable {
 	}
 
 	public void setRazonSocial(String razonSocial) {
-		this.razonSocial = razonSocial;
+		this.razonSocial = razonSocial.toUpperCase();
 	}
 
 	public String getTipoIdentificacion() {
