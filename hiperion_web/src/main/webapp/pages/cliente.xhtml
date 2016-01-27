@@ -139,17 +139,17 @@
 							<p:outputLabel for="apeMaterno" value="#{administrador['cliente.dlg.agregar.appMaterno']}" styleClass="negrita" />
 							<p:inputText id="nombreId" value="#{clienteBean.nombre}" required="#{clienteBacking.activarPanelPersonaNatural}"
 								requiredMessage="#{administrador['cliente.dlg.agregar.msg.nombres']}" styleClass="DialogoCliente-nombre"
-								validatorMessage="#{emision['msg.texto.error']}">
+								validatorMessage="#{emision['msg.texto.error']}" style="text-transform:uppercase;">
 								<f:validateRegex pattern="#{emision['msg.formato.texto']}" />
 							</p:inputText>
 							<p:inputText id="apePaterno" value="#{clienteBean.apePaterno}" required="#{clienteBacking.activarPanelPersonaNatural}"
 								requiredMessage="#{administrador['cliente.dlg.agregar.msg.appPaterno']}" styleClass="DialogoCliente-apePaterno"
-								validatorMessage="#{emision['msg.texto.error']}">
+								validatorMessage="#{emision['msg.texto.error']}" style="text-transform:uppercase;">
 								<f:validateRegex pattern="#{emision['msg.formato.texto']}" />
 							</p:inputText>
 							<p:inputText id="apeMaterno" value="#{clienteBean.apeMaterno}" required="#{clienteBacking.activarPanelPersonaNatural}"
 								requiredMessage="#{administrador['cliente.dlg.agregar.msg.appMaterno']}" styleClass="DialogoCliente-apeMaterno"
-								validatorMessage="#{emision['msg.texto.error']}">
+								validatorMessage="#{emision['msg.texto.error']}" style="text-transform:uppercase;">
 								<f:validateRegex pattern="#{emision['msg.formato.texto']}" />
 							</p:inputText>
 						</h:panelGrid>
@@ -157,7 +157,7 @@
 							<p:outputLabel for="actProfecionId" value="#{administrador['cliente.dlg.agregar.actProfesion']}" styleClass="negrita" />
 							<p:outputLabel for="fechaNacimientoId" value="#{administrador['cliente.dlg.agregar.fechaNacimiento']}" styleClass="negrita" />
 							<p:outputLabel for="contactoId" value="#{administrador['cliente.dlg.agregar.contacto']}" styleClass="negrita" />
-							<p:inputText id="actProfecionId" value="#{clienteBean.actividadProfecion}" styleClass="DialogoCliente-actProfesion" />
+							<p:inputText id="actProfecionId" value="#{clienteBean.actividadProfecion}" styleClass="DialogoCliente-actProfesion" style="text-transform:uppercase;"/>
 							<p:calendar id="fechaNacimientoId" value="#{clienteBean.fechaNacimiento}" pattern="MM/dd/yyyy" mask="true" />
 							<p:commandLink id="contactoId">
 								<h:graphicImage name="icono-contacto.jpg" onclick="contactosDlg.show()" library="img" height="30px;" />

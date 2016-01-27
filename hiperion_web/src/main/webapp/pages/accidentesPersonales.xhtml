@@ -33,7 +33,14 @@
 												<p:outputLabel value="#{emision['ap.primaTotal']}" styleClass="negrita" />
 												<p:inputText value="#{ramoAccidentesPersonalesBean.primaTotalPersona}" />
 												<p:outputLabel value="#{emision['ap.facturacion']}" styleClass="negrita" />
-												<p:inputText value="#{ramoAccidentesPersonalesBean.facturacion}" />
+												<p:selectOneMenu id="console" value="#{ramoAccidentesPersonalesBean.facturacion}" style="width:125px">
+													<f:selectItem itemLabel="MENSUAL" itemValue="1" />
+													<f:selectItem itemLabel="BIMENSUAL" itemValue="2" />
+													<f:selectItem itemLabel="TRIMESTRAL" itemValue="3" />
+													<f:selectItem itemLabel="SEMESTRAL" itemValue="4" />
+													<f:selectItem itemLabel="ANUAL" itemValue="5" />
+												</p:selectOneMenu>
+
 												<p:outputLabel value="#{emision['ap.tasa']}" styleClass="negrita" />
 												<p:inputText value="#{ramoAccidentesPersonalesBean.tasa}" />
 											</h:panelGrid>
