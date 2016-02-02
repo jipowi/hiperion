@@ -2652,6 +2652,7 @@ INSERT INTO MENU VALUES (41, 6, 'Ingreso de datos', '/pages/ingresarDatosSiniest
 INSERT INTO MENU VALUES (42, 7, 'Ingreso de datos', '/pages/ingresarAsistenciaMedica.jsf','A');
 INSERT INTO MENU VALUES (43, 6, 'Ingreso de datos-cálculos', '/pages/ingresarSiniestro.jsf','A');
 INSERT INTO MENU VALUES (44, 7, 'Liquidaciones', '/pages/ingresarLiquidacion.jsf','A');
+INSERT INTO MENU VALUES (45, 1, 'Información Cliente', '/pages/polizasCliente.jsf','A');
 
 
 INSERT INTO ROL_MENU VALUES (1,1,1);
@@ -2694,3 +2695,4 @@ INSERT INTO ROL_MENU VALUES (37,1,42);
 INSERT INTO ROL_MENU VALUES (38,1,7);
 INSERT INTO ROL_MENU VALUES (39,1,43);
 INSERT INTO ROL_MENU VALUES (40,1,44);
+INSERT INTO ROL_MENU VALUES (41,1,45);
