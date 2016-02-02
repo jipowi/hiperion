@@ -174,6 +174,11 @@ public class Poliza implements Serializable {
 	@OneToMany(mappedBy = "poliza")
 	private List<RamoVida> ramoVidas;
 
+	// bi-directional many-to-one association to Cliente
+	@ManyToOne
+	@JoinColumn(name = "id_cliente")
+	private Cliente cliente;
+
 	public Poliza() {
 	}
 
@@ -883,6 +888,20 @@ public class Poliza implements Serializable {
 		ramoVida.setPoliza(null);
 
 		return ramoVida;
+	}
+
+	/**
+	 * @return the cliente
+	 */
+	public Cliente getCliente() {
+		return cliente;
+	}
+
+	/**
+	 * @param cliente the cliente to set
+	 */
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
 	}
 
 }

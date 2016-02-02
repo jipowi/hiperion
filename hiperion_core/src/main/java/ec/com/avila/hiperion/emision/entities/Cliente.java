@@ -64,6 +64,10 @@ public class Cliente extends Auditoria implements Serializable {
 	// bi-directional many-to-one association to Direccion
 	@OneToMany(mappedBy = "cliente")
 	private List<Direccion> direccions;
+	
+	//bi-directional many-to-one association to Poliza
+		@OneToMany(mappedBy="cliente", fetch=FetchType.EAGER)
+		private List<Poliza> polizas;
 
 	public Cliente() {
 	}
@@ -206,6 +210,20 @@ public class Cliente extends Auditoria implements Serializable {
 		direccion.setCliente(null);
 
 		return direccion;
+	}
+
+	/**
+	 * @return the polizas
+	 */
+	public List<Poliza> getPolizas() {
+		return polizas;
+	}
+
+	/**
+	 * @param polizas the polizas to set
+	 */
+	public void setPolizas(List<Poliza> polizas) {
+		this.polizas = polizas;
 	}
 
 }

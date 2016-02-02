@@ -59,7 +59,7 @@ public class Direccion implements Serializable {
 	}
 
 	public void setCallePrincipal(String callePrincipal) {
-		this.callePrincipal = callePrincipal;
+		this.callePrincipal = callePrincipal.toUpperCase();
 	}
 
 	public String getCalleSecundaria() {
@@ -67,7 +67,7 @@ public class Direccion implements Serializable {
 	}
 
 	public void setCalleSecundaria(String calleSecundaria) {
-		this.calleSecundaria = calleSecundaria;
+		this.calleSecundaria = calleSecundaria.toUpperCase();
 	}
 
 	public String getNumeracion() {
@@ -83,7 +83,7 @@ public class Direccion implements Serializable {
 	}
 
 	public void setReferencia(String referencia) {
-		this.referencia = referencia;
+		this.referencia = referencia.toUpperCase();
 	}
 
 	public Cliente getCliente() {
