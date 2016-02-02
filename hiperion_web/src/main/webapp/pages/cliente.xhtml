@@ -157,7 +157,8 @@
 							<p:outputLabel for="actProfecionId" value="#{administrador['cliente.dlg.agregar.actProfesion']}" styleClass="negrita" />
 							<p:outputLabel for="fechaNacimientoId" value="#{administrador['cliente.dlg.agregar.fechaNacimiento']}" styleClass="negrita" />
 							<p:outputLabel for="contactoId" value="#{administrador['cliente.dlg.agregar.contacto']}" styleClass="negrita" />
-							<p:inputText id="actProfecionId" value="#{clienteBean.actividadProfecion}" styleClass="DialogoCliente-actProfesion" style="text-transform:uppercase;"/>
+							<p:inputText id="actProfecionId" value="#{clienteBean.actividadProfecion}" styleClass="DialogoCliente-actProfesion"
+								style="text-transform:uppercase;" />
 							<p:calendar id="fechaNacimientoId" value="#{clienteBean.fechaNacimiento}" pattern="MM/dd/yyyy" mask="true" />
 							<p:commandLink id="contactoId">
 								<h:graphicImage name="icono-contacto.jpg" onclick="contactosDlg.show()" library="img" height="30px;" />
@@ -327,7 +328,7 @@
 								<h:outputText value="#{direccion.callePrincipal}" />
 							</f:facet>
 							<f:facet name="input">
-								<p:inputText id="callePrincipalId" value="#{direccion.callePrincipal}" style="width:auto" />
+								<p:inputText id="callePrincipalId" value="#{direccion.callePrincipal}" style="width:auto;" />
 							</f:facet>
 						</p:cellEditor>
 					</p:column>
@@ -409,7 +410,7 @@
 
 						<p:outputLabel for="callePrincipalId" value="#{administrador['cliente.dlg.direccion.callePrincilapal']}" styleClass="negrita" />
 						<p:inputText id="callePrincipalId" value="#{direccionBean.callePrincipal}" required="true"
-							requiredMessage="#{administrador['cliente.dlg.direccion.msg.callePrincipal']}" style="width:200px;" />
+							requiredMessage="#{administrador['cliente.dlg.direccion.msg.callePrincipal']}" style="width:200px;text-transform:uppercase;" />
 
 						<p:outputLabel for="numeracionId" value="#{administrador['cliente.dlg.direccion.numeracion']}" styleClass="negrita" />
 						<p:inputText id="numeracionId" value="#{direccionBean.numeracion}" required="true"
@@ -417,11 +418,11 @@
 
 						<p:outputLabel for="calleSecundariaId" value="#{administrador['cliente.dlg.direccion.calleSecundaria']}" styleClass="negrita" />
 						<p:inputText id="calleSecundariaId" value="#{direccionBean.calleSecundaria}" required="true"
-							requiredMessage="#{administrador['cliente.dlg.direccion.msg.calleSecundaria']}" style="width:200px;" />
+							requiredMessage="#{administrador['cliente.dlg.direccion.msg.calleSecundaria']}" style="width:200px; text-transform:uppercase;" />
 					</h:panelGrid>
 					<h:panelGrid columns="1" cellpadding="2" cellspacing="2">
 						<p:outputLabel for="referenciaId" value="#{administrador['cliente.dlg.direccion.referencia']}" styleClass="negrita" />
-						<p:inputTextarea id="referenciaId" rows="3" cols="45" value="#{direccionBean.referencia}" />
+						<p:inputTextarea id="referenciaId" rows="3" cols="45" value="#{direccionBean.referencia}" style="text-transform:uppercase;" />
 					</h:panelGrid>
 				</p:panel>
 
