@@ -13,6 +13,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
 import ec.com.avila.hiperion.dto.TablaAmortizacionDTO;
+import ec.com.avila.hiperion.emision.entities.Cliente;
 import ec.com.avila.hiperion.emision.entities.Usuario;
 
 /**
@@ -46,6 +47,7 @@ public class PolizaBean implements Serializable {
 	private Date vigenciaDesde;
 	private Date vigenciaHasta;
 	private String factura;
+	private Cliente cliente;
 
 	// Pago de Poliza
 	private String formaPago;
@@ -629,6 +631,21 @@ public class PolizaBean implements Serializable {
 	 */
 	public void setFechaDebito(Date fechaDebito) {
 		this.fechaDebito = fechaDebito;
+	}
+
+	/**
+	 * @return the cliente
+	 */
+	public Cliente getCliente() {
+		return cliente;
+	}
+
+	/**
+	 * @param cliente
+	 *            the cliente to set
+	 */
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
 	}
 
 }

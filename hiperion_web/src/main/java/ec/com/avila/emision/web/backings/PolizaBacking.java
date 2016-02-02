@@ -129,6 +129,7 @@ public class PolizaBacking implements Serializable {
 					MessagesController.addWarn(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.warn.buscar"));
 				} else {
 					activarDatosCliente = true;
+					polizaBean.setCliente(cliente);
 					polizaBean.setNombreCliente(cliente.getApellidoPaterno() + " " + cliente.getApellidoMaterno() + " " + cliente.getNombrePersona());
 					Usuario ejecutivo = new Usuario();
 					ejecutivo.setNombreUsuario(polizaBean.getNombreCliente());

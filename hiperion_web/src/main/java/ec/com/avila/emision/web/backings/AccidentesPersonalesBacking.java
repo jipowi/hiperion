@@ -140,6 +140,7 @@ public class AccidentesPersonalesBacking implements Serializable {
 		poliza.setDerechoEmision(BigDecimal.valueOf(polizaBean.getDerechoEmision()));
 		poliza.setRamo(1);
 		poliza.setEstadoPoliza("COTIZADO");
+		poliza.setCliente(polizaBean.getCliente());
 
 		PagoPoliza pagoPoliza = new PagoPoliza();
 		pagoPoliza.setNumeroFactura(polizaBean.getNumeroFactura());
