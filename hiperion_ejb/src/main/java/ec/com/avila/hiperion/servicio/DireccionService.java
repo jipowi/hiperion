@@ -3,6 +3,8 @@
  */
 package ec.com.avila.hiperion.servicio;
 
+import java.util.List;
+
 import javax.ejb.Local;
 
 import ec.com.avila.hiperion.comun.HiperionException;
@@ -19,4 +21,6 @@ import ec.com.avila.hiperion.emision.entities.Direccion;
 public interface DireccionService {
 
 	public void guardarDireccion(Direccion direccion) throws HiperionException;
+	
+	public void guardarDirecciones(List<Direccion> direcciones) throws HiperionException;
 }
