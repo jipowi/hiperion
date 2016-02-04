@@ -294,6 +294,8 @@ public class ClienteBacking implements Serializable {
 							cliente.setFechaCreacion(new Date());
 							cliente.setEstado(EstadoEnum.A);
 							clienteService.guardarCliente(cliente);
+							direccionService.guardarDirecciones(direcciones);
+							
 							MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.cliente"));
 						} else {
 							MessagesController.addWarn(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.warn.direccion"));
