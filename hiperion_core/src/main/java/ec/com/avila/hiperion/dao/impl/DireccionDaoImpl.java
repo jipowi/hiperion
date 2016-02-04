@@ -4,6 +4,8 @@
  */
 package ec.com.avila.hiperion.dao.impl;
 
+import java.util.List;
+
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -36,6 +38,22 @@ public class DireccionDaoImpl implements DireccionDao {
 			log.error("Error no se pudo guardar la cliente", e);
 			throw new HiperionException(e);
 		}
+	}
+
+	/* (non-Javadoc)
+	 * @see ec.com.avila.hiperion.dao.DireccionDao#guardarDirecciones(java.util.List)
+	 */
+	@Override
+	public void guardarDirecciones(List<Direccion> direcciones) throws HiperionException {
+		try {
+			for (Direccion direccion : direcciones) {
+				em.persist(direccion);
+			}
+		} catch (Exception e) {
+			log.error("Error no se pudo guardar la cliente", e);
+			throw new HiperionException(e);
+		}
+		
 	}
 
 }

@@ -4,6 +4,8 @@
  */
 package ec.com.avila.hiperion.dao;
 
+import java.util.List;
+
 import javax.ejb.Local;
 
 import ec.com.avila.hiperion.comun.HiperionException;
@@ -18,5 +20,8 @@ import ec.com.avila.hiperion.emision.entities.Direccion;
  */
 @Local
 public interface DireccionDao {
-	public void guardarDireccion(Direccion direccion) throws HiperionException;
+	public void guardarDireccion (Direccion direccion) throws HiperionException;
+	
+	public void guardarDirecciones (List<Direccion> direcciones) throws HiperionException;
 }
+
