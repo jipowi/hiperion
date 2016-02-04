@@ -3,6 +3,8 @@
  */
 package ec.com.avila.hiperion.servicio.impl;
 
+import java.util.List;
+
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
@@ -29,6 +31,15 @@ public class DireccionServiceImpl implements DireccionService {
 
 	public void guardarDireccion(Direccion direccion) throws HiperionException {
 		direccionDao.guardarDireccion(direccion);
+	}
+
+	/* (non-Javadoc)
+	 * @see ec.com.avila.hiperion.servicio.DireccionService#guardarDirecciones(java.util.List)
+	 */
+	@Override
+	public void guardarDirecciones(List<Direccion> direcciones) throws HiperionException {
+		direccionDao.guardarDirecciones(direcciones);
+		
 	}
 
 }
