@@ -43,19 +43,25 @@
 						<p:dataTable value="#{clienteBacking.clientesObtenidos}" var="cliente" widgetVar="50" editable="true">
 							<p:column>
 								<f:facet name="header">
-									<h:outputText value="#{emision['cliente.tabla.identificacion']}" />
+									<h:outputText value="#{emision['cliente.poliza.ramo']}" />
 								</f:facet>
 								<h:outputText value="#{cliente.identificacionPersona}" />
 							</p:column>
 							<p:column>
 								<f:facet name="header">
-									<h:outputText value="#{emision['cliente.tabla.nombre']}" />
+									<h:outputText value="#{emision['cliente.poliza.vigenciaDesde']}" />
 								</f:facet>
 								<h:outputText value="#{cliente.nombrePersona} #{cliente.apellidoPaterno} #{cliente.apellidoMaterno}" />
 							</p:column>
 							<p:column>
 								<f:facet name="header">
-									<h:outputText value="#{emision['cliente.tabla.razonSocial']}" />
+									<h:outputText value="#{emision['cliente.poliza.vigenciaHasta']}" />
+								</f:facet>
+								<h:outputText value="#{cliente.razonSocial}" />
+							</p:column>
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="#{emision['cliente.poliza.estado']}" />
 								</f:facet>
 								<h:outputText value="#{cliente.razonSocial}" />
 							</p:column>
