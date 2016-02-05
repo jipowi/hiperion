@@ -87,6 +87,7 @@ public class PolizaBean implements Serializable {
 	private String nombreCliente;
 	private String contactoAseguradora;
 	private List<TablaAmortizacionDTO> financiamientos = new ArrayList<>();
+	private String estadoPoliza;
 
 	public Double getDerechoEmision() {
 		return derechoEmision;
@@ -646,6 +647,21 @@ public class PolizaBean implements Serializable {
 	 */
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
+	}
+
+	/**
+	 * @return the estadoPoliza
+	 */
+	public String getEstadoPoliza() {
+		return estadoPoliza;
+	}
+
+	/**
+	 * @param estadoPoliza
+	 *            the estadoPoliza to set
+	 */
+	public void setEstadoPoliza(String estadoPoliza) {
+		this.estadoPoliza = estadoPoliza;
 	}
 
 }

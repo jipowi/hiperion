@@ -3,6 +3,7 @@ package ec.com.avila.emision.web.backings;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -13,6 +14,13 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.model.SelectItem;
 
 import org.apache.log4j.Logger;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.poifs.filesystem.POIFSFileSystem;
+import org.apache.poi.ss.usermodel.Row;
+import org.primefaces.event.FileUploadEvent;
+import org.primefaces.model.UploadedFile;
 
 import ec.com.avila.emision.web.beans.ClienteBean;
 import ec.com.avila.emision.web.beans.ContactoBean;
@@ -83,6 +91,8 @@ public class ClienteBacking implements Serializable {
 	private boolean activarPanelDireccionCobro;
 	private boolean activarPanelDireccionDomicilio;
 	private boolean activarPanelDireccionOficina;
+
+	private UploadedFile file;
 
 	Logger log = Logger.getLogger(ClienteBacking.class);
 
@@ -295,7 +305,7 @@ public class ClienteBacking implements Serializable {
 							cliente.setEstado(EstadoEnum.A);
 							clienteService.guardarCliente(cliente);
 							direccionService.guardarDirecciones(direcciones);
-							
+
 							MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.cliente"));
 						} else {
 							MessagesController.addWarn(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.warn.direccion"));
@@ -339,6 +349,74 @@ public class ClienteBacking implements Serializable {
 		}
 
 		return pasaValidacion;
+	}
+
+	/**
+	 * 
+	 * <b> Permite cargar un archiv Excel y guardar la informacion en la Base de datos </b>
+	 * <p>
+	 * [Author: HIPERION, Date: 04/02/2016]
+	 * </p>
+	 * 
+	 * @param event
+	 */
+	public void cargaArchivoExcel(FileUploadEvent event) {
+		if (event.getFile() != null) {
+			try {
+				UploadedFile file = event.getFile();
+				POIFSFileSystem fsFileSystem = new POIFSFileSystem(file.getInputstream());
+				HSSFWorkbook workBook = new HSSFWorkbook(fsFileSystem);
+				lecturaExcel(workBook);
+			} catch (Exception e) {
+				MessagesController.addError(null, HiperionMensajes.getInstancia().getString("msg.error.archivo.vacio"));
+			}
+		} else {
+			MessagesController.addError(null, HiperionMensajes.getInstancia().getString("msg.error.archivo.vacio"));
+		}
+	}
+
+	/**
+	 * 
+	 * <b> Se encarga de procesar los datos del archivo excel a memoria. </b>
+	 * <p>
+	 * [Author: HIPERION, Date: 04/02/2016]
+	 * </p>
+	 * 
+	 * @param archivoXLS
+	 */
+	public void lecturaExcel(HSSFWorkbook archivoXLS) {
+		
+		List<Cliente> clientes = new ArrayList<Cliente>();
+		HSSFSheet hssfSheet = archivoXLS.getSheetAt(0);
+		Iterator<Row> rowIterator = hssfSheet.rowIterator();
+
+		int contador = 1;
+		while (rowIterator.hasNext()) {
+			HSSFRow hssfRow = (HSSFRow) rowIterator.next();
+			Cliente cliente = new Cliente();
+			try {
+
+				if (hssfRow.getCell(0).getStringCellValue().contentEquals("PRIMER NOMBRE")) {
+					hssfRow = (HSSFRow) rowIterator.next();
+				}
+				
+				String primerNombre = hssfRow.getCell(0).getStringCellValue();
+				String segundoNombre = hssfRow.getCell(1).getStringCellValue();
+				String apellidoPaterno = hssfRow.getCell(2).getStringCellValue();
+				String apellidoMaterno = hssfRow.getCell(3).getStringCellValue();
+				String identificacion = hssfRow.getCell(4).getStringCellValue();
+				
+				cliente.setNombrePersona(primerNombre + " " +segundoNombre);
+				
+			} catch (Exception e) {
+				log.error("Error al cargar la fila: " + contador);
+
+			}
+			contador++;
+			
+			clientes.add(cliente);
+		}
+
 	}
 
 	public ClienteBean getClienteBean() {
@@ -491,6 +569,21 @@ public class ClienteBacking implements Serializable {
 	 */
 	public void setUsuarioBean(UsuarioBean usuarioBean) {
 		this.usuarioBean = usuarioBean;
+	}
+
+	/**
+	 * @return the file
+	 */
+	public UploadedFile getFile() {
+		return file;
+	}
+
+	/**
+	 * @param file
+	 *            the file to set
+	 */
+	public void setFile(UploadedFile file) {
+		this.file = file;
 	}
 
 }
