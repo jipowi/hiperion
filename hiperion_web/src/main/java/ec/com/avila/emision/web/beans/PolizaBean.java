@@ -82,10 +82,7 @@ public class PolizaBean implements Serializable {
 	private Date fechaCaducidad;
 	private BigDecimal interes;
 
-	private String identificacion;
-	private String aseguradora;
-	private String nombreCliente;
-	private String contactoAseguradora;
+	
 	private List<TablaAmortizacionDTO> financiamientos = new ArrayList<>();
 	private String estadoPoliza;
 
@@ -529,50 +526,7 @@ public class PolizaBean implements Serializable {
 		this.porcentajeFinanciamiento = porcentajeFinanciamiento;
 	}
 
-	/**
-	 * @return the identificacion
-	 */
-	public String getIdentificacion() {
-		return identificacion;
-	}
-
-	/**
-	 * @param identificacion
-	 *            the identificacion to set
-	 */
-	public void setIdentificacion(String identificacion) {
-		this.identificacion = identificacion;
-	}
-
-	/**
-	 * @return the aseguradora
-	 */
-	public String getAseguradora() {
-		return aseguradora;
-	}
-
-	/**
-	 * @param aseguradora
-	 *            the aseguradora to set
-	 */
-	public void setAseguradora(String aseguradora) {
-		this.aseguradora = aseguradora;
-	}
-
-	/**
-	 * @return the nombreCliente
-	 */
-	public String getNombreCliente() {
-		return nombreCliente;
-	}
-
-	/**
-	 * @param nombreCliente
-	 *            the nombreCliente to set
-	 */
-	public void setNombreCliente(String nombreCliente) {
-		this.nombreCliente = nombreCliente;
-	}
+	
 
 	/**
 	 * @return the tarjetaCredito
@@ -604,20 +558,7 @@ public class PolizaBean implements Serializable {
 		this.financiamientos = financiamientos;
 	}
 
-	/**
-	 * @return the contactoAseguradora
-	 */
-	public String getContactoAseguradora() {
-		return contactoAseguradora;
-	}
-
-	/**
-	 * @param contactoAseguradora
-	 *            the contactoAseguradora to set
-	 */
-	public void setContactoAseguradora(String contactoAseguradora) {
-		this.contactoAseguradora = contactoAseguradora;
-	}
+	
 
 	/**
 	 * @return the fechaDebito

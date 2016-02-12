@@ -23,14 +23,11 @@ import org.apache.log4j.Logger;
 import org.primefaces.event.RowEditEvent;
 
 import ec.com.avila.emision.web.beans.PolizaBean;
-import ec.com.avila.emision.web.validator.ValidatorCedula;
 import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.dto.TablaAmortizacionDTO;
 import ec.com.avila.hiperion.emision.entities.Catalogo;
-import ec.com.avila.hiperion.emision.entities.Cliente;
 import ec.com.avila.hiperion.emision.entities.DetalleCatalogo;
 import ec.com.avila.hiperion.emision.entities.Usuario;
-import ec.com.avila.hiperion.servicio.AseguradoraService;
 import ec.com.avila.hiperion.servicio.CatalogoService;
 import ec.com.avila.hiperion.servicio.ClienteService;
 import ec.com.avila.hiperion.servicio.PolizaService;
@@ -38,7 +35,6 @@ import ec.com.avila.hiperion.servicio.UsuarioService;
 import ec.com.avila.hiperion.web.beans.UsuarioBean;
 import ec.com.avila.hiperion.web.util.FechasUtil;
 import ec.com.avila.hiperion.web.util.HiperionMensajes;
-import ec.com.avila.hiperion.web.util.MessagesController;
 
 /**
  * <b> Clase Backing que permite gestionar la informacion que se maneje en las paginas web</b>
@@ -64,8 +60,6 @@ public class PolizaBacking implements Serializable {
 	private UsuarioService usuarioService;
 	@EJB
 	private ClienteService clienteService;
-	@EJB
-	private AseguradoraService aseguradoraService;
 
 	private List<SelectItem> formasPagoItems;
 	private List<SelectItem> tarjetasCreditoItems;
@@ -77,16 +71,12 @@ public class PolizaBacking implements Serializable {
 	private List<SelectItem> pagoFinanciadoItems;
 	private List<SelectItem> aseguradorasItems;
 	private List<SelectItem> tarjetaCreditoItems;
-	private List<SelectItem> contactosItems = new ArrayList<>();
-
-	private Usuario ejecutivo;
 
 	private List<TablaAmortizacionDTO> tablaAmortizacionList = new ArrayList<TablaAmortizacionDTO>();
 	private Boolean activarPanelPagoContado = false;
 	private Boolean activarPanelPagoFinanciado = false;
 	private Boolean activarPanelPagoTarjetaCredito = false;
 	private Boolean activarPanelPagoDebitoBancario = false;
-	private Boolean activarDatosCliente = false;
 
 	@ManagedProperty(value = "#{usuarioBean}")
 	private UsuarioBean usuarioBean;
@@ -105,73 +95,6 @@ public class PolizaBacking implements Serializable {
 	@PostConstruct
 	public void inicializar() throws HiperionException {
 		Usuario usuario = usuarioBean.getSessionUser();
-		ejecutivo = usuario;
-	}
-
-	/**
-	 * 
-	 * <b> Permite buscar un cliente por medi ode la cedula de identidad. </b>
-	 * <p>
-	 * [Author: Paul Jimenez, Date: 02/02/2015]
-	 * </p>
-	 * 
-	 * @throws HiperionException
-	 */
-	public void buscarCliente() throws HiperionException {
-		try {
-			Cliente cliente = new Cliente();
-
-			String identificacion = polizaBean.getIdentificacion();
-
-			if (!polizaBean.getIdentificacion().equals("") && ValidatorCedula.getInstancia().validateCedula(identificacion)) {
-				cliente = clienteService.consultarClienteByIdentificacion(identificacion);
-				if (cliente == null) {
-					MessagesController.addWarn(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.warn.buscar"));
-				} else {
-					activarDatosCliente = true;
-					polizaBean.setCliente(cliente);
-					polizaBean.setNombreCliente(cliente.getApellidoPaterno() + " " + cliente.getApellidoMaterno() + " " + cliente.getNombrePersona());
-					Usuario ejecutivo = new Usuario();
-					ejecutivo.setNombreUsuario(polizaBean.getNombreCliente());
-
-					polizaBean.setEjecutivo(ejecutivo);
-				}
-			} else {
-				MessagesController.addError(null, HiperionMensajes.getInstancia().getString("hiperion.mensage.error.identificacionNoValido"));
-			}
-
-		} catch (HiperionException e) {
-			log.error("Error al momento de buscar clientes", e);
-			throw new HiperionException(e);
-		}
-	}
-
-	/**
-	 * 
-	 * <b> Permite buscar los contactos de una aseguradora. </b>
-	 * <p>
-	 * [Author: Paul Jimenez, Date: 07/07/2015]
-	 * </p>
-	 * 
-	 */
-	public void buscarContactoAseguradora() {
-		String aseguradora = polizaBean.getAseguradora();
-
-		try {
-
-			List<Cliente> contactos = aseguradoraService.consultarClienteByAseguradora(aseguradora);
-			contactos.size();
-
-			for (Cliente cliente : contactos) {
-				SelectItem selectItem = new SelectItem(cliente.getIdCliente(), cliente.getApellidoPaterno() + " " + cliente.getApellidoMaterno()
-						+ " " + cliente.getNombrePersona());
-				contactosItems.add(selectItem);
-			}
-
-		} catch (HiperionException e) {
-			e.printStackTrace();
-		}
-
 	}
 
 	/**
@@ -453,20 +376,6 @@ public class PolizaBacking implements Serializable {
 		this.usuarioBean = usuarioBean;
 	}
 
-	/**
-	 * @return the ejecutivo
-	 */
-	public Usuario getEjecutivo() {
-		return ejecutivo;
-	}
-
-	/**
-	 * @param ejecutivo
-	 *            the ejecutivo to set
-	 */
-	public void setEjecutivo(Usuario ejecutivo) {
-		this.ejecutivo = ejecutivo;
-	}
 
 	/**
 	 * 
@@ -691,37 +600,6 @@ public class PolizaBacking implements Serializable {
 	 */
 	public void setAseguradorasItems(List<SelectItem> aseguradorasItems) {
 		this.aseguradorasItems = aseguradorasItems;
-	}
-
-	/**
-	 * @return the activarDatosCliente
-	 */
-	public Boolean getActivarDatosCliente() {
-		return activarDatosCliente;
-	}
-
-	/**
-	 * @param activarDatosCliente
-	 *            the activarDatosCliente to set
-	 */
-	public void setActivarDatosCliente(Boolean activarDatosCliente) {
-		this.activarDatosCliente = activarDatosCliente;
-	}
-
-	/**
-	 * @return the contactosItems
-	 */
-	public List<SelectItem> getContactosItems() {
-
-		return contactosItems;
-	}
-
-	/**
-	 * @param contactosItems
-	 *            the contactosItems to set
-	 */
-	public void setContactosItems(List<SelectItem> contactosItems) {
-		this.contactosItems = contactosItems;
 	}
 
 }
