@@ -6,96 +6,11 @@
 		<div id="header">
 			<ui:insert name="ramoHeader">HEADER</ui:insert>
 		</div>
-		<div align="center">
-			<h:form>
-				<h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5">
-					<p:outputLabel for="console" value="Estado de la poliza: " styleClass="negrita" />
-					<p:selectOneRadio id="console" value="#{polizaBean.estadoPoliza}">
-						<f:selectItem itemLabel="COTIZADO" itemValue="COTIZADO" />
-						<f:selectItem itemLabel="EMITIDO" itemValue="EMITIDO" />
-					</p:selectOneRadio>
-				</h:panelGrid>
-			</h:form>
-		</div>
-		<div id="ramoHeader" class="template_top">
-			<p:growl id="msgsCliente" showDetail="true" />
-			<p:accordionPanel dynamic="true" cache="true" activeIndex="null">
-				<!-- CLIENTE -->
-				<p:tab title="#{emision['poliza.titulo.infoCliente']}">
-					<p:outputPanel id="messageCliente">
-						<p:messages id="messagesCliente" showDetail="true" autoUpdate="true" closable="true" />
-					</p:outputPanel>
-					<h:form id="formCliente">
-						<div align="center">
-							<p:panel>
-								<h:panelGrid columns="1">
-									<p:panel>
-										<f:facet name="header">
-											<h:outputText value="#{emision['cliente.buscar']}" />
-										</f:facet>
-										<h:panelGrid columns="2">
-											<h:panelGrid columns="2">
-												<p:outputLabel value="#{emision['cliente.identificacion']}:" styleClass="negrita" />
-												<p:inputText value="#{polizaBean.identificacion}" />
-											</h:panelGrid>
-											<p:commandLink title="Buscar clientes" action="#{polizaBacking.buscarCliente}" update="formCliente, idDatosCliente">
-												<h:graphicImage name="search.png" library="img/icon" />
-											</p:commandLink>
-										</h:panelGrid>
-									</p:panel>
-								</h:panelGrid>
-								<h:panelGrid columns="1" id="idDatosCliente" rendered="#{polizaBacking.activarDatosCliente}">
-									<h:panelGrid columns="2" cellpadding="3">
-										<p:outputLabel value="#{emision['poliza.atributo.ejecutivo']}:" styleClass="negrita" />
-										<p:outputLabel value="#{polizaBacking.ejecutivo.nombreUsuario}" style="color:green;" />
-
-										<p:outputLabel value="#{emision['cliente.nombre']}:" styleClass="negrita" />
-										<p:outputLabel value="#{polizaBean.nombreCliente}" />
-
-										<p:outputLabel value="#{emision['cliente.tabla.identificacion']}:" styleClass="negrita" />
-										<p:outputLabel value="#{polizaBean.identificacion}" />
-									</h:panelGrid>
-								</h:panelGrid>
-
-								<h:panelGrid columns="1">
-									<h:panelGrid columns="2" cellpadding="3">
-										<p:outputLabel value="#{emision['aseguradora.aseguradora']}" styleClass="negrita" />
-										<p:selectOneMenu value="#{polizaBean.aseguradora}" effect="drop">
-											<f:selectItem itemLabel="Seleccione Aseguradora" noSelectionOption="true" />
-											<f:selectItems value="#{polizaBacking.aseguradorasItems}" />
-											<p:ajax listener="#{polizaBacking.buscarContactoAseguradora()}" update="formCliente:contacto" />
-										</p:selectOneMenu>
-									</h:panelGrid>
-								</h:panelGrid>
-
-								<h:panelGrid columns="1" id="contacto">
-									<h:panelGrid columns="2" cellpadding="3">
-										<p:outputLabel value="#{emision['lbl.contactoAseguradora']}:" styleClass="negrita" />
-										<p:selectOneMenu value="#{polizaBean.contactoAseguradora}" effect="drop">
-											<f:selectItem itemLabel="Seleccione Contacto de la Aseguradora" noSelectionOption="true" />
-											<f:selectItems value="#{polizaBacking.contactosItems}" />
-										</p:selectOneMenu>
-									</h:panelGrid>
-								</h:panelGrid>
-							</p:panel>
-						</div>
-					</h:form>
-				</p:tab>
-			</p:accordionPanel>
-		</div>
-
 
 		<p:spacer height="15px;" />
 		<!-- POLIZA -->
 		<div id="content">
-			<p:growl id="msgBody" showDetail="true" />
-			<p:accordionPanel dynamic="true" cache="true" activeIndex="null">
-				<p:tab title="#{emision['poliza.titulo.infoPoliza']}">
-					<h:form id="formPoliza">
-						<ui:insert name="ramoContent">BODY</ui:insert>
-					</h:form>
-				</p:tab>
-			</p:accordionPanel>
+			<ui:insert name="ramoContent">BODY</ui:insert>
 		</div>
 	</div>
 
