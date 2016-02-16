@@ -6,20 +6,20 @@ package ec.com.avila.hiperion.enumeration;
 
 /**
  * 
- * <b> Enumeracion que contiene la lista de estados </b>
+ * <b> Enumeracion que contiene la lista de ramos </b>
  * 
  * @author Paul Jimenez
  * @version 1.0,Nov 24, 2014
  * @since JDK1.6
  */
-public enum EstadoEnum {
+public enum RamoEnum {
 
-	A("ACTIVO"), 
-	I("INACTIVO");
+	R1("ACCIDEENTES PERSONALES"), 
+	R2("AGROPECUARIO");
 
 	private String label;
 
-	EstadoEnum(String label) {
+	RamoEnum(String label) {
 		this.label = label;
 	}
 

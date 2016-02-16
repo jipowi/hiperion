@@ -1,10 +1,24 @@
 package ec.com.avila.hiperion.emision.entities;
 
 import java.io.Serializable;
-import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import ec.com.avila.hiperion.enumeration.RamoEnum;
 
 /**
  * The persistent class for the poliza database table.
@@ -46,7 +60,7 @@ public class Poliza implements Serializable {
 	@Column(name = "prima_neta")
 	private BigDecimal primaNeta;
 
-	private Integer ramo;
+	private RamoEnum ramo;
 
 	@Column(name = "seguro_campesino")
 	private BigDecimal seguroCampesino;
@@ -262,11 +276,18 @@ public class Poliza implements Serializable {
 		this.primaNeta = primaNeta;
 	}
 
-	public Integer getRamo() {
-		return this.ramo;
+	/**
+	 * @return the ramo
+	 */
+	public RamoEnum getRamo() {
+		return ramo;
 	}
 
-	public void setRamo(Integer ramo) {
+	/**
+	 * @param ramo
+	 *            the ramo to set
+	 */
+	public void setRamo(RamoEnum ramo) {
 		this.ramo = ramo;
 	}
 
@@ -898,7 +919,8 @@ public class Poliza implements Serializable {
 	}
 
 	/**
-	 * @param cliente the cliente to set
+	 * @param cliente
+	 *            the cliente to set
 	 */
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
