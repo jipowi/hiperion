@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -18,7 +19,14 @@ import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
 import org.apache.log4j.Logger;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.poifs.filesystem.POIFSFileSystem;
+import org.apache.poi.ss.usermodel.Row;
+import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.RowEditEvent;
+import org.primefaces.model.UploadedFile;
 
 import ec.com.avila.emision.web.beans.PolizaBean;
 import ec.com.avila.emision.web.beans.RamoVehiculoBean;
@@ -154,42 +162,43 @@ public class VehiculosBacking implements Serializable {
 		}
 
 	}
-	
+
 	/**
 	 * 
-	 * <b>
-	 * Permite editar un registro de la tabla clausulas adicionales.
-	 * </b>
-	 * <p>[Author: Jonathan, Date: 05/08/2015]</p>
-	 *
+	 * <b> Permite editar un registro de la tabla clausulas adicionales. </b>
+	 * <p>
+	 * [Author: Jonathan, Date: 05/08/2015]
+	 * </p>
+	 * 
 	 * @param event
 	 */
-	
+
 	public void onEditClausulasAdd(RowEditEvent event) {
 		FacesMessage msg = new FacesMessage("Item Edited", ((ClausulaAdicionalDTO) event.getObject()).getClausula());
 		FacesContext.getCurrentInstance().addMessage(null, msg);
 	}
-/**
- * 
- * <b>
- * Permite editar un registro de la tabla condiciones especiales
- * </b>
- * <p>[Author: Jonathan, Date: 05/08/2015]</p>
- *
- * @param event
- */
+
+	/**
+	 * 
+	 * <b> Permite editar un registro de la tabla condiciones especiales </b>
+	 * <p>
+	 * [Author: Jonathan, Date: 05/08/2015]
+	 * </p>
+	 * 
+	 * @param event
+	 */
 	public void onEditCondicionesEsp(RowEditEvent event) {
 		FacesMessage msg = new FacesMessage("Item Edited", ((CondicionEspecialDTO) event.getObject()).getCondicionEspecial());
 		FacesContext.getCurrentInstance().addMessage(null, msg);
 	}
-	
+
 	/**
 	 * 
-	 * <b>
-	 *  permite setear las clausualas adicionales seleccionadas.
-	 * </b>
-	 * <p>[Author: Jonathan, Date: 05/08/2015]</p>
-	 *
+	 * <b> permite setear las clausualas adicionales seleccionadas. </b>
+	 * <p>
+	 * [Author: Jonathan, Date: 05/08/2015]
+	 * </p>
+	 * 
 	 */
 	public void setearClausulasAdd() {
 
@@ -216,15 +225,14 @@ public class VehiculosBacking implements Serializable {
 		}
 
 	}
-	
-	
+
 	/**
 	 * 
-	 * <b>
-	 * Permite setear las condiciones especiales seleccionadas en el Bean
-	 * </b>
-	 * <p>[Author: Jona, Date: 05/08/2015]</p>
-	 *
+	 * <b> Permite setear las condiciones especiales seleccionadas en el Bean </b>
+	 * <p>
+	 * [Author: Jona, Date: 05/08/2015]
+	 * </p>
+	 * 
 	 */
 	public void setearCondiciones() {
 		int contCondicion = 0;
@@ -245,7 +253,7 @@ public class VehiculosBacking implements Serializable {
 			MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.condicionesEsp"));
 		}
 	}
-	
+
 	/**
 	 * 
 	 * <b> Permite obtener las condiciones especiales del ramo Vehiculos. </b>
@@ -277,7 +285,7 @@ public class VehiculosBacking implements Serializable {
 		}
 
 	}
-	
+
 	public Poliza setearDatosPoliza() {
 
 		Usuario usuario = usuarioBean.getSessionUser();
@@ -333,7 +341,7 @@ public class VehiculosBacking implements Serializable {
 	 * 
 	 */
 	public void guardarRamo() throws HiperionException {
-		
+
 		Poliza poliza = setearDatosPoliza();
 
 		ramoVehiculo.setClaseVh(ramoVehiculoBean.getClaseVehiculo());
@@ -374,6 +382,83 @@ public class VehiculosBacking implements Serializable {
 			throw new HiperionException(e);
 
 		}
+	}
+
+	/**
+	 * 
+	 * <b> Permite cargar un archiv Excel y guardar la informacion en la Base de datos
+	 * 
+	 * </b>
+	 * <p>
+	 * [Author: Franklin Poo B, Date: 15/02/2016]
+	 * </p>
+	 * 
+	 * @param event
+	 */
+	public void cargarArchivoExcel(FileUploadEvent event) {
+
+		if (event.getFile() != null) {
+			try {
+				UploadedFile file = event.getFile();
+				POIFSFileSystem fsFileSystem = new POIFSFileSystem(file.getInputstream());
+				HSSFWorkbook workBook = new HSSFWorkbook(fsFileSystem);
+				lecturaExcel(workBook);
+			} catch (Exception e) {
+				MessagesController.addError(null, HiperionMensajes.getInstancia().getString("msg.error.archivo.vacio"));
+			}
+		} else {
+			MessagesController.addError(null, HiperionMensajes.getInstancia().getString("msg.error.archivo.vacio"));
+		}
+
+	}
+
+	/**
+	 * 
+	 * <b> Se encarga de procesar los datos del archivo excel a memoria. </b>
+	 * <p>
+	 * [Author: Franklin Pozo B, Date: 15/02/2016]
+	 * </p>
+	 * 
+	 * @param archivosXLS
+	 */
+	public void lecturaExcel(HSSFWorkbook archivosXLS){
+		
+		List<RamoVehiculo> vehiculos=new ArrayList<>();
+		HSSFSheet hssfSheet =archivosXLS.getSheetAt(0);
+		Iterator<Row> rowIterator = hssfSheet.rowIterator();
+		
+		int contador=1;
+		while (rowIterator.hasNext()){
+			HSSFRow hssfRow =(HSSFRow) rowIterator.next();
+			RamoVehiculo ramoVehiculo =new RamoVehiculo();
+			
+			try{
+				if (hssfRow.getCell(0).getStringCellValue().contentEquals("NUMERO DE POLIZA")) {
+					hssfRow = (HSSFRow) rowIterator.next();
+			}
+				String claseVehiculo = hssfRow.getCell(0).getStringCellValue();
+				String tipoVehiculo=hssfRow.getCell(1).getStringCellValue();
+				
+				ramoVehiculo.setClaseVh(claseVehiculo);
+				ramoVehiculo.setTipoVh(tipoVehiculo);
+				
+				//Guardar Clientes
+				
+				ramoVehiculo.setIdUsuarioCreacion(usuario.getIdUsuario());
+				ramoVehiculo.setFechaCreacion(new Date());
+				ramoVehiculo.setEstado(EstadoEnum.A);
+				Poliza poliza=new Poliza();
+				ramoVehiculoService.guardarRamoVehiculo(ramoVehiculo,poliza);
+				
+				
+		}catch (Exception e){
+			log.error("Error al cargar la fila: " + contador);
+		}
+			contador++;
+			vehiculos.add(ramoVehiculo);
+		}
+			
+			
 	}
 
 	/**
@@ -669,8 +754,6 @@ public class VehiculosBacking implements Serializable {
 
 	}
 
-	
-	
 	/**
 	 * @return the polizaBean
 	 */
@@ -679,7 +762,8 @@ public class VehiculosBacking implements Serializable {
 	}
 
 	/**
-	 * @param polizaBean the polizaBean to set
+	 * @param polizaBean
+	 *            the polizaBean to set
 	 */
 	public void setPolizaBean(PolizaBean polizaBean) {
 		this.polizaBean = polizaBean;
