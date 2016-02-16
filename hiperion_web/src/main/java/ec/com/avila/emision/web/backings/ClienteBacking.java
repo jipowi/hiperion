@@ -92,12 +92,15 @@ public class ClienteBacking implements Serializable {
 	private boolean activarPanelDireccionDomicilio;
 	private boolean activarPanelDireccionOficina;
 
+	private Usuario usuario;
+
 	private UploadedFile file;
 
 	Logger log = Logger.getLogger(ClienteBacking.class);
 
 	@PostConstruct
 	public void inicializar() throws HiperionException {
+		usuario = usuarioBean.getSessionUser();
 		obtenerTipoIdentificacion();
 	}
 
@@ -299,7 +302,7 @@ public class ClienteBacking implements Serializable {
 
 							cliente.setDireccions(direcciones);
 							// Guardamos al Cliente
-							Usuario usuario = usuarioBean.getSessionUser();
+
 							cliente.setIdUsuarioCreacion(usuario.getIdUsuario());
 							cliente.setFechaCreacion(new Date());
 							cliente.setEstado(EstadoEnum.A);
@@ -385,7 +388,7 @@ public class ClienteBacking implements Serializable {
 	 * @param archivoXLS
 	 */
 	public void lecturaExcel(HSSFWorkbook archivoXLS) {
-		
+
 		List<Cliente> clientes = new ArrayList<Cliente>();
 		HSSFSheet hssfSheet = archivoXLS.getSheetAt(0);
 		Iterator<Row> rowIterator = hssfSheet.rowIterator();
@@ -394,26 +397,57 @@ public class ClienteBacking implements Serializable {
 		while (rowIterator.hasNext()) {
 			HSSFRow hssfRow = (HSSFRow) rowIterator.next();
 			Cliente cliente = new Cliente();
+			Direccion direccion = new Direccion();
 			try {
 
 				if (hssfRow.getCell(0).getStringCellValue().contentEquals("PRIMER NOMBRE")) {
 					hssfRow = (HSSFRow) rowIterator.next();
 				}
-				
+
 				String primerNombre = hssfRow.getCell(0).getStringCellValue();
 				String segundoNombre = hssfRow.getCell(1).getStringCellValue();
 				String apellidoPaterno = hssfRow.getCell(2).getStringCellValue();
 				String apellidoMaterno = hssfRow.getCell(3).getStringCellValue();
 				String identificacion = hssfRow.getCell(4).getStringCellValue();
-				
-				cliente.setNombrePersona(primerNombre + " " +segundoNombre);
-				
+				Date fechaNacimiento = hssfRow.getCell(5).getDateCellValue();
+				String provinciaExcel = hssfRow.getCell(6).getStringCellValue();
+				String callePrincipal = hssfRow.getCell(7).getStringCellValue();
+				String numeracion = hssfRow.getCell(8).getStringCellValue();
+				String calleSecundaria = hssfRow.getCell(9).getStringCellValue();
+				String referencia =hssfRow.getCell(10).getStringCellValue();
+
+				cliente.setNombrePersona(primerNombre + " " + segundoNombre);
+				cliente.setApellidoPaterno(apellidoPaterno);
+				cliente.setApellidoMaterno(apellidoMaterno);
+				cliente.setIdentificacionPersona(identificacion);
+				cliente.setFechaNacimiento(fechaNacimiento);
+				// Provincias
+				Provincia provincia = new Provincia();
+				provincia.setNombreProvincia(provinciaExcel);
+				// Direccion Cliente
+				direccion.setCallePrincipal(callePrincipal);
+				direccion.setNumeracion(numeracion);
+				direccion.setCalleSecundaria(calleSecundaria);
+				direccion.setReferencia(referencia);
+
+				List<Direccion> direcciones = new ArrayList<>();
+				direcciones.add(direccion);
+				cliente.setDireccions(direcciones);
+
+				// Guardar clientes
+
+				cliente.setIdUsuarioCreacion(usuario.getIdUsuario());
+				cliente.setFechaCreacion(new Date());
+				cliente.setEstado(EstadoEnum.A);
+				clienteService.guardarCliente(cliente);
+				direccionService.guardarDirecciones(direcciones);
+
 			} catch (Exception e) {
 				log.error("Error al cargar la fila: " + contador);
 
 			}
 			contador++;
-			
+
 			clientes.add(cliente);
 		}
 
