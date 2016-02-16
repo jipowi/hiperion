@@ -9,21 +9,6 @@
 /*==============================================================*/
 create table ANEXO (
    ID_ANEXO             SERIAL               not null,
-   NOMBRE_ANEXO         TEXT                 null,
-   constraint PK_ANEXO primary key (ID_ANEXO)
-);
-
-/*==============================================================*/
-/* Index: ANEXO_PK                                              */
-/*==============================================================*/
-create unique index ANEXO_PK on ANEXO (
-ID_ANEXO
-);
-
-/*==============================================================*/
-/* Table: ARCHIVO_BASE                                          */
-/*==============================================================*/
-create table ARCHIVO_BASE (
    ID_ARCHIVO           SERIAL               not null,
    ID_AGROPECUARIO      INT4                 null,
    MIME_TYPE            TEXT                 null,
@@ -2896,7 +2881,7 @@ create table POLIZA (
    SUPER_BAN_SEGUROS    DECIMAL(8,2)         null,
    SEGURO_CAMPESINO     DECIMAL(8,2)         null,
    DERECHO_EMISION      DECIMAL(8,2)         null,
-   RAMO                 INT4                 null,
+   RAMO                 TEXT                 null,
    ESTADO_POLIZA        TEXT                 null,
    constraint PK_POLIZA primary key (ID_POLIZA)
 );
