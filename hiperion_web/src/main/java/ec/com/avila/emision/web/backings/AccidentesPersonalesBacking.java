@@ -40,6 +40,7 @@ import ec.com.avila.hiperion.emision.entities.Ramo;
 import ec.com.avila.hiperion.emision.entities.RamoAccidentesPersonale;
 import ec.com.avila.hiperion.emision.entities.Usuario;
 import ec.com.avila.hiperion.enumeration.EstadoEnum;
+import ec.com.avila.hiperion.enumeration.RamoEnum;
 import ec.com.avila.hiperion.servicio.AseguradoraService;
 import ec.com.avila.hiperion.servicio.CatalogoService;
 import ec.com.avila.hiperion.servicio.ClienteService;
@@ -172,6 +173,7 @@ public class AccidentesPersonalesBacking implements Serializable {
 				MessagesController.addError(null, HiperionMensajes.getInstancia().getString("hiperion.mensage.error.identificacionNoValido"));
 			}
 
+			polizaBean.setCliente(cliente);
 			return cliente;
 
 		} catch (HiperionException e) {
@@ -251,7 +253,7 @@ public class AccidentesPersonalesBacking implements Serializable {
 			poliza.setSuperBanSeguros(polizaBean.getSuperBanSeguros());
 			poliza.setSeguroCampesino(BigDecimal.valueOf(polizaBean.getSeguroCampesino()));
 			poliza.setDerechoEmision(BigDecimal.valueOf(polizaBean.getDerechoEmision()));
-			poliza.setRamo(1);
+			
 
 			PagoPoliza pagoPoliza = new PagoPoliza();
 			pagoPoliza.setNumeroFactura(polizaBean.getNumeroFactura());
@@ -280,7 +282,7 @@ public class AccidentesPersonalesBacking implements Serializable {
 		}
 		poliza.setEstadoPoliza(polizaBean.getEstadoPoliza());
 		poliza.setCliente(polizaBean.getCliente());
-
+		poliza.setRamo(RamoEnum.R1);
 		return poliza;
 	}
 
@@ -392,7 +394,7 @@ public class AccidentesPersonalesBacking implements Serializable {
 
 			Poliza poliza = setearDatosPoliza();
 
-			accidentesPersonales.setPrimaNetaPersona(ramoAccidentesPersonalesBean.getPrimaNetaPersona());
+	accidentesPersonales.setPrimaNetaPersona(ramoAccidentesPersonalesBean.getPrimaNetaPersona());
 			accidentesPersonales.setPrimaTotalPersona(ramoAccidentesPersonalesBean.getPrimaTotalPersona());
 			accidentesPersonales.setTasaAccidente(ramoAccidentesPersonalesBean.getTasa());
 			accidentesPersonales.setFacturacion(ramoAccidentesPersonalesBean.getFacturacion());

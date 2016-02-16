@@ -147,7 +147,6 @@ public class TransporteBacking implements Serializable {
 		poliza.setSuperBanSeguros(polizaBean.getSuperBanSeguros());
 		poliza.setSeguroCampesino(BigDecimal.valueOf(polizaBean.getSeguroCampesino()));
 		poliza.setDerechoEmision(BigDecimal.valueOf(polizaBean.getDerechoEmision()));
-		poliza.setRamo(1);
 		poliza.setEstadoPoliza("COTIZADO");
 
 		PagoPoliza pagoPoliza = new PagoPoliza();
