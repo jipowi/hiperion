@@ -65,34 +65,40 @@ public class RamoAccidentesPersonalesServiceImpl implements RamoAccidentesPerson
 	public void guardarRamoAccidentesPersonales(RamoAccidentesPersonale ramoAccidentesPersonales, Poliza poliza) throws HiperionException {
 
 		PagoPoliza pagoPoliza = poliza.getPagoPoliza();
-		pagoPolizaDao.persist(pagoPoliza);
 
-		for (Financiamiento financiamiento : pagoPoliza.getFinanciamientos()) {
-			financiamiento.setPagoPoliza(pagoPoliza);
-			financiamientoDao.persist(financiamiento);
+		if (pagoPoliza != null) {
+			pagoPolizaDao.persist(pagoPoliza);
+
+			for (Financiamiento financiamiento : pagoPoliza.getFinanciamientos()) {
+				financiamiento.setPagoPoliza(pagoPoliza);
+				financiamientoDao.persist(financiamiento);
+			}
 		}
 
 		polizaDao.persist(poliza);
 
 		ramoAccidentesPersonales.setPoliza(poliza);
-		
+
 		ramoAccidentesPersonalesDao.persist(ramoAccidentesPersonales);
 
-		for (ClausulasAddAccPer clausula : ramoAccidentesPersonales.getClausulasAddAccPers()) {
-			clausula.setRamoAccidentesPersonale(ramoAccidentesPersonales);
-			clausulaAddAccPerDao.persist(clausula);
+		if (ramoAccidentesPersonales.getClausulasAddAccPers() != null) {
+			for (ClausulasAddAccPer clausula : ramoAccidentesPersonales.getClausulasAddAccPers()) {
+				clausula.setRamoAccidentesPersonale(ramoAccidentesPersonales);
+				clausulaAddAccPerDao.persist(clausula);
+			}
 		}
-
-		for (CobertAccPer cobertura : ramoAccidentesPersonales.getCoberturasAcc()) {
-			cobertura.setRamoAccidentesPersonale(ramoAccidentesPersonales);
-			coberturaAccPerDao.persist(cobertura);
+		if (ramoAccidentesPersonales.getCoberturasAcc() != null) {
+			for (CobertAccPer cobertura : ramoAccidentesPersonales.getCoberturasAcc()) {
+				cobertura.setRamoAccidentesPersonale(ramoAccidentesPersonales);
+				coberturaAccPerDao.persist(cobertura);
+			}
 		}
-
-		for (CondEspAccPer condicion : ramoAccidentesPersonales.getCondicionesEspAcc()) {
-			condicion.setRamoAccidentesPersonale(ramoAccidentesPersonales);
-			conAccPerDao.persist(condicion);
+		if (ramoAccidentesPersonales.getCondicionesEspAcc() != null) {
+			for (CondEspAccPer condicion : ramoAccidentesPersonales.getCondicionesEspAcc()) {
+				condicion.setRamoAccidentesPersonale(ramoAccidentesPersonales);
+				conAccPerDao.persist(condicion);
+			}
 		}
 
 	}
-
 }
