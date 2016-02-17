@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui" xmlns:c="http://java.sun.com/jsp/jstl/core">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:c="http://java.sun.com/jsp/jstl/core">
 <ui:composition template="/templates/menuPrincipalTemplate.xhtml">
 	<ui:define name="content">
 		<h:outputStylesheet name="cliente.css" library="css" />
@@ -22,7 +22,7 @@
 										<f:validateRegex pattern="#{emision['msg.formato.cedula']}" />
 									</p:inputText>
 								</h:panelGrid>
-								<p:commandLink title="Buscar clientes" action="#{clienteBacking.buscarCliente}" update="tablaInfoClientes">
+								<p:commandLink title="Buscar clientes" action="#{clienteBacking.buscarCliente}" update="tablaInfoClientes, infoClienteObtenido">
 									<h:graphicImage name="search.png" library="img/icon" />
 								</p:commandLink>
 							</h:panelGrid>
@@ -36,8 +36,18 @@
 					</h:panelGrid>
 				</h:panelGrid>
 
-				<p:spacer height="30px;" />
+				<p:spacer height="10px;" />
+				<h:panelGrid columns="2" id="infoClienteObtenido">
+					<p:outputLabel value="#{emision['cliente.tabla.nombre']}:" styleClass="negrita" />
+					<p:outputLabel value="#{clienteBacking.clienteObtenido.nombrePersona}" style="color:green;" />
 
+					<p:outputLabel value="#{emision['cliente.apellidoPaterno']}:" styleClass="negrita" />
+					<p:outputLabel value="#{clienteBacking.clienteObtenido.apellidoPaterno}" style="color:green;" />
+
+					<p:outputLabel value="#{emision['cliente.apellidoMaterno']}:" styleClass="negrita" />
+					<p:outputLabel value="#{clienteBacking.clienteObtenido.apellidoMaterno}" style="color:green;" />
+				</h:panelGrid>
+				<p:spacer height="10px;" />
 				<div align="center">
 					<h:panelGrid columns="1" id="tablaInfoClientes">
 						<p:dataTable value="#{clienteBacking.clientesObtenidos}" var="cliente" widgetVar="50" editable="true">
