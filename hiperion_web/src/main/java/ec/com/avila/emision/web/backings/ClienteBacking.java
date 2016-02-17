@@ -85,6 +85,7 @@ public class ClienteBacking implements Serializable {
 
 	private List<Cliente> clientes;
 	private List<Cliente> clientesObtenidos;
+	private Cliente clienteObtenido;
 
 	private boolean activarPanelPersonaNatural;
 	private boolean activarPanelPersonaJuridica;
@@ -205,7 +206,7 @@ public class ClienteBacking implements Serializable {
 	 * 
 	 * @throws HiperionException
 	 */
-	public void buscarCliente() throws HiperionException {
+	public void buscarClientes() throws HiperionException {
 		try {
 			clientesObtenidos = new ArrayList<>();
 
@@ -225,6 +226,31 @@ public class ClienteBacking implements Serializable {
 					} else {
 						clientesObtenidos = clienteService.consultarClienteByApellido(clienteBean.getApePaterno());
 					}
+				}
+			}
+
+		} catch (HiperionException e) {
+			log.error("Error al momento de buscar clientes", e);
+			throw new HiperionException(e);
+		}
+	}
+
+	/**
+	 * 
+	 * <b> Permite buscar un cliente por medio del numero de identificacion. </b>
+	 * <p>
+	 * [Author: HIPERION, Date: 16/02/2016]
+	 * </p>
+	 * 
+	 * @throws HiperionException
+	 */
+	public void buscarCliente() throws HiperionException {
+		try {
+
+			if (!clienteBean.getIdentificacion().equals("")) {
+				clienteObtenido = clienteService.consultarClienteByIdentificacion(clienteBean.getIdentificacion());
+				if (clienteObtenido == null) {
+					MessagesController.addWarn(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.warn.buscar"));
 				}
 			}
 
@@ -414,7 +440,7 @@ public class ClienteBacking implements Serializable {
 				String callePrincipal = hssfRow.getCell(7).getStringCellValue();
 				String numeracion = hssfRow.getCell(8).getStringCellValue();
 				String calleSecundaria = hssfRow.getCell(9).getStringCellValue();
-				String referencia =hssfRow.getCell(10).getStringCellValue();
+				String referencia = hssfRow.getCell(10).getStringCellValue();
 
 				cliente.setNombrePersona(primerNombre + " " + segundoNombre);
 				cliente.setApellidoPaterno(apellidoPaterno);
@@ -618,6 +644,21 @@ public class ClienteBacking implements Serializable {
 	 */
 	public void setFile(UploadedFile file) {
 		this.file = file;
+	}
+
+	/**
+	 * @return the clienteObtenido
+	 */
+	public Cliente getClienteObtenido() {
+		return clienteObtenido;
+	}
+
+	/**
+	 * @param clienteObtenido
+	 *            the clienteObtenido to set
+	 */
+	public void setClienteObtenido(Cliente clienteObtenido) {
+		this.clienteObtenido = clienteObtenido;
 	}
 
 }
