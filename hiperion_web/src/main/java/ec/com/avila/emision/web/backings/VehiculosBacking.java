@@ -98,6 +98,23 @@ public class VehiculosBacking implements Serializable {
 
 	Logger log = Logger.getLogger(VehiculosBacking.class);
 
+	private UploadedFile file;
+
+	/**
+	 * @return the file
+	 */
+	public UploadedFile getFile() {
+		return file;
+	}
+
+	/**
+	 * @param file
+	 *            the file to set
+	 */
+	public void setFile(UploadedFile file) {
+		this.file = file;
+	}
+
 	RamoVehiculo ramoVehiculo = new RamoVehiculo();
 
 	private List<SelectItem> tipoVehiculoItems;
@@ -421,44 +438,42 @@ public class VehiculosBacking implements Serializable {
 	 * 
 	 * @param archivosXLS
 	 */
-	public void lecturaExcel(HSSFWorkbook archivosXLS){
-		
-		List<RamoVehiculo> vehiculos=new ArrayList<>();
-		HSSFSheet hssfSheet =archivosXLS.getSheetAt(0);
+	public void lecturaExcel(HSSFWorkbook archivosXLS) {
+
+		List<RamoVehiculo> vehiculos = new ArrayList<>();
+		HSSFSheet hssfSheet = archivosXLS.getSheetAt(0);
 		Iterator<Row> rowIterator = hssfSheet.rowIterator();
-		
-		int contador=1;
-		while (rowIterator.hasNext()){
-			HSSFRow hssfRow =(HSSFRow) rowIterator.next();
-			RamoVehiculo ramoVehiculo =new RamoVehiculo();
-			
-			try{
+
+		int contador = 1;
+		while (rowIterator.hasNext()) {
+			HSSFRow hssfRow = (HSSFRow) rowIterator.next();
+			RamoVehiculo ramoVehiculo = new RamoVehiculo();
+
+			try {
 				if (hssfRow.getCell(0).getStringCellValue().contentEquals("NUMERO DE POLIZA")) {
 					hssfRow = (HSSFRow) rowIterator.next();
-			}
+				}
 				String claseVehiculo = hssfRow.getCell(0).getStringCellValue();
-				String tipoVehiculo=hssfRow.getCell(1).getStringCellValue();
-				
+				String tipoVehiculo = hssfRow.getCell(1).getStringCellValue();
+
 				ramoVehiculo.setClaseVh(claseVehiculo);
 				ramoVehiculo.setTipoVh(tipoVehiculo);
-				
-				//Guardar Clientes
-				
+
+				// Guardar Clientes
+
 				ramoVehiculo.setIdUsuarioCreacion(usuario.getIdUsuario());
 				ramoVehiculo.setFechaCreacion(new Date());
 				ramoVehiculo.setEstado(EstadoEnum.A);
-				Poliza poliza=new Poliza();
-				ramoVehiculoService.guardarRamoVehiculo(ramoVehiculo,poliza);
-				
-				
-		}catch (Exception e){
-			log.error("Error al cargar la fila: " + contador);
-		}
+				Poliza poliza = new Poliza();
+				ramoVehiculoService.guardarRamoVehiculo(ramoVehiculo, poliza);
+
+			} catch (Exception e) {
+				log.error("Error al cargar la fila: " + contador);
+			}
 			contador++;
 			vehiculos.add(ramoVehiculo);
 		}
-			
-			
+
 	}
 
 	/**
