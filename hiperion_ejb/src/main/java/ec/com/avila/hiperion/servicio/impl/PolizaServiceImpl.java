@@ -4,11 +4,14 @@
  */
 package ec.com.avila.hiperion.servicio.impl;
 
+import java.util.List;
+
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
 import ec.com.avila.hiperion.dao.AseguradoraDao;
 import ec.com.avila.hiperion.dao.PolizaDao;
+import ec.com.avila.hiperion.emision.entities.Poliza;
 import ec.com.avila.hiperion.servicio.PolizaService;
 
 /**
@@ -27,7 +30,14 @@ public class PolizaServiceImpl implements PolizaService {
 	@EJB
 	private AseguradoraDao aseguradoraDao;
 
-	
-	
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see ec.com.avila.hiperion.servicio.PolizaService#consultarPolizasByCliente(java.lang.Integer)
+	 */
+	@Override
+	public List<Poliza> consultarPolizasByCliente(Integer idcliente) {
+		return polizaDao.consultarPolizasByCliente(idcliente);
+	}
 
 }

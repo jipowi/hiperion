@@ -4,7 +4,11 @@
  */
 package ec.com.avila.hiperion.servicio;
 
+import java.util.List;
+
 import javax.ejb.Local;
+
+import ec.com.avila.hiperion.emision.entities.Poliza;
 
 /**
  * <b> Servicio de interface local para realizar las operaciones sobre la tabla Poliza </b>
@@ -16,5 +20,16 @@ import javax.ejb.Local;
 @Local
 public interface PolizaService {
 
-	
+	/**
+	 * 
+	 * <b> Permite consultar las polizas que tiene un cliente. </b>
+	 * <p>
+	 * [Author: HIPERION, Date: 18/02/2016]
+	 * </p>
+	 * 
+	 * @param idcliente
+	 * @return lista de polizas
+	 */
+	public List<Poliza> consultarPolizasByCliente(Integer idcliente);
+
 }
