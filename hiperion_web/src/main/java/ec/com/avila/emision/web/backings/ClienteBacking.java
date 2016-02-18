@@ -33,6 +33,7 @@ import ec.com.avila.hiperion.emision.entities.Catalogo;
 import ec.com.avila.hiperion.emision.entities.Cliente;
 import ec.com.avila.hiperion.emision.entities.DetalleCatalogo;
 import ec.com.avila.hiperion.emision.entities.Direccion;
+import ec.com.avila.hiperion.emision.entities.Poliza;
 import ec.com.avila.hiperion.emision.entities.Provincia;
 import ec.com.avila.hiperion.emision.entities.TipoDireccion;
 import ec.com.avila.hiperion.emision.entities.Usuario;
@@ -41,6 +42,7 @@ import ec.com.avila.hiperion.servicio.CatalogoService;
 import ec.com.avila.hiperion.servicio.ClienteService;
 import ec.com.avila.hiperion.servicio.DetalleCatalogoService;
 import ec.com.avila.hiperion.servicio.DireccionService;
+import ec.com.avila.hiperion.servicio.PolizaService;
 import ec.com.avila.hiperion.servicio.ProvinciaService;
 import ec.com.avila.hiperion.servicio.TipoDireccionService;
 import ec.com.avila.hiperion.web.beans.UsuarioBean;
@@ -76,7 +78,8 @@ public class ClienteBacking implements Serializable {
 	private TipoDireccionService tipoDireccionService;
 	@EJB
 	private ProvinciaService provinciaService;
-
+	@EJB
+	private PolizaService polizaService;
 	@EJB
 	private DireccionService direccionService;
 
@@ -85,6 +88,7 @@ public class ClienteBacking implements Serializable {
 
 	private List<Cliente> clientes;
 	private List<Cliente> clientesObtenidos;
+	private List<Poliza> polizas;
 	private Cliente clienteObtenido;
 
 	private boolean activarPanelPersonaNatural;
@@ -249,6 +253,7 @@ public class ClienteBacking implements Serializable {
 
 			if (!clienteBean.getIdentificacion().equals("")) {
 				clienteObtenido = clienteService.consultarClienteByIdentificacion(clienteBean.getIdentificacion());
+				polizas = polizaService.consultarPolizasByCliente(clienteObtenido.getIdCliente());
 				if (clienteObtenido == null) {
 					MessagesController.addWarn(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.warn.buscar"));
 				}
@@ -659,6 +664,21 @@ public class ClienteBacking implements Serializable {
 	 */
 	public void setClienteObtenido(Cliente clienteObtenido) {
 		this.clienteObtenido = clienteObtenido;
+	}
+
+	/**
+	 * @return the polizas
+	 */
+	public List<Poliza> getPolizas() {
+		return polizas;
+	}
+
+	/**
+	 * @param polizas
+	 *            the polizas to set
+	 */
+	public void setPolizas(List<Poliza> polizas) {
+		this.polizas = polizas;
 	}
 
 }

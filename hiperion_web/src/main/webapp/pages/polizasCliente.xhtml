@@ -50,30 +50,39 @@
 				<p:spacer height="10px;" />
 				<div align="center">
 					<h:panelGrid columns="1" id="tablaInfoClientes">
-						<p:dataTable value="#{clienteBacking.clientesObtenidos}" var="cliente" widgetVar="50" editable="true">
+						<p:dataTable value="#{clienteBacking.polizas}" var="poliza" widgetVar="50" editable="true">
 							<p:column>
 								<f:facet name="header">
-									<h:outputText value="#{emision['cliente.poliza.ramo']}" />
+									<h:outputText value="#{emision['poliza.atributo.numeroPoliza']}" />
 								</f:facet>
-								<h:outputText value="#{cliente.identificacionPersona}" />
+								<h:outputText value="#{poliza.numeroPoliza}" />
 							</p:column>
 							<p:column>
 								<f:facet name="header">
-									<h:outputText value="#{emision['cliente.poliza.vigenciaDesde']}" />
+									<h:outputText value="#{emision['poliza.atributo.vigenciaDesde']}" />
 								</f:facet>
-								<h:outputText value="#{cliente.nombrePersona} #{cliente.apellidoPaterno} #{cliente.apellidoMaterno}" />
+								<h:outputText value="#{poliza.vigenciaDesde}" />
 							</p:column>
 							<p:column>
 								<f:facet name="header">
-									<h:outputText value="#{emision['cliente.poliza.vigenciaHasta']}" />
+									<h:outputText value="#{emision['poliza.atributo.vigenciaHasta']}" />
 								</f:facet>
-								<h:outputText value="#{cliente.razonSocial}" />
+								<h:outputText value="#{poliza.vigenciaHasta}" />
 							</p:column>
 							<p:column>
 								<f:facet name="header">
 									<h:outputText value="#{emision['cliente.poliza.estado']}" />
 								</f:facet>
-								<h:outputText value="#{cliente.razonSocial}" />
+								<h:outputText value="#{poliza.estadoPoliza}" />
+							</p:column>
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="#{emision['cliente.poliza.estado']}" />
+								</f:facet>
+								<h:graphicImage name="ledblue.png" library="img" rendered="#{poliza.estadoPoliza == 'COTIZADO'}"/>
+								<h:graphicImage name="ledorange.png" library="img" rendered="#{poliza.estadoPoliza == 'EMITIDO'}"/>
+								<h:graphicImage name="ledgreen.png" library="img" rendered="#{poliza.estadoPoliza == 'APROBADO'}"/>
+								<h:graphicImage name="ledred.png" library="img" rendered="#{poliza.estadoPoliza == 'RECHAZADO'}"/>
 							</p:column>
 						</p:dataTable>
 					</h:panelGrid>
