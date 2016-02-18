@@ -4,13 +4,14 @@
  */
 package ec.com.avila.hiperion.dao;
 
+import java.util.List;
+
 import javax.ejb.Local;
 
 import ec.com.avila.hiperion.emision.entities.Poliza;
 
 /**
- * <b>Interface local de la tabla Poliza para realizar las operaciones
- * necesarias </b>
+ * <b>Interface local de la tabla Poliza para realizar las operaciones necesarias </b>
  * 
  * @author Paul Jimenez
  * @version 1.0, 20/10/2013
@@ -18,6 +19,17 @@ import ec.com.avila.hiperion.emision.entities.Poliza;
  */
 @Local
 public interface PolizaDao extends GenericDAO<Poliza, Long> {
-	
-	
+
+	/**
+	 * 
+	 * <b> Permite consultar las polizas que tiene un cliente. </b>
+	 * <p>
+	 * [Author: HIPERION, Date: 18/02/2016]
+	 * </p>
+	 * 
+	 * @param idcliente
+	 * @return lista de polizas
+	 */
+	public List<Poliza> consultarPolizasByCliente(Integer idcliente);
+
 }

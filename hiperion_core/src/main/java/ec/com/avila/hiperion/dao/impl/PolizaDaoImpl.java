@@ -4,9 +4,12 @@
  */
 package ec.com.avila.hiperion.dao.impl;
 
+import java.util.List;
+
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 import org.apache.log4j.Logger;
 
@@ -27,5 +30,25 @@ public class PolizaDaoImpl extends GenericDAOImpl<Poliza, Long> implements Poliz
 
 	@PersistenceContext(unitName = "sgs_pu")
 	protected EntityManager em;
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see ec.com.avila.hiperion.dao.PolizaDao#consultarPolizasByCliente(java.lang.Integer)
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Poliza> consultarPolizasByCliente(Integer idcliente) {
+		Query query = em.createNamedQuery("Poliza.findByCliente");
+		query.setParameter("idCliente", idcliente);
+
+		List<Poliza> polizas = query.getResultList();
+
+		if (!polizas.isEmpty()) {
+			return polizas;
+		} else {
+			return null;
+		}
+	}
 
 }

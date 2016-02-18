@@ -18,7 +18,7 @@ import javax.persistence.NamedQuery;
 		// CLIENTE
 		@NamedQuery(name = "Cliente.findByIdentificacion", query = "SELECT c FROM Cliente c WHERE c.identificacionPersona =:identificacion"),
 		@NamedQuery(name = "Cliente.findByApellido", query = "SELECT c FROM Cliente c WHERE lower(c.apellidoPaterno) like :apellido"),
-		@NamedQuery(name = "Cliente.findByNombres", query = "SELECT c FROM Cliente c WHERE lower(c.apellidoPaterno) like :apellido AND lower(c.nombrePersona) like :nombre" ),
+		@NamedQuery(name = "Cliente.findByNombres", query = "SELECT c FROM Cliente c WHERE lower(c.apellidoPaterno) like :apellido AND lower(c.nombrePersona) like :nombre"),
 		@NamedQuery(name = "Cliente.findByAseguradora", query = "SELECT c FROM Cliente c WHERE c.aseguradora.codigoAseguradora =:aseguradora"),
 
 		// TIPO_DIRECCION
@@ -37,6 +37,8 @@ import javax.persistence.NamedQuery;
 		@NamedQuery(name = "Provincia.findByCodProvincia", query = "SELECT p FROM Provincia p WHERE p.codigo =:codigo"),
 		// ROL
 		@NamedQuery(name = "Rol.findByUsuario", query = "SELECT r FROM Rol r WHERE r.usuario.idUsuario =:idUsuario"),
+		// POLIZA
+		@NamedQuery(name = "Poliza.findByCliente", query = "SELECT r FROM Poliza r WHERE r.cliente.idCliente =:idCliente"),
 		// DETALLE_ANEXO
 		@NamedQuery(name = "DetalleAnexo.findByRamoAndTitulo", query = "SELECT d FROM DetalleAnexo d WHERE d.ramo.idRamo=:idRamo AND d.titulo.idTitulo=:idTitulo"),
 		@NamedQuery(name = "Titulo.findByIdDetalleAnexo", query = "SELECT d.titulo FROM DetalleAnexo d WHERE d.idDetalleAnexo =:idDetalleAnexo"),
