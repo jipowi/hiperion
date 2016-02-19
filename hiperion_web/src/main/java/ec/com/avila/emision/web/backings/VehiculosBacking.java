@@ -121,6 +121,7 @@ public class VehiculosBacking implements Serializable {
 	private List<ClausulaAdicionalDTO> clausulasAdicionalesDTO = new ArrayList<>();
 	private List<CondEspVh> condicionesEspeciales;
 	private List<CondicionEspecialDTO> condicionesEspecialesDTO = new ArrayList<>();
+	private List<SelectItem> contactosItems = new ArrayList<>();
 
 	private Boolean activarMarcaAuto;
 	private Boolean activarMarcaPesado;
@@ -984,6 +985,21 @@ public class VehiculosBacking implements Serializable {
 	 */
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
+	}
+
+	/**
+	 * @return the contactosItems
+	 */
+	public List<SelectItem> getContactosItems() {
+		return contactosItems;
+	}
+
+	/**
+	 * @param contactosItems
+	 *            the contactosItems to set
+	 */
+	public void setContactosItems(List<SelectItem> contactosItems) {
+		this.contactosItems = contactosItems;
 	}
 
 }
