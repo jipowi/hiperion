@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
 <ui:composition template="/templates/menuPrincipalTemplate.xhtml">
 	<ui:define name="content">
 		<ui:decorate template="/templates/polizaTemplate.xhtml">
@@ -18,6 +18,78 @@
 						</div>
 					</ui:define>
 					<ui:define name="ramoContent">
+						<h:form id="formCliente">
+							<p:outputPanel id="messageAcc">
+								<p:messages id="messagesAcc" showDetail="true" autoUpdate="true" closable="true" />
+							</p:outputPanel>
+							<!-- ESTADO POLIZA -->
+							<h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5">
+								<p:outputLabel for="console" value="Estado de la poliza: " styleClass="negrita" />
+								<p:selectOneRadio id="console" value="#{polizaBean.estadoPoliza}">
+									<f:selectItem itemLabel="COTIZADO" itemValue="COTIZADO" />
+									<f:selectItem itemLabel="EMITIDO" itemValue="EMITIDO" />
+								</p:selectOneRadio>
+							</h:panelGrid>
+							<!-- CLIENTE -->
+							<p:panel id="panelCliente">
+
+								<h:panelGrid columns="1">
+									<p:panel>
+										<f:facet name="header">
+											<h:outputText value="#{emision['cliente.buscar']}" />
+										</f:facet>
+										<h:panelGrid columns="2">
+											<h:panelGrid columns="2">
+												<p:outputLabel value="#{emision['cliente.identificacion']}:" styleClass="negrita" />
+												<p:inputText value="#{ramoVehiculoBean.identificacion}" />
+											</h:panelGrid>
+											<p:commandLink title="Buscar clientes" action="#{vehiculosBacking.buscarCliente}" update="idDatosCliente">
+												<h:graphicImage name="search.png" library="img/icon" />
+											</p:commandLink>
+										</h:panelGrid>
+									</p:panel>
+
+									<p:panel id="idDatosCliente" visible="#{vehiculosBacking.activarDatosCliente}">
+										<f:facet name="header">
+											<h:outputText value="#{emision['cliente.titulo.datos']}" />
+										</f:facet>
+										<h:panelGrid columns="1">
+											<h:panelGrid columns="2" cellpadding="3">
+												<p:outputLabel value="#{emision['poliza.atributo.ejecutivo']}:" styleClass="negrita" />
+												<p:outputLabel value="#{vehiculosBacking.usuario.nombreUsuario}" style="color:green;" />
+
+												<p:outputLabel value="#{emision['cliente.nombre']}:" styleClass="negrita" />
+												<p:outputLabel value="#{ramoVehiculoBean.nombreCliente}" />
+
+												<p:outputLabel value="#{emision['cliente.tabla.identificacion']}:" styleClass="negrita" />
+												<p:outputLabel value="#{ramoVehiculoBean.identificacion}" />
+											</h:panelGrid>
+										</h:panelGrid>
+									</p:panel>
+								</h:panelGrid>
+								<h:panelGrid columns="1">
+									<h:panelGrid columns="2" cellpadding="3">
+										<p:outputLabel value="#{emision['aseguradora.aseguradora']}" styleClass="negrita" />
+										<p:selectOneMenu value="#{ramoVehiculoBean.aseguradora}" effect="drop">
+											<f:selectItem itemLabel="Seleccione Aseguradora" noSelectionOption="true" />
+											<f:selectItems value="#{polizaBacking.aseguradorasItems}" />
+											<p:ajax listener="#{vehiculosBacking.buscarContactoAseguradora()}" update="contacto" />
+										</p:selectOneMenu>
+									</h:panelGrid>
+								</h:panelGrid>
+
+								<h:panelGrid columns="1" id="contacto">
+									<h:panelGrid columns="2" cellpadding="3">
+										<p:outputLabel value="#{emision['lbl.contactoAseguradora']}:" styleClass="negrita" />
+										<p:selectOneMenu value="#{ramoVehiculoBean.contactoAseguradora}" effect="drop">
+											<f:selectItem itemLabel="Seleccione Contacto de la Aseguradora" noSelectionOption="true" />
+											<f:selectItems value="#{vehiculosBacking.contactosItems}" />
+										</p:selectOneMenu>
+									</h:panelGrid>
+								</h:panelGrid>
+							</p:panel>
+						</h:form>
+						<p:spacer height="15px;" />
 						<p:tabView id="tabPrincipal">
 							<p:tab id="tabRamo" title="#{emision['vehiculo.tab.principal']}">
 								<p:outputPanel>
@@ -33,20 +105,17 @@
 														requiredMessage="#{emision['vehiculo.claseVehiculo.msn']}">
 														<f:selectItem itemLabel="Seleccione" noSelectionOption="true" />
 														<f:selectItems value="#{vehiculosBacking.claseVehiculoItems}" />
-														<p:ajax event="change" listener="#{vehiculosBacking.selectClaseVehiculo()}"
-															update=" marcas, idMarcaVehiculo, idMarcaPesado, idMarcaMoto" />
+														<p:ajax event="change" listener="#{vehiculosBacking.selectClaseVehiculo()}" update=" marcas, idMarcaVehiculo, idMarcaPesado, idMarcaMoto" />
 													</p:selectOneMenu>
 
 													<p:outputLabel for="tipoVehiculoId" value="#{emision['vehiculo.tipoVehiculo']}" styleClass="negrita" />
-													<p:selectOneMenu id="tipoVehiculoId" value="#{ramoVehiculoBean.tipoVehiculo}" effect="drop" required="true"
-														requiredMessage="#{emision['vehiculo.tipoVehiculo.msn']}">
+													<p:selectOneMenu id="tipoVehiculoId" value="#{ramoVehiculoBean.tipoVehiculo}" effect="drop" required="true" requiredMessage="#{emision['vehiculo.tipoVehiculo.msn']}">
 														<f:selectItem itemLabel="Seleccione" noSelectionOption="true" />
 														<f:selectItems value="#{vehiculosBacking.tipoVehiculoItems}" />
 													</p:selectOneMenu>
 
 													<p:outputLabel for="usoVehiculoId" value="#{emision['vehiculo.uso']}" styleClass="negrita" />
-													<p:selectOneMenu id="usoVehiculoId" value="#{ramoVehiculoBean.uso}" effect="drop" required="true"
-														requiredMessage="#{emision['vehiculo.uso.msn']}">
+													<p:selectOneMenu id="usoVehiculoId" value="#{ramoVehiculoBean.uso}" effect="drop" required="true" requiredMessage="#{emision['vehiculo.uso.msn']}">
 														<f:selectItem itemLabel="Seleccione" noSelectionOption="true" />
 														<f:selectItems value="#{vehiculosBacking.usoVehiculoItems}" />
 													</p:selectOneMenu>
@@ -115,8 +184,7 @@
 													<p:outputLabel for="idItem" value="#{emision['vehiculo.item']}" styleClass="negrita" />
 													<p:inputText id="idItem" value="#{ramoVehiculoBean.item}" required="true" requiredMessage="#{emision['vehiculo.item.msn']}" />
 													<p:outputLabel for="idPropietario" value="#{emision['vehiculo.nombrePropietario']}" styleClass="negrita" />
-													<p:inputText id="idPropietario" value="#{ramoVehiculoBean.propietario}" required="true"
-														requiredMessage="#{emision['vehiculo.nombrePropietario.msn']}" />
+													<p:inputText id="idPropietario" value="#{ramoVehiculoBean.propietario}" required="true" requiredMessage="#{emision['vehiculo.nombrePropietario.msn']}" />
 													<p:outputLabel for="idPlaca" value="#{emision['vehiculo.placa']}" styleClass="negrita" />
 													<p:inputText id="idPlaca" value="#{ramoVehiculoBean.placa}" required="true" requiredMessage="#{emision['vehiculo.placa.msn']}" />
 
@@ -130,11 +198,9 @@
 													<p:outputLabel for="idColor" value="#{emision['vehiculo.color']}" styleClass="negrita" />
 													<p:inputText id="idColor" value="#{ramoVehiculoBean.color}" required="true" requiredMessage="#{emision['vehiculo.color.msn']}" />
 													<p:outputLabel for="idValorAsegurado" value="#{emision['vehiculo.valorAsegurado']}" styleClass="negrita" />
-													<p:inputText id="idValorAsegurado" value="#{ramoVehiculoBean.valorAsegurado}" required="true"
-														requiredMessage="#{emision['vehiculo.valorAsegurado.msn']}" />
+													<p:inputText id="idValorAsegurado" value="#{ramoVehiculoBean.valorAsegurado}" required="true" requiredMessage="#{emision['vehiculo.valorAsegurado.msn']}" />
 													<p:outputLabel for="idValorTotalItem" value="#{emision['vehiculo.valorTotalItem']}" styleClass="negrita" />
-													<p:inputText id="idValorTotalItem" value="#{ramoVehiculoBean.valorTotalItem}" required="true"
-														requiredMessage="#{emision['vehiculo.valorTotalItem.msn']}" />
+													<p:inputText id="idValorTotalItem" value="#{ramoVehiculoBean.valorTotalItem}" required="true" requiredMessage="#{emision['vehiculo.valorTotalItem.msn']}" />
 
 													<p:outputLabel for="idTasa" value="#{emision['vehiculo.tasa']}" styleClass="negrita" />
 													<p:inputText id="idTasa" value="#{ramoVehiculoBean.tasa}" required="true" requiredMessage="#{emision['vehiculo.tasa.msn']}" />
@@ -157,12 +223,10 @@
 												</h:panelGrid>
 												<h:panelGrid columns="4" cellpadding="3">
 													<p:outputLabel for="idPorcentajeSiniestro" value="#{emision['vehiculo.porcentajeSiniesto']}" styleClass="negrita" />
-													<p:inputText id="idPorcentajeSiniestro" value="#{ramoVehiculoBean.porcentajeSiniestro}" required="true"
-														requiredMessage="#{emision['vehiculo.porcentajeSiniesto.msn']}" />
+													<p:inputText id="idPorcentajeSiniestro" value="#{ramoVehiculoBean.porcentajeSiniestro}" required="true" requiredMessage="#{emision['vehiculo.porcentajeSiniesto.msn']}" />
 
 													<p:outputLabel for="idMinimoSiniestro" value="#{emision['vehiculo.minimoSiniestro']}" styleClass="negrita" />
-													<p:inputText id="idMinimoSiniestro" value="#{ramoVehiculoBean.minimoSiniestro}" required="true"
-														requiredMessage="#{emision['vehiculo.minimoSiniestro.msn']}" />
+													<p:inputText id="idMinimoSiniestro" value="#{ramoVehiculoBean.minimoSiniestro}" required="true" requiredMessage="#{emision['vehiculo.minimoSiniestro.msn']}" />
 													<p:outputLabel value="#{emision['vehiculo.porcentajeValorAsegurado']}" styleClass="negrita" />
 													<p:inputText value="#{ramoVehiculoBean.porcentajeValorAsegurado}" />
 												</h:panelGrid>
@@ -185,12 +249,12 @@
 								<h:panelGrid columns="2">
 									<p:outputLabel value="#{emision['lbl.seleccionarClausulasAdd']}" styleClass="negrita" />
 									<p:commandLink title="#{emision['lbl.seleccionarClausulasAdd']}" oncomplete="clausulasAdd.show();"
-										actionListener="#{accidentesPersonalesBacking.obtenerClausulasAdicionales()}" update="idClausulasAdd">
+										actionListener="#{vehiculosBacking.obtenerClausulasAdicionales()}" update="idClausulasAdd">
 										<h:graphicImage name="check.png" library="img" />
 									</p:commandLink>
 								</h:panelGrid>
-								<p:dialog id="idClausulasAdd" header="#{emision['ap.tab.clausulasAdicionales']}" widgetVar="clausulasAdd" modal="true" position="center"
-									showEffect="fade" hideEffect="explode" resizable="false" closable="true" width="500" height="300">
+								<p:dialog id="idClausulasAdd" header="#{emision['ap.tab.clausulasAdicionales']}" widgetVar="clausulasAdd" modal="true" position="center" showEffect="fade"
+									hideEffect="explode" resizable="false" closable="true" width="500" height="300">
 									<h:form id="clausulaAddForm">
 										<p:dataTable value="#{vehiculosBacking.clausulasAdicionalesDTO}" var="clausula" paginator="true" rows="4" editable="true">
 											<p:ajax event="rowEdit" listener="#{vehiculosBacking.onEditClausulasAdd}" />
@@ -224,8 +288,8 @@
 										</p:dataTable>
 										<p:spacer height="15px;" />
 										<div align="center">
-											<p:commandButton id="guardarClausulas" process="@this" actionListener="#{vehiculosBacking.setearClausulasAdd()}" icon="icon-save"
-												value="#{emision['boton.guardar']}" title="Guardar" oncomplete="clausulasAdd.hide()" />
+											<p:commandButton id="guardarClausulas" process="@this" actionListener="#{vehiculosBacking.setearClausulasAdd()}" icon="icon-save" value="#{emision['boton.guardar']}"
+												title="Guardar" oncomplete="clausulasAdd.hide()" />
 										</div>
 									</h:form>
 								</p:dialog>
@@ -234,12 +298,12 @@
 								<h:panelGrid columns="2">
 									<p:outputLabel value="#{emision['lbl.seleccionarCondicionesEsp']}" styleClass="negrita" />
 									<p:commandLink title="#{emision['lbl.seleccionarCondicionesEsp']}" oncomplete="clausulasAdd.show();"
-										actionListener="#{accidentesPersonalesBacking.obtenerCondicionesEspeciales()}" update="idCondicionesEspeciales">
+										actionListener="#{vehiculosBacking.obtenerCondicionesEspeciales()}" update="idCondicionesEspeciales">
 										<h:graphicImage name="check.png" library="img" />
 									</p:commandLink>
 								</h:panelGrid>
-								<p:dialog id="idCondicionesEspeciales" header="#{emision['ap.tab.condicionesEspeciales']}" widgetVar="condicionesEspeciales" modal="true"
-									position="center" showEffect="fade" hideEffect="explode" resizable="false" closable="true" width="500" height="300">
+								<p:dialog id="idCondicionesEspeciales" header="#{emision['ap.tab.condicionesEspeciales']}" widgetVar="condicionesEspeciales" modal="true" position="center"
+									showEffect="fade" hideEffect="explode" resizable="false" closable="true" width="500" height="300">
 									<h:form id="condicionesForm">
 										<p:dataTable value="#{vehiculosBacking.condicionesEspecialesDTO}" var="condicion" paginator="true" rows="4" editable="true">
 											<p:ajax event="rowEdit" listener="#{vehiculosBacking.onEditCondicionesEsp}" />
@@ -274,8 +338,8 @@
 
 										<p:spacer height="15px;" />
 										<div align="center">
-											<p:commandButton id="guardarClausulas" process="@this" actionListener="#{vehiculosBacking.setearCondiciones()}" icon="icon-save"
-												value="#{emision['boton.guardar']}" title="Guardar" oncomplete="condiciones.hide()" />
+											<p:commandButton id="guardarClausulas" process="@this" actionListener="#{vehiculosBacking.setearCondiciones()}" icon="icon-save" value="#{emision['boton.guardar']}"
+												title="Guardar" oncomplete="condiciones.hide()" />
 										</div>
 
 									</h:form>
@@ -307,8 +371,8 @@
 											</p:panelGrid>
 											<f:facet name="footer">
 												<div align="center">
-													<p:commandButton id="agregarExtra" update="form1, messages" icon="icon-add" value="#{emision['boton.agregar']}"
-														actionListener="#{ramoVehiculoBean.addExtras}" title="Agregar" />
+													<p:commandButton id="agregarExtra" update="form1, messages" icon="icon-add" value="#{emision['boton.agregar']}" actionListener="#{ramoVehiculoBean.addExtras}"
+														title="Agregar" />
 												</div>
 											</f:facet>
 										</h:panelGrid>
