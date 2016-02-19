@@ -30,12 +30,14 @@ import org.primefaces.model.UploadedFile;
 
 import ec.com.avila.emision.web.beans.PolizaBean;
 import ec.com.avila.emision.web.beans.RamoVehiculoBean;
+import ec.com.avila.emision.web.validator.ValidatorCedula;
 import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.dto.ClausulaAdicionalDTO;
 import ec.com.avila.hiperion.dto.CondicionEspecialDTO;
 import ec.com.avila.hiperion.dto.TablaAmortizacionDTO;
 import ec.com.avila.hiperion.emision.entities.Catalogo;
 import ec.com.avila.hiperion.emision.entities.ClausulasAddVh;
+import ec.com.avila.hiperion.emision.entities.Cliente;
 import ec.com.avila.hiperion.emision.entities.CondEspVh;
 import ec.com.avila.hiperion.emision.entities.DetalleAnexo;
 import ec.com.avila.hiperion.emision.entities.DetalleCatalogo;
@@ -46,7 +48,9 @@ import ec.com.avila.hiperion.emision.entities.Ramo;
 import ec.com.avila.hiperion.emision.entities.RamoVehiculo;
 import ec.com.avila.hiperion.emision.entities.Usuario;
 import ec.com.avila.hiperion.enumeration.EstadoEnum;
+import ec.com.avila.hiperion.servicio.AseguradoraService;
 import ec.com.avila.hiperion.servicio.CatalogoService;
+import ec.com.avila.hiperion.servicio.ClienteService;
 import ec.com.avila.hiperion.servicio.DetalleCatalogoService;
 import ec.com.avila.hiperion.servicio.RamoService;
 import ec.com.avila.hiperion.servicio.RamoVehiculoService;
@@ -94,26 +98,17 @@ public class VehiculosBacking implements Serializable {
 	private RamoVehiculoService ramoVehiculoService;
 
 	@EJB
+	private AseguradoraService aseguradoraService;
+
+	@EJB
 	private RamoService ramoService;
+
+	@EJB
+	private ClienteService clienteService;
 
 	Logger log = Logger.getLogger(VehiculosBacking.class);
 
 	private UploadedFile file;
-
-	/**
-	 * @return the file
-	 */
-	public UploadedFile getFile() {
-		return file;
-	}
-
-	/**
-	 * @param file
-	 *            the file to set
-	 */
-	public void setFile(UploadedFile file) {
-		this.file = file;
-	}
 
 	RamoVehiculo ramoVehiculo = new RamoVehiculo();
 
@@ -131,6 +126,7 @@ public class VehiculosBacking implements Serializable {
 	private Boolean activarMarcaPesado;
 	private Boolean activarMarcaMoto;
 	private Usuario usuario;
+	private Boolean activarDatosCliente = false;
 
 	@PostConstruct
 	public void inicializar() {
@@ -146,6 +142,107 @@ public class VehiculosBacking implements Serializable {
 		} catch (HiperionException e) {
 			e.printStackTrace();
 		}
+	}
+
+	/**
+	 * 
+	 * <b> Permite buscar un cliente por madio del numero de identificacion. </b>
+	 * <p>
+	 * [Author: HIPERION, Date: 08/02/2016]
+	 * </p>
+	 * 
+	 * @throws HiperionException
+	 */
+	public void buscarCliente() throws HiperionException {
+
+		Cliente cliente = buscarCliente(ramoVehiculoBean.getIdentificacion());
+
+		if (cliente != null) {
+			activarDatosCliente = true;
+		}
+	}
+
+	/**
+	 * 
+	 * <b> Permite buscar un cliente por medio de la cedula de identidad. </b>
+	 * <p>
+	 * [Author: HIPERION, Date: 08/02/2016]
+	 * </p>
+	 * 
+	 * @param identificacion
+	 * @return
+	 * @throws HiperionException
+	 */
+	public Cliente buscarCliente(String identificacion) throws HiperionException {
+		try {
+			Cliente cliente = new Cliente();
+
+			if (!identificacion.equals("") && ValidatorCedula.getInstancia().validateCedula(identificacion)) {
+				cliente = clienteService.consultarClienteByIdentificacion(identificacion);
+				if (cliente == null) {
+					MessagesController.addWarn(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.warn.buscar"));
+				} else {
+
+					ramoVehiculoBean.setNombreCliente(cliente.getNombrePersona() + " " + cliente.getApellidoPaterno() + " "
+							+ cliente.getApellidoMaterno());
+				}
+			} else {
+				MessagesController.addError(null, HiperionMensajes.getInstancia().getString("hiperion.mensage.error.identificacionNoValido"));
+			}
+
+			polizaBean.setCliente(cliente);
+			return cliente;
+
+		} catch (HiperionException e) {
+			log.error("Error al momento de buscar clientes", e);
+			throw new HiperionException(e);
+		}
+	}
+
+	/**
+	 * 
+	 * <b> Permite buscar los contactos de la aseguradora seleccionada. </b>
+	 * <p>
+	 * [Author: HIPERION, Date: 08/02/2016]
+	 * </p>
+	 * 
+	 */
+	public void buscarContactoAseguradora() {
+
+		buscarContactoAseguradora(ramoVehiculoBean.getAseguradora());
+	}
+
+	/**
+	 * 
+	 * <b> Permite buscar los contactos de una aseguradora. </b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: 07/07/2015]
+	 * </p>
+	 * 
+	 */
+	public List<SelectItem> buscarContactoAseguradora(String aseguradora) {
+
+		List<SelectItem> contactosItems = new ArrayList<>();
+
+		try {
+
+			List<Cliente> contactos = aseguradoraService.consultarClienteByAseguradora(aseguradora);
+
+			if (contactos == null) {
+				MessagesController.addWarn(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.war.contactosAseguradora"));
+			} else {
+				for (Cliente cliente : contactos) {
+					SelectItem selectItem = new SelectItem(cliente.getIdCliente(), cliente.getApellidoPaterno() + " " + cliente.getApellidoMaterno()
+							+ " " + cliente.getNombrePersona());
+					contactosItems.add(selectItem);
+				}
+			}
+
+		} catch (HiperionException e) {
+			e.printStackTrace();
+		}
+		return contactosItems;
+
 	}
 
 	/**
@@ -807,6 +904,21 @@ public class VehiculosBacking implements Serializable {
 	}
 
 	/**
+	 * @return the file
+	 */
+	public UploadedFile getFile() {
+		return file;
+	}
+
+	/**
+	 * @param file
+	 *            the file to set
+	 */
+	public void setFile(UploadedFile file) {
+		this.file = file;
+	}
+
+	/**
 	 * @param clausulasAdicionalesDTO
 	 *            the clausulasAdicionalesDTO to set
 	 */
@@ -842,6 +954,36 @@ public class VehiculosBacking implements Serializable {
 	 */
 	public void setCondicionesEspecialesDTO(List<CondicionEspecialDTO> condicionesEspecialesDTO) {
 		this.condicionesEspecialesDTO = condicionesEspecialesDTO;
+	}
+
+	/**
+	 * @return the activarDatosCliente
+	 */
+	public Boolean getActivarDatosCliente() {
+		return activarDatosCliente;
+	}
+
+	/**
+	 * @param activarDatosCliente
+	 *            the activarDatosCliente to set
+	 */
+	public void setActivarDatosCliente(Boolean activarDatosCliente) {
+		this.activarDatosCliente = activarDatosCliente;
+	}
+
+	/**
+	 * @return the usuario
+	 */
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	/**
+	 * @param usuario
+	 *            the usuario to set
+	 */
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
 	}
 
 }
