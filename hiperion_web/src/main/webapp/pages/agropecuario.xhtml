@@ -21,6 +21,16 @@
 						<p:outputPanel id="messageAgropecuario">
 							<p:messages id="messagesAgropecuario" showDetail="true" autoUpdate="true" closable="true" />
 						</p:outputPanel>
+						<!-- ESTADO POLIZA -->
+						<h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5" >
+						<p:outputLabel for="console" value="Estado de la poliza"/>
+						<p:selectOneRadio id="console" value="#{polizaBean.estadoPoliza}">
+							<f:selectItem itemLabel="COTIZADO" itemValue="COTIZADO"/>
+							<f:selectItem itemLabel="EMITIDO" itemValue="EMITIDO"/>
+							
+						</p:selectOneRadio>
+						
+						</h:panelGrid>
 						<p:tabView effect="blind" effectDuration="normal">
 							<!-- RAMO AGROPECUARIO -->
 							<p:tab title="#{emision['agropecuario.tab.principal']}">

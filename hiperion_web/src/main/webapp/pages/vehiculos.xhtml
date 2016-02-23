@@ -235,6 +235,19 @@
 													<p:outputLabel value="#{emision['vehiculo.polizaVigente']}" styleClass="negrita" />
 													<p:fileUpload fileLimit="1" />
 												</h:panelGrid>
+
+												<!-- CARGAR ARCHIVO EXCEL -->
+												<p:panel>
+													<f:facet name="header">
+														<h:outputText value="Carga masiva de clientes" />
+													</f:facet>
+													<p:growl id="messages" showDetail="true" />
+
+													<p:fileUpload value="#{vehiculosBacking.file}" fileUploadListener="#{vehiculosBacking.cargarArchivoExcel}" mode="advanced"
+														update="messages" multiple="true" sizeLimit="900000000" allowTypes="/(\.|\/)(xls)$/" uploadLabel="Cargar" cancelLabel="Cancelar"
+														label="Buscar archivo" required="true">
+													</p:fileUpload>
+												</p:panel>
 											</p:panel>
 										</h:panelGrid>
 										<!-- DESCARGAR DOCUMENTOS -->
