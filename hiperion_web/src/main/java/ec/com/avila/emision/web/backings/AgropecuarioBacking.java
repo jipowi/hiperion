@@ -51,6 +51,7 @@ import ec.com.avila.hiperion.emision.entities.Ramo;
 import ec.com.avila.hiperion.emision.entities.RamoAgropecuario;
 import ec.com.avila.hiperion.emision.entities.Usuario;
 import ec.com.avila.hiperion.enumeration.EstadoEnum;
+import ec.com.avila.hiperion.servicio.AseguradoraService;
 import ec.com.avila.hiperion.servicio.CatalogoService;
 import ec.com.avila.hiperion.servicio.RamoAgropecuarioService;
 import ec.com.avila.hiperion.servicio.RamoService;
@@ -84,6 +85,9 @@ public class AgropecuarioBacking implements Serializable {
 
 	@EJB
 	private CatalogoService catalogoService;
+	
+	@EJB
+	private AseguradoraService aseguradoraService;
 
 	@ManagedProperty(value = "#{ramoBean}")
 	private RamoBean ramoBean;
