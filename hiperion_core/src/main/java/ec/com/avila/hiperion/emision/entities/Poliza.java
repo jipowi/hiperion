@@ -18,8 +18,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import ec.com.avila.hiperion.enumeration.RamoEnum;
-
 /**
  * The persistent class for the poliza database table.
  * 
@@ -60,7 +58,8 @@ public class Poliza implements Serializable {
 	@Column(name = "prima_neta")
 	private BigDecimal primaNeta;
 
-	private RamoEnum ramo;
+	@Column(name = "ramo")
+	private String ramo;
 
 	@Column(name = "seguro_campesino")
 	private BigDecimal seguroCampesino;
@@ -283,7 +282,7 @@ public class Poliza implements Serializable {
 	/**
 	 * @return the ramo
 	 */
-	public RamoEnum getRamo() {
+	public String getRamo() {
 		return ramo;
 	}
 
@@ -291,7 +290,7 @@ public class Poliza implements Serializable {
 	 * @param ramo
 	 *            the ramo to set
 	 */
-	public void setRamo(RamoEnum ramo) {
+	public void setRamo(String ramo) {
 		this.ramo = ramo;
 	}
 

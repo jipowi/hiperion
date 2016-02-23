@@ -1,11 +1,21 @@
 package ec.com.avila.hiperion.emision.entities;
 
 import java.io.Serializable;
-
-import javax.persistence.*;
-
 import java.util.Date;
 import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  * The persistent class for the cliente database table.
@@ -64,10 +74,10 @@ public class Cliente extends Auditoria implements Serializable {
 	// bi-directional many-to-one association to Direccion
 	@OneToMany(mappedBy = "cliente")
 	private List<Direccion> direccions;
-	
-	//bi-directional many-to-one association to Poliza
-		@OneToMany(mappedBy="cliente", fetch=FetchType.EAGER)
-		private List<Poliza> polizas;
+
+	// bi-directional many-to-one association to Poliza
+	@OneToMany(mappedBy = "cliente", fetch = FetchType.EAGER)
+	private List<Poliza> polizas;
 
 	public Cliente() {
 	}
@@ -220,7 +230,8 @@ public class Cliente extends Auditoria implements Serializable {
 	}
 
 	/**
-	 * @param polizas the polizas to set
+	 * @param polizas
+	 *            the polizas to set
 	 */
 	public void setPolizas(List<Poliza> polizas) {
 		this.polizas = polizas;
