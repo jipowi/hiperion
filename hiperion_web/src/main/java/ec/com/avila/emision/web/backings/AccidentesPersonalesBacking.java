@@ -415,7 +415,7 @@ public class AccidentesPersonalesBacking implements Serializable {
 		poliza.setEstadoPoliza(polizaBean.getEstadoPoliza());
 		poliza.setCliente(polizaBean.getCliente());
 		poliza.setFechaRegistro(new Date());
-		poliza.setRamo(RamoEnum.R1);
+		poliza.setRamo(RamoEnum.R1.getLabel());
 
 		return poliza;
 	}
