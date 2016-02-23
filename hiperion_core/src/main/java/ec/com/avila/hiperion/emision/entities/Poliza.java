@@ -79,6 +79,10 @@ public class Poliza implements Serializable {
 	@Column(name = "vigencia_hasta")
 	private Date vigenciaHasta;
 
+	@Temporal(TemporalType.DATE)
+	@Column(name = "fecha_registro")
+	private Date fechaRegistro;
+
 	// bi-directional many-to-one association to PagoPoliza
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_pago_poliza")
@@ -924,6 +928,21 @@ public class Poliza implements Serializable {
 	 */
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
+	}
+
+	/**
+	 * @return the fechaRegistro
+	 */
+	public Date getFechaRegistro() {
+		return fechaRegistro;
+	}
+
+	/**
+	 * @param fechaRegistro
+	 *            the fechaRegistro to set
+	 */
+	public void setFechaRegistro(Date fechaRegistro) {
+		this.fechaRegistro = fechaRegistro;
 	}
 
 }
