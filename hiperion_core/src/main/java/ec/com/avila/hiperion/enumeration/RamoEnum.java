@@ -14,7 +14,7 @@ package ec.com.avila.hiperion.enumeration;
  */
 public enum RamoEnum {
 
-	R1("ACCIDEENTES PERSONALES"), 
+	R1("ACCIDENTES PERSONALES"), 
 	R2("AGROPECUARIO"),
 	R3("ASISTENCIA MEDICA"),
 	R4("BUEN USO DE ANTICIPO"),
