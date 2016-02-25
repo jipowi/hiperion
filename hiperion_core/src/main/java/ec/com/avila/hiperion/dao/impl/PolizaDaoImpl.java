@@ -4,6 +4,7 @@
  */
 package ec.com.avila.hiperion.dao.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -41,6 +42,27 @@ public class PolizaDaoImpl extends GenericDAOImpl<Poliza, Long> implements Poliz
 	public List<Poliza> consultarPolizasByCliente(Integer idcliente) {
 		Query query = em.createNamedQuery("Poliza.findByCliente");
 		query.setParameter("idCliente", idcliente);
+
+		List<Poliza> polizas = query.getResultList();
+
+		if (!polizas.isEmpty()) {
+			return polizas;
+		} else {
+			return null;
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see ec.com.avila.hiperion.dao.PolizaDao#obtenerReporteFechas(java.util.Date, java.util.Date)
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Poliza> obtenerReporteFechas(Date fechaDesde, Date fechaHasta) {
+		Query query = em.createNamedQuery("Poliza.reporte1");
+		query.setParameter("fechaDesde", fechaDesde);
+		query.setParameter("fechaHasta", fechaHasta);
 
 		List<Poliza> polizas = query.getResultList();
 
