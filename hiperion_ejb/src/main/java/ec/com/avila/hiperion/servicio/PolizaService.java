@@ -4,6 +4,7 @@
  */
 package ec.com.avila.hiperion.servicio;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.Local;
@@ -31,5 +32,18 @@ public interface PolizaService {
 	 * @return lista de polizas
 	 */
 	public List<Poliza> consultarPolizasByCliente(Integer idcliente);
+	
+	/**
+	 * 
+	 * <b> Permite obtener las polizas que se encuentran entre las fechas ingresadas. </b>
+	 * <p>
+	 * [Author: HIPERION, Date: 24/02/2016]
+	 * </p>
+	 * 
+	 * @param fechaDesde
+	 * @param fechaHasta
+	 * @return
+	 */
+	public List<Poliza> obtenerReporteFechas(Date fechaDesde, Date fechaHasta);
 
 }

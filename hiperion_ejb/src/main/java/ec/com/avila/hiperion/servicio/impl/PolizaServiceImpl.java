@@ -4,6 +4,7 @@
  */
 package ec.com.avila.hiperion.servicio.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -38,6 +39,14 @@ public class PolizaServiceImpl implements PolizaService {
 	@Override
 	public List<Poliza> consultarPolizasByCliente(Integer idcliente) {
 		return polizaDao.consultarPolizasByCliente(idcliente);
+	}
+
+	/* (non-Javadoc)
+	 * @see ec.com.avila.hiperion.servicio.PolizaService#obtenerReporteFechas(java.util.Date, java.util.Date)
+	 */
+	@Override
+	public List<Poliza> obtenerReporteFechas(Date fechaDesde, Date fechaHasta) {
+		return polizaDao.obtenerReporteFechas(fechaDesde, fechaHasta);
 	}
 
 }
