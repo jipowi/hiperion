@@ -42,6 +42,8 @@ import javax.persistence.NamedQuery;
 		// DETALLE_ANEXO
 		@NamedQuery(name = "DetalleAnexo.findByRamoAndTitulo", query = "SELECT d FROM DetalleAnexo d WHERE d.ramo.idRamo=:idRamo AND d.titulo.idTitulo=:idTitulo"),
 		@NamedQuery(name = "Titulo.findByIdDetalleAnexo", query = "SELECT d.titulo FROM DetalleAnexo d WHERE d.idDetalleAnexo =:idDetalleAnexo"),
+		//REPORTES
+		@NamedQuery(name = "Poliza.reporte1", query = "SELECT p FROM Poliza p WHERE p.fechaRegistro BETWEEN :fechaDesde AND :fechaHasta "),
 		// MENU
 		@NamedQuery(name = "Menu.findByRol", query = "SELECT m FROM RolMenu m WHERE m.rol.idRol =:idRol") })
 public class Consultas implements Serializable {
