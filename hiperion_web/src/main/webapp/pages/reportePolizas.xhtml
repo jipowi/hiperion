@@ -3,87 +3,49 @@
 	xmlns:p="http://primefaces.org/ui" xmlns:c="http://java.sun.com/jsp/jstl/core">
 <ui:composition template="/templates/menuPrincipalTemplate.xhtml">
 	<ui:define name="content">
-		<h:outputStylesheet name="cliente.css" library="css" />
+		<div align="center">
+			<p:outputLabel value="#{emision['titulo.reprote.polizas']}" styleClass="negrita" />
+			<p:separator id="customSeparator" style="width:auto;height:1px" />
+			<p:spacer height="5px;" />
+		</div>
+		<p:spacer height="15px;" />
 		<h:form id="formPricipal">
+			<p:messages id="messagesPolizasCliente" showDetail="true" autoUpdate="true" closable="true" />
 			<p:panel>
-				<p:messages id="messagesPolizasCliente" showDetail="true" autoUpdate="true" closable="true" />
+				<h:panelGrid columns="2" cellpadding="3">
+					<h:panelGrid columns="2" cellpadding="3">
+						<h:outputLabel value="#{emision['lbl.reporte.fechaDesde']}: " styleClass="negrita" />
+						<p:calendar value="#{reportePolizaBacking.fechaDesde}" pattern="MM/dd/yyyy" mask="true" locale="de" navigator="true" />
 
-				<h:panelGrid columns="2">
-					<h:panelGrid columns="1">
-						<!-- PANEL DE BUSQUEDA -->
-						<p:panel>
-							<f:facet name="header">
-								<h:outputText value="#{emision['cliente.buscar']}" />
-							</f:facet>
-							<h:panelGrid columns="2">
-								<h:panelGrid columns="2">
-									<h:outputText value="#{emision['cliente.identificacion']}: " />
-									<p:inputText value="#{clienteBean.identificacion}" validatorMessage="#{emision['msg.cedula.error']}" maxlength="10">
-										<f:validateRegex pattern="#{emision['msg.formato.cedula']}" />
-									</p:inputText>
-								</h:panelGrid>
-								<p:commandLink title="Buscar clientes" action="#{clienteBacking.buscarCliente}" update="tablaInfoClientes, infoClienteObtenido">
-									<h:graphicImage name="search.png" library="img/icon" />
-								</p:commandLink>
-							</h:panelGrid>
-						</p:panel>
+						<h:outputLabel value="#{emision['lbl.reporte.fechaHasta']}: " styleClass="negrita" />
+						<p:calendar value="#{reportePolizaBacking.fechaHasta}" pattern="MM/dd/yyyy" mask="true" />
+
+						<h:outputLabel value="#{emision['lbl.reporte.estado']}: " styleClass="negrita" />
+						<p:selectOneRadio id="console" value="#{reportePolizaBacking.estado}">
+							<f:selectItem itemLabel="COTIZADO" itemValue="COTIZADO" />
+							<f:selectItem itemLabel="EMITIDO" itemValue="EMITIDO" />
+						</p:selectOneRadio>
+
+
+						<f:facet name="footer">
+							<p:commandButton id="idGenerarReporteBtn" value="Generar reporte" action="#{reportePolizaBacking.generarReporte}" icon="icon-save" update="tablaPolizas"/>
+						</f:facet>
 					</h:panelGrid>
-
-					<h:panelGrid columns="1">
-						<h:panelGrid columns="1">
-							<h:graphicImage name="client.jpg" library="img" />
-						</h:panelGrid>
-					</h:panelGrid>
+					<h:panelGroup style="display:block; text-align:center">
+						<h:graphicImage name="reportes.jpg" library="img" />
+					</h:panelGroup>
 				</h:panelGrid>
-
-				<p:spacer height="10px;" />
-				<h:panelGrid columns="2" id="infoClienteObtenido">
-					<p:outputLabel value="#{emision['cliente.tabla.nombre']}:" styleClass="negrita" />
-					<p:outputLabel value="#{clienteBacking.clienteObtenido.nombrePersona}" style="color:green;" />
-
-					<p:outputLabel value="#{emision['cliente.apellidoPaterno']}:" styleClass="negrita" />
-					<p:outputLabel value="#{clienteBacking.clienteObtenido.apellidoPaterno}" style="color:green;" />
-
-					<p:outputLabel value="#{emision['cliente.apellidoMaterno']}:" styleClass="negrita" />
-					<p:outputLabel value="#{clienteBacking.clienteObtenido.apellidoMaterno}" style="color:green;" />
-				</h:panelGrid>
-				<p:spacer height="10px;" />
+				
 				<div align="center">
-					<h:panelGrid columns="1" id="tablaInfoClientes">
-						<p:dataTable value="#{clienteBacking.polizas}" var="poliza" widgetVar="50" editable="true">
+					<h:panelGrid columns="1" id="tablaPolizas">
+						<p:dataTable value="#{reportePolizaBacking.polizas}" var="poliza" widgetVar="50" editable="true">
 							<p:column>
 								<f:facet name="header">
-									<h:outputText value="#{emision['poliza.atributo.numeroPoliza']}" />
+									<h:outputText value="#{emision['lbl.reporte.estado']}" />
 								</f:facet>
-								<h:outputText value="#{poliza.numeroPoliza}" />
+								<h:outputText value="#{cliente.identificacionPersona}" />
 							</p:column>
-							<p:column>
-								<f:facet name="header">
-									<h:outputText value="#{emision['poliza.atributo.vigenciaDesde']}" />
-								</f:facet>
-								<h:outputText value="#{poliza.vigenciaDesde}" />
-							</p:column>
-							<p:column>
-								<f:facet name="header">
-									<h:outputText value="#{emision['poliza.atributo.vigenciaHasta']}" />
-								</f:facet>
-								<h:outputText value="#{poliza.vigenciaHasta}" />
-							</p:column>
-							<p:column>
-								<f:facet name="header">
-									<h:outputText value="#{emision['cliente.poliza.estado']}" />
-								</f:facet>
-								<h:outputText value="#{poliza.estadoPoliza}" />
-							</p:column>
-							<p:column>
-								<f:facet name="header">
-									<h:outputText value="#{emision['cliente.poliza.estado']}" />
-								</f:facet>
-								<h:graphicImage name="ledblue.png" library="img" rendered="#{poliza.estadoPoliza == 'COTIZADO'}"/>
-								<h:graphicImage name="ledorange.png" library="img" rendered="#{poliza.estadoPoliza == 'EMITIDO'}"/>
-								<h:graphicImage name="ledgreen.png" library="img" rendered="#{poliza.estadoPoliza == 'APROBADO'}"/>
-								<h:graphicImage name="ledred.png" library="img" rendered="#{poliza.estadoPoliza == 'RECHAZADO'}"/>
-							</p:column>
+						
 						</p:dataTable>
 					</h:panelGrid>
 				</div>
