@@ -23,10 +23,12 @@ import ec.com.avila.emision.web.beans.PolizaBean;
 import ec.com.avila.emision.web.beans.RamoAccidentesPersonalesBean;
 import ec.com.avila.emision.web.validator.ValidatorCedula;
 import ec.com.avila.hiperion.comun.HiperionException;
+import ec.com.avila.hiperion.dto.AseguradoraDTO;
 import ec.com.avila.hiperion.dto.ClausulaAdicionalDTO;
 import ec.com.avila.hiperion.dto.CoberturaDTO;
 import ec.com.avila.hiperion.dto.CondicionEspecialDTO;
 import ec.com.avila.hiperion.dto.TablaAmortizacionDTO;
+import ec.com.avila.hiperion.emision.entities.Aseguradora;
 import ec.com.avila.hiperion.emision.entities.Catalogo;
 import ec.com.avila.hiperion.emision.entities.ClausulasAddAccPer;
 import ec.com.avila.hiperion.emision.entities.Cliente;
@@ -45,6 +47,7 @@ import ec.com.avila.hiperion.enumeration.RamoEnum;
 import ec.com.avila.hiperion.servicio.AseguradoraService;
 import ec.com.avila.hiperion.servicio.CatalogoService;
 import ec.com.avila.hiperion.servicio.ClienteService;
+import ec.com.avila.hiperion.servicio.DetalleCatalogoService;
 import ec.com.avila.hiperion.servicio.RamoAccidentesPersonalesService;
 import ec.com.avila.hiperion.servicio.RamoService;
 import ec.com.avila.hiperion.web.beans.RamoBean;
@@ -71,15 +74,14 @@ public class AccidentesPersonalesBacking implements Serializable {
 
 	@EJB
 	private ClienteService clienteService;
-
 	@EJB
 	private RamoAccidentesPersonalesService ramoAccidentesPersonalesService;
-
 	@EJB
 	private CatalogoService catalogoService;
-
 	@EJB
 	private AseguradoraService aseguradoraService;
+	@EJB
+	private DetalleCatalogoService detalleCatalogoService;
 
 	@ManagedProperty(value = "#{usuarioBean}")
 	private UsuarioBean usuarioBean;
@@ -116,6 +118,8 @@ public class AccidentesPersonalesBacking implements Serializable {
 	private Boolean activarPanelPagoTarjetaCredito = false;
 	private Boolean activarPanelPagoDebitoBancario = false;
 	private Boolean activarDatosCliente = false;
+	private Boolean activarDatosAseguradora = false;
+	private static List<AseguradoraDTO> aseguradorasDTO = new ArrayList<AseguradoraDTO>();
 
 	private Usuario usuario;
 	RamoAccidentesPersonale accidentesPersonales = new RamoAccidentesPersonale();
@@ -155,6 +159,7 @@ public class AccidentesPersonalesBacking implements Serializable {
 
 		if (cliente != null) {
 			activarDatosCliente = true;
+			activarDatosAseguradora = true;
 		}
 	}
 
@@ -239,6 +244,51 @@ public class AccidentesPersonalesBacking implements Serializable {
 		}
 		return contactosItems;
 
+	}
+
+	/**
+	 * 
+	 * <b> Permite agresar una nueva aseguradora a la tabla. </b>
+	 * <p>
+	 * [Author: HIPERION, Date: 29/02/2016]
+	 * </p>
+	 * 
+	 */
+	public void addAseguradora() {
+
+		try {
+			Long idAseguradora = Long.parseLong(ramoAccidentesPersonalesBean.getAseguradora());
+			Aseguradora aseguradoraNew = aseguradoraService.consultarAseguradoraByCodigo(ramoAccidentesPersonalesBean.getAseguradora());
+
+			DetalleCatalogo detalleCatalogo = detalleCatalogoService.consultarDetalleByCatalogoAndDetalle(
+					HiperionMensajes.getInstancia().getInteger("ec.gob.avila.hiperion.recursos.catalogoAseguradoras"),
+					Integer.parseInt(idAseguradora.toString()));
+
+			AseguradoraDTO aseguradoraDTO = new AseguradoraDTO(detalleCatalogo.getDescDetCatalogo(), aseguradoraNew.getDirecion(),
+					aseguradoraNew.getEmailAseguradora(), aseguradoraNew.getRuc(), aseguradoraNew.getTelfConvencionalAseg(),
+					ramoAccidentesPersonalesBean.getContactoAseguradora());
+
+			aseguradorasDTO.add(aseguradoraDTO);
+
+		} catch (HiperionException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	/**
+	 * 
+	 * <b> Permite eliminar una elemento de la tabla de aseguradoras. </b>
+	 * <p>
+	 * [Author: HIPERION, Date: 29/02/2016]
+	 * </p>
+	 * 
+	 * @param event
+	 */
+	public void onCancel(RowEditEvent event) {
+		FacesMessage msg = new FacesMessage("Aseguradora Eliminada");
+		FacesContext.getCurrentInstance().addMessage(null, msg);
+		aseguradorasDTO.remove((AseguradoraDTO) event.getObject());
 	}
 
 	/**
@@ -1165,6 +1215,36 @@ public class AccidentesPersonalesBacking implements Serializable {
 	 */
 	public void setCuentaBancoItems(List<SelectItem> cuentaBancoItems) {
 		this.cuentaBancoItems = cuentaBancoItems;
+	}
+
+	/**
+	 * @return the activarDatosAseguradora
+	 */
+	public Boolean getActivarDatosAseguradora() {
+		return activarDatosAseguradora;
+	}
+
+	/**
+	 * @return the aseguradorasDTO
+	 */
+	public List<AseguradoraDTO> getAseguradorasDTO() {
+		return aseguradorasDTO;
+	}
+
+	/**
+	 * @param aseguradorasDTO
+	 *            the aseguradorasDTO to set
+	 */
+	public static void setAseguradorasDTO(List<AseguradoraDTO> aseguradorasDTO) {
+		AccidentesPersonalesBacking.aseguradorasDTO = aseguradorasDTO;
+	}
+
+	/**
+	 * @param activarDatosAseguradora
+	 *            the activarDatosAseguradora to set
+	 */
+	public void setActivarDatosAseguradora(Boolean activarDatosAseguradora) {
+		this.activarDatosAseguradora = activarDatosAseguradora;
 	}
 
 }

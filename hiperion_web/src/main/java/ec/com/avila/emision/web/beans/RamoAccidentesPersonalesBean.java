@@ -69,6 +69,7 @@ public class RamoAccidentesPersonalesBean implements Serializable {
 	private String contactoAseguradora;
 
 	private static List<GrupoAccPersonalesDTO> grupos = new ArrayList<GrupoAccPersonalesDTO>();
+	
 
 	// Getters and Setters
 	/**
@@ -387,6 +388,8 @@ public class RamoAccidentesPersonalesBean implements Serializable {
 		return null;
 	}
 
+
+
 	/**
 	 * 
 	 * <b> Permite editar un grupo </b>
@@ -475,5 +478,8 @@ public class RamoAccidentesPersonalesBean implements Serializable {
 	public void setContactoAseguradora(String contactoAseguradora) {
 		this.contactoAseguradora = contactoAseguradora;
 	}
+
+	
+
 
 }
