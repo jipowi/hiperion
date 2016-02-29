@@ -19,9 +19,8 @@ import ec.com.avila.hiperion.emision.entities.Aseguradora;
  * @since JDK1.6
  */
 @Local
-public interface AseguradoraDao extends GenericDAO<Aseguradora, Long>{
+public interface AseguradoraDao extends GenericDAO<Aseguradora, Long> {
 
-	
 	/**
 	 * 
 	 * <b> Permite buscar las asegurdoras por medio del nombre o ruc </b>
@@ -36,5 +35,17 @@ public interface AseguradoraDao extends GenericDAO<Aseguradora, Long>{
 	 */
 	public List<Aseguradora> consultarAseguradora(String ruc, Integer aseguradora) throws HiperionException;
 
+	/**
+	 * 
+	 * <b> Permite consultar una aseguradora por el codigo. </b>
+	 * <p>
+	 * [Author: HIPERION, Date: 29/02/2016]
+	 * </p>
+	 * 
+	 * @param codigo
+	 * @return
+	 * @throws HiperionException
+	 */
+	public Aseguradora consultarAseguradoraByCodigo(String codigo) throws HiperionException;
 
 }

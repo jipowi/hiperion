@@ -23,7 +23,7 @@ public class Aseguradora extends Auditoria implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_aseguradora")
-	private Integer idAseguradora;
+	private Long idAseguradora;
 
 	@Column(name = "codigo_aseguradora")
 	private String codigoAseguradora;
@@ -49,11 +49,11 @@ public class Aseguradora extends Auditoria implements Serializable {
 	public Aseguradora() {
 	}
 
-	public Integer getIdAseguradora() {
+	public Long getIdAseguradora() {
 		return this.idAseguradora;
 	}
 
-	public void setIdAseguradora(Integer idAseguradora) {
+	public void setIdAseguradora(Long idAseguradora) {
 		this.idAseguradora = idAseguradora;
 	}
 

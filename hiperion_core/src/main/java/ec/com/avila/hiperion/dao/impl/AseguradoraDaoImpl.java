@@ -32,7 +32,6 @@ public class AseguradoraDaoImpl extends GenericDAOImpl<Aseguradora, Long> implem
 
 	@PersistenceContext(unitName = "sgs_pu")
 	protected EntityManager em;
-
 	
 
 	@SuppressWarnings("unchecked")
@@ -86,4 +85,24 @@ public class AseguradoraDaoImpl extends GenericDAOImpl<Aseguradora, Long> implem
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see ec.com.avila.hiperion.dao.AseguradoraDao#consultarAseguradoraByCodigo(java.lang.Integer)
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public Aseguradora consultarAseguradoraByCodigo(String codigo) throws HiperionException {
+		
+		Query query = em.createNamedQuery("Aseguradora.findByAseguradora");
+		query.setParameter("aseguradora", codigo);
+
+		List<Aseguradora> aseguradoras = query.getResultList();
+
+		if (!aseguradoras.isEmpty()) {
+			return aseguradoras.get(0);
+		} else {
+			return null;
+		}
+	}
+
+	
 }
