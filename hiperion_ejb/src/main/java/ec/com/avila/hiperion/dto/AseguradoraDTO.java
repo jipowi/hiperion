@@ -17,6 +17,33 @@ public class AseguradoraDTO {
 	private String email;
 	private String ruc;
 	private String telefono;
+	private String contacto;
+
+	
+	/**
+	 * 
+	 */
+	public AseguradoraDTO() {
+		super();
+	}
+
+	/**
+	 * @param nombreAseguradora
+	 * @param direcion
+	 * @param email
+	 * @param ruc
+	 * @param telefono
+	 * @param contacto
+	 */
+	public AseguradoraDTO(String nombreAseguradora, String direcion, String email, String ruc, String telefono, String contacto) {
+		super();
+		this.nombreAseguradora = nombreAseguradora;
+		this.direcion = direcion;
+		this.email = email;
+		this.ruc = ruc;
+		this.telefono = telefono;
+		this.contacto = contacto;
+	}
 
 	/**
 	 * @return the nombreAseguradora
@@ -91,6 +118,21 @@ public class AseguradoraDTO {
 	 */
 	public void setTelefono(String telefono) {
 		this.telefono = telefono;
+	}
+
+	/**
+	 * @return the contacto
+	 */
+	public String getContacto() {
+		return contacto;
+	}
+
+	/**
+	 * @param contacto
+	 *            the contacto to set
+	 */
+	public void setContacto(String contacto) {
+		this.contacto = contacto;
 	}
 
 }

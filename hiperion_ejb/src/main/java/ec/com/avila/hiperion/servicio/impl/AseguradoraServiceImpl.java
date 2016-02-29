@@ -58,12 +58,34 @@ public class AseguradoraServiceImpl implements AseguradoraService {
 		return aseguradoraDao.consultarAseguradora(ruc, aseguradora);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see ec.com.avila.hiperion.servicio.AseguradoraService#consultarClienteByAseguradora(java.lang.String)
 	 */
 	@Override
 	public List<Cliente> consultarClienteByAseguradora(String aseguradora) throws HiperionException {
 		return clienteDao.consultarClienteByAseguradora(aseguradora);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see ec.com.avila.hiperion.servicio.AseguradoraService#consultarAseguradoraById(java.lang.Integer)
+	 */
+	@Override
+	public Aseguradora consultarAseguradoraById(Long idAseguradora) throws HiperionException {
+		return aseguradoraDao.findById(idAseguradora);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see ec.com.avila.hiperion.servicio.AseguradoraService#consultarAseguradoraByCodigo(java.lang.Integer)
+	 */
+	@Override
+	public Aseguradora consultarAseguradoraByCodigo(String codigo) throws HiperionException {
+		return aseguradoraDao.consultarAseguradoraByCodigo(codigo);
 	}
 
 }

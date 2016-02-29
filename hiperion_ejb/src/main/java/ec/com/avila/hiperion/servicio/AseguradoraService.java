@@ -62,4 +62,30 @@ public interface AseguradoraService {
 	 */
 	public List<Cliente> consultarClienteByAseguradora(String aseguradora) throws HiperionException;
 
+	/**
+	 * 
+	 * <b> Permite buscar a aseguradora por medio del ID. </b>
+	 * <p>
+	 * [Author: HIPERION, Date: 29/02/2016]
+	 * </p>
+	 * 
+	 * @param idAseguradora
+	 * @return
+	 * @throws HiperionException
+	 */
+	public Aseguradora consultarAseguradoraById(Long idAseguradora) throws HiperionException;
+	
+	/**
+	 * 
+	 * <b> Permite consultar una aseguradora por el codigo. </b>
+	 * <p>
+	 * [Author: HIPERION, Date: 29/02/2016]
+	 * </p>
+	 * 
+	 * @param codigo
+	 * @return
+	 * @throws HiperionException
+	 */
+	public Aseguradora consultarAseguradoraByCodigo(String codigo) throws HiperionException;
+
 }
