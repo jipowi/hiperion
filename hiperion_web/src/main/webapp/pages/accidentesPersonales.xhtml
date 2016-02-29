@@ -44,12 +44,12 @@
 												<p:outputLabel value="#{emision['cliente.identificacion']}:" styleClass="negrita" />
 												<p:inputText value="#{ramoAccidentesPersonalesBean.identificacion}" />
 											</h:panelGrid>
-											<p:commandLink title="Buscar clientes" action="#{accidentesPersonalesBacking.buscarCliente}" update="idDatosCliente">
+											<p:commandLink title="Buscar clientes" action="#{accidentesPersonalesBacking.buscarCliente}" update="idDatosCliente, idDatosAseguradora">
 												<h:graphicImage name="search.png" library="img/icon" />
 											</p:commandLink>
 										</h:panelGrid>
 									</p:panel>
-
+									<!-- DATOS DEL CLIENTE -->
 									<p:panel id="idDatosCliente" visible="#{accidentesPersonalesBacking.activarDatosCliente}">
 										<f:facet name="header">
 											<h:outputText value="#{emision['cliente.titulo.datos']}" />
@@ -67,26 +67,60 @@
 											</h:panelGrid>
 										</h:panelGrid>
 									</p:panel>
-								</h:panelGrid>
-								<h:panelGrid columns="1">
-									<h:panelGrid columns="2" cellpadding="3">
-										<p:outputLabel value="#{emision['aseguradora.aseguradora']}" styleClass="negrita" />
-										<p:selectOneMenu value="#{ramoAccidentesPersonalesBean.aseguradora}" effect="drop">
-											<f:selectItem itemLabel="Seleccione Aseguradora" noSelectionOption="true" />
-											<f:selectItems value="#{accidentesPersonalesBacking.aseguradorasItems}" />
-											<p:ajax listener="#{accidentesPersonalesBacking.buscarContactoAseguradora()}" update="contacto" />
-										</p:selectOneMenu>
-									</h:panelGrid>
-								</h:panelGrid>
-
-								<h:panelGrid columns="1" id="contacto">
-									<h:panelGrid columns="2" cellpadding="3">
-										<p:outputLabel value="#{emision['lbl.contactoAseguradora']}:" styleClass="negrita" />
-										<p:selectOneMenu value="#{ramoAccidentesPersonalesBean.contactoAseguradora}" effect="drop">
-											<f:selectItem itemLabel="Seleccione Contacto de la Aseguradora" noSelectionOption="true" />
-											<f:selectItems value="#{accidentesPersonalesBacking.contactosItems}" />
-										</p:selectOneMenu>
-									</h:panelGrid>
+									<!-- DATOS ASEGURADORA -->
+									<p:panel id="idDatosAseguradora" visible="#{accidentesPersonalesBacking.activarDatosAseguradora}">
+										<f:facet name="header">
+											<h:outputText value="#{emision['aseguradora.titulo.aseguradora']}" />
+										</f:facet>
+										<h:panelGrid columns="2" cellpadding="3">
+											<p:outputLabel value="#{emision['aseguradora.aseguradora']}" styleClass="negrita" />
+											<p:selectOneMenu value="#{ramoAccidentesPersonalesBean.aseguradora}" effect="drop">
+												<f:selectItem itemLabel="Seleccione Aseguradora" noSelectionOption="true" />
+												<f:selectItems value="#{accidentesPersonalesBacking.aseguradorasItems}" />
+												<p:ajax listener="#{accidentesPersonalesBacking.buscarContactoAseguradora()}" update="contacto" />
+											</p:selectOneMenu>
+										</h:panelGrid>
+										<h:panelGrid columns="1" id="contacto">
+											<h:panelGrid columns="2" cellpadding="3">
+												<p:outputLabel value="#{emision['lbl.contactoAseguradora']}:" styleClass="negrita" />
+												<p:selectOneMenu value="#{ramoAccidentesPersonalesBean.contactoAseguradora}" effect="drop">
+													<f:selectItem itemLabel="Seleccione Contacto de la Aseguradora" noSelectionOption="true" />
+													<f:selectItems value="#{accidentesPersonalesBacking.contactosItems}" />
+												</p:selectOneMenu>
+											</h:panelGrid>
+										</h:panelGrid>
+										<f:facet name="footer">
+											<div align="center">
+												<p:commandButton id="agregarAseguradora" icon="icon-add" value="#{emision['boton.agregar']}" actionListener="#{accidentesPersonalesBacking.addAseguradora}"
+													title="Agregar" update="tablaAseguradoras" />
+											</div>
+										</f:facet>
+										<p:spacer height="30px;" />
+										<p:dataTable id="tablaAseguradoras" value="#{accidentesPersonalesBacking.aseguradorasDTO}" var="obj" editable="true">
+											<p:ajax event="rowEditCancel" listener="#{accidentesPersonalesBacking.onCancel}" update="@this"/>
+											<p:column>
+												<f:facet name="header">
+													<h:outputText value="#{emision['aseguradora.tabla.nombre']}" />
+												</f:facet>
+												<h:outputText value="#{obj.nombreAseguradora}" />
+											</p:column>
+											<p:column>
+												<f:facet name="header">
+													<h:outputText value="#{emision['aseguradora.tabla.RUC']}" />
+												</f:facet>
+												<h:outputText value="#{obj.ruc}" />
+											</p:column>
+											<p:column>
+												<f:facet name="header">
+													<h:outputText value="#{emision['aseguradora.tabla.telefono']}" />
+												</f:facet>
+												<h:outputText value="#{obj.telefono}" />
+											</p:column>
+											<p:column headerText="Options" style="width:50px">
+												<p:rowEditor />
+											</p:column>
+										</p:dataTable>
+									</p:panel>
 								</h:panelGrid>
 							</p:panel>
 						</h:form>
@@ -292,7 +326,8 @@
 													<p:selectOneMenu id="formaPagoId" value="#{polizaBean.idFormaPago}" required="true" effect="drop">
 														<f:selectItem itemLabel="Seleccionar" noSelectionOption="true" />
 														<f:selectItems value="#{accidentesPersonalesBacking.formasPagoItems}" />
-														<p:ajax listener="#{accidentesPersonalesBacking.selectFormaDePago()}" update="pagoContadoId, pagoFinanciadoId, pagoTarjetaCreditoId, pagoDebitoBancarioId, idGenerarTabla" />
+														<p:ajax listener="#{accidentesPersonalesBacking.selectFormaDePago()}"
+															update="pagoContadoId, pagoFinanciadoId, pagoTarjetaCreditoId, pagoDebitoBancarioId, idGenerarTabla" />
 													</p:selectOneMenu>
 												</h:panelGrid>
 
