@@ -8,6 +8,7 @@ package ec.com.avila.emision.web.backings;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -31,6 +32,7 @@ import ec.com.avila.emision.web.beans.PolizaBean;
 import ec.com.avila.emision.web.beans.RamoAgropecuarioBean;
 import ec.com.avila.emision.web.domain.ClausulaAdicional;
 import ec.com.avila.emision.web.domain.Cobertura;
+import ec.com.avila.emision.web.validator.ValidatorCedula;
 import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.dto.ClausulaAdicionalDTO;
 import ec.com.avila.hiperion.dto.CoberturaDTO;
@@ -40,6 +42,7 @@ import ec.com.avila.hiperion.dto.TablaAmortizacionDTO;
 import ec.com.avila.hiperion.emision.entities.ArchivoBase;
 import ec.com.avila.hiperion.emision.entities.Catalogo;
 import ec.com.avila.hiperion.emision.entities.ClausulasAddAgro;
+import ec.com.avila.hiperion.emision.entities.Cliente;
 import ec.com.avila.hiperion.emision.entities.CobertAgro;
 import ec.com.avila.hiperion.emision.entities.DetalleAnexo;
 import ec.com.avila.hiperion.emision.entities.DetalleCatalogo;
@@ -51,14 +54,17 @@ import ec.com.avila.hiperion.emision.entities.Ramo;
 import ec.com.avila.hiperion.emision.entities.RamoAgropecuario;
 import ec.com.avila.hiperion.emision.entities.Usuario;
 import ec.com.avila.hiperion.enumeration.EstadoEnum;
+import ec.com.avila.hiperion.enumeration.RamoEnum;
 import ec.com.avila.hiperion.servicio.AseguradoraService;
 import ec.com.avila.hiperion.servicio.CatalogoService;
+import ec.com.avila.hiperion.servicio.ClienteService;
 import ec.com.avila.hiperion.servicio.RamoAgropecuarioService;
 import ec.com.avila.hiperion.servicio.RamoService;
 import ec.com.avila.hiperion.web.beans.RamoBean;
 import ec.com.avila.hiperion.web.beans.UsuarioBean;
 import ec.com.avila.hiperion.web.util.ArchivoUtil;
 import ec.com.avila.hiperion.web.util.ConstantesUtil;
+import ec.com.avila.hiperion.web.util.FechasUtil;
 import ec.com.avila.hiperion.web.util.GenerarPdfUtil;
 import ec.com.avila.hiperion.web.util.HiperionMensajes;
 import ec.com.avila.hiperion.web.util.JsfUtil;
@@ -79,13 +85,16 @@ public class AgropecuarioBacking implements Serializable {
 
 	@EJB
 	private RamoService ramoService;
+	
+	@EJB
+	private ClienteService clienteService;
 
 	@EJB
 	private RamoAgropecuarioService ramoAgropecuarioService;
 
 	@EJB
 	private CatalogoService catalogoService;
-	
+
 	@EJB
 	private AseguradoraService aseguradoraService;
 
@@ -100,6 +109,8 @@ public class AgropecuarioBacking implements Serializable {
 
 	@ManagedProperty(value = "#{polizaBean}")
 	private PolizaBean polizaBean;
+	
+
 
 	private List<DetalleAnexo> anexos;
 	private List<ClausulaAdicional> clausulasAdicionales;
@@ -112,14 +123,32 @@ public class AgropecuarioBacking implements Serializable {
 	private UploadedFile file;
 	private List<SelectItem> sexoItems;
 	private List<SelectItem> tipoObjetoItems;
+	private List<SelectItem> formasPagoItems;
+	private List<SelectItem> bancoItems;
+	private List<SelectItem> cuentaBancoItems;
+	private List<SelectItem> tarjetasCreditoItems;
+	private List<SelectItem> aseguradorasItems;
+	private List<TablaAmortizacionDTO> tablaAmortizacionList = new ArrayList<TablaAmortizacionDTO>();
+	private List<SelectItem> contactosItems = new ArrayList<>();
 	private Boolean activarGanadero;
+	private Boolean activarPanelPagoContado = false;
+	private Boolean activarPanelPagoFinanciado = false;
+	private Boolean activarPanelPagoDebitoBancario = false;
+	private Boolean activarPanelPagoTarjetaCredito = false;
+	
 	private Usuario usuario;
+	
+	
+	private Boolean activarDatosCliente = false;
+	
 
 	Logger log = Logger.getLogger(AgropecuarioBacking.class);
 
 	RamoAgropecuario agropecuario = new RamoAgropecuario();
 
 	@PostConstruct
+	
+	
 	public void inicializar() {
 		try {
 
@@ -169,6 +198,231 @@ public class AgropecuarioBacking implements Serializable {
 
 	/**
 	 * 
+	 * <b> Permite obtener el numero de dias de cobertura. </b>
+	 * <p>
+	 * [Author: Franklin Pozo, Date: 24/02/2016]
+	 * </p>
+	 * 
+	 */
+	public void obtenerDias() {
+		long dias = FechasUtil.getInstancia().restarFechas(polizaBean.getVigenciaDesde(), polizaBean.getVigenciaHasta());
+
+		polizaBean.setDiasCobertura(Integer.parseInt(Long.toString(dias)));
+
+	}
+
+	/**
+	 * @return the bancoItems
+	 */
+	public List<SelectItem> getBancoItems() throws HiperionException {
+		this.bancoItems = new ArrayList<SelectItem>();
+		Catalogo catalogo = catalogoService.consultarCatalogoById(HiperionMensajes.getInstancia().getLong(
+				"ec.gob.avila.hiperion.recursos.catalogoBancos"));
+		List<DetalleCatalogo> banco = catalogo.getDetalleCatalogos();
+
+		for (DetalleCatalogo detalle : banco) {
+			SelectItem selectItem = new SelectItem(detalle.getCodDetalleCatalogo(), detalle.getDescDetCatalogo());
+			bancoItems.add(selectItem);
+		}
+		return bancoItems;
+	}
+	
+	/**
+	 * @param bancoItems
+	 *            the bancoItems to set
+	 */
+	public void setBancoItems(List<SelectItem> bancoItems) {
+		this.bancoItems = bancoItems;
+	}
+
+		
+	
+	/**
+	 * @return the aseguradorasItems
+	 */
+	public List<SelectItem> getAseguradorasItems() throws HiperionException {
+		if (this.aseguradorasItems == null) {
+			this.aseguradorasItems = new ArrayList<SelectItem>();
+		}
+
+		Catalogo catalogo = catalogoService.consultarCatalogoById(HiperionMensajes.getInstancia().getLong(
+				"ec.gob.avila.hiperion.recursos.catalogoAseguradoras"));
+
+		List<DetalleCatalogo> aseguradoras = catalogo.getDetalleCatalogos();
+
+		for (DetalleCatalogo detalle : aseguradoras) {
+			SelectItem selectItem = new SelectItem(detalle.getCodDetalleCatalogo(), detalle.getDescDetCatalogo());
+			aseguradorasItems.add(selectItem);
+		}
+
+		return aseguradorasItems;
+	}
+	
+	public List<SelectItem> buscarContactoAseguradora(String aseguradora){
+		List<SelectItem> contactosItems = new ArrayList<>();
+
+		try {
+
+			List<Cliente> contactos = aseguradoraService.consultarClienteByAseguradora(aseguradora);
+
+			if (contactos == null) {
+				MessagesController.addWarn(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.war.contactosAseguradora"));
+			} else {
+				for (Cliente cliente : contactos) {
+					SelectItem selectItem = new SelectItem(cliente.getIdCliente(), cliente.getApellidoPaterno() + " " + cliente.getApellidoMaterno()
+							+ " " + cliente.getNombrePersona());
+					contactosItems.add(selectItem);
+				}
+			}
+
+		} catch (HiperionException e) {
+			e.printStackTrace();
+		}
+		return contactosItems;
+	}
+	
+	
+	
+	/**
+	 * @return the contactosItems
+	 */
+	public List<SelectItem> getContactosItems() {
+		return contactosItems;
+	}
+
+	/**
+	 * @param contactosItems the contactosItems to set
+	 */
+	public void setContactosItems(List<SelectItem> contactosItems) {
+		this.contactosItems = contactosItems;
+	}
+
+	/**
+	 * 
+	 * <b>
+	 * Permite buscar los contactos de la aseguradora seleccionada
+	 * </b>
+	 * <p>[Author: Frankin Pozo B, Date: 29/02/2016]</p>
+	 *
+	 */
+	public void buscarContactoAseguradora() {
+
+		buscarContactoAseguradora(ramoAgropecuarioBean.getAseguradora());
+	}
+
+
+	/**
+	 * @param aseguradorasItems the aseguradorasItems to set
+	 */
+	public void setAseguradorasItems(List<SelectItem> aseguradorasItems) {
+		this.aseguradorasItems = aseguradorasItems;
+	}
+
+	/**
+	 * @return the usuario
+	 */
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	/**
+	 * @param usuario the usuario to set
+	 */
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
+	}
+
+	/**
+	 * @return the activarPanelPagoContado
+	 */
+	public Boolean getActivarPanelPagoContado() {
+		return activarPanelPagoContado;
+	}
+
+	/**
+	 * @return the activarPanelPagoFinanciado
+	 */
+	public Boolean getActivarPanelPagoFinanciado() {
+		return activarPanelPagoFinanciado;
+	}
+
+	/**
+	 * @return the activarPanelPagoDebitoBancario
+	 */
+	public Boolean getActivarPanelPagoDebitoBancario() {
+		return activarPanelPagoDebitoBancario;
+	}
+
+	/**
+	 * @return the activarPanelPagoTarjetaCredito
+	 */
+	public Boolean getActivarPanelPagoTarjetaCredito() {
+		return activarPanelPagoTarjetaCredito;
+	}
+
+	public void onEditTable(RowEditEvent event) {
+		FacesMessage msg = new FacesMessage("Item Edited", ((TablaAmortizacionDTO) event.getObject()).getLetra());
+		FacesContext.getCurrentInstance().addMessage(null, msg);
+	}
+
+	public double redondear(double numero, int decimales) {
+		return Math.round(numero * Math.pow(10, decimales)) / Math.pow(10, decimales);
+	}
+
+	
+	/**
+	 * @return the activarDatosCliente
+	 */
+	public Boolean getActivarDatosCliente() {
+		return activarDatosCliente;
+	}
+
+	/**
+	 * @param activarDatosCliente the activarDatosCliente to set
+	 */
+	public void setActivarDatosCliente(Boolean activarDatosCliente) {
+		this.activarDatosCliente = activarDatosCliente;
+	}
+
+	/**
+	 * 
+	 * <b> Permite generar una tabla de amortizacion con valores ingresados en la pantalla </b>
+	 * <p>
+	 * [Author: Franklin Pozo B, Date: 23/02/2016]
+	 * </p>
+	 * 
+	 */
+	public void generarTablaAmortizacion() {
+		tablaAmortizacionList = new ArrayList<>();
+
+		Double total = polizaBean.getTotal().doubleValue();
+		Double numDebitos = polizaBean.getNumeroDebitos().doubleValue();
+		Double valorLetras = total / numDebitos;
+		valorLetras = redondear(valorLetras, 2);
+		polizaBean.setValorDebitos(new BigDecimal(valorLetras));
+
+		int cont = 1;
+
+		for (int i = 0; i < polizaBean.getNumeroDebitos(); i++) {
+			TablaAmortizacionDTO tablaAmortizacionDTO = new TablaAmortizacionDTO();
+			tablaAmortizacionDTO.setLetra("Letra " + cont);
+			tablaAmortizacionDTO.setValor(valorLetras);
+			tablaAmortizacionDTO.setNumeroLetra(cont);
+
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime(polizaBean.getFechaDebito());
+			Date fechaCuota = FechasUtil.getInstancia().sumarMeses(polizaBean.getFechaDebito(), (i + 1));
+
+			tablaAmortizacionDTO.setFechaVencimiento(fechaCuota);
+
+			tablaAmortizacionList.add(tablaAmortizacionDTO);
+			cont++;
+		}
+		polizaBean.setFinanciamientos(tablaAmortizacionList);
+	}
+
+	/**
+	 * 
 	 * <b>Permite obtener las coberturas de transporte </b>
 	 * <p>
 	 * [Author: DARVIN, Date: 20/04/2014]
@@ -201,6 +455,100 @@ public class AgropecuarioBacking implements Serializable {
 
 			coberturasTransporteDTO.add(coberturaDTO);
 		}
+	}
+
+	/**
+	 * 
+	 * <b> Permite obtener una lista de formas de pago </b>
+	 * <p>
+	 * [Author: Franklin Pozo B, Date: 22/02/2016]
+	 * </p>
+	 * 
+	 * @return
+	 * @throws HiperionException
+	 */
+	public List<SelectItem> getFormasPagoItems() throws HiperionException {
+		this.formasPagoItems = new ArrayList<SelectItem>();
+		// Busqueda por el codigo de formas de pago (4)
+		Catalogo catalogo = catalogoService.consultarCatalogoById(HiperionMensajes.getInstancia().getLong(
+				"ec.gob.avila.hiperion.recursos.catalogoFormasPago"));
+		List<DetalleCatalogo> formasPago = catalogo.getDetalleCatalogos();
+		for (DetalleCatalogo detalle : formasPago) {
+			SelectItem selectItem = new SelectItem(detalle.getCodDetalleCatalogo(), detalle.getDescDetCatalogo());
+			formasPagoItems.add(selectItem);
+		}
+		return formasPagoItems;
+	}
+
+	/**
+	 * 
+	 * <b> Permite activar los paneles segun la forma de pago que seleccione un usuario </b>
+	 * <p>
+	 * [Author: Franklin Pozo B, Date: 22/02/2016]
+	 * </p>
+	 * 
+	 */
+	public void selectFormaDePago() {
+		if (polizaBean.getIdFormaPago() == 1) {
+			setActivarPanelPagoContado(true);
+		} else if (polizaBean.getIdFormaPago() == 2) {
+			setActivarPanelPagoFinanciado(true);
+		} else if (polizaBean.getIdFormaPago() == 3) {
+			setActivarPanelPagoTarjetaCredito(true);
+		} else if (polizaBean.getIdFormaPago() == 4) {
+			setActivarPanelPagoDebitoBancario(true);
+		}
+	}
+
+	public void calcularValoresPago() {
+		if (polizaBean.getPrimaNeta() != null) {
+			Double valorSuperBan = redondear((polizaBean.getPrimaNeta() * 0.035), 2);
+			Double seguroCampesino = redondear((polizaBean.getPrimaNeta() * 0.005), 2);
+			Double emision = redondear((polizaBean.getPrimaNeta() * 0.005), 2);
+			Double subtotal = redondear((valorSuperBan + seguroCampesino + emision + polizaBean.getPrimaNeta()), 2);
+			Double iva = redondear((subtotal * 0.12), 2);
+			Double total = redondear((subtotal + iva), 2);
+
+			polizaBean.setSuperBanSeguros(BigDecimal.valueOf(valorSuperBan));
+			polizaBean.setSeguroCampesino(seguroCampesino);
+			polizaBean.setSubtotal(BigDecimal.valueOf(subtotal));
+			polizaBean.setIva(BigDecimal.valueOf(iva));
+			polizaBean.setTotal(BigDecimal.valueOf(total));
+			obtenerDias();
+		}
+		selectFormaDePago();
+	}
+
+	/**
+	 * @param activarPanelPagoContado
+	 *            the activarPanelPagoContado to set
+	 */
+	public void setActivarPanelPagoContado(Boolean activarPanelPagoContado) {
+		this.activarPanelPagoContado = activarPanelPagoContado;
+	}
+
+	/**
+	 * @param activarPanelPagoFinanciado
+	 *            the activarPanelPagoFinanciado to set
+	 */
+	public void setActivarPanelPagoFinanciado(Boolean activarPanelPagoFinanciado) {
+		this.activarPanelPagoFinanciado = activarPanelPagoFinanciado;
+	}
+
+	/**
+	 * @param activarPanelPagoDebitoBancario
+	 *            the activarPanelPagoDebitoBancario to set
+	 */
+	public void setActivarPanelPagoDebitoBancario(Boolean activarPanelPagoDebitoBancario) {
+		this.activarPanelPagoDebitoBancario = activarPanelPagoDebitoBancario;
+	}
+
+	/**
+	 * @param activarPanelPagoTarjetaCredito
+	 *            the activarPanelPagoTarjetaCredito to set
+	 */
+	public void setActivarPanelPagoTarjetaCredito(Boolean activarPanelPagoTarjetaCredito) {
+		this.activarPanelPagoTarjetaCredito = activarPanelPagoTarjetaCredito;
 	}
 
 	/**
@@ -333,6 +681,62 @@ public class AgropecuarioBacking implements Serializable {
 			throw new HiperionException(e);
 		}
 	}
+	/**
+	 * 
+	 * <b>
+	 * Incluir aqui­ la descripcion del metodo.
+	 * </b>
+	 * <p>[Author: Avila Sistemas, Date: 29/02/2016]</p>
+	 *
+	 * @param identificacion
+	 * @return
+	 * @throws HiperionException
+	 */
+	 public Cliente buscarCliente(String identificacion)throws HiperionException{
+		 try {
+				Cliente cliente = new Cliente();
+
+				if (!identificacion.equals("") && ValidatorCedula.getInstancia().validateCedula(identificacion)) {
+					cliente = clienteService.consultarClienteByIdentificacion(identificacion);
+					if (cliente == null) {
+						MessagesController.addWarn(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.warn.buscar"));
+					} else {
+
+						ramoAgropecuarioBean.setNombreCliente(cliente.getNombrePersona() + " " + cliente.getApellidoPaterno() + " "
+							+ cliente.getApellidoMaterno());
+					}
+				} else {
+					MessagesController.addError(null, HiperionMensajes.getInstancia().getString("hiperion.mensage.error.identificacionNoValido"));
+				}
+
+				polizaBean.setCliente(cliente);
+				return cliente;
+
+			} catch (HiperionException e) {
+				log.error("Error al momento de buscar clientes", e);
+				throw new HiperionException(e);
+			}
+
+		 
+	 }
+	
+	/**
+	 * 
+	 * <b> IPermite buscar un cliente por madio del numero de identificacion. </b>
+	 * <p>
+	 * [Author: Franklin Pozo B, Date: 29/02/2016]
+	 * </p>
+	 * 
+	 * @throws HiperionException
+	 */
+	public void buscarCliente() throws HiperionException {
+
+		Cliente cliente = buscarCliente(ramoAgropecuarioBean.getIdentificacion());
+
+		if (cliente != null) {
+			activarDatosCliente = true;
+		}
+	}
 
 	/**
 	 * 
@@ -443,43 +847,49 @@ public class AgropecuarioBacking implements Serializable {
 		Usuario usuario = usuarioBean.getSessionUser();
 		Poliza poliza = new Poliza();
 
-		poliza.setNumeroPoliza(polizaBean.getNumeroPoliza());
-		poliza.setNumeroAnexo(polizaBean.getNumeroAnexo());
-		poliza.setEjecutivo(polizaBean.getEjecutivo().getNombreUsuario());
-		poliza.setVigenciaDesde(polizaBean.getVigenciaDesde());
-		poliza.setVigenciaHasta(polizaBean.getVigenciaHasta());
-		poliza.setDiasCobertura(polizaBean.getDiasCobertura());
-		poliza.setSumaAsegurada(polizaBean.getSumaAsegurada());
-		poliza.setPrimaNeta(BigDecimal.valueOf(polizaBean.getPrimaNeta()));
-		poliza.setSuperBanSeguros(polizaBean.getSuperBanSeguros());
-		poliza.setSeguroCampesino(BigDecimal.valueOf(polizaBean.getSeguroCampesino()));
-		poliza.setDerechoEmision(BigDecimal.valueOf(polizaBean.getDerechoEmision()));
-		poliza.setEstadoPoliza("COTIZADO");
+		if (polizaBean.getEstadoPoliza().equals("EMITIDO")) {
+			poliza.setNumeroPoliza(polizaBean.getNumeroPoliza());
+			poliza.setNumeroAnexo(polizaBean.getNumeroAnexo());
+			poliza.setEjecutivo(polizaBean.getEjecutivo().getNombreUsuario());
+			poliza.setVigenciaDesde(polizaBean.getVigenciaDesde());
+			poliza.setVigenciaHasta(polizaBean.getVigenciaHasta());
+			poliza.setDiasCobertura(polizaBean.getDiasCobertura());
+			poliza.setSumaAsegurada(polizaBean.getSumaAsegurada());
+			poliza.setPrimaNeta(BigDecimal.valueOf(polizaBean.getPrimaNeta()));
+			poliza.setSuperBanSeguros(polizaBean.getSuperBanSeguros());
+			poliza.setSeguroCampesino(BigDecimal.valueOf(polizaBean.getSeguroCampesino()));
+			poliza.setDerechoEmision(BigDecimal.valueOf(polizaBean.getDerechoEmision()));
+			poliza.setEstadoPoliza("COTIZADO");
 
-		PagoPoliza pagoPoliza = new PagoPoliza();
-		pagoPoliza.setNumeroFactura(polizaBean.getNumeroFactura());
-		pagoPoliza.setSubtotal(polizaBean.getSubtotal());
-		pagoPoliza.setAdicionalSegCampesino(polizaBean.getAdicionalSegCampesino());
-		pagoPoliza.setIva(polizaBean.getIva());
-		pagoPoliza.setCuotaInicial(polizaBean.getCuotaInicial());
-		pagoPoliza.setValorTotalPagoPoliza(polizaBean.getTotal());
-		pagoPoliza.setEstado(EstadoEnum.A);
-		pagoPoliza.setFechaCreacion(new Date());
-		pagoPoliza.setIdUsuarioCreacion(usuario.getIdUsuario());
+			PagoPoliza pagoPoliza = new PagoPoliza();
+			pagoPoliza.setNumeroFactura(polizaBean.getNumeroFactura());
+			pagoPoliza.setSubtotal(polizaBean.getSubtotal());
+			pagoPoliza.setAdicionalSegCampesino(polizaBean.getAdicionalSegCampesino());
+			pagoPoliza.setIva(polizaBean.getIva());
+			pagoPoliza.setCuotaInicial(polizaBean.getCuotaInicial());
+			pagoPoliza.setValorTotalPagoPoliza(polizaBean.getTotal());
+			pagoPoliza.setEstado(EstadoEnum.A);
+			pagoPoliza.setFechaCreacion(new Date());
+			pagoPoliza.setIdUsuarioCreacion(usuario.getIdUsuario());
 
-		List<Financiamiento> financiamientos = new ArrayList<>();
-		for (TablaAmortizacionDTO financiamiento : polizaBean.getFinanciamientos()) {
-			Financiamiento financiamientoTemp = new Financiamiento();
-			financiamientoTemp.setNumeroCuota(financiamiento.getNumeroLetra());
-			financiamientoTemp.setValorLetra(BigDecimal.valueOf(financiamiento.getValor()));
-			financiamientoTemp.setFechaVencimiento(financiamiento.getFechaVencimiento());
+			List<Financiamiento> financiamientos = new ArrayList<>();
+			for (TablaAmortizacionDTO financiamiento : polizaBean.getFinanciamientos()) {
+				Financiamiento financiamientoTemp = new Financiamiento();
+				financiamientoTemp.setNumeroCuota(financiamiento.getNumeroLetra());
+				financiamientoTemp.setValorLetra(BigDecimal.valueOf(financiamiento.getValor()));
+				financiamientoTemp.setFechaVencimiento(financiamiento.getFechaVencimiento());
 
-			financiamientos.add(financiamientoTemp);
+				financiamientos.add(financiamientoTemp);
+			}
+
+			pagoPoliza.setFinanciamientos(financiamientos);
+
+			poliza.setPagoPoliza(pagoPoliza);
 		}
-
-		pagoPoliza.setFinanciamientos(financiamientos);
-
-		poliza.setPagoPoliza(pagoPoliza);
+		poliza.setEstadoPoliza(polizaBean.getEstadoPoliza());
+		poliza.setCliente(polizaBean.getCliente());
+		poliza.setFechaRegistro(new Date());
+		poliza.setRamo(RamoEnum.R2.getLabel());
 
 		return poliza;
 	}
@@ -772,6 +1182,66 @@ public class AgropecuarioBacking implements Serializable {
 	 */
 	public void setPolizaBean(PolizaBean polizaBean) {
 		this.polizaBean = polizaBean;
+	}
+
+	/**
+	 * 
+	 * <b> Permite crear el combo de tipo de cuenta </b>
+	 * <p>
+	 * [Author:Franklin Pozo B, Date: 25/02/2016]
+	 * </p>
+	 * 
+	 * @return
+	 * @throws HiperionException
+	 */
+	public List<SelectItem> getCuentaBancoItems() throws HiperionException {
+		this.cuentaBancoItems = new ArrayList<SelectItem>();
+		Catalogo catalogo = catalogoService.consultarCatalogoById(HiperionMensajes.getInstancia().getLong(
+				"ec.gob.avila.hiperion.recursos.catalogoCuentaBanco"));
+		List<DetalleCatalogo> cuentaBanco = catalogo.getDetalleCatalogos();
+
+		for (DetalleCatalogo detalle : cuentaBanco) {
+			SelectItem selectItem = new SelectItem(detalle.getCodDetalleCatalogo(), detalle.getDescDetCatalogo());
+			cuentaBancoItems.add(selectItem);
+		}
+		return cuentaBancoItems;
+	}
+
+	/**
+	 * @param cuentaBancoItems
+	 *            the cuentaBancoItems to set
+	 */
+	public void setCuentaBancoItems(List<SelectItem> cuentaBancoItems) {
+		this.cuentaBancoItems = cuentaBancoItems;
+	}
+
+	/**
+	 * 
+	 * <b> Incluir aqui­ la descripcion del metodo. </b>
+	 * <p>
+	 * [Author: Franklin Pozo B, Date: 25/02/2016]
+	 * </p>
+	 * 
+	 * @return
+	 */
+	public List<SelectItem> getTarjetasCreditoItems() throws HiperionException {
+
+		this.tarjetasCreditoItems = new ArrayList<SelectItem>();
+		Catalogo catalogo = catalogoService.consultarCatalogoById(new Long(7));
+		List<DetalleCatalogo> formasPago = catalogo.getDetalleCatalogos();
+		for (DetalleCatalogo detalle : formasPago) {
+			SelectItem selectItem = new SelectItem(detalle.getCodDetalleCatalogo(), detalle.getDescDetCatalogo());
+			tarjetasCreditoItems.add(selectItem);
+		}
+		return tarjetasCreditoItems;
+	}
+
+	/**
+	 * @param tarjetasCreditoItems
+	 *            the tarjetasCreditoItems to set
+	 */
+	public void setTarjetasCreditoItems(List<SelectItem> tarjetasCreditoItems) {
+		this.tarjetasCreditoItems = tarjetasCreditoItems;
 	}
 
 }

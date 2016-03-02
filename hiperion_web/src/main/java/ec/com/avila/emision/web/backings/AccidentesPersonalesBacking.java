@@ -353,12 +353,13 @@ public class AccidentesPersonalesBacking implements Serializable {
 
 	/**
 	 * 
-	 * <b> Permite calcular los valores de super de bancos y seguro campesino </b>
-	 * <p>
-	 * [Author: Paul Jimenez, Date: 22/01/2015]
-	 * </p>
-	 * 
+	 * <b>
+	 * Permite calcular los valores de super de bancos y seguro campesino 
+	 * </b>
+	 * <p>[Author: Franklin Pozo B, Date: 24/02/2016]</p>
+	 *
 	 */
+	
 	public void calcularValoresPago() {
 		if (polizaBean.getPrimaNeta() != null) {
 			Double valorSuperBan = redondear((polizaBean.getPrimaNeta() * 0.035), 2);
