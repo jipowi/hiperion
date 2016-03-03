@@ -89,15 +89,13 @@
 												</p:selectOneMenu>
 											</h:panelGrid>
 										</h:panelGrid>
-										<f:facet name="footer">
-											<div align="center">
-												<p:commandButton id="agregarAseguradora" icon="icon-add" value="#{emision['boton.agregar']}" actionListener="#{accidentesPersonalesBacking.addAseguradora}"
-													title="Agregar" update="tablaAseguradoras" />
-											</div>
-										</f:facet>
+										<div align="center">
+											<p:commandButton id="agregarAseguradora" icon="icon-add" value="#{emision['boton.agregar']}" actionListener="#{accidentesPersonalesBacking.addAseguradora}"
+												title="Agregar" update="tablaAseguradoras" />
+										</div>
 										<p:spacer height="30px;" />
 										<p:dataTable id="tablaAseguradoras" value="#{accidentesPersonalesBacking.aseguradorasDTO}" var="obj" editable="true">
-											<p:ajax event="rowEditCancel" listener="#{accidentesPersonalesBacking.onCancel}" update="@this"/>
+											<p:ajax event="rowEditCancel" listener="#{accidentesPersonalesBacking.onCancel}" update="@this" />
 											<p:column>
 												<f:facet name="header">
 													<h:outputText value="#{emision['aseguradora.tabla.nombre']}" />
@@ -313,9 +311,11 @@
 								</p:dialog>
 
 								<!-- PAGO POLIZA -->
-								<p:commandLink title="Abrir opciones de pago" oncomplete="pagoPoliza.show();" update="idPagoPoliza">
-									<h:graphicImage name="pago.jpg" library="img" />
-								</p:commandLink>
+								<div align="center">
+									<p:commandLink title="Abrir opciones de pago" oncomplete="pagoPoliza.show();" update="idPagoPoliza">
+										<h:graphicImage name="pago.jpg" library="img" />
+									</p:commandLink>
+								</div>
 								<p:dialog id="idPagoPoliza" header="Pago Poliza" widgetVar="pagoPoliza" modal="true" position="center" showEffect="fade" hideEffect="explode" resizable="false"
 									closable="true" width="700" height="300">
 									<h:form id="formPago">
