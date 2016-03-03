@@ -39,11 +39,17 @@
 				<div align="center">
 					<h:panelGrid columns="1" id="tablaPolizas">
 						<p:dataTable value="#{reportePolizaBacking.polizas}" var="poliza" widgetVar="50" editable="true">
+						<p:column>
+								<f:facet name="header">
+									<h:outputText value="#{emision['lbl.reporte.ramo']}" />
+								</f:facet>
+								<h:outputText value="#{poliza.ramo}" />
+							</p:column>
 							<p:column>
 								<f:facet name="header">
 									<h:outputText value="#{emision['lbl.reporte.estado']}" />
 								</f:facet>
-								<h:outputText value="#{cliente.identificacionPersona}" />
+								<h:outputText value="#{poliza.estadoPoliza}" />
 							</p:column>
 						
 						</p:dataTable>

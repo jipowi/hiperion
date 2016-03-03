@@ -223,8 +223,6 @@ public class AccidentesPersonalesBacking implements Serializable {
 	 */
 	public List<SelectItem> buscarContactoAseguradora(String aseguradora) {
 
-		List<SelectItem> contactosItems = new ArrayList<>();
-
 		try {
 
 			List<Cliente> contactos = aseguradoraService.consultarClienteByAseguradora(aseguradora);
@@ -353,13 +351,13 @@ public class AccidentesPersonalesBacking implements Serializable {
 
 	/**
 	 * 
-	 * <b>
-	 * Permite calcular los valores de super de bancos y seguro campesino 
-	 * </b>
-	 * <p>[Author: Franklin Pozo B, Date: 24/02/2016]</p>
-	 *
+	 * <b> Permite calcular los valores de super de bancos y seguro campesino </b>
+	 * <p>
+	 * [Author: Franklin Pozo B, Date: 24/02/2016]
+	 * </p>
+	 * 
 	 */
-	
+
 	public void calcularValoresPago() {
 		if (polizaBean.getPrimaNeta() != null) {
 			Double valorSuperBan = redondear((polizaBean.getPrimaNeta() * 0.035), 2);
@@ -428,7 +426,6 @@ public class AccidentesPersonalesBacking implements Serializable {
 		if (polizaBean.getEstadoPoliza().equals("EMITIDO")) {
 			poliza.setNumeroPoliza(polizaBean.getNumeroPoliza());
 			poliza.setNumeroAnexo(polizaBean.getNumeroAnexo());
-			poliza.setEjecutivo(polizaBean.getEjecutivo().getNombreUsuario());
 			poliza.setVigenciaDesde(polizaBean.getVigenciaDesde());
 			poliza.setVigenciaHasta(polizaBean.getVigenciaHasta());
 			poliza.setDiasCobertura(polizaBean.getDiasCobertura());
@@ -467,6 +464,7 @@ public class AccidentesPersonalesBacking implements Serializable {
 		poliza.setCliente(polizaBean.getCliente());
 		poliza.setFechaRegistro(new Date());
 		poliza.setRamo(RamoEnum.R1.getLabel());
+		poliza.setEjecutivo(usuario.getIdentificacionUsuario());
 
 		return poliza;
 	}
