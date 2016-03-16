@@ -10,13 +10,16 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
 import org.apache.log4j.Logger;
-import org.primefaces.model.chart.PieChartModel;
+import org.primefaces.model.chart.CartesianChartModel;
+import org.primefaces.model.chart.ChartSeries;
 
 import ec.com.avila.hiperion.emision.entities.Poliza;
 import ec.com.avila.hiperion.servicio.CatalogoService;
 import ec.com.avila.hiperion.servicio.ClienteService;
 import ec.com.avila.hiperion.servicio.DetalleCatalogoService;
 import ec.com.avila.hiperion.servicio.PolizaService;
+import ec.com.avila.hiperion.web.util.HiperionMensajes;
+import ec.com.avila.hiperion.web.util.MessagesController;
 
 @ManagedBean
 @ViewScoped
@@ -44,7 +47,7 @@ public class ReportePolizaBacking implements Serializable {
 	private int numRechazadas = 0;
 	private boolean activarGrafico = false;
 
-	private PieChartModel piePolizas1;
+	private CartesianChartModel ChartPolizas;
 
 	Logger log = Logger.getLogger(ReportePolizaBacking.class);
 
@@ -64,15 +67,18 @@ public class ReportePolizaBacking implements Serializable {
 	public void generarReporte() {
 
 		polizas = polizaService.obtenerReporteFechas(fechaDesde, fechaHasta);
+		if (polizas == null) {
+			MessagesController.addWarn(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.warn.buscar"));
+		} else {
 
-		for (Poliza poliza : polizas) {
-			if (poliza.getEstadoPoliza().equals("COTIZADO")) {
-				numCotizadas++;
-			} else if (poliza.getEstadoPoliza().equals("EMITIDO")) {
-				numEmitidas++;
+			for (Poliza poliza : polizas) {
+				if (poliza.getEstadoPoliza().equals("COTIZADO")) {
+					numCotizadas++;
+				} else if (poliza.getEstadoPoliza().equals("EMITIDO")) {
+					numEmitidas++;
+				}
 			}
 		}
-
 		activarGrafico = true;
 		createPiePolizas();
 	}
@@ -86,15 +92,16 @@ public class ReportePolizaBacking implements Serializable {
 	 * 
 	 */
 	private void createPiePolizas() {
-		piePolizas1 = new PieChartModel();
 
-		piePolizas1.set("Emitidas", numEmitidas);
-		piePolizas1.set("Cotizadas", numCotizadas);
-		piePolizas1.setTitle("Polizas");
-		piePolizas1.setLegendPosition("w");
-		piePolizas1.setFill(true);
-		piePolizas1.setShowDataLabels(true);
-		piePolizas1.setDiameter(100);
+		ChartPolizas = new CartesianChartModel();
+
+		final ChartSeries polizas = new ChartSeries("Estado");
+		polizas.set("Cotizadas", numEmitidas);
+		polizas.set("Emitidas", numCotizadas);
+		polizas.set("Aprobadas", 7);
+		polizas.set("Rechazadas", 5);
+
+		ChartPolizas.addSeries(polizas);
 
 	}
 
@@ -204,18 +211,18 @@ public class ReportePolizaBacking implements Serializable {
 	}
 
 	/**
-	 * @return the piePolizas1
+	 * @return the chartPolizas
 	 */
-	public PieChartModel getPiePolizas1() {
-		return piePolizas1;
+	public CartesianChartModel getChartPolizas() {
+		return ChartPolizas;
 	}
 
 	/**
-	 * @param piePolizas1
-	 *            the piePolizas1 to set
+	 * @param chartPolizas
+	 *            the chartPolizas to set
 	 */
-	public void setPiePolizas1(PieChartModel piePolizas1) {
-		this.piePolizas1 = piePolizas1;
+	public void setChartPolizas(CartesianChartModel chartPolizas) {
+		ChartPolizas = chartPolizas;
 	}
 
 	/**
