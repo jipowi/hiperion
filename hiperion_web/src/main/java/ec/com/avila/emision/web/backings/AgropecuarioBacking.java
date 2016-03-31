@@ -34,12 +34,14 @@ import ec.com.avila.emision.web.domain.ClausulaAdicional;
 import ec.com.avila.emision.web.domain.Cobertura;
 import ec.com.avila.emision.web.validator.ValidatorCedula;
 import ec.com.avila.hiperion.comun.HiperionException;
+import ec.com.avila.hiperion.dto.AseguradoraDTO;
 import ec.com.avila.hiperion.dto.ClausulaAdicionalDTO;
 import ec.com.avila.hiperion.dto.CoberturaDTO;
 import ec.com.avila.hiperion.dto.ObjetoAseguradoGanaderoAgroDTO;
 import ec.com.avila.hiperion.dto.ObjetoAseguradoPlantacionAgroDTO;
 import ec.com.avila.hiperion.dto.TablaAmortizacionDTO;
 import ec.com.avila.hiperion.emision.entities.ArchivoBase;
+import ec.com.avila.hiperion.emision.entities.Aseguradora;
 import ec.com.avila.hiperion.emision.entities.Catalogo;
 import ec.com.avila.hiperion.emision.entities.ClausulasAddAgro;
 import ec.com.avila.hiperion.emision.entities.Cliente;
@@ -58,6 +60,7 @@ import ec.com.avila.hiperion.enumeration.RamoEnum;
 import ec.com.avila.hiperion.servicio.AseguradoraService;
 import ec.com.avila.hiperion.servicio.CatalogoService;
 import ec.com.avila.hiperion.servicio.ClienteService;
+import ec.com.avila.hiperion.servicio.DetalleCatalogoService;
 import ec.com.avila.hiperion.servicio.RamoAgropecuarioService;
 import ec.com.avila.hiperion.servicio.RamoService;
 import ec.com.avila.hiperion.web.beans.RamoBean;
@@ -85,18 +88,16 @@ public class AgropecuarioBacking implements Serializable {
 
 	@EJB
 	private RamoService ramoService;
-	
 	@EJB
 	private ClienteService clienteService;
-
 	@EJB
 	private RamoAgropecuarioService ramoAgropecuarioService;
-
 	@EJB
 	private CatalogoService catalogoService;
-
 	@EJB
 	private AseguradoraService aseguradoraService;
+	@EJB
+	private DetalleCatalogoService detalleCatalogoService;
 
 	@ManagedProperty(value = "#{ramoBean}")
 	private RamoBean ramoBean;
@@ -109,8 +110,6 @@ public class AgropecuarioBacking implements Serializable {
 
 	@ManagedProperty(value = "#{polizaBean}")
 	private PolizaBean polizaBean;
-	
-
 
 	private List<DetalleAnexo> anexos;
 	private List<ClausulaAdicional> clausulasAdicionales;
@@ -126,6 +125,7 @@ public class AgropecuarioBacking implements Serializable {
 	private List<SelectItem> formasPagoItems;
 	private List<SelectItem> bancoItems;
 	private List<SelectItem> cuentaBancoItems;
+	private List<SelectItem> pagoFinanciadoItems;
 	private List<SelectItem> tarjetasCreditoItems;
 	private List<SelectItem> aseguradorasItems;
 	private List<TablaAmortizacionDTO> tablaAmortizacionList = new ArrayList<TablaAmortizacionDTO>();
@@ -135,20 +135,18 @@ public class AgropecuarioBacking implements Serializable {
 	private Boolean activarPanelPagoFinanciado = false;
 	private Boolean activarPanelPagoDebitoBancario = false;
 	private Boolean activarPanelPagoTarjetaCredito = false;
-	
+	private static List<AseguradoraDTO> aseguradorasDTO = new ArrayList<AseguradoraDTO>();
+
 	private Usuario usuario;
-	
-	
-	private Boolean activarDatosCliente = false;
-	
+
+	private boolean activarDatosCliente = false;
+	private boolean activarDatosAseguradora = false;
 
 	Logger log = Logger.getLogger(AgropecuarioBacking.class);
 
 	RamoAgropecuario agropecuario = new RamoAgropecuario();
 
 	@PostConstruct
-	
-	
 	public void inicializar() {
 		try {
 
@@ -226,7 +224,7 @@ public class AgropecuarioBacking implements Serializable {
 		}
 		return bancoItems;
 	}
-	
+
 	/**
 	 * @param bancoItems
 	 *            the bancoItems to set
@@ -235,8 +233,6 @@ public class AgropecuarioBacking implements Serializable {
 		this.bancoItems = bancoItems;
 	}
 
-		
-	
 	/**
 	 * @return the aseguradorasItems
 	 */
@@ -257,9 +253,31 @@ public class AgropecuarioBacking implements Serializable {
 
 		return aseguradorasItems;
 	}
-	
-	public List<SelectItem> buscarContactoAseguradora(String aseguradora){
-		List<SelectItem> contactosItems = new ArrayList<>();
+
+	/**
+	 * 
+	 * <b> Permite buscar los contactos de la aseguradora seleccionada </b>
+	 * <p>
+	 * [Author: Frankin Pozo B, Date: 29/02/2016]
+	 * </p>
+	 * 
+	 */
+	public void buscarContactoAseguradora() {
+
+		buscarContactoAseguradora(ramoAgropecuarioBean.getAseguradora());
+	}
+
+	/**
+	 * 
+	 * <b> Incluir aqui­ la descripcion del metodo. </b>
+	 * <p>
+	 * [Author: Avila Sistemas, Date: 16/03/2016]
+	 * </p>
+	 * 
+	 * @param aseguradora
+	 * @return
+	 */
+	public List<SelectItem> buscarContactoAseguradora(String aseguradora) {
 
 		try {
 
@@ -280,9 +298,52 @@ public class AgropecuarioBacking implements Serializable {
 		}
 		return contactosItems;
 	}
-	
-	
-	
+
+	/**
+	 * 
+	 * <b> Permite agresar una nueva aseguradora a la tabla. </b>
+	 * <p>
+	 * [Author: HIPERION, Date: 29/02/2016]
+	 * </p>
+	 * 
+	 */
+	public void addAseguradora() {
+
+		try {
+			Long idAseguradora = Long.parseLong(ramoAgropecuarioBean.getAseguradora());
+			Aseguradora aseguradoraNew = aseguradoraService.consultarAseguradoraByCodigo(ramoAgropecuarioBean.getAseguradora());
+
+			DetalleCatalogo detalleCatalogo = detalleCatalogoService.consultarDetalleByCatalogoAndDetalle(
+					HiperionMensajes.getInstancia().getInteger("ec.gob.avila.hiperion.recursos.catalogoAseguradoras"),
+					Integer.parseInt(idAseguradora.toString()));
+
+			AseguradoraDTO aseguradoraDTO = new AseguradoraDTO(detalleCatalogo.getDescDetCatalogo(), aseguradoraNew.getDirecion(),
+					aseguradoraNew.getEmailAseguradora(), aseguradoraNew.getRuc(), aseguradoraNew.getTelfConvencionalAseg(),
+					ramoAgropecuarioBean.getContactoAseguradora());
+
+			aseguradorasDTO.add(aseguradoraDTO);
+
+		} catch (HiperionException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	/**
+	 * 
+	 * <b> Permite eliminar una elemento de la tabla de aseguradoras. </b>
+	 * <p>
+	 * [Author: HIPERION, Date: 29/02/2016]
+	 * </p>
+	 * 
+	 * @param event
+	 */
+	public void onCancel(RowEditEvent event) {
+		FacesMessage msg = new FacesMessage("Aseguradora Eliminada");
+		FacesContext.getCurrentInstance().addMessage(null, msg);
+		aseguradorasDTO.remove((AseguradoraDTO) event.getObject());
+	}
+
 	/**
 	 * @return the contactosItems
 	 */
@@ -291,28 +352,16 @@ public class AgropecuarioBacking implements Serializable {
 	}
 
 	/**
-	 * @param contactosItems the contactosItems to set
+	 * @param contactosItems
+	 *            the contactosItems to set
 	 */
 	public void setContactosItems(List<SelectItem> contactosItems) {
 		this.contactosItems = contactosItems;
 	}
 
 	/**
-	 * 
-	 * <b>
-	 * Permite buscar los contactos de la aseguradora seleccionada
-	 * </b>
-	 * <p>[Author: Frankin Pozo B, Date: 29/02/2016]</p>
-	 *
-	 */
-	public void buscarContactoAseguradora() {
-
-		buscarContactoAseguradora(ramoAgropecuarioBean.getAseguradora());
-	}
-
-
-	/**
-	 * @param aseguradorasItems the aseguradorasItems to set
+	 * @param aseguradorasItems
+	 *            the aseguradorasItems to set
 	 */
 	public void setAseguradorasItems(List<SelectItem> aseguradorasItems) {
 		this.aseguradorasItems = aseguradorasItems;
@@ -326,7 +375,8 @@ public class AgropecuarioBacking implements Serializable {
 	}
 
 	/**
-	 * @param usuario the usuario to set
+	 * @param usuario
+	 *            the usuario to set
 	 */
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
@@ -369,7 +419,6 @@ public class AgropecuarioBacking implements Serializable {
 		return Math.round(numero * Math.pow(10, decimales)) / Math.pow(10, decimales);
 	}
 
-	
 	/**
 	 * @return the activarDatosCliente
 	 */
@@ -378,7 +427,8 @@ public class AgropecuarioBacking implements Serializable {
 	}
 
 	/**
-	 * @param activarDatosCliente the activarDatosCliente to set
+	 * @param activarDatosCliente
+	 *            the activarDatosCliente to set
 	 */
 	public void setActivarDatosCliente(Boolean activarDatosCliente) {
 		this.activarDatosCliente = activarDatosCliente;
@@ -681,45 +731,45 @@ public class AgropecuarioBacking implements Serializable {
 			throw new HiperionException(e);
 		}
 	}
+
 	/**
 	 * 
-	 * <b>
-	 * Incluir aqui­ la descripcion del metodo.
-	 * </b>
-	 * <p>[Author: Avila Sistemas, Date: 29/02/2016]</p>
-	 *
+	 * <b> Incluir aqui­ la descripcion del metodo. </b>
+	 * <p>
+	 * [Author: Avila Sistemas, Date: 29/02/2016]
+	 * </p>
+	 * 
 	 * @param identificacion
 	 * @return
 	 * @throws HiperionException
 	 */
-	 public Cliente buscarCliente(String identificacion)throws HiperionException{
-		 try {
-				Cliente cliente = new Cliente();
+	public Cliente buscarCliente(String identificacion) throws HiperionException {
+		try {
+			Cliente cliente = new Cliente();
 
-				if (!identificacion.equals("") && ValidatorCedula.getInstancia().validateCedula(identificacion)) {
-					cliente = clienteService.consultarClienteByIdentificacion(identificacion);
-					if (cliente == null) {
-						MessagesController.addWarn(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.warn.buscar"));
-					} else {
-
-						ramoAgropecuarioBean.setNombreCliente(cliente.getNombrePersona() + " " + cliente.getApellidoPaterno() + " "
-							+ cliente.getApellidoMaterno());
-					}
+			if (!identificacion.equals("") && ValidatorCedula.getInstancia().validateCedula(identificacion)) {
+				cliente = clienteService.consultarClienteByIdentificacion(identificacion);
+				if (cliente == null) {
+					MessagesController.addWarn(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.warn.buscar"));
 				} else {
-					MessagesController.addError(null, HiperionMensajes.getInstancia().getString("hiperion.mensage.error.identificacionNoValido"));
+
+					ramoAgropecuarioBean.setNombreCliente(cliente.getNombrePersona() + " " + cliente.getApellidoPaterno() + " "
+							+ cliente.getApellidoMaterno());
 				}
-
-				polizaBean.setCliente(cliente);
-				return cliente;
-
-			} catch (HiperionException e) {
-				log.error("Error al momento de buscar clientes", e);
-				throw new HiperionException(e);
+			} else {
+				MessagesController.addError(null, HiperionMensajes.getInstancia().getString("hiperion.mensage.error.identificacionNoValido"));
 			}
 
-		 
-	 }
-	
+			polizaBean.setCliente(cliente);
+			return cliente;
+
+		} catch (HiperionException e) {
+			log.error("Error al momento de buscar clientes", e);
+			throw new HiperionException(e);
+		}
+
+	}
+
 	/**
 	 * 
 	 * <b> IPermite buscar un cliente por madio del numero de identificacion. </b>
@@ -735,6 +785,7 @@ public class AgropecuarioBacking implements Serializable {
 
 		if (cliente != null) {
 			activarDatosCliente = true;
+			activarDatosAseguradora = true;
 		}
 	}
 
@@ -1237,11 +1288,74 @@ public class AgropecuarioBacking implements Serializable {
 	}
 
 	/**
+	 * @return the pagoFinanciadoItems
+	 */
+	public List<SelectItem> getPagoFinanciadoItems() throws HiperionException {
+		this.pagoFinanciadoItems = new ArrayList<SelectItem>();
+
+		for (int i = 1; i <= 12; i++) {
+
+			SelectItem pago = new SelectItem();
+			pago = new SelectItem(i, "" + i);
+			pagoFinanciadoItems.add(pago);
+
+		}
+
+		return pagoFinanciadoItems;
+	}
+
+	/**
+	 * @param pagoFinanciadoItems
+	 *            the pagoFinanciadoItems to set
+	 */
+	public void setPagoFinanciadoItems(List<SelectItem> pagoFinanciadoItems) {
+		this.pagoFinanciadoItems = pagoFinanciadoItems;
+	}
+	
+	/**
 	 * @param tarjetasCreditoItems
 	 *            the tarjetasCreditoItems to set
 	 */
 	public void setTarjetasCreditoItems(List<SelectItem> tarjetasCreditoItems) {
 		this.tarjetasCreditoItems = tarjetasCreditoItems;
+	}
+
+	/**
+	 * @return the aseguradorasDTO
+	 */
+	public List<AseguradoraDTO> getAseguradorasDTO() {
+		return aseguradorasDTO;
+	}
+
+	/**
+	 * @param aseguradorasDTO
+	 *            the aseguradorasDTO to set
+	 */
+	public static void setAseguradorasDTO(List<AseguradoraDTO> aseguradorasDTO) {
+		AgropecuarioBacking.aseguradorasDTO = aseguradorasDTO;
+	}
+
+	/**
+	 * @return the activarDatosAseguradora
+	 */
+	public boolean isActivarDatosAseguradora() {
+		return activarDatosAseguradora;
+	}
+
+	/**
+	 * @param activarDatosAseguradora
+	 *            the activarDatosAseguradora to set
+	 */
+	public void setActivarDatosAseguradora(boolean activarDatosAseguradora) {
+		this.activarDatosAseguradora = activarDatosAseguradora;
+	}
+
+	/**
+	 * @param activarDatosCliente
+	 *            the activarDatosCliente to set
+	 */
+	public void setActivarDatosCliente(boolean activarDatosCliente) {
+		this.activarDatosCliente = activarDatosCliente;
 	}
 
 }

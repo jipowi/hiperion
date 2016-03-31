@@ -1245,5 +1245,5 @@ public class AccidentesPersonalesBacking implements Serializable {
 	public void setActivarDatosAseguradora(Boolean activarDatosAseguradora) {
 		this.activarDatosAseguradora = activarDatosAseguradora;
 	}
-
+	
 }
