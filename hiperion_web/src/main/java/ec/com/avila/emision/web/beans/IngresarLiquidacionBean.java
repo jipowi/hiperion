@@ -6,7 +6,6 @@ package ec.com.avila.emision.web.beans;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.text.DecimalFormat;
 import java.util.Date;
 
 import javax.faces.bean.ManagedBean;
