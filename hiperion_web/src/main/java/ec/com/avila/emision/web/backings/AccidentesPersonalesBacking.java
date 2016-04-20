@@ -333,7 +333,7 @@ public class AccidentesPersonalesBacking implements Serializable {
 	 * 
 	 * <b> Permite activar los paneles segun la forma de pago que selecciono el usuario. </b>
 	 * <p>
-	 * [Author: Dario Vinueza, Date: Feb 3, 2014]
+	 * [Author: Paul Jimenez, Date: 17/03/2016]
 	 * </p>
 	 * 
 	 */
@@ -1245,5 +1245,5 @@ public class AccidentesPersonalesBacking implements Serializable {
 	public void setActivarDatosAseguradora(Boolean activarDatosAseguradora) {
 		this.activarDatosAseguradora = activarDatosAseguradora;
 	}
-	
+
 }
