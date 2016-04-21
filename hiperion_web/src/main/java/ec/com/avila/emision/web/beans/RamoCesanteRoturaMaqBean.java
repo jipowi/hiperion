@@ -64,15 +64,80 @@ public class RamoCesanteRoturaMaqBean implements Serializable {
 	private String clausula;
 	private BigDecimal valor;
 	private Integer numeroDias;
-	
-	//Deducibles
+
+	// Deducibles
 	private int numeroDiasDeducible;
 	private BigDecimal minPorcentajeValorAsegurado;
 	private BigDecimal minimo;
-	
+
+	// Cliente - Aseguradora
+	private String identificacion;
+	private String aseguradora;
+	private String nombreCliente;
+	private String contactoAseguradora;
 
 	// Getters and Setters
 	
+	
+
+	/**
+	 * @return the identificacion
+	 */
+	public String getIdentificacion() {
+		return identificacion;
+	}
+
+	/**
+	 * @return the contactoAseguradora
+	 */
+	public String getContactoAseguradora() {
+		return contactoAseguradora;
+	}
+
+	/**
+	 * @param contactoAseguradora the contactoAseguradora to set
+	 */
+	public void setContactoAseguradora(String contactoAseguradora) {
+		this.contactoAseguradora = contactoAseguradora;
+	}
+
+	/**
+	 * @return the aseguradora
+	 */
+	public String getAseguradora() {
+		return aseguradora;
+	}
+
+	/**
+	 * @param aseguradora the aseguradora to set
+	 */
+	public void setAseguradora(String aseguradora) {
+		this.aseguradora = aseguradora;
+	}
+
+	/**
+	 * @return the nombreCliente
+	 */
+	public String getNombreCliente() {
+		return nombreCliente;
+	}
+
+	/**
+	 * @param nombreCliente
+	 *            the nombreCliente to set
+	 */
+	public void setNombreCliente(String nombreCliente) {
+		this.nombreCliente = nombreCliente;
+	}
+
+	/**
+	 * @param identificacion
+	 *            the identificacion to set
+	 */
+	public void setIdentificacion(String identificacion) {
+		this.identificacion = identificacion;
+	}
+
 	/**
 	 * @return the utilidadBruta
 	 */
@@ -88,7 +153,8 @@ public class RamoCesanteRoturaMaqBean implements Serializable {
 	}
 
 	/**
-	 * @param numeroDiasDeducible the numeroDiasDeducible to set
+	 * @param numeroDiasDeducible
+	 *            the numeroDiasDeducible to set
 	 */
 	public void setNumeroDiasDeducible(int numeroDiasDeducible) {
 		this.numeroDiasDeducible = numeroDiasDeducible;
@@ -102,7 +168,8 @@ public class RamoCesanteRoturaMaqBean implements Serializable {
 	}
 
 	/**
-	 * @param minPorcentajeValorAsegurado the minPorcentajeValorAsegurado to set
+	 * @param minPorcentajeValorAsegurado
+	 *            the minPorcentajeValorAsegurado to set
 	 */
 	public void setMinPorcentajeValorAsegurado(BigDecimal minPorcentajeValorAsegurado) {
 		this.minPorcentajeValorAsegurado = minPorcentajeValorAsegurado;
@@ -116,7 +183,8 @@ public class RamoCesanteRoturaMaqBean implements Serializable {
 	}
 
 	/**
-	 * @param minimo the minimo to set
+	 * @param minimo
+	 *            the minimo to set
 	 */
 	public void setMinimo(BigDecimal minimo) {
 		this.minimo = minimo;
@@ -384,8 +452,6 @@ public class RamoCesanteRoturaMaqBean implements Serializable {
 	public void setNumeroDias(Integer numeroDias) {
 		this.numeroDias = numeroDias;
 	}
-	
-	
 
 	/**
 	 * @return the valorAsegurado
@@ -395,13 +461,12 @@ public class RamoCesanteRoturaMaqBean implements Serializable {
 	}
 
 	/**
-	 * @param valorAsegurado the valorAsegurado to set
+	 * @param valorAsegurado
+	 *            the valorAsegurado to set
 	 */
 	public void setValorAsegurado(BigDecimal valorAsegurado) {
 		this.valorAsegurado = valorAsegurado;
 	}
-
-	
 
 	/**
 	 * @return the objetolist
@@ -420,7 +485,8 @@ public class RamoCesanteRoturaMaqBean implements Serializable {
 	 * @return
 	 */
 	public String addAction() {
-		ObjetoAseguradoCesanteRoturaMaqDTO orderitem = new ObjetoAseguradoCesanteRoturaMaqDTO(this.numeroItem, this.ubicacionRiesgo, this.valorAsegurado, this.descripcionObjeto);
+		ObjetoAseguradoCesanteRoturaMaqDTO orderitem = new ObjetoAseguradoCesanteRoturaMaqDTO(this.numeroItem, this.ubicacionRiesgo,
+				this.valorAsegurado, this.descripcionObjeto);
 		objetoList.add(orderitem);
 
 		numeroItem = 0;

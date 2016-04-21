@@ -44,7 +44,73 @@ public class RamoRiesgosEspecialesBean implements Serializable {
 
 	private static final ArrayList<ObjetoAseguradoRiesgosDTO> orderList = new ArrayList<ObjetoAseguradoRiesgosDTO>();
 
+	// Cliente - Aseguradora
+	private String identificacion;
+	private String nombreCliente;
+	private String aseguradora;
+	private String contactoAseguradora;
+
 	// Getters and Setters
+	
+	
+	
+	
+	/**
+	 * @return the identificacion
+	 */
+	public String getIdentificacion() {
+		return identificacion;
+	}
+
+	/**
+	 * @return the contactoAseguradora
+	 */
+	public String getContactoAseguradora() {
+		return contactoAseguradora;
+	}
+
+	/**
+	 * @param contactoAseguradora the contactoAseguradora to set
+	 */
+	public void setContactoAseguradora(String contactoAseguradora) {
+		this.contactoAseguradora = contactoAseguradora;
+	}
+
+	/**
+	 * @return the aseguradora
+	 */
+	public String getAseguradora() {
+		return aseguradora;
+	}
+
+	/**
+	 * @param aseguradora the aseguradora to set
+	 */
+	public void setAseguradora(String aseguradora) {
+		this.aseguradora = aseguradora;
+	}
+
+	/**
+	 * @return the nombreCliente
+	 */
+	public String getNombreCliente() {
+		return nombreCliente;
+	}
+
+	/**
+	 * @param nombreCliente the nombreCliente to set
+	 */
+	public void setNombreCliente(String nombreCliente) {
+		this.nombreCliente = nombreCliente;
+	}
+
+	/**
+	 * @param identificacion
+	 *            the identificacion to set
+	 */
+	public void setIdentificacion(String identificacion) {
+		this.identificacion = identificacion;
+	}
 
 	/**
 	 * @return the tasa

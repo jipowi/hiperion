@@ -40,12 +40,80 @@ public class RamoGarantiaAduaneraBean implements Serializable {
 	private String cebertura;
 	private BigDecimal valor;
 
+	// Cliente - Aseguradora
+	private String identificacion;
+	private String aseguradora;
+	private String nombreCliente;
+	private String contactoAseguradora;
+
 	// Getters and Setters
+	
+	
+
 	/**
 	 * @return the objetoAsegurado
 	 */
 	public String getObjetoAsegurado() {
 		return objetoAsegurado;
+	}
+
+	/**
+	 * @return the contactoAseguradora
+	 */
+	public String getContactoAseguradora() {
+		return contactoAseguradora;
+	}
+
+	/**
+	 * @param contactoAseguradora the contactoAseguradora to set
+	 */
+	public void setContactoAseguradora(String contactoAseguradora) {
+		this.contactoAseguradora = contactoAseguradora;
+	}
+
+	/**
+	 * @return the aseguradora
+	 */
+	public String getAseguradora() {
+		return aseguradora;
+	}
+
+	/**
+	 * @param aseguradora
+	 *            the aseguradora to set
+	 */
+	public void setAseguradora(String aseguradora) {
+		this.aseguradora = aseguradora;
+	}
+
+	/**
+	 * @return the nombreCliente
+	 */
+	public String getNombreCliente() {
+		return nombreCliente;
+	}
+
+	/**
+	 * @param nombreCliente
+	 *            the nombreCliente to set
+	 */
+	public void setNombreCliente(String nombreCliente) {
+		this.nombreCliente = nombreCliente;
+	}
+
+	/**
+	 * @return the identificacion
+	 */
+	public String getIdentificacion() {
+		return identificacion;
+	}
+
+	/**
+	 * @param identificacion
+	 *            the identificacion to set
+	 */
+	public void setIdentificacion(String identificacion) {
+		this.identificacion = identificacion;
 	}
 
 	/**
@@ -101,8 +169,6 @@ public class RamoGarantiaAduaneraBean implements Serializable {
 		this.sector = sector;
 	}
 
-	
-
 	/**
 	 * @return the tipoContragarantia
 	 */
@@ -111,7 +177,8 @@ public class RamoGarantiaAduaneraBean implements Serializable {
 	}
 
 	/**
-	 * @param tipoContragarantia the tipoContragarantia to set
+	 * @param tipoContragarantia
+	 *            the tipoContragarantia to set
 	 */
 	public void setTipoContragarantia(String tipoContragarantia) {
 		this.tipoContragarantia = tipoContragarantia;
@@ -147,7 +214,6 @@ public class RamoGarantiaAduaneraBean implements Serializable {
 		this.filePolizaVigente = filePolizaVigente;
 	}
 
-	
 	/**
 	 * @return the cebertura
 	 */
