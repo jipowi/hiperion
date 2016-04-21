@@ -38,7 +38,6 @@ public class AseguradoraDaoImpl extends GenericDAOImpl<Aseguradora, Long> implem
 	public List<Aseguradora> consultarAseguradoras() throws HiperionException {
 
 		try {
-
 			return em.createNamedQuery("Aseguradora.findAll").getResultList();
 
 		} catch (Exception e) {
@@ -52,9 +51,9 @@ public class AseguradoraDaoImpl extends GenericDAOImpl<Aseguradora, Long> implem
 	 * 
 	 * @see ec.com.avila.hiperion.dao.AseguradoraDao#consultarAseguradora(java.lang.String, java.lang.Integer)
 	 */
-	@SuppressWarnings("unchecked")
+	
 	@Override
-	public List<Aseguradora> consultarAseguradora(String ruc, Integer aseguradora) throws HiperionException {
+	public Aseguradora consultarAseguradora(String ruc, Integer aseguradora) throws HiperionException {
 		Query query = null;
 
 		try {
@@ -75,9 +74,9 @@ public class AseguradoraDaoImpl extends GenericDAOImpl<Aseguradora, Long> implem
 				query = em.createNamedQuery("Aseguradora.findAll");
 			}
 
-			List<Aseguradora> aseguradoras = query.getResultList();
+			Aseguradora aseguradoraNew = (Aseguradora) query.getSingleResult();
 
-			return aseguradoras;
+			return aseguradoraNew;
 
 		} catch (Exception e) {
 			log.error("Error no se pudo consultar la aseguradora ", e);

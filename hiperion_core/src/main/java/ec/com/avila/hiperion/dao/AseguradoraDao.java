@@ -4,8 +4,6 @@
  */
 package ec.com.avila.hiperion.dao;
 
-import java.util.List;
-
 import javax.ejb.Local;
 
 import ec.com.avila.hiperion.comun.HiperionException;
@@ -33,7 +31,7 @@ public interface AseguradoraDao extends GenericDAO<Aseguradora, Long> {
 	 * @return
 	 * @throws HiperionException
 	 */
-	public List<Aseguradora> consultarAseguradora(String ruc, Integer aseguradora) throws HiperionException;
+	public Aseguradora consultarAseguradora(String ruc, Integer aseguradora) throws HiperionException;
 
 	/**
 	 * 

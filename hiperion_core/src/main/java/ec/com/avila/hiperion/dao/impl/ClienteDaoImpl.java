@@ -16,6 +16,7 @@ import org.apache.log4j.Logger;
 import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.dao.ClienteDao;
 import ec.com.avila.hiperion.emision.entities.Cliente;
+import ec.com.avila.hiperion.enumeration.EstadoEnum;
 
 /**
  * 
@@ -77,7 +78,8 @@ public class ClienteDaoImpl extends GenericDAOImpl<Cliente, Long> implements Cli
 	public List<Cliente> consultarClienteByAseguradora(String aseguradora) throws HiperionException {
 		Query query = em.createNamedQuery("Cliente.findByAseguradora");
 		query.setParameter("aseguradora", aseguradora);
-
+		query.setParameter("estado", EstadoEnum.A);
+		
 		List<Cliente> clientes = query.getResultList();
 
 		if (!clientes.isEmpty()) {
