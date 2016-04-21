@@ -18,6 +18,108 @@
 						</div>
 					</ui:define>
 					<ui:define name="ramoContent">
+						<h:form id="formCliente">
+							<p:outputPanel>
+								<p:messages id="messageTodoRiesgosEspeciales" showDetail="true" autoUpdate="true" closable="true" />
+							</p:outputPanel>
+							<!-- ESTADO POLIZA -->
+							<h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5">
+								<p:outputLabel for="console" value="Estado de la poliza: " styleClass="negrita" />
+								<p:selectOneRadio id="console" value="#{polizaBean.estadoPoliza}">
+									<f:selectItem itemLabel="COTIZADO" itemValue="COTIZADO" />
+									<f:selectItem itemLabel="EMITIDO" itemValue="EMITIDO" />
+								</p:selectOneRadio>
+							</h:panelGrid>
+							<!-- CLIENTE -->
+							<p:panel id="panelCliente">
+								<h:panelGrid columns="1">
+									<p:panel>
+										<f:facet name="header">
+											<h:outputText value="#{emision['cliente.buscar']}" />
+										</f:facet>
+										<h:panelGrid columns="2">
+											<h:panelGrid columns="2">
+												<p:outputLabel value="#{emision['cliente.identificacion']}:" styleClass="negrita" />
+												<p:inputText value="#{ramoRiesgosEspecialesBean.identificacion}" />
+											</h:panelGrid>
+											<p:commandLink title="Buscar clientes" action="#{riesgosEspecialesBacking.buscarCliente}" update="idDatosCliente, idDatosAseguradora">
+												<h:graphicImage name="search.png" library="img/icon" />
+											</p:commandLink>
+										</h:panelGrid>
+									</p:panel>
+									<!-- DATOS DEL CLIENTE -->
+									<p:panel id="idDatosCliente" visible="#{riesgosEspecialesBacking.activarDatosCliente}">
+										<f:facet name="header">
+											<h:outputText value="#{emision['cliente.titulo.datos']}" />
+										</f:facet>
+										<h:panelGrid columns="1">
+											<h:panelGrid columns="2" cellpadding="3">
+												<p:outputLabel value="#{emision['poliza.atributo.ejecutivo']}:" styleClass="negrita" />
+												<p:outputLabel value="#{riesgosEspecialesBacking.usuario.nombreUsuario}" style="color:green;" />
+
+												<p:outputLabel value="#{emision['cliente.nombre']}:" styleClass="negrita" />
+												<p:outputLabel value="#{ramoRiesgosEspecialesBean.nombreCliente}" />
+
+												<p:outputLabel value="#{emision['cliente.tabla.identificacion']}:" styleClass="negrita" />
+												<p:outputLabel value="#{ramoRiesgosEspecialesBean.identificacion}" />
+											</h:panelGrid>
+										</h:panelGrid>
+									</p:panel>
+									<!-- DATOS ASEGURADORA -->
+									<p:panel id="idDatosAseguradora" visible="#{riesgosEspecialesBacking.activarDatosAseguradora}">
+										<f:facet name="header">
+											<h:outputText value="#{emision['aseguradora.titulo.aseguradora']}" />
+										</f:facet>
+										<h:panelGrid columns="2" cellpadding="3">
+											<p:outputLabel value="#{emision['aseguradora.aseguradora']}" styleClass="negrita" />
+											<p:selectOneMenu value="#{ramoRiesgosEspecialesBean.aseguradora}" effect="drop">
+												<f:selectItem itemLabel="Seleccione Aseguradora" noSelectionOption="true" />
+												<f:selectItems value="#{riesgosEspecialesBacking.aseguradorasItems}" />
+												<p:ajax listener="#{riesgosEspecialesBacking.buscarContactoAseguradora}" update="contacto" />
+											</p:selectOneMenu>
+										</h:panelGrid>
+
+										<h:panelGrid columns="2" id="contacto" cellpadding="3">
+											<p:outputLabel value="#{emision['lbl.contactoAseguradora']}:" styleClass="negrita" />
+											<p:selectOneMenu value="#{ramoRiesgosEspecialesBean.contactoAseguradora}" effect="drop">
+												<f:selectItem itemLabel="Seleccione Contacto de la Aseguradora" noSelectionOption="true" />
+												<f:selectItems value="#{riesgosEspecialesBacking.contactosItems}" />
+											</p:selectOneMenu>
+										</h:panelGrid>
+
+										<div align="center">
+											<p:commandButton id="agregarAseguradora" icon="icon-add" value="#{emision['boton.agregar']}"
+												actionListener="#{riesgosEspecialesBacking.addAseguradora}" title="Agregar" update="tablaAseguradoras" />
+										</div>
+										<p:spacer height="30px;" />
+										<p:dataTable id="tablaAseguradoras" value="#{riesgosEspecialesBacking.aseguradorasDTO}" var="obj" editable="true">
+											<p:ajax event="rowEditCancel" listener="#{riesgosEspecialesBacking.onCancel}" update="@this" />
+											<p:column>
+												<f:facet name="header">
+													<h:outputText value="#{emision['aseguradora.tabla.nombre']}" />
+												</f:facet>
+												<h:outputText value="#{obj.nombreAseguradora}" />
+											</p:column>
+											<p:column>
+												<f:facet name="header">
+													<h:outputText value="#{emision['aseguradora.tabla.RUC']}" />
+												</f:facet>
+												<h:outputText value="#{obj.ruc}" />
+											</p:column>
+											<p:column>
+												<f:facet name="header">
+													<h:outputText value="#{emision['aseguradora.tabla.telefono']}" />
+												</f:facet>
+												<h:outputText value="#{obj.telefono}" />
+											</p:column>
+											<p:column headerText="Options" style="width:50px">
+												<p:rowEditor />
+											</p:column>
+										</p:dataTable>
+									</p:panel>
+								</h:panelGrid>
+							</p:panel>
+						</h:form>
 						<p:tabView effect="blind" effectDuration="normal">
 							<p:tab title="#{emision['riesgos.tab.principal']}">
 								<p:outputPanel>
@@ -25,9 +127,7 @@
 								</p:outputPanel>
 								<h:form id="formPrincipal">
 									<div align="center">
-
 										<h:panelGrid columns="1" id="ramoRiesgosEspeciales">
-
 											<p:spacer height="15px;" />
 											<p:panel>
 												<h:panelGrid columns="2" cellpadding="3">
@@ -65,6 +165,7 @@
 										</h:panelGrid>
 									</div>
 								</h:form>
+								Prueba
 
 							</p:tab>
 							<p:tab title="#{emision['riesgos.tab.objetoAsegurado']}">
