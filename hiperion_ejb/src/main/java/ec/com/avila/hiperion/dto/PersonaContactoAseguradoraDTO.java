@@ -41,6 +41,13 @@ public class PersonaContactoAseguradoraDTO {
 	}
 
 	/**
+	 * 
+	 */
+	public PersonaContactoAseguradoraDTO() {
+		super();
+	}
+
+	/**
 	 * @return the nombre
 	 */
 	public String getNombre() {

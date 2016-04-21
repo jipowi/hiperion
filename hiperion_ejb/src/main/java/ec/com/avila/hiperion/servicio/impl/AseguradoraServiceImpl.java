@@ -14,6 +14,7 @@ import ec.com.avila.hiperion.dao.AseguradoraDao;
 import ec.com.avila.hiperion.dao.ClienteDao;
 import ec.com.avila.hiperion.emision.entities.Aseguradora;
 import ec.com.avila.hiperion.emision.entities.Cliente;
+import ec.com.avila.hiperion.enumeration.EstadoEnum;
 import ec.com.avila.hiperion.servicio.AseguradoraService;
 
 /**
@@ -38,14 +39,32 @@ public class AseguradoraServiceImpl implements AseguradoraService {
 	 * @see ec.com.avila.hiperion.servicio.PolizaService#guardarAseguradora(ec.com.avila.hiperion.emision.entities.Aseguradora, java.util.List)
 	 */
 	@Override
-	public void guardarAseguradora(Aseguradora aseguradora, List<Cliente> contactos) throws HiperionException {
+	public void guardarAseguradora(Aseguradora aseguradora, List<Cliente> contactos, boolean save) throws HiperionException {
 
-		aseguradoraDao.persist(aseguradora);
+		if (save) {
+			aseguradoraDao.persist(aseguradora);
 
-		for (Cliente cliente : contactos) {
-			cliente.setAseguradora(aseguradora);
-			clienteDao.persist(cliente);
+			for (Cliente cliente : contactos) {
+				cliente.setAseguradora(aseguradora);
+				clienteDao.persist(cliente);
+			}
+		} else {
+			aseguradoraDao.update(aseguradora);
+			
+			List<Cliente> clientesDB = clienteDao.consultarClienteByAseguradora(aseguradora.getCodigoAseguradora());
+			// Eliminar registros
+			for (Cliente cliente : clientesDB) {
+				cliente.setAseguradora(aseguradora);
+				cliente.setEstado(EstadoEnum.I);
+				clienteDao.delete(cliente);
+			}
+			// Agregar registros actualizados
+			for (Cliente cliente : contactos) {
+				cliente.setAseguradora(aseguradora);
+				clienteDao.persist(cliente);
+			}
 		}
+
 	}
 
 	/*
@@ -54,7 +73,7 @@ public class AseguradoraServiceImpl implements AseguradoraService {
 	 * @see ec.com.avila.hiperion.servicio.AseguradoraService#consultarAseguradoraByRucAseg(java.lang.String, java.lang.Integer)
 	 */
 	@Override
-	public List<Aseguradora> consultarAseguradoraByRucAseg(String ruc, Integer aseguradora) throws HiperionException {
+	public Aseguradora consultarAseguradoraByRucAseg(String ruc, Integer aseguradora) throws HiperionException {
 		return aseguradoraDao.consultarAseguradora(ruc, aseguradora);
 	}
 

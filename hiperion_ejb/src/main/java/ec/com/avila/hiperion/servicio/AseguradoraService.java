@@ -34,7 +34,7 @@ public interface AseguradoraService {
 	 * @return
 	 * @throws HiperionException
 	 */
-	public List<Aseguradora> consultarAseguradoraByRucAseg(String ruc, Integer aseguradora) throws HiperionException;
+	public Aseguradora consultarAseguradoraByRucAseg(String ruc, Integer aseguradora) throws HiperionException;
 	
 	/**
 	 * 
@@ -47,7 +47,7 @@ public interface AseguradoraService {
 	 * @param contactos
 	 * @throws HiperionException
 	 */
-	public void guardarAseguradora(Aseguradora aseguradora, List<Cliente> contactos) throws HiperionException;
+	public void guardarAseguradora(Aseguradora aseguradora, List<Cliente> contactos, boolean save) throws HiperionException;
 	
 	/**
 	 * 
