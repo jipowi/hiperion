@@ -50,7 +50,7 @@ public class AseguradoraBean implements Serializable {
 	private String cargo;
 	private String email;
 	private String telefonoContacto;
-	private static ArrayList<PersonaContactoAseguradoraDTO> contactoList = new ArrayList<PersonaContactoAseguradoraDTO>();
+	private static List<PersonaContactoAseguradoraDTO> contactoList = new ArrayList<>();
 
 	// informacion del ramo de la aseguradora
 	private String nombreRamo;
@@ -228,7 +228,7 @@ public class AseguradoraBean implements Serializable {
 	/**
 	 * @return the contactoList
 	 */
-	public ArrayList<PersonaContactoAseguradoraDTO> getContactoList() {
+	public List<PersonaContactoAseguradoraDTO> getContactoList() {
 		return contactoList;
 	}
 
@@ -236,7 +236,7 @@ public class AseguradoraBean implements Serializable {
 	 * @param contactoList
 	 *            the contactoList to set
 	 */
-	public static void setContactoList(ArrayList<PersonaContactoAseguradoraDTO> contactoList) {
+	public void setContactoList(List<PersonaContactoAseguradoraDTO> contactoList) {
 		AseguradoraBean.contactoList = contactoList;
 	}
 
@@ -355,6 +355,7 @@ public class AseguradoraBean implements Serializable {
 	 * @return
 	 */
 	public String addContacto() {
+		contactoList = new ArrayList<PersonaContactoAseguradoraDTO>();
 		PersonaContactoAseguradoraDTO item = new PersonaContactoAseguradoraDTO(this.nombre, this.apellidoMaterno, this.apellidoPaterno,
 				this.identificacion, this.cargo, this.email, this.telefonoContacto);
 

@@ -24,7 +24,6 @@ import javax.sql.DataSource;
 
 import ec.com.avila.emision.web.beans.AseguradoraBean;
 import ec.com.avila.hiperion.comun.HiperionException;
-import ec.com.avila.hiperion.dto.AseguradoraDTO;
 import ec.com.avila.hiperion.dto.PersonaContactoAseguradoraDTO;
 import ec.com.avila.hiperion.emision.entities.Aseguradora;
 import ec.com.avila.hiperion.emision.entities.Catalogo;
@@ -115,59 +114,67 @@ public class AseguradoraBacking implements Serializable {
 	 * 
 	 * @throws HiperionException
 	 */
-	@SuppressWarnings("static-access")
 	public void guardarAseguradora() throws HiperionException {
 		Usuario usuario = usuarioBean.getSessionUser();
+		boolean save = false;
+		Aseguradora aseguradora = aseguradoraService.consultarAseguradoraByCodigo(aseguradoraBean.getCodAseguradora().toString());
 
-		Aseguradora aseguradora = new Aseguradora();
+		if (aseguradora == null) {
+			save = true;
+		}
 
 		aseguradora.setCodigoAseguradora(aseguradoraBean.getCodAseguradora().toString());
 		aseguradora.setDirecion(aseguradoraBean.getDireccion());
-		aseguradora.setEmailAseguradora(aseguradoraBean.getEmail());
+		aseguradora.setEmailAseguradora(aseguradoraBean.getMailAseguradora());
 		aseguradora.setRuc(aseguradoraBean.getRuc());
 		aseguradora.setTelfConvencionalAseg((aseguradoraBean.getTelefono()));
 		aseguradora.setIdUsuarioCreacion(usuario.getIdUsuario());
 		aseguradora.setFechaCreacion(new Date());
 		aseguradora.setEstado(EstadoEnum.A);
 
-		List<Cliente> contactosAseguradora = new ArrayList<>();
-		for (PersonaContactoAseguradoraDTO contactoAseguradora : aseguradoraBean.getContactoList()) {
+		if (aseguradoraBean.getContactoList() != null) {
+			List<Cliente> contactosAseguradora = new ArrayList<>();
 
-			Cliente persona = new Cliente();
+			for (PersonaContactoAseguradoraDTO contactoAseguradora : aseguradoraBean.getContactoList()) {
 
-			persona.setNombrePersona(contactoAseguradora.getNombre());
-			persona.setApellidoPaterno(contactoAseguradora.getApellidoPaterno());
-			persona.setApellidoMaterno(contactoAseguradora.getApellidoMaterno());
-			persona.setIdentificacionPersona(contactoAseguradora.getIdentificacion());
-			persona.setActividadProfesion(contactoAseguradora.getCargo());
-			persona.setIdUsuarioCreacion(usuario.getIdUsuario());
-			persona.setFechaCreacion(new Date());
-			persona.setEstado(EstadoEnum.A);
+				Cliente persona = new Cliente();
 
-			Contacto contactoTelefono = new Contacto();
-			contactoTelefono.setTipoContacto("TELEFONO");
-			contactoTelefono.setDescripcionContacto(contactoAseguradora.getTelefonoContacto());
+				persona.setNombrePersona(contactoAseguradora.getNombre());
+				persona.setApellidoPaterno(contactoAseguradora.getApellidoPaterno());
+				persona.setApellidoMaterno(contactoAseguradora.getApellidoMaterno());
+				persona.setIdentificacionPersona(contactoAseguradora.getIdentificacion());
+				persona.setActividadProfesion(contactoAseguradora.getCargo());
+				persona.setIdUsuarioCreacion(usuario.getIdUsuario());
+				persona.setFechaCreacion(new Date());
+				persona.setEstado(EstadoEnum.A);
 
-			Contacto contactoMail = new Contacto();
-			contactoMail.setTipoContacto("MAIL");
-			contactoMail.setDescripcionContacto(contactoAseguradora.getEmail());
+				Contacto contactoTelefono = new Contacto();
+				contactoTelefono.setTipoContacto("TELEFONO");
+				contactoTelefono.setDescripcionContacto(contactoAseguradora.getTelefonoContacto());
 
-			List<Contacto> contactos = new ArrayList<Contacto>();
+				Contacto contactoMail = new Contacto();
+				contactoMail.setTipoContacto("MAIL");
+				contactoMail.setDescripcionContacto(contactoAseguradora.getEmail());
 
-			contactos.add(contactoTelefono);
-			contactos.add(contactoMail);
+				List<Contacto> contactos = new ArrayList<Contacto>();
 
-			persona.setContactos(contactos);
+				contactos.add(contactoTelefono);
+				contactos.add(contactoMail);
 
-			contactosAseguradora.add(persona);
+				persona.setContactos(contactos);
+
+				contactosAseguradora.add(persona);
+			}
+
+			aseguradoraService.guardarAseguradora(aseguradora, contactosAseguradora, save);
+
+			MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.save.aseguradora"));
+			aseguradoraBean.setContactoList(null);
+			aseguradora = new Aseguradora();
+			contactosAseguradora = new ArrayList<>();
+		} else {
+			MessagesController.addWarn(null, HiperionMensajes.getInstancia().getString("Es necesario agregar contactos para la aseguradora"));
 		}
-
-		aseguradoraService.guardarAseguradora(aseguradora, contactosAseguradora);
-		
-		MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.save.aseguradora"));
-		aseguradoraBean.setContactoList(null);
-		aseguradora = new Aseguradora();
-		contactosAseguradora = new ArrayList<>();
 	}
 
 	/**
@@ -181,35 +188,36 @@ public class AseguradoraBacking implements Serializable {
 	 */
 	public void consultarAseguradoras() throws HiperionException {
 
-		List<Aseguradora> aseguradoras = aseguradoraService.consultarAseguradoraByRucAseg(aseguradoraBean.getRuc(),
-				aseguradoraBean.getCodAseguradora());
+		Aseguradora aseguradora = aseguradoraService.consultarAseguradoraByRucAseg(aseguradoraBean.getRuc(), aseguradoraBean.getCodAseguradora());
+		if (aseguradora != null) {
 
-		List<AseguradoraDTO> aseguradorasDTOList = new ArrayList<>();
+			aseguradoraBean.setRuc(aseguradora.getRuc());
+			aseguradoraBean.setDireccion(aseguradora.getDirecion());
+			aseguradoraBean.setMailAseguradora(aseguradora.getEmailAseguradora());
+			aseguradoraBean.setTelefono(aseguradora.getTelfConvencionalAseg());
 
-		if (!aseguradoras.isEmpty()) {
-
-			for (Aseguradora aseguradora : aseguradoras) {
-
-				aseguradoraBean.setActivarTabla(true);
-
-				AseguradoraDTO aseguradoraDTO = new AseguradoraDTO();
-
-				DetalleCatalogo detalleCatalogo = detalleCatalogoService.consultarDetalleByCatalogoAndDetalle(HiperionMensajes.getInstancia()
-						.getInteger("ec.gob.avila.hiperion.recursos.catalogoAseguradoras"), Integer.parseInt(aseguradora.getCodigoAseguradora()));
-
-				aseguradoraDTO.setNombreAseguradora(detalleCatalogo.getDescDetCatalogo());
-				aseguradoraDTO.setRuc(aseguradora.getRuc());
-				aseguradoraDTO.setTelefono(aseguradora.getTelfConvencionalAseg());
-
-				aseguradorasDTOList.add(aseguradoraDTO);
+			aseguradoraBean.setActivarNewAseguradora(true);
+			
+			//Obtener contactos de la aseguradora seleccionada
+			List<Cliente> clientesAseguradora = aseguradoraService.consultarClienteByAseguradora(aseguradora.getCodigoAseguradora());
+			List<PersonaContactoAseguradoraDTO> contactos = new ArrayList<>();
+			
+			for (Cliente cliente : clientesAseguradora) {
+				PersonaContactoAseguradoraDTO personaDTO = new PersonaContactoAseguradoraDTO();
+				
+				personaDTO.setNombre(cliente.getNombrePersona());
+				personaDTO.setIdentificacion(cliente.getIdentificacionPersona());
+				personaDTO.setApellidoPaterno(cliente.getApellidoPaterno());
+				personaDTO.setApellidoMaterno(cliente.getApellidoMaterno());
+				personaDTO.setCargo(cliente.getActividadProfesion());
+				
+				contactos.add(personaDTO);
 			}
-
-			aseguradoraBean.setAseguradorasList(aseguradorasDTOList);
-
+			
+			aseguradoraBean.setContactoList(contactos);
 		} else {
 			MessagesController.addWarn(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.war.aseguradora"));
-			aseguradorasDTOList = new ArrayList<>();
-			aseguradoraBean.setActivarTabla(true);
+			aseguradoraBean.setActivarNewAseguradora(false);
 		}
 	}
 
