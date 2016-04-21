@@ -13,29 +13,44 @@ import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
+import javax.faces.model.SelectItem;
 
 import org.apache.log4j.Logger;
+import org.primefaces.event.RowEditEvent;
 
+import ec.com.avila.emision.web.beans.PolizaBean;
 import ec.com.avila.emision.web.beans.RamoRiesgosEspecialesBean;
+import ec.com.avila.emision.web.validator.ValidatorCedula;
 import ec.com.avila.hiperion.comun.HiperionException;
+import ec.com.avila.hiperion.dto.AseguradoraDTO;
 import ec.com.avila.hiperion.dto.ClausulaAdicionalDTO;
 import ec.com.avila.hiperion.dto.CoberturaAdicionalDTO;
 import ec.com.avila.hiperion.dto.CoberturaDTO;
 import ec.com.avila.hiperion.dto.CondicionEspecialDTO;
 import ec.com.avila.hiperion.dto.CondicionParticularDTO;
+import ec.com.avila.hiperion.emision.entities.Aseguradora;
+import ec.com.avila.hiperion.emision.entities.Catalogo;
 import ec.com.avila.hiperion.emision.entities.ClausulasAddRiesgo;
+import ec.com.avila.hiperion.emision.entities.Cliente;
 import ec.com.avila.hiperion.emision.entities.CobertAddRiesgo;
 import ec.com.avila.hiperion.emision.entities.CobertRiesgo;
 import ec.com.avila.hiperion.emision.entities.CondEspRiesgo;
 import ec.com.avila.hiperion.emision.entities.CondPartRiesgo;
 import ec.com.avila.hiperion.emision.entities.DetalleAnexo;
+import ec.com.avila.hiperion.emision.entities.DetalleCatalogo;
 import ec.com.avila.hiperion.emision.entities.Ramo;
 import ec.com.avila.hiperion.emision.entities.RamoRiesgosEsp;
 import ec.com.avila.hiperion.emision.entities.Usuario;
 import ec.com.avila.hiperion.enumeration.EstadoEnum;
+import ec.com.avila.hiperion.servicio.AseguradoraService;
+import ec.com.avila.hiperion.servicio.CatalogoService;
+import ec.com.avila.hiperion.servicio.ClienteService;
+import ec.com.avila.hiperion.servicio.DetalleCatalogoService;
 import ec.com.avila.hiperion.servicio.RamoRiesgosEspecialesService;
 import ec.com.avila.hiperion.servicio.RamoService;
 import ec.com.avila.hiperion.web.beans.RamoBean;
@@ -65,11 +80,22 @@ public class RiesgosEspecialesBacking implements Serializable {
 	@ManagedProperty(value = "#{ramoRiesgosEspecialesBean}")
 	private RamoRiesgosEspecialesBean ramoRiesgosEspecialesBean;
 
+	@ManagedProperty(value = "#{polizaBean}")
+	private PolizaBean polizaBean;
+
 	@ManagedProperty(value = "#{usuarioBean}")
 	private UsuarioBean usuarioBean;
 
 	@EJB
 	private RamoService ramoService;
+	@EJB
+	private DetalleCatalogoService detalleCatalogoService;
+	@EJB
+	private AseguradoraService aseguradoraService;
+	@EJB
+	private CatalogoService catalogoService;
+	@EJB
+	private ClienteService clienteService;
 
 	@EJB
 	private RamoRiesgosEspecialesService ramoRiesgosEspecialesService;
@@ -87,7 +113,16 @@ public class RiesgosEspecialesBacking implements Serializable {
 	private List<CondicionEspecialDTO> condicionesEspecialesDTO = new ArrayList<>();
 	private List<CondPartRiesgo> condicionesParticulares;
 	private List<CondicionParticularDTO> condicionesParticularesDTO = new ArrayList<>();
+	private List<SelectItem> contactosItems = new ArrayList<>();
+	private static List<AseguradoraDTO> aseguradorasDTO = new ArrayList<AseguradoraDTO>();
 	private List<DetalleAnexo> anexos;
+	private List<SelectItem> aseguradorasItems;
+	private Boolean activarDatosCliente = false;
+	private Boolean activarDatosAseguradora = false;
+
+	private Boolean activarPanelPagoContado = false;
+	private Boolean activarPanelPagoFinanciado = false;
+	private Usuario usuario;
 
 	@PostConstruct
 	public void inicializar() {
@@ -105,6 +140,153 @@ public class RiesgosEspecialesBacking implements Serializable {
 		} catch (HiperionException e) {
 			e.printStackTrace();
 		}
+	}
+
+	/**
+	 * 
+	 * <b> Permite buscar un cliente por madio del numero de identificacion. </b>
+	 * <p>
+	 * [Author: Avila Sistemas, Date: 07/04/2016]
+	 * </p>
+	 * 
+	 * @throws HiperionException
+	 */
+	public void buscarCliente() throws HiperionException {
+
+		Cliente cliente = buscarCliente(ramoRiesgosEspecialesBean.getIdentificacion());
+
+		if (cliente != null) {
+			activarDatosCliente = true;
+			activarDatosAseguradora = true;
+		}
+	}
+
+	/**
+	 * 
+	 * <b> Permite buscar un cliente por medio de la cedula de identidad. </b>
+	 * <p>
+	 * [Author: Franklin Pozo B, Date: 07/04/2016]
+	 * </p>
+	 * 
+	 * @param identificacion
+	 * @return
+	 * @throws HiperionException
+	 */
+	public Cliente buscarCliente(String identificacion) throws HiperionException {
+		try {
+			Cliente cliente = new Cliente();
+
+			if (!identificacion.equals("") && ValidatorCedula.getInstancia().validateCedula(identificacion)) {
+				cliente = clienteService.consultarClienteByIdentificacion(identificacion);
+				if (cliente == null) {
+					MessagesController.addWarn(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.warn.buscar"));
+				} else {
+
+					ramoRiesgosEspecialesBean.setNombreCliente(cliente.getNombrePersona() + " " + cliente.getApellidoPaterno() + " "
+							+ cliente.getApellidoMaterno());
+				}
+			} else {
+				MessagesController.addError(null, HiperionMensajes.getInstancia().getString("hiperion.mensage.error.identificacionNoValido"));
+			}
+
+			polizaBean.setCliente(cliente);
+			return cliente;
+
+		} catch (HiperionException e) {
+			log.error("Error al momento de buscar clientes", e);
+			throw new HiperionException(e);
+		}
+	}
+
+	/**
+	 * 
+	 * <b> Permite buscar los contactos de la aseguradora seleccionada. </b>
+	 * <p>
+	 * [Author: Franklin Pozo B, Date: 11/04/2016]
+	 * </p>
+	 * 
+	 */
+	public void buscarContactoAseguradora() {
+
+		buscarContactoAseguradora(ramoRiesgosEspecialesBean.getAseguradora());
+	}
+
+	/**
+	 * 
+	 * <b> Permite buscar los contactos de una aseguradora. </b>
+	 * <p>
+	 * [Author: Franklin Pozo B, Date: 11/04/2016]
+	 * </p>
+	 * 
+	 * @param aseguradora
+	 * @return
+	 */
+	public List<SelectItem> buscarContactoAseguradora(String aseguradora) {
+
+		try {
+
+			List<Cliente> contactos = aseguradoraService.consultarClienteByAseguradora(aseguradora);
+
+			if (contactos == null) {
+				MessagesController.addWarn(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.war.contactosAseguradora"));
+			} else {
+				for (Cliente cliente : contactos) {
+					SelectItem selectItem = new SelectItem(cliente.getIdCliente(), cliente.getApellidoPaterno() + " " + cliente.getApellidoMaterno()
+							+ " " + cliente.getNombrePersona());
+					contactosItems.add(selectItem);
+				}
+			}
+
+		} catch (HiperionException e) {
+			e.printStackTrace();
+		}
+		return contactosItems;
+
+	}
+
+	/**
+	 * 
+	 * <b> Permite agresar una nueva aseguradora a la tabla. </b>
+	 * <p>
+	 * [Author: Framklin Pozo B, Date: 11/04/2016]
+	 * </p>
+	 * 
+	 */
+	public void addAseguradora() {
+
+		try {
+			Long idAseguradora = Long.parseLong(ramoRiesgosEspecialesBean.getAseguradora());
+			Aseguradora aseguradoraNew = aseguradoraService.consultarAseguradoraByCodigo(ramoRiesgosEspecialesBean.getAseguradora());
+
+			DetalleCatalogo detalleCatalogo = detalleCatalogoService.consultarDetalleByCatalogoAndDetalle(
+					HiperionMensajes.getInstancia().getInteger("ec.gob.avila.hiperion.recursos.catalogoAseguradoras"),
+					Integer.parseInt(idAseguradora.toString()));
+
+			AseguradoraDTO aseguradoraDTO = new AseguradoraDTO(detalleCatalogo.getDescDetCatalogo(), aseguradoraNew.getDirecion(),
+					aseguradoraNew.getEmailAseguradora(), aseguradoraNew.getRuc(), aseguradoraNew.getTelfConvencionalAseg(),
+					ramoRiesgosEspecialesBean.getContactoAseguradora());
+
+			aseguradorasDTO.add(aseguradoraDTO);
+
+		} catch (HiperionException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	/**
+	 * 
+	 * <b> Permite eliminar una elemento de la tabla de aseguradoras. </b>
+	 * <p>
+	 * [Author: Franklin Pozo B, Date: 11/04/2016]
+	 * </p>
+	 * 
+	 * @param event
+	 */
+	public void onCancel(RowEditEvent event) {
+		FacesMessage msg = new FacesMessage("Aseguradora Eliminada");
+		FacesContext.getCurrentInstance().addMessage(null, msg);
+		aseguradorasDTO.remove((AseguradoraDTO) event.getObject());
 	}
 
 	/**
@@ -440,5 +622,156 @@ public class RiesgosEspecialesBacking implements Serializable {
 	public void setCondicionesParticularesDTO(List<CondicionParticularDTO> condicionesParticularesDTO) {
 		this.condicionesParticularesDTO = condicionesParticularesDTO;
 	}
+
+	/**
+	 * @return the activarPanelPagoContado
+	 */
+	public Boolean getActivarPanelPagoContado() {
+		return activarPanelPagoContado;
+	}
+
+	/**
+	 * @param activarPanelPagoContado
+	 *            the activarPanelPagoContado to set
+	 */
+	public void setActivarPanelPagoContado(Boolean activarPanelPagoContado) {
+		this.activarPanelPagoContado = activarPanelPagoContado;
+	}
+
+	/**
+	 * @return the activarPanelPagoFinanciado
+	 */
+	public Boolean getActivarPanelPagoFinanciado() {
+		return activarPanelPagoFinanciado;
+	}
+
+	/**
+	 * @param activarPanelPagoFinanciado
+	 *            the activarPanelPagoFinanciado to set
+	 */
+	public void setActivarPanelPagoFinanciado(Boolean activarPanelPagoFinanciado) {
+		this.activarPanelPagoFinanciado = activarPanelPagoFinanciado;
+	}
+
+	/**
+	 * @return the activarDatosCliente
+	 */
+	public Boolean getActivarDatosCliente() {
+		return activarDatosCliente;
+	}
+
+	/**
+	 * @param activarDatosCliente
+	 *            the activarDatosCliente to set
+	 */
+	public void setActivarDatosCliente(Boolean activarDatosCliente) {
+		this.activarDatosCliente = activarDatosCliente;
+	}
+
+	/**
+	 * @return the activarDatosAseguradora
+	 */
+	public Boolean getActivarDatosAseguradora() {
+		return activarDatosAseguradora;
+	}
+
+	/**
+	 * @param activarDatosAseguradora
+	 *            the activarDatosAseguradora to set
+	 */
+	public void setActivarDatosAseguradora(Boolean activarDatosAseguradora) {
+		this.activarDatosAseguradora = activarDatosAseguradora;
+	}
+
+	/**
+	 * @return the usuario
+	 */
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	/**
+	 * @param usuario
+	 *            the usuario to set
+	 */
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
+	}
+
+	/**
+	 * @return the aseguradorasItems
+	 */
+	public List<SelectItem> getAseguradorasItems() throws HiperionException {
+
+		if (this.aseguradorasItems == null) {
+			this.aseguradorasItems = new ArrayList<SelectItem>();
+		}
+
+		Catalogo catalogo = catalogoService.consultarCatalogoById(HiperionMensajes.getInstancia().getLong(
+				"ec.gob.avila.hiperion.recursos.catalogoAseguradoras"));
+
+		List<DetalleCatalogo> aseguradoras = catalogo.getDetalleCatalogos();
+
+		for (DetalleCatalogo detalle : aseguradoras) {
+			SelectItem selectItem = new SelectItem(detalle.getCodDetalleCatalogo(), detalle.getDescDetCatalogo());
+			aseguradorasItems.add(selectItem);
+		}
+
+		return aseguradorasItems;
+	}
+
+	/**
+	 * @param aseguradorasItems
+	 *            the aseguradorasItems to set
+	 */
+	public void setAseguradorasItems(List<SelectItem> aseguradorasItems) {
+		this.aseguradorasItems = aseguradorasItems;
+	}
+
+	/**
+	 * @return the contactosItems
+	 */
+	public List<SelectItem> getContactosItems() {
+		return contactosItems;
+	}
+
+	/**
+	 * @param contactosItems
+	 *            the contactosItems to set
+	 */
+	public void setContactosItems(List<SelectItem> contactosItems) {
+		this.contactosItems = contactosItems;
+	}
+
+	/**
+	 * @return the aseguradorasDTO
+	 */
+	public List<AseguradoraDTO> getAseguradorasDTO() {
+		return aseguradorasDTO;
+	}
+
+	/**
+	 * @param aseguradorasDTO
+	 *            the aseguradorasDTO to set
+	 */
+	public static void setAseguradorasDTO(List<AseguradoraDTO> aseguradorasDTO) {
+		RiesgosEspecialesBacking.aseguradorasDTO = aseguradorasDTO;
+	}
+
+	/**
+	 * @return the polizaBean
+	 */
+	public PolizaBean getPolizaBean() {
+		return polizaBean;
+	}
+
+	/**
+	 * @param polizaBean the polizaBean to set
+	 */
+	public void setPolizaBean(PolizaBean polizaBean) {
+		this.polizaBean = polizaBean;
+	}
+	
+	
 
 }
