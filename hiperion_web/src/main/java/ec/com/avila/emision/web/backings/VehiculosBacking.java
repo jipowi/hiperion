@@ -122,6 +122,7 @@ public class VehiculosBacking implements Serializable {
 	private List<CondEspVh> condicionesEspeciales;
 	private List<CondicionEspecialDTO> condicionesEspecialesDTO = new ArrayList<>();
 	private List<SelectItem> contactosItems = new ArrayList<>();
+	private List<SelectItem> aseguradorasItems;
 
 	private Boolean activarMarcaAuto;
 	private Boolean activarMarcaPesado;
@@ -1001,5 +1002,34 @@ public class VehiculosBacking implements Serializable {
 	public void setContactosItems(List<SelectItem> contactosItems) {
 		this.contactosItems = contactosItems;
 	}
+
+	/**
+	 * @return the aseguradorasItems
+	 */
+	public List<SelectItem> getAseguradorasItems() throws HiperionException {
+		if (this.aseguradorasItems == null) {
+			this.aseguradorasItems = new ArrayList<SelectItem>();
+		}
+
+		Catalogo catalogo = catalogoService.consultarCatalogoById(HiperionMensajes.getInstancia().getLong(
+				"ec.gob.avila.hiperion.recursos.catalogoAseguradoras"));
+
+		List<DetalleCatalogo> aseguradoras = catalogo.getDetalleCatalogos();
+
+		for (DetalleCatalogo detalle : aseguradoras) {
+			SelectItem selectItem = new SelectItem(detalle.getCodDetalleCatalogo(), detalle.getDescDetCatalogo());
+			aseguradorasItems.add(selectItem);
+		}
+
+		return aseguradorasItems;	}
+
+	/**
+	 * @param aseguradorasItems the aseguradorasItems to set
+	 */
+	public void setAseguradorasItems(List<SelectItem> aseguradorasItems) {
+		this.aseguradorasItems = aseguradorasItems;
+	}
+	
+	
 
 }

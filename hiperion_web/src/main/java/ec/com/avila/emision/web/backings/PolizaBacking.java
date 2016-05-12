@@ -56,6 +56,7 @@ public class PolizaBacking implements Serializable {
 	private List<SelectItem> ramosItems;
 	private List<SelectItem> cuotaIniacialItems;
 	private List<SelectItem> pagoTarjetaItems;
+	private List<SelectItem> aseguradorasItems;
 
 	private List<SelectItem> tarjetaCreditoItems;
 
@@ -221,6 +222,21 @@ public class PolizaBacking implements Serializable {
 	 */
 	public void setTarjetaCreditoItems(List<SelectItem> tarjetaCreditoItems) {
 		this.tarjetaCreditoItems = tarjetaCreditoItems;
+	}
+
+	/**
+	 * @return the aseguradorasItems
+	 */
+	public List<SelectItem> getAseguradorasItems() {
+		return aseguradorasItems;
+	}
+
+	/**
+	 * @param aseguradorasItems
+	 *            the aseguradorasItems to set
+	 */
+	public void setAseguradorasItems(List<SelectItem> aseguradorasItems) {
+		this.aseguradorasItems = aseguradorasItems;
 	}
 
 }
