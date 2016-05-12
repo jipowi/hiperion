@@ -159,10 +159,10 @@
 															<p:inputText value="#{ramoAgropecuarioBean.valorAsegurado}" />
 
 															<p:outputLabel value="#{emision['agropecuario.detalle']}:" styleClass="negrita" />
-															<p:inputTextarea value="#{ramoAgropecuarioBean.detalle}" cols="50" rows="2" />
+															<p:inputTextarea value="#{ramoAgropecuarioBean.detalle}" cols="50" rows="2" style="text-transform:uppercase;"/>
 
 															<p:outputLabel value="#{emision['agropecuario.ubicacion']}:" styleClass="negrita" />
-															<p:inputTextarea value="#{ramoAgropecuarioBean.ubicacion}" cols="50" rows="2" />
+															<p:inputTextarea value="#{ramoAgropecuarioBean.ubicacion}" cols="50" rows="2" style="text-transform:uppercase;" />
 														</h:panelGrid>
 													</h:panelGrid>
 													<div align="center">
@@ -234,7 +234,7 @@
 														<p:inputText id="idItem" value="#{ramoAgropecuarioBean.item}" />
 
 														<h:outputLabel for="idNombre" value="#{emision['agropecuario.objeto.nombre']}:" styleClass="negrita" />
-														<p:inputText id="idNombre" value="#{ramoAgropecuarioBean.nombre}" />
+														<p:inputText id="idNombre" value="#{ramoAgropecuarioBean.nombre}" style="text-transform:uppercase;" />
 
 														<h:outputLabel for="idSexo" value="#{emision['agropecuario.objeto.sexo']}:" styleClass="negrita" />
 														<p:selectOneMenu id="idSexo" value="#{ramoAgropecuarioBean.sexo}" effect="drop">
@@ -243,10 +243,10 @@
 														</p:selectOneMenu>
 
 														<h:outputLabel value="#{emision['agropecuario.objeto.raza']}:" styleClass="negrita" />
-														<p:inputText value="#{ramoAgropecuarioBean.raza}" />
+														<p:inputText value="#{ramoAgropecuarioBean.raza}" style="text-transform:uppercase;"/>
 
 														<h:outputLabel for="idColor" value="#{emision['agropecuario.objeto.color']}:" styleClass="negrita" />
-														<p:inputText id="idColor" value="#{ramoAgropecuarioBean.color}" />
+														<p:inputText id="idColor" value="#{ramoAgropecuarioBean.color}" style="text-transform:uppercase;"/>
 
 														<h:outputLabel for="idEdad" value="#{emision['agropecuario.objeto.edad']}:" styleClass="negrita" />
 														<p:inputText id="idEdad" value="#{ramoAgropecuarioBean.edad}" />

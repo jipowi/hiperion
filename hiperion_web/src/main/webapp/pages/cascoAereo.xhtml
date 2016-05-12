@@ -130,7 +130,7 @@
 											<p:inputText id="item" value="#{ramoCascoAereoBean.item}" required="true" requiredMessage="#{emision['cascoAereo.item.msn']}" />
 											<p:outputLabel for="matricula" value="#{emision['cascoAereo.matricula']}" styleClass="negrita" />
 											<p:inputText id="matricula" value="#{ramoCascoAereoBean.matricula}" required="true"
-												requiredMessage="#{emision['cascoAereo.matricula.msn']}" />
+												requiredMessage="#{emision['cascoAereo.matricula.msn']}" style="text-transform:uppercase;" />
 
 											<p:outputLabel value="#{emision['cascoAereo.anioConstruccion']}" styleClass="negrita" />
 											<p:inputText value="#{ramoCascoAereoBean.anioConstruccion}" />
@@ -140,20 +140,21 @@
 											<p:outputLabel value="#{emision['cascoAereo.valorCasco']}" styleClass="negrita" />
 											<p:inputText value="#{ramoCascoAereoBean.valorCasco}" />
 											<p:outputLabel for="marca" value="#{emision['cascoAereo.marca']}" styleClass="negrita" />
-											<p:inputText id="marca" value="#{ramoCascoAereoBean.marca}" required="true" requiredMessage="#{emision['cascoAereo.marca.msn']}" />
+											<p:inputText id="marca" value="#{ramoCascoAereoBean.marca}" required="true" requiredMessage="#{emision['cascoAereo.marca.msn']}"
+												style="text-transform:uppercase;" />
 
 											<p:outputLabel value="#{emision['cascoAereo.tipoModelo']}" styleClass="negrita" />
-											<p:inputText value="#{ramoCascoAereoBean.tipoModelo}" />
+											<p:inputText value="#{ramoCascoAereoBean.tipoModelo}" style="text-transform:uppercase;" />
 											<p:outputLabel value="#{emision['cascoAereo.horasVoladas']}" styleClass="negrita" />
 											<p:inputText value="#{ramoCascoAereoBean.horasVoladas}" />
 
 											<p:outputLabel value="#{emision['cascoAereo.maximaCargaAutorizada']}" styleClass="negrita" />
-											<p:inputText value="#{ramoCascoAereoBean.maximaCarga}" />
+											<p:inputText value="#{ramoCascoAereoBean.maximaCarga}" style="text-transform:uppercase;" />
 											<p:outputLabel value="#{emision['cascoAereo.marcaMotor']}" styleClass="negrita" />
-											<p:inputText value="#{ramoCascoAereoBean.marcaMotor}" />
+											<p:inputText value="#{ramoCascoAereoBean.marcaMotor}" style="text-transform:uppercase;" />
 
 											<p:outputLabel value="#{emision['cascoAereo.tipoMotor']}" styleClass="negrita" />
-											<p:inputText value="#{ramoCascoAereoBean.tipoMotor}" />
+											<p:inputText value="#{ramoCascoAereoBean.tipoMotor}" style="text-transform:uppercase;" />
 											<p:outputLabel for="totalAsegurado" value="#{emision['cascoAereo.totalAsegurado']}" styleClass="negrita" />
 											<p:inputText id="totalAsegurado" value="#{ramoCascoAereoBean.totalAsegurado}" required="true"
 												requiredMessage="#{emision['cascoAereo.totalAsegurado.msn']}" />

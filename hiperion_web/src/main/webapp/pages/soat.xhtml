@@ -192,9 +192,10 @@
 
 													<p:outputLabel for="nombreAsegurado" value="#{emision['soat.nombreAsegurado']}" styleClass="negrita" />
 													<p:inputText id="nombreAsegurado" value="#{ramoSoatBean.asegurado}" required="true"
-														requiredMessage="#{emision['soat.nombreAsegurado.msn']}" />
+														requiredMessage="#{emision['soat.nombreAsegurado.msn']}" style="text-transform:uppercase;" />
 													<p:outputLabel for="color" value="#{emision['soat.color']}" styleClass="negrita" />
-													<p:inputText id="color" value="#{ramoSoatBean.color}" required="true" requiredMessage="#{emision['soat.color.msn']}" />
+													<p:inputText id="color" value="#{ramoSoatBean.color}" required="true" requiredMessage="#{emision['soat.color.msn']}"
+														style="text-transform:uppercase;" />
 
 													<p:outputLabel for="placa" value="#{emision['soat.placa']}" styleClass="negrita" />
 													<p:inputText id="placa" value="#{ramoSoatBean.placa}" required="true" requiredMessage="#{emision['soat.placa.msn']}" />

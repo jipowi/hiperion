@@ -88,8 +88,8 @@
 										</h:panelGrid>
 
 										<div align="center">
-											<p:commandButton id="agregarAseguradora" icon="icon-add" value="#{emision['boton.agregar']}"
-												actionListener="#{vidaBacking.addAseguradora}" title="Agregar" update="tablaAseguradoras" />
+											<p:commandButton id="agregarAseguradora" icon="icon-add" value="#{emision['boton.agregar']}" actionListener="#{vidaBacking.addAseguradora}"
+												title="Agregar" update="tablaAseguradoras" />
 										</div>
 										<p:spacer height="30px;" />
 										<p:dataTable id="tablaAseguradoras" value="#{vidaBacking.aseguradorasDTO}" var="obj" editable="true">

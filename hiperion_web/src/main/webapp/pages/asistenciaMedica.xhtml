@@ -524,7 +524,7 @@
 											<p:growl id="messages" showDetail="true" />
 											<h:panelGrid columns="2">
 												<p:outputLabel value="#{emision['asm.plan.nombre']}" styleClass="negrita" />
-												<p:inputText value="#{ramoAsistenciaMedicaBean.nomPlan}" />
+												<p:inputText value="#{ramoAsistenciaMedicaBean.nomPlan}" style="text-transform:uppercase;" />
 
 												<p:outputLabel value="#{emision['asm.plan.valorPlan']}" styleClass="negrita" />
 												<p:inputText value="#{ramoAsistenciaMedicaBean.valorPlan}" />
@@ -590,13 +590,13 @@
 												<p:inputText value="#{ramoAsistenciaMedicaBean.numGrupo}" />
 
 												<p:outputLabel value="#{emision['ap.grupo.nombreGrupo']}" styleClass="negrita" />
-												<p:inputText value="#{ramoAsistenciaMedicaBean.nomGrupo}" />
+												<p:inputText value="#{ramoAsistenciaMedicaBean.nomGrupo}" style="text-transform:uppercase;" />
 
 												<p:outputLabel value="#{emision['ap.grupo.numeroPersonas']}" styleClass="negrita" />
 												<p:inputText value="#{ramoAsistenciaMedicaBean.numPersonas}" />
 
 												<p:outputLabel value="#{emision['ap.grupo.actividad']}" styleClass="negrita" />
-												<p:inputText value="#{ramoAsistenciaMedicaBean.actividad}" />
+												<p:inputText value="#{ramoAsistenciaMedicaBean.actividad}" style="text-transform:uppercase;" />
 
 												<p:outputLabel value="#{emision['ap.grupo.valorGrupo']}" styleClass="negrita" />
 												<p:inputText value="#{ramoAsistenciaMedicaBean.valorGrupoAsm}" />
@@ -733,7 +733,7 @@
 													<p:growl id="messagesTitular" showDetail="true" />
 													<h:panelGrid columns="2">
 														<h:outputLabel value="#{emision['asm.modalidad.nombre']}" styleClass="negrita" />
-														<p:inputText value="#{ramoAsistenciaMedicaBean.nombreTitular}" />
+														<p:inputText value="#{ramoAsistenciaMedicaBean.nombreTitular}" style="text-transform:uppercase;" />
 
 														<h:outputLabel value="#{emision['asm.modalidad.fechaNacimiento']}" styleClass="negrita" />
 														<p:calendar value="#{ramoAsistenciaMedicaBean.fechaNacimientoTitular}" pattern="dd/MM/yyyy HH:mm" locale="es" navigator="true" />
@@ -864,7 +864,7 @@
 													<p:growl id="messagesDependiente" showDetail="true" />
 													<p:panelGrid columns="2">
 														<h:outputLabel value="#{emision['asm.modalidad.nombre']}" styleClass="negrita" />
-														<p:inputText value="#{ramoAsistenciaMedicaBean.nombreDependiente}" />
+														<p:inputText value="#{ramoAsistenciaMedicaBean.nombreDependiente}" style="text-transform:uppercase;"/>
 
 														<h:outputLabel value="#{emision['asm.modalidad.fechaNacimiento']}" styleClass="negrita" />
 														<p:calendar value="#{ramoAsistenciaMedicaBean.fechaNacimientoDependiente}" pattern="dd/MM/yyyy HH:mm" locale="es" navigator="true" />
@@ -956,7 +956,7 @@
 													<p:growl id="messagesFamilia" showDetail="true" />
 													<p:panelGrid columns="2">
 														<h:outputLabel value="#{emision['asm.modalidad.nombre']}" styleClass="negrita" />
-														<p:inputText value="#{ramoAsistenciaMedicaBean.nombreFamilia}" />
+														<p:inputText value="#{ramoAsistenciaMedicaBean.nombreFamilia}" style="text-transform:uppercase;" />
 
 														<h:outputLabel value="#{emision['asm.modalidad.fechaNacimiento']}" styleClass="negrita" />
 														<p:calendar value="#{ramoAsistenciaMedicaBean.fechaNacimientoFamilia}" pattern="dd/MM/yyyy HH:mm" locale="es" navigator="true" />

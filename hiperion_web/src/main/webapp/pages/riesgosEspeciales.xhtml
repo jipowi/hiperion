@@ -138,7 +138,7 @@
 													<p:inputText value="#{ramoRiesgosEspecialesBean.deducible}" />
 
 													<p:outputLabel value="#{emision['riesgos.condicionesImportantes']}" styleClass="negrita" />
-													<p:inputTextarea value="#{ramoRiesgosEspecialesBean.condicionesImp}" cols="50" rows="2" />
+													<p:inputTextarea value="#{ramoRiesgosEspecialesBean.condicionesImp}" cols="50" rows="2" style="text-transform:uppercase;" />
 												</h:panelGrid>
 												<h:panelGrid columns="1" cellpadding="3">
 													<p:fileUpload fileLimit="1" />
@@ -179,10 +179,10 @@
 											<p:growl id="messages" showDetail="true" />
 											<p:panelGrid columns="2">
 												<h:outputLabel value="#{emision['riesgos.objeto.descripcion']}" styleClass="negrita" />
-												<p:inputText value="#{ramoRiesgosEspecialesBean.descripcion}" />
+												<p:inputText value="#{ramoRiesgosEspecialesBean.descripcion}" style="text-transform:uppercase;" />
 
 												<h:outputLabel value="#{emision['riesgos.objeto.detalle']}" styleClass="negrita" />
-												<p:inputText value="#{ramoRiesgosEspecialesBean.detalle}" />
+												<p:inputText value="#{ramoRiesgosEspecialesBean.detalle}" style="text-transform:uppercase;" />
 											</p:panelGrid>
 											<f:facet name="footer">
 												<div align="center">

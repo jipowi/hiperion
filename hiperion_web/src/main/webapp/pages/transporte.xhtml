@@ -135,7 +135,7 @@
 												</h:panelGrid>
 												<h:panelGrid columns="1" cellpadding="3">
 													<p:outputLabel value="#{emision['emision.ramo.textarea.condiciones']}" styleClass="negrita" />
-													<p:inputTextarea value="#{ramoTransporteBean.condImportantes}" cols="50" rows="2" />
+													<p:inputTextarea value="#{ramoTransporteBean.condImportantes}" cols="50" rows="2" style="text-transform:uppercase;" />
 												</h:panelGrid>
 												<h:panelGrid columns="2">
 													<h:outputLabel value="#{emision['emision.deducibles']}" />
@@ -557,10 +557,10 @@
 												</p:selectOneMenu>
 
 												<h:outputLabel value="#{emision['emision.ramo.transporte.objeto.trayectoDesde']}" styleClass="negrita" />
-												<p:inputText value="#{ramoTransporteBean.trayectoDesde}" />
+												<p:inputText value="#{ramoTransporteBean.trayectoDesde}" style="text-transform:uppercase;" />
 
 												<h:outputLabel value="#{emision['emision.ramo.transporte.objeto.trayectoHasta']}" styleClass="negrita" />
-												<p:inputText value="#{ramoTransporteBean.trayectoHasta}" />
+												<p:inputText value="#{ramoTransporteBean.trayectoHasta}" style="text-transform:uppercase;" />
 
 												<h:outputLabel value="#{emision['emision.ramo.transporte.objeto.tipoEmbalaje']}" styleClass="negrita" />
 												<p:inputText value="#{ramoTransporteBean.tipoEmbalaje}" />

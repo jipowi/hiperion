@@ -127,7 +127,7 @@
 										<h:panelGrid columns="6" cellpadding="3">
 											<p:outputLabel for="nombreNave" value="#{emision['cascoMaritimo.nombreNave']}" styleClass="negrita" />
 											<p:inputText id="nombreNave" value="#{ramoCascoMaritimoBean.nombreNave}" required="true"
-												requiredMessage="#{emision['cascoMaritimo.nombreNave.msn']}" />
+												requiredMessage="#{emision['cascoMaritimo.nombreNave.msn']}" style="text-transform:uppercase;" />
 											<p:outputLabel value="#{emision['cascoMaritimo.registroNumero']}" styleClass="negrita" />
 											<p:inputText value="#{ramoCascoMaritimoBean.numeroRegistro}" />
 											<p:outputLabel value="#{emision['cascoMaritimo.tonelajeBruto']}" styleClass="negrita" />
@@ -173,7 +173,7 @@
 											<p:outputLabel value="#{emision['cascoMaritimo.manga']}" styleClass="negrita" />
 											<p:inputText value="#{ramoCascoMaritimoBean.manga}" />
 											<p:outputLabel value="#{emision['cascoMaritimo.marcaMotor']}" styleClass="negrita" />
-											<p:inputText value="#{ramoCascoMaritimoBean.marcaMotor}" />
+											<p:inputText value="#{ramoCascoMaritimoBean.marcaMotor}" style="text-transform:uppercase;" />
 											<p:outputLabel value="#{emision['cascoMaritimo.avaluo']}" styleClass="negrita" />
 											<p:inputText value="#{ramoCascoMaritimoBean.avaluo}" />
 											<p:outputLabel for="valorCasco" value="#{emision['cascoMaritimo.valorCasco']}" styleClass="negrita" />
@@ -185,7 +185,7 @@
 											<p:outputLabel value="#{emision['cascoMaritimo.valorRedes']}" styleClass="negrita" />
 											<p:inputText value="#{ramoCascoMaritimoBean.valorRedes}" />
 											<p:outputLabel value="#{emision['cascoMaritimo.otros']}" styleClass="negrita" />
-											<p:inputText value="#{ramoCascoMaritimoBean.otros}" />
+											<p:inputText value="#{ramoCascoMaritimoBean.otros}" style="text-transform:uppercase;" />
 
 											<p:outputLabel value="#{emision['cascoMaritimo.total']}" styleClass="negrita" />
 											<p:inputText value="#{ramoCascoMaritimoBean.total}" />
