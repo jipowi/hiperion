@@ -1224,6 +1224,14 @@ public class AccidentesPersonalesBacking implements Serializable {
 	}
 
 	/**
+	 * @param activarDatosAseguradora
+	 *            the activarDatosAseguradora to set
+	 */
+	public void setActivarDatosAseguradora(Boolean activarDatosAseguradora) {
+		this.activarDatosAseguradora = activarDatosAseguradora;
+	}
+
+	/**
 	 * @return the aseguradorasDTO
 	 */
 	public List<AseguradoraDTO> getAseguradorasDTO() {
@@ -1236,14 +1244,6 @@ public class AccidentesPersonalesBacking implements Serializable {
 	 */
 	public static void setAseguradorasDTO(List<AseguradoraDTO> aseguradorasDTO) {
 		AccidentesPersonalesBacking.aseguradorasDTO = aseguradorasDTO;
-	}
-
-	/**
-	 * @param activarDatosAseguradora
-	 *            the activarDatosAseguradora to set
-	 */
-	public void setActivarDatosAseguradora(Boolean activarDatosAseguradora) {
-		this.activarDatosAseguradora = activarDatosAseguradora;
 	}
 
 }
