@@ -521,8 +521,6 @@ public class BuenUsoAnticipoBacking implements Serializable {
 	 */
 	public List<SelectItem> buscarContactoAseguradora(String aseguradora) {
 
-		List<SelectItem> contactosItems = new ArrayList<>();
-
 		try {
 
 			List<Cliente> contactos = aseguradoraService.consultarClienteByAseguradora(aseguradora);
@@ -543,14 +541,14 @@ public class BuenUsoAnticipoBacking implements Serializable {
 		return contactosItems;
 
 	}
-	
+
 	/**
 	 * 
-	 * <b>
-	 * Permite agresar una nueva aseguradora a la tabla
-	 * </b>
-	 * <p>[Author: Franklin Pozo, Date: 17/03/2016]</p>
-	 *
+	 * <b> Permite agresar una nueva aseguradora a la tabla </b>
+	 * <p>
+	 * [Author: Franklin Pozo, Date: 17/03/2016]
+	 * </p>
+	 * 
 	 */
 	public void addAseguradora() {
 
@@ -818,21 +816,21 @@ public class BuenUsoAnticipoBacking implements Serializable {
 		}
 		return formasPagoItems;
 	}
-	
+
 	public void obtenerDias() {
 		long dias = FechasUtil.getInstancia().restarFechas(polizaBean.getVigenciaDesde(), polizaBean.getVigenciaHasta());
 
 		polizaBean.setDiasCobertura(Integer.parseInt(Long.toString(dias)));
 
 	}
-	
+
 	/**
 	 * 
-	 * <b>
-	 * Permite editar un registro de la tabla de amortizacion
-	 * </b>
-	 * <p>[Author: Franklin Pozo B, Date: 14/03/2016]</p>
-	 *
+	 * <b> Permite editar un registro de la tabla de amortizacion </b>
+	 * <p>
+	 * [Author: Franklin Pozo B, Date: 14/03/2016]
+	 * </p>
+	 * 
 	 * @param event
 	 */
 	public void onEditTable(RowEditEvent event) {
@@ -842,11 +840,11 @@ public class BuenUsoAnticipoBacking implements Serializable {
 
 	/**
 	 * 
-	 * <b>
-	 *Permite generar una tabla de amortizacion con valores ingresados en la pantalla.
-	 * </b>
-	 * <p>[Author: Avila Sistemas, Date: 14/03/2016]</p>
-	 *
+	 * <b> Permite generar una tabla de amortizacion con valores ingresados en la pantalla. </b>
+	 * <p>
+	 * [Author: Avila Sistemas, Date: 14/03/2016]
+	 * </p>
+	 * 
 	 */
 	public void generarTablaAmortizacion() {
 
@@ -879,13 +877,14 @@ public class BuenUsoAnticipoBacking implements Serializable {
 
 		polizaBean.setFinanciamientos(tablaAmortizacionList);
 	}
+
 	/**
 	 * 
-	 * <b>
-	 * Permite obtener el numero de dias de cobertura
-	 * </b>
-	 * <p>[Author: Franklin Pozo B, Date: 14/03/2016]</p>
-	 *
+	 * <b> Permite obtener el numero de dias de cobertura </b>
+	 * <p>
+	 * [Author: Franklin Pozo B, Date: 14/03/2016]
+	 * </p>
+	 * 
 	 * @param numero
 	 * @param decimales
 	 * @return

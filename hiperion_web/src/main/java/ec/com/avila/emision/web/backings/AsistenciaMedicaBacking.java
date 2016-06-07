@@ -149,13 +149,14 @@ public class AsistenciaMedicaBacking implements Serializable {
 			e.printStackTrace();
 		}
 	}
+
 	/**
 	 * 
-	 * <b>
-	 * Incluir aqui­ la descripcion del metodo.
-	 * </b>
-	 * <p>[Author: Avila Sistemas, Date: 08/03/2016]</p>
-	 *
+	 * <b> Incluir aqui­ la descripcion del metodo. </b>
+	 * <p>
+	 * [Author: Avila Sistemas, Date: 08/03/2016]
+	 * </p>
+	 * 
 	 * @param identificacion
 	 * @return
 	 * @throws HiperionException
@@ -569,8 +570,6 @@ public class AsistenciaMedicaBacking implements Serializable {
 	 */
 	public List<SelectItem> buscarContactoAseguradora(String aseguradora) {
 
-		List<SelectItem> contactosItems = new ArrayList<>();
-
 		try {
 
 			List<Cliente> contactos = aseguradoraService.consultarClienteByAseguradora(aseguradora);
@@ -658,8 +657,6 @@ public class AsistenciaMedicaBacking implements Serializable {
 		}
 		return formasPagoItems;
 	}
-	
-	
 
 	/**
 	 * @return the activarPanelPagoContado
@@ -669,13 +666,12 @@ public class AsistenciaMedicaBacking implements Serializable {
 	}
 
 	/**
-	 * @param activarPanelPagoContado the activarPanelPagoContado to set
+	 * @param activarPanelPagoContado
+	 *            the activarPanelPagoContado to set
 	 */
 	public void setActivarPanelPagoContado(Boolean activarPanelPagoContado) {
 		this.activarPanelPagoContado = activarPanelPagoContado;
 	}
-	
-	
 
 	/**
 	 * @return the bancoItems
@@ -685,7 +681,8 @@ public class AsistenciaMedicaBacking implements Serializable {
 	}
 
 	/**
-	 * @param bancoItems the bancoItems to set
+	 * @param bancoItems
+	 *            the bancoItems to set
 	 */
 	public void setBancoItems(List<SelectItem> bancoItems) {
 		this.bancoItems = bancoItems;
@@ -699,13 +696,12 @@ public class AsistenciaMedicaBacking implements Serializable {
 	}
 
 	/**
-	 * @param activarPanelPagoFinanciado the activarPanelPagoFinanciado to set
+	 * @param activarPanelPagoFinanciado
+	 *            the activarPanelPagoFinanciado to set
 	 */
 	public void setActivarPanelPagoFinanciado(Boolean activarPanelPagoFinanciado) {
 		this.activarPanelPagoFinanciado = activarPanelPagoFinanciado;
 	}
-	
-	
 
 	/**
 	 * @return the activarPanelPagoTarjetaCredito
@@ -715,7 +711,8 @@ public class AsistenciaMedicaBacking implements Serializable {
 	}
 
 	/**
-	 * @param activarPanelPagoTarjetaCredito the activarPanelPagoTarjetaCredito to set
+	 * @param activarPanelPagoTarjetaCredito
+	 *            the activarPanelPagoTarjetaCredito to set
 	 */
 	public void setActivarPanelPagoTarjetaCredito(Boolean activarPanelPagoTarjetaCredito) {
 		this.activarPanelPagoTarjetaCredito = activarPanelPagoTarjetaCredito;
@@ -729,13 +726,12 @@ public class AsistenciaMedicaBacking implements Serializable {
 	}
 
 	/**
-	 * @param activarPanelPagoDebitoBancario the activarPanelPagoDebitoBancario to set
+	 * @param activarPanelPagoDebitoBancario
+	 *            the activarPanelPagoDebitoBancario to set
 	 */
 	public void setActivarPanelPagoDebitoBancario(Boolean activarPanelPagoDebitoBancario) {
 		this.activarPanelPagoDebitoBancario = activarPanelPagoDebitoBancario;
 	}
-	
-	
 
 	/**
 	 * @return the pagoFinanciadoItems
@@ -745,13 +741,12 @@ public class AsistenciaMedicaBacking implements Serializable {
 	}
 
 	/**
-	 * @param pagoFinanciadoItems the pagoFinanciadoItems to set
+	 * @param pagoFinanciadoItems
+	 *            the pagoFinanciadoItems to set
 	 */
 	public void setPagoFinanciadoItems(List<SelectItem> pagoFinanciadoItems) {
 		this.pagoFinanciadoItems = pagoFinanciadoItems;
 	}
-	
-	
 
 	/**
 	 * @return
@@ -973,8 +968,6 @@ public class AsistenciaMedicaBacking implements Serializable {
 	public List<SelectItem> subList(int fromIndex, int toIndex) {
 		return bancoItems.subList(fromIndex, toIndex);
 	}
-	
-	
 
 	/**
 	 * @return the cuentaBancoItems
@@ -984,7 +977,8 @@ public class AsistenciaMedicaBacking implements Serializable {
 	}
 
 	/**
-	 * @param cuentaBancoItems the cuentaBancoItems to set
+	 * @param cuentaBancoItems
+	 *            the cuentaBancoItems to set
 	 */
 	public void setCuentaBancoItems(List<SelectItem> cuentaBancoItems) {
 		this.cuentaBancoItems = cuentaBancoItems;
@@ -992,11 +986,11 @@ public class AsistenciaMedicaBacking implements Serializable {
 
 	/**
 	 * 
-	 * <b>
-	 * Permite activar los paneles segun la forma de pago que selecciono el usuario.
-	 * </b>
-	 * <p>[Author: Avila Sistemas, Date: 08/03/2016]</p>
-	 *
+	 * <b> Permite activar los paneles segun la forma de pago que selecciono el usuario. </b>
+	 * <p>
+	 * [Author: Avila Sistemas, Date: 08/03/2016]
+	 * </p>
+	 * 
 	 */
 	public void selectFormaDePago() {
 		if (polizaBean.getIdFormaPago() == 1) {
@@ -1013,13 +1007,14 @@ public class AsistenciaMedicaBacking implements Serializable {
 	public double redondear(double numero, int decimales) {
 		return Math.round(numero * Math.pow(10, decimales)) / Math.pow(10, decimales);
 	}
+
 	/**
 	 * 
-	 * <b>
-	 * Permite obtener el numero de dias de cobertura
-	 * </b>
-	 * <p>[Author: Avila Sistemas, Date: 08/03/2016]</p>
-	 *
+	 * <b> Permite obtener el numero de dias de cobertura </b>
+	 * <p>
+	 * [Author: Avila Sistemas, Date: 08/03/2016]
+	 * </p>
+	 * 
 	 */
 	public void obtenerDias() {
 		long dias = FechasUtil.getInstancia().restarFechas(polizaBean.getVigenciaDesde(), polizaBean.getVigenciaHasta());
@@ -1027,28 +1022,28 @@ public class AsistenciaMedicaBacking implements Serializable {
 		polizaBean.setDiasCobertura(Integer.parseInt(Long.toString(dias)));
 
 	}
-	
+
 	/**
 	 * 
-	 * <b>
-	 * Permite editar un registro de la tabla de amortizacion
-	 * </b>
-	 * <p>[Author: Franklin Pozo B, Date: 08/03/2016]</p>
-	 *
+	 * <b> Permite editar un registro de la tabla de amortizacion </b>
+	 * <p>
+	 * [Author: Franklin Pozo B, Date: 08/03/2016]
+	 * </p>
+	 * 
 	 * @param event
 	 */
 	public void onEditTable(RowEditEvent event) {
 		FacesMessage msg = new FacesMessage("Item Edited", ((TablaAmortizacionDTO) event.getObject()).getLetra());
 		FacesContext.getCurrentInstance().addMessage(null, msg);
 	}
-	
+
 	/**
 	 * 
-	 * <b>
-	 * Permite generar una tabla de amortizacion con valores ingresados en la pantalla.
-	 * </b>
-	 * <p>[Author: Franklin Pozo, Date: 08/03/2016]</p>
-	 *
+	 * <b> Permite generar una tabla de amortizacion con valores ingresados en la pantalla. </b>
+	 * <p>
+	 * [Author: Franklin Pozo, Date: 08/03/2016]
+	 * </p>
+	 * 
 	 */
 	public void generarTablaAmortizacion() {
 
@@ -1082,14 +1077,13 @@ public class AsistenciaMedicaBacking implements Serializable {
 		polizaBean.setFinanciamientos(tablaAmortizacionList);
 	}
 
-	
 	/**
 	 * 
-	 * <b>
-	 * Permite calcular los valores de super de bancos y seguro campesino 
-	 * </b>
-	 * <p>[Author: Franklin Pozo B, Date: 08/03/2016]</p>
-	 *
+	 * <b> Permite calcular los valores de super de bancos y seguro campesino </b>
+	 * <p>
+	 * [Author: Franklin Pozo B, Date: 08/03/2016]
+	 * </p>
+	 * 
 	 */
 	public void calcularValoresPago() {
 		if (polizaBean.getPrimaNeta() != null) {
