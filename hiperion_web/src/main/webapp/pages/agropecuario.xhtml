@@ -159,7 +159,7 @@
 															<p:inputText value="#{ramoAgropecuarioBean.valorAsegurado}" />
 
 															<p:outputLabel value="#{emision['agropecuario.detalle']}:" styleClass="negrita" />
-															<p:inputTextarea value="#{ramoAgropecuarioBean.detalle}" cols="50" rows="2" style="text-transform:uppercase;"/>
+															<p:inputTextarea value="#{ramoAgropecuarioBean.detalle}" cols="50" rows="2" style="text-transform:uppercase;" />
 
 															<p:outputLabel value="#{emision['agropecuario.ubicacion']}:" styleClass="negrita" />
 															<p:inputTextarea value="#{ramoAgropecuarioBean.ubicacion}" cols="50" rows="2" style="text-transform:uppercase;" />
@@ -243,10 +243,10 @@
 														</p:selectOneMenu>
 
 														<h:outputLabel value="#{emision['agropecuario.objeto.raza']}:" styleClass="negrita" />
-														<p:inputText value="#{ramoAgropecuarioBean.raza}" style="text-transform:uppercase;"/>
+														<p:inputText value="#{ramoAgropecuarioBean.raza}" style="text-transform:uppercase;" />
 
 														<h:outputLabel for="idColor" value="#{emision['agropecuario.objeto.color']}:" styleClass="negrita" />
-														<p:inputText id="idColor" value="#{ramoAgropecuarioBean.color}" style="text-transform:uppercase;"/>
+														<p:inputText id="idColor" value="#{ramoAgropecuarioBean.color}" style="text-transform:uppercase;" />
 
 														<h:outputLabel for="idEdad" value="#{emision['agropecuario.objeto.edad']}:" styleClass="negrita" />
 														<p:inputText id="idEdad" value="#{ramoAgropecuarioBean.edad}" />
@@ -751,7 +751,7 @@
 				<h:commandLink action="hiperion.xhtml">
 					<h:graphicImage name="home.png" library="img" />
 				</h:commandLink>
-				<p:commandLink title="Guardar Informacion poliza" actionListener="#{agropecuarioBacking.setearRamo}">
+				<p:commandLink title="Guardar Informacion poliza" actionListener="#{agropecuarioBacking.guardarRamo}">
 					<h:graphicImage name="save.png" library="img" />
 				</p:commandLink>
 				<p:commandLink onclick="help.show()">
