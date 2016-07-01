@@ -217,7 +217,7 @@ public class AseguradoraBacking implements Serializable {
 			aseguradoraBean.setContactoList(contactos);
 		} else {
 			MessagesController.addWarn(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.war.aseguradora"));
-			aseguradoraBean.setActivarNewAseguradora(false);
+			aseguradoraBean.setActivarNewAseguradora(true);
 		}
 	}
 
