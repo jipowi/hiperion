@@ -2,14 +2,12 @@ package ec.com.avila.hiperion.web.util;
 
 import org.apache.log4j.Logger;
 
-import ec.com.avila.emision.web.backings.PolizaBacking;
-
 public class EmisionUtil {
 
 
 	private static Integer longitudClientes = 3;
 
-	Logger log = Logger.getLogger(PolizaBacking.class);
+	Logger log = Logger.getLogger(EmisionUtil.class);
 
 	/**
 	 * 

@@ -121,8 +121,9 @@ public class AseguradoraBacking implements Serializable {
 
 		if (aseguradora == null) {
 			save = true;
+			aseguradora = new Aseguradora();
 		}
-
+	
 		aseguradora.setCodigoAseguradora(aseguradoraBean.getCodAseguradora().toString());
 		aseguradora.setDirecion(aseguradoraBean.getDireccion());
 		aseguradora.setEmailAseguradora(aseguradoraBean.getMailAseguradora());
