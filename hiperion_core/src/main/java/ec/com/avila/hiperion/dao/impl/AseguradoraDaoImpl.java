@@ -32,7 +32,6 @@ public class AseguradoraDaoImpl extends GenericDAOImpl<Aseguradora, Long> implem
 
 	@PersistenceContext(unitName = "sgs_pu")
 	protected EntityManager em;
-	
 
 	@SuppressWarnings("unchecked")
 	public List<Aseguradora> consultarAseguradoras() throws HiperionException {
@@ -51,7 +50,8 @@ public class AseguradoraDaoImpl extends GenericDAOImpl<Aseguradora, Long> implem
 	 * 
 	 * @see ec.com.avila.hiperion.dao.AseguradoraDao#consultarAseguradora(java.lang.String, java.lang.Integer)
 	 */
-	
+
+	@SuppressWarnings("unchecked")
 	@Override
 	public Aseguradora consultarAseguradora(String ruc, Integer aseguradora) throws HiperionException {
 		Query query = null;
@@ -74,9 +74,13 @@ public class AseguradoraDaoImpl extends GenericDAOImpl<Aseguradora, Long> implem
 				query = em.createNamedQuery("Aseguradora.findAll");
 			}
 
-			Aseguradora aseguradoraNew = (Aseguradora) query.getSingleResult();
+			List<Aseguradora> aseguradoras = query.getResultList();
 
-			return aseguradoraNew;
+			if (!aseguradoras.isEmpty()) {
+				return aseguradoras.get(0);
+			} else {
+				return null;
+			}
 
 		} catch (Exception e) {
 			log.error("Error no se pudo consultar la aseguradora ", e);
@@ -84,13 +88,15 @@ public class AseguradoraDaoImpl extends GenericDAOImpl<Aseguradora, Long> implem
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see ec.com.avila.hiperion.dao.AseguradoraDao#consultarAseguradoraByCodigo(java.lang.Integer)
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public Aseguradora consultarAseguradoraByCodigo(String codigo) throws HiperionException {
-		
+
 		Query query = em.createNamedQuery("Aseguradora.findByAseguradora");
 		query.setParameter("aseguradora", codigo);
 
@@ -103,5 +109,4 @@ public class AseguradoraDaoImpl extends GenericDAOImpl<Aseguradora, Long> implem
 		}
 	}
 
-	
 }
