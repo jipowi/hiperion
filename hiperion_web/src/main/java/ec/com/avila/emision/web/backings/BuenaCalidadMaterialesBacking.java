@@ -45,6 +45,7 @@ import ec.com.avila.hiperion.emision.entities.Ramo;
 import ec.com.avila.hiperion.emision.entities.RamoBuenaCalMat;
 import ec.com.avila.hiperion.emision.entities.Usuario;
 import ec.com.avila.hiperion.enumeration.EstadoEnum;
+import ec.com.avila.hiperion.enumeration.RamoEnum;
 import ec.com.avila.hiperion.servicio.AseguradoraService;
 import ec.com.avila.hiperion.servicio.CatalogoService;
 import ec.com.avila.hiperion.servicio.ClienteService;
@@ -223,7 +224,11 @@ public class BuenaCalidadMaterialesBacking implements Serializable {
 
 		poliza.setPagoPoliza(pagoPoliza);
 		}
-		
+		poliza.setEstadoPoliza(polizaBean.getEstadoPoliza());
+		poliza.setCliente(polizaBean.getCliente());
+		poliza.setFechaRegistro(new Date());
+		poliza.setRamo(RamoEnum.R5.getLabel());
+		poliza.setEjecutivo(usuario.getIdentificacionUsuario());
 		return poliza;
 	}
 
@@ -314,9 +319,11 @@ public class BuenaCalidadMaterialesBacking implements Serializable {
 	 */
 	public void guardarRamo() throws HiperionException {
 
-		Usuario usuario = usuarioBean.getSessionUser();
+		//Usuario usuario = usuarioBean.getSessionUser();
+		
 		Poliza poliza = setearDatosPoliza();
 
+		try {
 		buenaCalidadMateriales.setSectorCalMat(ramoBuenaCalMatBean.getSector());
 		buenaCalidadMateriales.setObjAsegCalMat(ramoBuenaCalMatBean.getObjetoAsegurado());
 		buenaCalidadMateriales.setValorContratoMateriales(ramoBuenaCalMatBean.getValorContrato());
@@ -326,7 +333,7 @@ public class BuenaCalidadMaterialesBacking implements Serializable {
 		buenaCalidadMateriales.setFechaCreacion(new Date());
 		buenaCalidadMateriales.setEstado(EstadoEnum.A);
 
-		try {
+		
 
 			ramoBuenaCalMatService.guardarRamoBuenaCalMat(buenaCalidadMateriales, poliza);
 			MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.save.sOjeto"));

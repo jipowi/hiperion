@@ -5,6 +5,7 @@
 package ec.com.avila.emision.web.backings;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -33,6 +34,7 @@ import ec.com.avila.hiperion.dto.CoberturaAdicionalDTO;
 import ec.com.avila.hiperion.dto.CoberturaDTO;
 import ec.com.avila.hiperion.dto.CondicionEspecialDTO;
 import ec.com.avila.hiperion.dto.CondicionParticularDTO;
+import ec.com.avila.hiperion.dto.TablaAmortizacionDTO;
 import ec.com.avila.hiperion.emision.entities.Aseguradora;
 import ec.com.avila.hiperion.emision.entities.Catalogo;
 import ec.com.avila.hiperion.emision.entities.ClausulasAddRiesgo;
@@ -43,10 +45,14 @@ import ec.com.avila.hiperion.emision.entities.CondEspRiesgo;
 import ec.com.avila.hiperion.emision.entities.CondPartRiesgo;
 import ec.com.avila.hiperion.emision.entities.DetalleAnexo;
 import ec.com.avila.hiperion.emision.entities.DetalleCatalogo;
+import ec.com.avila.hiperion.emision.entities.Financiamiento;
+import ec.com.avila.hiperion.emision.entities.PagoPoliza;
+import ec.com.avila.hiperion.emision.entities.Poliza;
 import ec.com.avila.hiperion.emision.entities.Ramo;
 import ec.com.avila.hiperion.emision.entities.RamoRiesgosEsp;
 import ec.com.avila.hiperion.emision.entities.Usuario;
 import ec.com.avila.hiperion.enumeration.EstadoEnum;
+import ec.com.avila.hiperion.enumeration.RamoEnum;
 import ec.com.avila.hiperion.servicio.AseguradoraService;
 import ec.com.avila.hiperion.servicio.CatalogoService;
 import ec.com.avila.hiperion.servicio.ClienteService;
@@ -291,6 +297,63 @@ public class RiesgosEspecialesBacking implements Serializable {
 
 	/**
 	 * 
+	 * <b> Permite setear los datos de la póliza </b>
+	 * <p>
+	 * [Author: Franklin Pozo , Date: 31/08/2016]
+	 * </p>
+	 * 
+	 * @return
+	 */
+	public Poliza setearDatosPoliza() {
+
+		Poliza poliza = new Poliza();
+		if (polizaBean.getEstadoPoliza().equals("EMITIDO")) {
+			poliza.setNumeroPoliza(polizaBean.getNumeroPoliza());
+			poliza.setNumeroAnexo(polizaBean.getNumeroAnexo());
+			poliza.setVigenciaDesde(polizaBean.getVigenciaDesde());
+			poliza.setVigenciaHasta(polizaBean.getVigenciaHasta());
+			poliza.setDiasCobertura(polizaBean.getDiasCobertura());
+			poliza.setSumaAsegurada(polizaBean.getSumaAsegurada());
+			poliza.setPrimaNeta(BigDecimal.valueOf(polizaBean.getPrimaNeta()));
+			poliza.setSuperBanSeguros(polizaBean.getSuperBanSeguros());
+			poliza.setSeguroCampesino(BigDecimal.valueOf(polizaBean.getSeguroCampesino()));
+			poliza.setDerechoEmision(BigDecimal.valueOf(polizaBean.getDerechoEmision()));
+
+			PagoPoliza pagoPoliza = new PagoPoliza();
+			pagoPoliza.setNumeroFactura(polizaBean.getNumeroFactura());
+			pagoPoliza.setSubtotal(polizaBean.getSubtotal());
+			pagoPoliza.setAdicionalSegCampesino(polizaBean.getAdicionalSegCampesino());
+			pagoPoliza.setIva(polizaBean.getIva());
+			pagoPoliza.setCuotaInicial(polizaBean.getCuotaInicial());
+			pagoPoliza.setValorTotalPagoPoliza(polizaBean.getTotal());
+			pagoPoliza.setEstado(EstadoEnum.A);
+			pagoPoliza.setFechaCreacion(new Date());
+			pagoPoliza.setIdUsuarioCreacion(usuario.getIdUsuario());
+
+			List<Financiamiento> financiamientos = new ArrayList<>();
+			for (TablaAmortizacionDTO financiamiento : polizaBean.getFinanciamientos()) {
+				Financiamiento financiamientoTemp = new Financiamiento();
+				financiamientoTemp.setNumeroCuota(financiamiento.getNumeroLetra());
+				financiamientoTemp.setValorLetra(BigDecimal.valueOf(financiamiento.getValor()));
+				financiamientoTemp.setFechaVencimiento(financiamiento.getFechaVencimiento());
+
+				financiamientos.add(financiamientoTemp);
+			}
+
+			pagoPoliza.setFinanciamientos(financiamientos);
+
+			poliza.setPagoPoliza(pagoPoliza);
+		}
+		poliza.setEstadoPoliza(polizaBean.getEstadoPoliza());
+		poliza.setCliente(polizaBean.getCliente());
+		poliza.setFechaRegistro(new Date());
+		poliza.setRamo(RamoEnum.R18.getLabel());
+		poliza.setEjecutivo(usuario.getIdentificacionUsuario());
+		return poliza;
+	}
+
+	/**
+	 * 
 	 * <b> Permite obtener las coberturas del ramo. </b>
 	 * <p>
 	 * [Author: Paul Jimenez, Date: 17/06/2015]
@@ -463,17 +526,19 @@ public class RiesgosEspecialesBacking implements Serializable {
 	 */
 	public void guardarRamo() throws HiperionException {
 
-		Usuario usuario = usuarioBean.getSessionUser();
-
-		ramoRiesgosEsp.setTasaRiesgosEsp(ramoRiesgosEspecialesBean.getTasa());
-		ramoRiesgosEsp.setCondImpRiesgos(ramoRiesgosEspecialesBean.getCondicionesImp());
-
-		ramoRiesgosEsp.setIdUsuarioCreacion(usuario.getIdUsuario());
-		ramoRiesgosEsp.setFechaCreacion(new Date());
-		ramoRiesgosEsp.setEstado(EstadoEnum.A);
+		// Usuario usuario = usuarioBean.getSessionUser();
 
 		try {
-			ramoRiesgosEspecialesService.guardarRamoRiesgosEspeciales(ramoRiesgosEsp);
+			Poliza poliza = new Poliza();
+			ramoRiesgosEsp.setTasaRiesgosEsp(ramoRiesgosEspecialesBean.getTasa());
+			ramoRiesgosEsp.setCondImpRiesgos(ramoRiesgosEspecialesBean.getCondicionesImp());
+
+			ramoRiesgosEsp.setIdUsuarioCreacion(usuario.getIdUsuario());
+			ramoRiesgosEsp.setFechaCreacion(new Date());
+			ramoRiesgosEsp.setEstado(EstadoEnum.A);
+
+			ramoRiesgosEspecialesService.guardarRamoRiesgosEspeciales(ramoRiesgosEsp,poliza);
+			
 			MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.save.sOjeto"));
 		} catch (HiperionException e) {
 			log.error("Error al momento de guardar el Ramo riesgos especiales", e);
@@ -766,12 +831,11 @@ public class RiesgosEspecialesBacking implements Serializable {
 	}
 
 	/**
-	 * @param polizaBean the polizaBean to set
+	 * @param polizaBean
+	 *            the polizaBean to set
 	 */
 	public void setPolizaBean(PolizaBean polizaBean) {
 		this.polizaBean = polizaBean;
 	}
-	
-	
 
 }

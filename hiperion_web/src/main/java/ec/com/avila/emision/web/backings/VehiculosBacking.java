@@ -51,6 +51,7 @@ import ec.com.avila.hiperion.emision.entities.Ramo;
 import ec.com.avila.hiperion.emision.entities.RamoVehiculo;
 import ec.com.avila.hiperion.emision.entities.Usuario;
 import ec.com.avila.hiperion.enumeration.EstadoEnum;
+import ec.com.avila.hiperion.enumeration.RamoEnum;
 import ec.com.avila.hiperion.servicio.AseguradoraService;
 import ec.com.avila.hiperion.servicio.CatalogoService;
 import ec.com.avila.hiperion.servicio.ClienteService;
@@ -593,47 +594,52 @@ public class VehiculosBacking implements Serializable {
 
 	public Poliza setearDatosPoliza() {
 
-		Usuario usuario = usuarioBean.getSessionUser();
+		// Usuario usuario = usuarioBean.getSessionUser();
 		Poliza poliza = new Poliza();
+		if (polizaBean.getEstadoPoliza().equals("EMITIDO")) {
+			poliza.setNumeroPoliza(polizaBean.getNumeroPoliza());
+			poliza.setNumeroAnexo(polizaBean.getNumeroAnexo());
+			poliza.setEjecutivo(polizaBean.getEjecutivo().getNombreUsuario());
+			poliza.setVigenciaDesde(polizaBean.getVigenciaDesde());
+			poliza.setVigenciaHasta(polizaBean.getVigenciaHasta());
+			poliza.setDiasCobertura(polizaBean.getDiasCobertura());
+			poliza.setSumaAsegurada(polizaBean.getSumaAsegurada());
+			poliza.setPrimaNeta(BigDecimal.valueOf(polizaBean.getPrimaNeta()));
+			poliza.setSuperBanSeguros(polizaBean.getSuperBanSeguros());
+			poliza.setSeguroCampesino(BigDecimal.valueOf(polizaBean.getSeguroCampesino()));
+			poliza.setDerechoEmision(BigDecimal.valueOf(polizaBean.getDerechoEmision()));
+			poliza.setEstadoPoliza("COTIZADO");
 
-		poliza.setNumeroPoliza(polizaBean.getNumeroPoliza());
-		poliza.setNumeroAnexo(polizaBean.getNumeroAnexo());
-		poliza.setEjecutivo(polizaBean.getEjecutivo().getNombreUsuario());
-		poliza.setVigenciaDesde(polizaBean.getVigenciaDesde());
-		poliza.setVigenciaHasta(polizaBean.getVigenciaHasta());
-		poliza.setDiasCobertura(polizaBean.getDiasCobertura());
-		poliza.setSumaAsegurada(polizaBean.getSumaAsegurada());
-		poliza.setPrimaNeta(BigDecimal.valueOf(polizaBean.getPrimaNeta()));
-		poliza.setSuperBanSeguros(polizaBean.getSuperBanSeguros());
-		poliza.setSeguroCampesino(BigDecimal.valueOf(polizaBean.getSeguroCampesino()));
-		poliza.setDerechoEmision(BigDecimal.valueOf(polizaBean.getDerechoEmision()));
-		poliza.setEstadoPoliza("COTIZADO");
+			PagoPoliza pagoPoliza = new PagoPoliza();
+			pagoPoliza.setNumeroFactura(polizaBean.getNumeroFactura());
+			pagoPoliza.setSubtotal(polizaBean.getSubtotal());
+			pagoPoliza.setAdicionalSegCampesino(polizaBean.getAdicionalSegCampesino());
+			pagoPoliza.setIva(polizaBean.getIva());
+			pagoPoliza.setCuotaInicial(polizaBean.getCuotaInicial());
+			pagoPoliza.setValorTotalPagoPoliza(polizaBean.getTotal());
+			pagoPoliza.setEstado(EstadoEnum.A);
+			pagoPoliza.setFechaCreacion(new Date());
+			pagoPoliza.setIdUsuarioCreacion(usuario.getIdUsuario());
 
-		PagoPoliza pagoPoliza = new PagoPoliza();
-		pagoPoliza.setNumeroFactura(polizaBean.getNumeroFactura());
-		pagoPoliza.setSubtotal(polizaBean.getSubtotal());
-		pagoPoliza.setAdicionalSegCampesino(polizaBean.getAdicionalSegCampesino());
-		pagoPoliza.setIva(polizaBean.getIva());
-		pagoPoliza.setCuotaInicial(polizaBean.getCuotaInicial());
-		pagoPoliza.setValorTotalPagoPoliza(polizaBean.getTotal());
-		pagoPoliza.setEstado(EstadoEnum.A);
-		pagoPoliza.setFechaCreacion(new Date());
-		pagoPoliza.setIdUsuarioCreacion(usuario.getIdUsuario());
+			List<Financiamiento> financiamientos = new ArrayList<>();
+			for (TablaAmortizacionDTO financiamiento : polizaBean.getFinanciamientos()) {
+				Financiamiento financiamientoTemp = new Financiamiento();
+				financiamientoTemp.setNumeroCuota(financiamiento.getNumeroLetra());
+				financiamientoTemp.setValorLetra(BigDecimal.valueOf(financiamiento.getValor()));
+				financiamientoTemp.setFechaVencimiento(financiamiento.getFechaVencimiento());
 
-		List<Financiamiento> financiamientos = new ArrayList<>();
-		for (TablaAmortizacionDTO financiamiento : polizaBean.getFinanciamientos()) {
-			Financiamiento financiamientoTemp = new Financiamiento();
-			financiamientoTemp.setNumeroCuota(financiamiento.getNumeroLetra());
-			financiamientoTemp.setValorLetra(BigDecimal.valueOf(financiamiento.getValor()));
-			financiamientoTemp.setFechaVencimiento(financiamiento.getFechaVencimiento());
+				financiamientos.add(financiamientoTemp);
+			}
 
-			financiamientos.add(financiamientoTemp);
+			pagoPoliza.setFinanciamientos(financiamientos);
+
+			poliza.setPagoPoliza(pagoPoliza);
 		}
-
-		pagoPoliza.setFinanciamientos(financiamientos);
-
-		poliza.setPagoPoliza(pagoPoliza);
-
+		poliza.setEstadoPoliza(polizaBean.getEstadoPoliza());
+		poliza.setCliente(polizaBean.getCliente());
+		poliza.setFechaRegistro(new Date());
+		poliza.setRamo(RamoEnum.R25.getLabel());
+		poliza.setEjecutivo(usuario.getIdentificacionUsuario());
 		return poliza;
 	}
 
@@ -647,37 +653,38 @@ public class VehiculosBacking implements Serializable {
 	 */
 	public void guardarRamo() throws HiperionException {
 
-		Poliza poliza = setearDatosPoliza();
-
-		ramoVehiculo.setClaseVh(ramoVehiculoBean.getClaseVehiculo());
-		ramoVehiculo.setTipoVh(ramoVehiculoBean.getTipoVehiculo());
-		ramoVehiculo.setUsoVh(ramoVehiculoBean.getUso());
-		ramoVehiculo.setModeloVh(ramoVehiculoBean.getModelo());
-		ramoVehiculo.setDetalleModeloVh(ramoVehiculoBean.getDetalleModelo());
-		ramoVehiculo.setItemVh(ramoVehiculoBean.getItem());
-		ramoVehiculo.setPropietarioVh(ramoVehiculoBean.getPropietario());
-		ramoVehiculo.setPlacaVh(ramoVehiculoBean.getPlaca());
-		ramoVehiculo.setMotorVh(ramoVehiculoBean.getMotor());
-		ramoVehiculo.setChasisVh(ramoVehiculoBean.getChasis());
-		ramoVehiculo.setAnioFabricaccionVh(ramoVehiculoBean.getAnio());
-		ramoVehiculo.setColorVh(ramoVehiculoBean.getColor());
-		ramoVehiculo.setValorAsegVh(ramoVehiculoBean.getValorAsegurado());
-		ramoVehiculo.setValorTotalItemsVh(ramoVehiculoBean.getValorTotalItem());
-		ramoVehiculo.setTasaVh(ramoVehiculoBean.getTasa());
-		ramoVehiculo.setConsideracionesImpVh(ramoVehiculoBean.getConsideraciones());
-		ramoVehiculo.setAmparoPatrimonialVh(ramoVehiculoBean.getAmparoPatrimonial());
-		ramoVehiculo.setCoberturaPactoAndino(ramoVehiculoBean.getCoberturaPactoAndino());
-		ramoVehiculo.setAsistenciaVehicular(ramoVehiculoBean.getAsistenciaVehicular());
-		ramoVehiculo.setAutoSustituto(ramoVehiculoBean.getAutoSustituto());
-		ramoVehiculo.setDeducPorcentajeVh(ramoVehiculoBean.getPorcentajeDeducible());
-		ramoVehiculo.setDeducSiniestroVh(ramoVehiculoBean.getPorcentajeSiniestro());
-		ramoVehiculo.setDeducValorAsegVh(ramoVehiculoBean.getPorcentajeValorAsegurado());
-
-		ramoVehiculo.setIdUsuarioCreacion(usuario.getIdUsuario());
-		ramoVehiculo.setFechaCreacion(new Date());
-		ramoVehiculo.setEstado(EstadoEnum.A);
-
 		try {
+
+			Poliza poliza = setearDatosPoliza();
+
+			ramoVehiculo.setClaseVh(ramoVehiculoBean.getClaseVehiculo());
+			ramoVehiculo.setTipoVh(ramoVehiculoBean.getTipoVehiculo());
+			ramoVehiculo.setUsoVh(ramoVehiculoBean.getUso());
+			ramoVehiculo.setModeloVh(ramoVehiculoBean.getModelo());
+			ramoVehiculo.setDetalleModeloVh(ramoVehiculoBean.getDetalleModelo());
+			ramoVehiculo.setItemVh(ramoVehiculoBean.getItem());
+			ramoVehiculo.setPropietarioVh(ramoVehiculoBean.getPropietario());
+			ramoVehiculo.setPlacaVh(ramoVehiculoBean.getPlaca());
+			ramoVehiculo.setMotorVh(ramoVehiculoBean.getMotor());
+			ramoVehiculo.setChasisVh(ramoVehiculoBean.getChasis());
+			ramoVehiculo.setAnioFabricaccionVh(ramoVehiculoBean.getAnio());
+			ramoVehiculo.setColorVh(ramoVehiculoBean.getColor());
+			ramoVehiculo.setValorAsegVh(ramoVehiculoBean.getValorAsegurado());
+			ramoVehiculo.setValorTotalItemsVh(ramoVehiculoBean.getValorTotalItem());
+			ramoVehiculo.setTasaVh(ramoVehiculoBean.getTasa());
+			ramoVehiculo.setConsideracionesImpVh(ramoVehiculoBean.getConsideraciones());
+			ramoVehiculo.setAmparoPatrimonialVh(ramoVehiculoBean.getAmparoPatrimonial());
+			ramoVehiculo.setCoberturaPactoAndino(ramoVehiculoBean.getCoberturaPactoAndino());
+			ramoVehiculo.setAsistenciaVehicular(ramoVehiculoBean.getAsistenciaVehicular());
+			ramoVehiculo.setAutoSustituto(ramoVehiculoBean.getAutoSustituto());
+			ramoVehiculo.setDeducPorcentajeVh(ramoVehiculoBean.getPorcentajeDeducible());
+			ramoVehiculo.setDeducSiniestroVh(ramoVehiculoBean.getPorcentajeSiniestro());
+			ramoVehiculo.setDeducValorAsegVh(ramoVehiculoBean.getPorcentajeValorAsegurado());
+
+			ramoVehiculo.setIdUsuarioCreacion(usuario.getIdUsuario());
+			ramoVehiculo.setFechaCreacion(new Date());
+			ramoVehiculo.setEstado(EstadoEnum.A);
+
 			ramoVehiculoService.guardarRamoVehiculo(ramoVehiculo, poliza);
 			MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.save.sOjeto"));
 

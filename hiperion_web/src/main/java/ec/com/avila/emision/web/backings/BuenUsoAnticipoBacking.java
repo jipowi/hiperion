@@ -57,6 +57,7 @@ import ec.com.avila.hiperion.emision.entities.Ramo;
 import ec.com.avila.hiperion.emision.entities.RamoBuenUsoAnt;
 import ec.com.avila.hiperion.emision.entities.Usuario;
 import ec.com.avila.hiperion.enumeration.EstadoEnum;
+import ec.com.avila.hiperion.enumeration.RamoEnum;
 import ec.com.avila.hiperion.html.UtilsHtml;
 import ec.com.avila.hiperion.servicio.AseguradoraService;
 import ec.com.avila.hiperion.servicio.CatalogoService;
@@ -200,46 +201,55 @@ public class BuenUsoAnticipoBacking implements Serializable {
 	 */
 	public Poliza setearDatosPoliza() {
 
-		Usuario usuario = usuarioBean.getSessionUser();
+		// Usuario usuario = usuarioBean.getSessionUser();
 		Poliza poliza = new Poliza();
 
-		poliza.setNumeroPoliza(polizaBean.getNumeroPoliza());
-		poliza.setNumeroAnexo(polizaBean.getNumeroAnexo());
-		poliza.setEjecutivo(polizaBean.getEjecutivo().getNombreUsuario());
-		poliza.setVigenciaDesde(polizaBean.getVigenciaDesde());
-		poliza.setVigenciaHasta(polizaBean.getVigenciaHasta());
-		poliza.setDiasCobertura(polizaBean.getDiasCobertura());
-		poliza.setSumaAsegurada(polizaBean.getSumaAsegurada());
-		poliza.setPrimaNeta(BigDecimal.valueOf(polizaBean.getPrimaNeta()));
-		poliza.setSuperBanSeguros(polizaBean.getSuperBanSeguros());
-		poliza.setSeguroCampesino(BigDecimal.valueOf(polizaBean.getSeguroCampesino()));
-		poliza.setDerechoEmision(BigDecimal.valueOf(polizaBean.getDerechoEmision()));
-		poliza.setEstadoPoliza("COTIZADO");
+		if (polizaBean.getEstadoPoliza().equals("EMITIDO")) {
+			poliza.setNumeroPoliza(polizaBean.getNumeroPoliza());
+			poliza.setNumeroAnexo(polizaBean.getNumeroAnexo());
+			poliza.setEjecutivo(polizaBean.getEjecutivo().getNombreUsuario());
+			poliza.setVigenciaDesde(polizaBean.getVigenciaDesde());
+			poliza.setVigenciaHasta(polizaBean.getVigenciaHasta());
+			poliza.setDiasCobertura(polizaBean.getDiasCobertura());
+			poliza.setSumaAsegurada(polizaBean.getSumaAsegurada());
+			poliza.setPrimaNeta(BigDecimal.valueOf(polizaBean.getPrimaNeta()));
+			poliza.setSuperBanSeguros(polizaBean.getSuperBanSeguros());
+			poliza.setSeguroCampesino(BigDecimal.valueOf(polizaBean.getSeguroCampesino()));
+			poliza.setDerechoEmision(BigDecimal.valueOf(polizaBean.getDerechoEmision()));
+			poliza.setEstadoPoliza("COTIZADO");
 
-		PagoPoliza pagoPoliza = new PagoPoliza();
-		pagoPoliza.setNumeroFactura(polizaBean.getNumeroFactura());
-		pagoPoliza.setSubtotal(polizaBean.getSubtotal());
-		pagoPoliza.setAdicionalSegCampesino(polizaBean.getAdicionalSegCampesino());
-		pagoPoliza.setIva(polizaBean.getIva());
-		pagoPoliza.setCuotaInicial(polizaBean.getCuotaInicial());
-		pagoPoliza.setValorTotalPagoPoliza(polizaBean.getTotal());
-		pagoPoliza.setEstado(EstadoEnum.A);
-		pagoPoliza.setFechaCreacion(new Date());
-		pagoPoliza.setIdUsuarioCreacion(usuario.getIdUsuario());
+			PagoPoliza pagoPoliza = new PagoPoliza();
+			pagoPoliza.setNumeroFactura(polizaBean.getNumeroFactura());
+			pagoPoliza.setSubtotal(polizaBean.getSubtotal());
+			pagoPoliza.setAdicionalSegCampesino(polizaBean.getAdicionalSegCampesino());
+			pagoPoliza.setIva(polizaBean.getIva());
+			pagoPoliza.setCuotaInicial(polizaBean.getCuotaInicial());
+			pagoPoliza.setValorTotalPagoPoliza(polizaBean.getTotal());
+			pagoPoliza.setEstado(EstadoEnum.A);
+			pagoPoliza.setFechaCreacion(new Date());
+			pagoPoliza.setIdUsuarioCreacion(usuario.getIdUsuario());
 
-		List<Financiamiento> financiamientos = new ArrayList<>();
-		for (TablaAmortizacionDTO financiamiento : polizaBean.getFinanciamientos()) {
-			Financiamiento financiamientoTemp = new Financiamiento();
-			financiamientoTemp.setNumeroCuota(financiamiento.getNumeroLetra());
-			financiamientoTemp.setValorLetra(BigDecimal.valueOf(financiamiento.getValor()));
-			financiamientoTemp.setFechaVencimiento(financiamiento.getFechaVencimiento());
+			List<Financiamiento> financiamientos = new ArrayList<>();
+			for (TablaAmortizacionDTO financiamiento : polizaBean.getFinanciamientos()) {
+				Financiamiento financiamientoTemp = new Financiamiento();
+				financiamientoTemp.setNumeroCuota(financiamiento.getNumeroLetra());
+				financiamientoTemp.setValorLetra(BigDecimal.valueOf(financiamiento.getValor()));
+				financiamientoTemp.setFechaVencimiento(financiamiento.getFechaVencimiento());
 
-			financiamientos.add(financiamientoTemp);
+				financiamientos.add(financiamientoTemp);
+			}
+
+			pagoPoliza.setFinanciamientos(financiamientos);
+
+			poliza.setPagoPoliza(pagoPoliza);
+
 		}
 
-		pagoPoliza.setFinanciamientos(financiamientos);
-
-		poliza.setPagoPoliza(pagoPoliza);
+		poliza.setEstadoPoliza(polizaBean.getEstadoPoliza());
+		poliza.setCliente(polizaBean.getCliente());
+		poliza.setFechaRegistro(new Date());
+		poliza.setRamo(RamoEnum.R4.getLabel());
+		poliza.setEjecutivo(usuario.getIdentificacionUsuario());
 
 		return poliza;
 	}
@@ -388,6 +398,7 @@ public class BuenUsoAnticipoBacking implements Serializable {
 	 */
 	public void guardarRamo() throws HiperionException, IOException {
 
+		try {
 		Poliza poliza = setearDatosPoliza();
 
 		buenUsoAnt.setSectorAnticipo(ramoBuenUsoAnticipoBean.getSector());
@@ -399,7 +410,7 @@ public class BuenUsoAnticipoBacking implements Serializable {
 		buenUsoAnt.setFechaCreacion(new Date());
 		buenUsoAnt.setEstado(EstadoEnum.A);
 
-		try {
+		
 			ramoBuenUsoAnticipoService.guardarRamoBuenUsoAnticipo(buenUsoAnt, poliza);
 			MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.save"));
 

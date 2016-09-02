@@ -49,6 +49,7 @@ import ec.com.avila.hiperion.emision.entities.Ramo;
 import ec.com.avila.hiperion.emision.entities.RamoDineroValore;
 import ec.com.avila.hiperion.emision.entities.Usuario;
 import ec.com.avila.hiperion.enumeration.EstadoEnum;
+import ec.com.avila.hiperion.enumeration.RamoEnum;
 import ec.com.avila.hiperion.servicio.AseguradoraService;
 import ec.com.avila.hiperion.servicio.CatalogoService;
 import ec.com.avila.hiperion.servicio.ClienteService;
@@ -292,13 +293,14 @@ public class DineroValoresBacking implements Serializable {
 		FacesContext.getCurrentInstance().addMessage(null, msg);
 		aseguradorasDTO.remove((AseguradoraDTO) event.getObject());
 	}
+
 	/**
 	 * 
-	 * <b>
-	 * Permite generar una tabla de amortizacion con valores ingresados en la pantalla
-	 * </b>
-	 * <p>[Author: Franklin Pozo B, Date: 30/03/2016]</p>
-	 *
+	 * <b> Permite generar una tabla de amortizacion con valores ingresados en la pantalla </b>
+	 * <p>
+	 * [Author: Franklin Pozo B, Date: 30/03/2016]
+	 * </p>
+	 * 
 	 */
 	public void generarTablaAmortizacion() {
 
@@ -332,14 +334,13 @@ public class DineroValoresBacking implements Serializable {
 		polizaBean.setFinanciamientos(tablaAmortizacionList);
 	}
 
-	
 	/**
 	 * 
-	 * <b>
-	 * Permite obtener el numero de dias de cobertura.
-	 * </b>
-	 * <p>[Author: Franklin Pozo B, Date: 30/03/2016]</p>
-	 *
+	 * <b> Permite obtener el numero de dias de cobertura. </b>
+	 * <p>
+	 * [Author: Franklin Pozo B, Date: 30/03/2016]
+	 * </p>
+	 * 
 	 */
 	public void obtenerDias() {
 		long dias = FechasUtil.getInstancia().restarFechas(polizaBean.getVigenciaDesde(), polizaBean.getVigenciaHasta());
@@ -347,14 +348,14 @@ public class DineroValoresBacking implements Serializable {
 		polizaBean.setDiasCobertura(Integer.parseInt(Long.toString(dias)));
 
 	}
-	
+
 	/**
 	 * 
-	 * <b>
-	 *  Permite editar un registro de la tabla de amortizacion 
-	 * </b>
-	 * <p>[Author: Franklin Pozo B, Date: 30/03/2016]</p>
-	 *
+	 * <b> Permite editar un registro de la tabla de amortizacion </b>
+	 * <p>
+	 * [Author: Franklin Pozo B, Date: 30/03/2016]
+	 * </p>
+	 * 
 	 * @param event
 	 */
 	public void onEditTable(RowEditEvent event) {
@@ -364,11 +365,11 @@ public class DineroValoresBacking implements Serializable {
 
 	/**
 	 * 
-	 * <b>
-	 * Permite calcular los valores de super de bancos y seguro campesino
-	 * </b>
-	 * <p>[Author: Franklin Pozo B, Date: 30/03/2016]</p>
-	 *
+	 * <b> Permite calcular los valores de super de bancos y seguro campesino </b>
+	 * <p>
+	 * [Author: Franklin Pozo B, Date: 30/03/2016]
+	 * </p>
+	 * 
 	 */
 	public void calcularValoresPago() {
 		if (polizaBean.getPrimaNeta() != null) {
@@ -388,14 +389,14 @@ public class DineroValoresBacking implements Serializable {
 		}
 		selectFormaDePago();
 	}
-	
+
 	/**
 	 * 
-	 * <b>
-	 * Redondea valores decimales
-	 * </b>
-	 * <p>[Author: Franklin Pozo B, Date: 30/03/2016]</p>
-	 *
+	 * <b> Redondea valores decimales </b>
+	 * <p>
+	 * [Author: Franklin Pozo B, Date: 30/03/2016]
+	 * </p>
+	 * 
 	 * @param numero
 	 * @param decimales
 	 * @return
@@ -403,6 +404,7 @@ public class DineroValoresBacking implements Serializable {
 	public double redondear(double numero, int decimales) {
 		return Math.round(numero * Math.pow(10, decimales)) / Math.pow(10, decimales);
 	}
+
 	/**
 	 * 
 	 * <b> Permite activar los paneles segun la forma de pago que selecciono el usuario. </b>
@@ -592,47 +594,54 @@ public class DineroValoresBacking implements Serializable {
 	 */
 	public Poliza setearDatosPoliza() {
 
-		Usuario usuario = usuarioBean.getSessionUser();
+		// Usuario usuario = usuarioBean.getSessionUser();
 		Poliza poliza = new Poliza();
+		if (polizaBean.getEstadoPoliza().equals("EMITIDO")) {
 
-		poliza.setNumeroPoliza(polizaBean.getNumeroPoliza());
-		poliza.setNumeroAnexo(polizaBean.getNumeroAnexo());
-		poliza.setEjecutivo(polizaBean.getEjecutivo().getNombreUsuario());
-		poliza.setVigenciaDesde(polizaBean.getVigenciaDesde());
-		poliza.setVigenciaHasta(polizaBean.getVigenciaHasta());
-		poliza.setDiasCobertura(polizaBean.getDiasCobertura());
-		poliza.setSumaAsegurada(polizaBean.getSumaAsegurada());
-		poliza.setPrimaNeta(BigDecimal.valueOf(polizaBean.getPrimaNeta()));
-		poliza.setSuperBanSeguros(polizaBean.getSuperBanSeguros());
-		poliza.setSeguroCampesino(BigDecimal.valueOf(polizaBean.getSeguroCampesino()));
-		poliza.setDerechoEmision(BigDecimal.valueOf(polizaBean.getDerechoEmision()));
-		poliza.setEstadoPoliza("COTIZADO");
+			poliza.setNumeroPoliza(polizaBean.getNumeroPoliza());
+			poliza.setNumeroAnexo(polizaBean.getNumeroAnexo());
+			poliza.setEjecutivo(polizaBean.getEjecutivo().getNombreUsuario());
+			poliza.setVigenciaDesde(polizaBean.getVigenciaDesde());
+			poliza.setVigenciaHasta(polizaBean.getVigenciaHasta());
+			poliza.setDiasCobertura(polizaBean.getDiasCobertura());
+			poliza.setSumaAsegurada(polizaBean.getSumaAsegurada());
+			poliza.setPrimaNeta(BigDecimal.valueOf(polizaBean.getPrimaNeta()));
+			poliza.setSuperBanSeguros(polizaBean.getSuperBanSeguros());
+			poliza.setSeguroCampesino(BigDecimal.valueOf(polizaBean.getSeguroCampesino()));
+			poliza.setDerechoEmision(BigDecimal.valueOf(polizaBean.getDerechoEmision()));
+			poliza.setEstadoPoliza("COTIZADO");
 
-		PagoPoliza pagoPoliza = new PagoPoliza();
-		pagoPoliza.setNumeroFactura(polizaBean.getNumeroFactura());
-		pagoPoliza.setSubtotal(polizaBean.getSubtotal());
-		pagoPoliza.setAdicionalSegCampesino(polizaBean.getAdicionalSegCampesino());
-		pagoPoliza.setIva(polizaBean.getIva());
-		pagoPoliza.setCuotaInicial(polizaBean.getCuotaInicial());
-		pagoPoliza.setValorTotalPagoPoliza(polizaBean.getTotal());
-		pagoPoliza.setEstado(EstadoEnum.A);
-		pagoPoliza.setFechaCreacion(new Date());
-		pagoPoliza.setIdUsuarioCreacion(usuario.getIdUsuario());
+			PagoPoliza pagoPoliza = new PagoPoliza();
+			pagoPoliza.setNumeroFactura(polizaBean.getNumeroFactura());
+			pagoPoliza.setSubtotal(polizaBean.getSubtotal());
+			pagoPoliza.setAdicionalSegCampesino(polizaBean.getAdicionalSegCampesino());
+			pagoPoliza.setIva(polizaBean.getIva());
+			pagoPoliza.setCuotaInicial(polizaBean.getCuotaInicial());
+			pagoPoliza.setValorTotalPagoPoliza(polizaBean.getTotal());
+			pagoPoliza.setEstado(EstadoEnum.A);
+			pagoPoliza.setFechaCreacion(new Date());
+			pagoPoliza.setIdUsuarioCreacion(usuario.getIdUsuario());
 
-		List<Financiamiento> financiamientos = new ArrayList<>();
-		for (TablaAmortizacionDTO financiamiento : polizaBean.getFinanciamientos()) {
-			Financiamiento financiamientoTemp = new Financiamiento();
-			financiamientoTemp.setNumeroCuota(financiamiento.getNumeroLetra());
-			financiamientoTemp.setValorLetra(BigDecimal.valueOf(financiamiento.getValor()));
-			financiamientoTemp.setFechaVencimiento(financiamiento.getFechaVencimiento());
+			List<Financiamiento> financiamientos = new ArrayList<>();
+			for (TablaAmortizacionDTO financiamiento : polizaBean.getFinanciamientos()) {
+				Financiamiento financiamientoTemp = new Financiamiento();
+				financiamientoTemp.setNumeroCuota(financiamiento.getNumeroLetra());
+				financiamientoTemp.setValorLetra(BigDecimal.valueOf(financiamiento.getValor()));
+				financiamientoTemp.setFechaVencimiento(financiamiento.getFechaVencimiento());
 
-			financiamientos.add(financiamientoTemp);
+				financiamientos.add(financiamientoTemp);
+			}
+
+			pagoPoliza.setFinanciamientos(financiamientos);
+
+			poliza.setPagoPoliza(pagoPoliza);
+
 		}
-
-		pagoPoliza.setFinanciamientos(financiamientos);
-
-		poliza.setPagoPoliza(pagoPoliza);
-
+		poliza.setEstadoPoliza(polizaBean.getEstadoPoliza());
+		poliza.setCliente(polizaBean.getCliente());
+		poliza.setFechaRegistro(new Date());
+		poliza.setRamo(RamoEnum.R9.getLabel());
+		poliza.setEjecutivo(usuario.getIdentificacionUsuario());
 		return poliza;
 	}
 
@@ -1051,11 +1060,11 @@ public class DineroValoresBacking implements Serializable {
 
 	/**
 	 * 
-	 * <b>
-	 *  Permite crear el combo de tipo de cuenta
-	 * </b>
-	 * <p>[Author: Franklin Pozo B, Date: 30/03/2016]</p>
-	 *
+	 * <b> Permite crear el combo de tipo de cuenta </b>
+	 * <p>
+	 * [Author: Franklin Pozo B, Date: 30/03/2016]
+	 * </p>
+	 * 
 	 * @return
 	 */
 	public List<SelectItem> getCuentaBancoItems() throws HiperionException {
@@ -1072,7 +1081,8 @@ public class DineroValoresBacking implements Serializable {
 	}
 
 	/**
-	 * @param cuentaBancoItems the cuentaBancoItems to set
+	 * @param cuentaBancoItems
+	 *            the cuentaBancoItems to set
 	 */
 	public void setCuentaBancoItems(List<SelectItem> cuentaBancoItems) {
 		this.cuentaBancoItems = cuentaBancoItems;
@@ -1086,11 +1096,11 @@ public class DineroValoresBacking implements Serializable {
 	}
 
 	/**
-	 * @param tablaAmortizacionList the tablaAmortizacionList to set
+	 * @param tablaAmortizacionList
+	 *            the tablaAmortizacionList to set
 	 */
 	public void setTablaAmortizacionList(List<TablaAmortizacionDTO> tablaAmortizacionList) {
 		this.tablaAmortizacionList = tablaAmortizacionList;
 	}
 
-	
 }

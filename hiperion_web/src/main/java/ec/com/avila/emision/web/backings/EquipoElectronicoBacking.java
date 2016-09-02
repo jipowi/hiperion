@@ -53,6 +53,7 @@ import ec.com.avila.hiperion.emision.entities.Ramo;
 import ec.com.avila.hiperion.emision.entities.RamoEquipoElectronico;
 import ec.com.avila.hiperion.emision.entities.Usuario;
 import ec.com.avila.hiperion.enumeration.EstadoEnum;
+import ec.com.avila.hiperion.enumeration.RamoEnum;
 import ec.com.avila.hiperion.servicio.AseguradoraService;
 import ec.com.avila.hiperion.servicio.CatalogoService;
 import ec.com.avila.hiperion.servicio.ClienteService;
@@ -592,7 +593,7 @@ public class EquipoElectronicoBacking implements Serializable {
 	public Poliza setearDatosPoliza() {
 
 		Poliza poliza = new Poliza();
-
+		if(polizaBean.getEstadoPoliza().equals("EMITIDO")){
 		poliza.setNumeroPoliza(polizaBean.getNumeroPoliza());
 		poliza.setNumeroAnexo(polizaBean.getNumeroAnexo());
 		poliza.setEjecutivo(polizaBean.getEjecutivo().getNombreUsuario());
@@ -631,6 +632,12 @@ public class EquipoElectronicoBacking implements Serializable {
 
 		poliza.setPagoPoliza(pagoPoliza);
 
+		}
+		poliza.setEstadoPoliza(polizaBean.getEstadoPoliza());
+		poliza.setCliente(polizaBean.getCliente());
+		poliza.setFechaRegistro(new Date());
+		poliza.setRamo(RamoEnum.R10.getLabel());
+		poliza.setEjecutivo(usuario.getIdentificacionUsuario());
 		return poliza;
 	}
 

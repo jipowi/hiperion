@@ -5,7 +5,9 @@
 package ec.com.avila.emision.web.backings;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -24,11 +26,18 @@ import ec.com.avila.emision.web.beans.RamoVidaBean;
 import ec.com.avila.emision.web.validator.ValidatorCedula;
 import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.dto.AseguradoraDTO;
+import ec.com.avila.hiperion.dto.TablaAmortizacionDTO;
 import ec.com.avila.hiperion.emision.entities.Aseguradora;
 import ec.com.avila.hiperion.emision.entities.Catalogo;
 import ec.com.avila.hiperion.emision.entities.Cliente;
 import ec.com.avila.hiperion.emision.entities.DetalleCatalogo;
+import ec.com.avila.hiperion.emision.entities.Financiamiento;
+import ec.com.avila.hiperion.emision.entities.PagoPoliza;
+import ec.com.avila.hiperion.emision.entities.Poliza;
+import ec.com.avila.hiperion.emision.entities.RamoVida;
 import ec.com.avila.hiperion.emision.entities.Usuario;
+import ec.com.avila.hiperion.enumeration.EstadoEnum;
+import ec.com.avila.hiperion.enumeration.RamoEnum;
 import ec.com.avila.hiperion.servicio.AseguradoraService;
 import ec.com.avila.hiperion.servicio.CatalogoService;
 import ec.com.avila.hiperion.servicio.ClienteService;
@@ -82,6 +91,7 @@ public class VidaBacking implements Serializable {
 	private Boolean activarDatosAseguradora = false;
 
 	private Usuario usuario;
+	RamoVida vida = new RamoVida();
 
 	Logger log = Logger.getLogger(AccidentesPersonalesBacking.class);
 
@@ -232,7 +242,95 @@ public class VidaBacking implements Serializable {
 		aseguradorasDTO.remove((AseguradoraDTO) event.getObject());
 	}
 
-	public void guardar() {
+	/**
+	 * 
+	 * <b> Permite gurdar los dats del ramo y la póliza </b>
+	 * <p>
+	 * [Author: Franklin Pozo , Date: 01/09/2016]
+	 * </p>
+	 * 
+	 * @throws HiperionException
+	 */
+	public void guardarRamo() throws HiperionException {
+		try {
+			Poliza poliza = setearDatosPoliza();
+
+			vida.setPrimaNetaPersonaVida(ramoVidaBean.getPrimaNetaPersona());
+			vida.setPrimaTotalPersonaVida(ramoVidaBean.getPrimaTotalPersona());
+			vida.setTasaVida(ramoVidaBean.getTasaVida());
+			vida.setTasaMuerte(ramoVidaBean.getTasaMuerte());
+			vida.setTasaIncapicidad(ramoVidaBean.getTasaIncapacidad());
+			vida.setTotalAsegurados(ramoVidaBean.getTotalAsegurados());
+			vida.setIdUsuarioCreacion(usuario.getIdUsuarioCreacion());
+			vida.setFechaCreacion(new Date());
+			vida.setEstado(EstadoEnum.A);
+
+			ramoVidaService.guardarRamoVida(vida, poliza);
+
+			MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.save"));
+		} catch (HiperionException e) {
+			log.error("Error al momento de guardar el ramo vida", e);
+			MessagesController.addError(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.error.save"));
+
+			throw new HiperionException(e);
+		}
+	}
+
+	/**
+	 * 
+	 * <b> Permite setear los datos de la poliza </b>
+	 * <p>
+	 * [Author: Franklin Pozo , Date: 02/09/2016]
+	 * </p>
+	 * 
+	 * @return
+	 */
+	public Poliza setearDatosPoliza() {
+
+		Poliza poliza = new Poliza();
+		if (polizaBean.getEstadoPoliza().equals("EMITIDO")) {
+			poliza.setNumeroPoliza(polizaBean.getNumeroPoliza());
+			poliza.setNumeroAnexo(polizaBean.getNumeroAnexo());
+			poliza.setVigenciaDesde(polizaBean.getVigenciaDesde());
+			poliza.setVigenciaHasta(polizaBean.getVigenciaHasta());
+			poliza.setDiasCobertura(polizaBean.getDiasCobertura());
+			poliza.setSumaAsegurada(polizaBean.getSumaAsegurada());
+			poliza.setPrimaNeta(BigDecimal.valueOf(polizaBean.getPrimaNeta()));
+			poliza.setSuperBanSeguros(polizaBean.getSuperBanSeguros());
+			poliza.setSeguroCampesino(BigDecimal.valueOf(polizaBean.getSeguroCampesino()));
+			poliza.setDerechoEmision(BigDecimal.valueOf(polizaBean.getDerechoEmision()));
+
+			PagoPoliza pagoPoliza = new PagoPoliza();
+			pagoPoliza.setNumeroFactura(polizaBean.getNumeroFactura());
+			pagoPoliza.setSubtotal(polizaBean.getSubtotal());
+			pagoPoliza.setAdicionalSegCampesino(polizaBean.getAdicionalSegCampesino());
+			pagoPoliza.setIva(polizaBean.getIva());
+			pagoPoliza.setCuotaInicial(polizaBean.getCuotaInicial());
+			pagoPoliza.setValorTotalPagoPoliza(polizaBean.getTotal());
+			pagoPoliza.setEstado(EstadoEnum.A);
+			pagoPoliza.setFechaCreacion(new Date());
+			pagoPoliza.setIdUsuarioCreacion(usuario.getIdUsuario());
+
+			List<Financiamiento> financiamientos = new ArrayList<>();
+			for (TablaAmortizacionDTO financiamiento : polizaBean.getFinanciamientos()) {
+				Financiamiento financiamientoTemp = new Financiamiento();
+				financiamientoTemp.setNumeroCuota(financiamiento.getNumeroLetra());
+				financiamientoTemp.setValorLetra(BigDecimal.valueOf(financiamiento.getValor()));
+				financiamientoTemp.setFechaVencimiento(financiamiento.getFechaVencimiento());
+
+				financiamientos.add(financiamientoTemp);
+			}
+
+			pagoPoliza.setFinanciamientos(financiamientos);
+
+			poliza.setPagoPoliza(pagoPoliza);
+		}
+		poliza.setEstadoPoliza(polizaBean.getEstadoPoliza());
+		poliza.setCliente(polizaBean.getCliente());
+		poliza.setFechaRegistro(new Date());
+		poliza.setRamo(RamoEnum.R26.getLabel());
+		poliza.setEjecutivo(usuario.getIdentificacionUsuario());
+		return poliza;
 	}
 
 	public RamoBean getRamoBean() {
@@ -355,7 +453,8 @@ public class VidaBacking implements Serializable {
 	}
 
 	/**
-	 * @param ramoVidaBean the ramoVidaBean to set
+	 * @param ramoVidaBean
+	 *            the ramoVidaBean to set
 	 */
 	public void setRamoVidaBean(RamoVidaBean ramoVidaBean) {
 		this.ramoVidaBean = ramoVidaBean;
@@ -369,11 +468,11 @@ public class VidaBacking implements Serializable {
 	}
 
 	/**
-	 * @param polizaBean the polizaBean to set
+	 * @param polizaBean
+	 *            the polizaBean to set
 	 */
 	public void setPolizaBean(PolizaBean polizaBean) {
 		this.polizaBean = polizaBean;
 	}
 
-	
 }
