@@ -11,6 +11,7 @@ import javax.ejb.Stateless;
 
 import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.dao.RamoVidaDao;
+import ec.com.avila.hiperion.emision.entities.Poliza;
 import ec.com.avila.hiperion.emision.entities.RamoVida;
 import ec.com.avila.hiperion.servicio.RamoVidaService;
 
@@ -27,13 +28,19 @@ public class RamoVidaServiceImpl implements RamoVidaService {
 	@EJB
 	private RamoVidaDao ramoVidaDao;
 
-	public void guardarRamoVida(RamoVida vida) throws HiperionException {
-		ramoVidaDao.persist(vida);
-
-	}
-
 	public List<RamoVida> consultarRamoVida() throws HiperionException {
 		return ramoVidaDao.findAll();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see ec.com.avila.hiperion.servicio.RamoVidaService#guardarRamoVida(ec.com.avila.hiperion.emision.entities.RamoVida, ec.com.avila.hiperion.emision.entities.Poliza)
+	 */
+	@Override
+	public void guardarRamoVida(RamoVida ramoVida, Poliza poliza) throws HiperionException {
+		ramoVidaDao.persist(ramoVida);
+
 	}
 
 }
