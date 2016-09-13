@@ -629,10 +629,10 @@
 											<p:growl id="messages" showDetail="true" />
 											<h:panelGrid columns="2">
 												<h:outputLabel value="#{emision['equipoElectronico.objeto.item']}" styleClass="negrita" />
-												<p:inputText value="#{ramoEquipoElectronicoBean.numeroItem}" />
+												<p:inputText value="#{ramoEquipoElectronicoBean.numeroItem}" style="text-transform:uppercase;"/>
 
 												<h:outputLabel value="#{emision['equipoElectronico.objeto.ubicacion']}" styleClass="negrita" />
-												<p:inputText value="#{ramoEquipoElectronicoBean.ubicacionRiesgo}" />
+												<p:inputText value="#{ramoEquipoElectronicoBean.ubicacionRiesgo}" style="text-transform:uppercase;"/>
 
 												<h:outputLabel value="#{emision['equipoElectronico.objeto.detalle']}" styleClass="negrita" />
 												<p:selectOneMenu id="sectorId" value="#{ramoEquipoElectronicoBean.detalle}" effect="drop">
@@ -644,7 +644,7 @@
 												<p:inputText value="#{ramoEquipoElectronicoBean.valorObjeto}" />
 
 												<h:outputLabel value="#{emision['equipoElectronico.objeto.descripcion']}" styleClass="negrita" />
-												<p:inputTextarea value="#{ramoEquipoElectronicoBean.descripcion}" cols="50" rows="2" />
+												<p:inputTextarea value="#{ramoEquipoElectronicoBean.descripcion}" cols="50" rows="2" style="text-transform:uppercase;"/>
 
 											</h:panelGrid>
 											<f:facet name="footer">

@@ -541,8 +541,8 @@
 											<p:separator id="customSeparator" style="width:auto;height:1px" />
 											<p:growl id="messages" showDetail="true" />
 											<h:panelGrid columns="2">
-												<h:outputLabel value="#{emision['emision.ramo.transporte.objeto.item']}" styleClass="negrita" />
-												<p:inputText value="#{ramoTransporteBean.item}" />
+												<h:outputLabel for="item" value="#{emision['emision.ramo.transporte.objeto.item']}" styleClass="negrita" />
+												<p:inputText id="item" value="#{ramoTransporteBean.item}" required="true" />
 
 												<h:outputLabel value="#{emision['emision.ramo.transporte.objeto.limiteEstimadoMov']}" styleClass="negrita" />
 												<p:inputText value="#{ramoTransporteBean.limiteMovilizacionAnual}" />
@@ -570,8 +570,8 @@
 											</h:panelGrid>
 										</h:panelGrid>
 										<div align="center">
-											<p:commandButton id="agregarObjeto" process="@this" update="form1,tablaObj" icon="icon-add" value="#{emision['boton.agregar']}"
-												actionListener="#{ramoTransporteBean.addObjeto()}" title="Agregar" />
+											<p:commandButton id="agregarObjeto" process="@this" update="tablaObj" icon="icon-add" value="#{emision['boton.agregar']}"
+												actionListener="#{ramoTransporteBean.addObjeto}" title="Agregar" />
 										</div>
 
 										<p:spacer height="30px;" />

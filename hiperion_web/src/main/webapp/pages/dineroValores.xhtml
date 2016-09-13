@@ -495,22 +495,22 @@
 											<p:panelGrid columns="4">
 												<h:outputLabel for="idItem" value="#{emision['dineroValores.objeto.item']}" styleClass="negrita" />
 												<p:inputText id="idItem" value="#{ramoDineroValoresBean.item}" required="true"
-													requiredMessage="#{emision['dineroValores.objeto.item.msn']}" />
+													requiredMessage="#{emision['dineroValores.objeto.item.msn']} " style="text-transform:uppercase;" />
 												<h:outputLabel value="#{emision['dineroValores.objeto.dineroValores']}" styleClass="negrita" />
-												<p:inputText value="#{ramoDineroValoresBean.dineroValores}" />
+												<p:inputText value="#{ramoDineroValoresBean.dineroValores}" style="text-transform:uppercase;"/>
 
 												<h:outputLabel value="#{emision['dineroValores.objeto.limiteEstimadoAnual']}" styleClass="negrita" />
-												<p:inputText value="#{ramoDineroValoresBean.limiteEstimadoAnual}" />
+												<p:inputText value="#{ramoDineroValoresBean.limiteEstimadoAnual}" style="text-transform:uppercase;" />
 												<h:outputLabel value="#{emision['dineroValores.objeto.limiteEmbarque']}" styleClass="negrita" />
-												<p:inputText value="#{ramoDineroValoresBean.limiteEmbarque}" />
+												<p:inputText value="#{ramoDineroValoresBean.limiteEmbarque}" style="text-transform:uppercase;" />
 
 												<h:outputLabel value="#{emision['dineroValores.objeto.trayectoriaDesde']}" styleClass="negrita" />
-												<p:inputText value="#{ramoDineroValoresBean.trayectoDesde}" />
+												<p:inputText value="#{ramoDineroValoresBean.trayectoDesde}" style="text-transform:uppercase;" />
 												<h:outputLabel value="#{emision['dineroValores.objeto.trayectoriaHasta']}" styleClass="negrita" />
-												<p:inputText value="#{ramoDineroValoresBean.trayectoHasta}" />
+												<p:inputText value="#{ramoDineroValoresBean.trayectoHasta}" style="text-transform:uppercase;"/>
 
 												<h:outputLabel value="#{emision['dineroValores.objeto.medioTransporte']}" styleClass="negrita" />
-												<p:inputText value="#{ramoDineroValoresBean.medioTransporte}" />
+												<p:inputText value="#{ramoDineroValoresBean.medioTransporte}" style="text-transform:uppercase;" />
 
 											</p:panelGrid>
 											<f:facet name="footer">

@@ -489,29 +489,29 @@
 										<h:panelGrid columns="4">
 											<h:outputLabel for="idItem" value="#{emision['equipoMaquinaria.objeto.item']}" styleClass="negrita" />
 											<p:inputText id="idItem" value="#{ramoEquipoMaquinaraBean.item}" required="true"
-												requiredMessage="#{emision['equipoMaquinaria.objeto.item.msn']}" />
+												requiredMessage="#{emision['equipoMaquinaria.objeto.item.msn']}" style="text-transform:uppercase;"/>
 											<h:outputLabel for="idMarca" value="#{emision['equipoMaquinaria.objeto.marca']}" styleClass="negrita" />
 											<p:inputText id="idMarca" value="#{ramoEquipoMaquinaraBean.marca}" required="true"
-												requiredMessage="#{emision['equipoMaquinaria.objeto.marca.msn']}" />
+												requiredMessage="#{emision['equipoMaquinaria.objeto.marca.msn']}" style="text-transform:uppercase;"/>
 
 											<h:outputLabel for="idModelo" value="#{emision['equipoMaquinaria.objeto.modelo']}" styleClass="negrita" />
 											<p:inputText id="idModelo" value="#{ramoEquipoMaquinaraBean.modelo}" required="true"
-												requiredMessage="#{emision['equipoMaquinaria.objeto.modelo.msn']}" />
+												requiredMessage="#{emision['equipoMaquinaria.objeto.modelo.msn']}" style="text-transform:uppercase;"/>
 											<h:outputLabel value="#{emision['equipoMaquinaria.objeto.anio']}" styleClass="negrita" />
 											<p:inputText value="#{ramoEquipoMaquinaraBean.anio}" />
 
 											<h:outputLabel value="#{emision['equipoMaquinaria.objeto.motor']}" styleClass="negrita" />
-											<p:inputText value="#{ramoEquipoMaquinaraBean.motor}" />
+											<p:inputText value="#{ramoEquipoMaquinaraBean.motor}" style="text-transform:uppercase;" />
 											<h:outputLabel value="#{emision['equipoMaquinaria.objeto.chasis']}" styleClass="negrita" />
-											<p:inputText value="#{ramoEquipoMaquinaraBean.chasis}" />
+											<p:inputText value="#{ramoEquipoMaquinaraBean.chasis}" style="text-transform:uppercase;" />
 
 											<h:outputLabel value="#{emision['equipoMaquinaria.objeto.color']}" styleClass="negrita" />
-											<p:inputText value="#{ramoEquipoMaquinaraBean.color}" />
+											<p:inputText value="#{ramoEquipoMaquinaraBean.color}" style="text-transform:uppercase;" />
 											<h:outputLabel value="#{emision['equipoMaquinaria.objeto.valorAsegurado']}" styleClass="negrita" />
-											<p:inputText value="#{ramoEquipoMaquinaraBean.color}" />
+											<p:inputText value="#{ramoEquipoMaquinaraBean.valorAsegurado}" style="text-transform:uppercase;"/>
 
 											<h:outputLabel value="#{emision['equipoMaquinaria.objeto.serie']}" styleClass="negrita" />
-											<p:inputText value="#{ramoEquipoMaquinaraBean.color}" />
+											<p:inputText value="#{ramoEquipoMaquinaraBean.serie}" style="text-transform:uppercase;" />
 
 										</h:panelGrid>
 										<f:facet name="footer">
