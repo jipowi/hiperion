@@ -88,12 +88,13 @@
 												</p:selectOneMenu>
 											</h:panelGrid>
 										</h:panelGrid>
-										<f:facet name="footer">
-											<div align="center">
-												<p:commandButton id="agregarAseguradora" icon="icon-add" value="#{emision['boton.agregar']}"
-													actionListener="#{asistenciaMedicaBacking.addAseguradora}" title="Agregar" update="tablaAseguradoras" />
-											</div>
-										</f:facet>
+										Prueba
+										
+										<div align="center">
+											<p:commandButton id="agregarAseguradora" icon="icon-add" value="#{emision['boton.agregar']}"
+												actionListener="#{asistenciaMedicaBacking.addAseguradora()}" title="Agregar" update="tablaAseguradoras" />
+										</div>
+										
 										<p:spacer height="30px;" />
 										<p:dataTable id="tablaAseguradoras" value="#{asistenciaMedicaBacking.aseguradorasDTO}" var="obj" editable="true">
 											<p:ajax event="rowEditCancel" listener="#{asistenciaMedicaBacking.onCancel}" update="@this" />
@@ -119,6 +120,7 @@
 												<p:rowEditor />
 											</p:column>
 										</p:dataTable>
+
 									</p:panel>
 								</h:panelGrid>
 							</p:panel>
@@ -864,7 +866,7 @@
 													<p:growl id="messagesDependiente" showDetail="true" />
 													<p:panelGrid columns="2">
 														<h:outputLabel value="#{emision['asm.modalidad.nombre']}" styleClass="negrita" />
-														<p:inputText value="#{ramoAsistenciaMedicaBean.nombreDependiente}" style="text-transform:uppercase;"/>
+														<p:inputText value="#{ramoAsistenciaMedicaBean.nombreDependiente}" style="text-transform:uppercase;" />
 
 														<h:outputLabel value="#{emision['asm.modalidad.fechaNacimiento']}" styleClass="negrita" />
 														<p:calendar value="#{ramoAsistenciaMedicaBean.fechaNacimientoDependiente}" pattern="dd/MM/yyyy HH:mm" locale="es" navigator="true" />
