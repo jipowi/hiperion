@@ -219,6 +219,8 @@ public class ClienteBacking implements Serializable {
 				if (clienteObtenido == null) {
 					MessagesController.addWarn(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.warn.buscar"));
 				} else {
+					List<Direccion> direcciones = clienteService.consularDireccionByCliente(clienteObtenido.getIdCliente());
+					clienteObtenido.setDireccions(direcciones);
 					clientesObtenidos.add(clienteObtenido);
 				}
 			} else {

@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:p="http://primefaces.org/ui" xmlns:c="http://java.sun.com/jsp/jstl/core">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui" xmlns:c="http://java.sun.com/jsp/jstl/core">
 <ui:composition template="/templates/menuPrincipalTemplate.xhtml">
 	<ui:define name="content">
 		<h:outputStylesheet name="cliente.css" library="css" />
@@ -65,8 +65,8 @@
 				</h:panelGrid>
 				<p:spacer height="20px;" />
 				<div align="center">
-					<p:commandButton id="crearClienteBtn" value="Crear nuevo cliente" actionListener="#{clienteBacking.obtenerCodigoCliente}" update=":clienteFormId:agregarClienteDlgId"
-						oncomplete="crearClienteDlg.show();" title="Nuevo" icon="icon-client">
+					<p:commandButton id="crearClienteBtn" value="Crear nuevo cliente" actionListener="#{clienteBacking.obtenerCodigoCliente}"
+						update=":clienteFormId:agregarClienteDlgId" oncomplete="crearClienteDlg.show();" title="Nuevo" icon="icon-client">
 						<p:ajax update=":clienteFormId, :direccionesFormId, :direccionFormId" />
 					</p:commandButton>
 				</div>
@@ -79,8 +79,9 @@
 					</f:facet>
 					<p:growl id="messages" showDetail="true" />
 
-					<p:fileUpload value="#{clienteBacking.file}" fileUploadListener="#{clienteBacking.cargaArchivoExcel}" mode="advanced" update="messages" multiple="true" sizeLimit="900000000"
-						allowTypes="/(\.|\/)(xls)$/" uploadLabel="Cargar" cancelLabel="Cancelar" label="Buscar archivo" required="true">
+					<p:fileUpload value="#{clienteBacking.file}" fileUploadListener="#{clienteBacking.cargaArchivoExcel}" mode="advanced" update="messages"
+						multiple="true" sizeLimit="900000000" allowTypes="/(\.|\/)(xls)$/" uploadLabel="Cargar" cancelLabel="Cancelar" label="Buscar archivo"
+						required="true">
 					</p:fileUpload>
 				</p:panel>
 
@@ -106,6 +107,17 @@
 								</f:facet>
 								<h:outputText value="#{cliente.razonSocial}" />
 							</p:column>
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="#{emision['lbl.direccion']}" />
+								</f:facet>
+								<p:dataList value="#{cliente.direccions}" var="direccion" type="ordered">
+									<f:facet name="header">
+										<h:outputText value="#{emision['lbl.direccion']}" />
+									</f:facet>
+							        #{direccion.callePrincipal}, #{direccion.numeracion}, #{direccion.calleSecundaria}
+							    </p:dataList>
+							</p:column>
 						</p:dataTable>
 					</h:panelGrid>
 				</div>
@@ -114,32 +126,35 @@
 		</h:form>
 
 
-
 		<h:form id="clienteFormId">
 			<!-- DIALOG - Datos del Cliente -->
-			<p:dialog id="agregarClienteDlgId" widgetVar="crearClienteDlg" showEffect="fade" hideEffect="explode" resizable="false" modal="true" styleClass="DialogCliente">
+			<p:dialog id="agregarClienteDlgId" widgetVar="crearClienteDlg" showEffect="fade" hideEffect="explode" resizable="false" modal="true"
+				styleClass="DialogCliente">
 
 				<div id="crearClienteDivBodyId">
 					<!-- CLIENTE -->
 					<p:messages id="msgs" showDetail="false" autoUpdate="true" closable="true" />
 					<h:panelGrid columns="2" cellpadding="2" cellspacing="2">
 						<p:outputLabel for="tipoPersonaSelectId" value="#{administrador['cliente.dlg.agregar.tipoPersona']}" styleClass="negrita" />
-						<p:selectOneMenu id="tipoPersonaSelectId" value="#{clienteBean.tipoPersona}" required="true" requiredMessage="#{administrador['cliente.dlg.agregar.msg.tipoPersona']}"
-							effect="drop">
+						<p:selectOneMenu id="tipoPersonaSelectId" value="#{clienteBean.tipoPersona}" required="true"
+							requiredMessage="#{administrador['cliente.dlg.agregar.msg.tipoPersona']}" effect="drop">
 							<f:selectItem itemLabel="Seleccione" noSelectionOption="true" />
 							<f:selectItems value="#{clienteBacking.tipoPersonaItems}" />
-							<p:ajax event="change" listener="#{clienteBacking.selectTipoPersona(clienteBean.tipoPersona)}" update="tipoIdentificacionId, infPerNatPanelId, infPerJurPanelId" />
+							<p:ajax event="change" listener="#{clienteBacking.selectTipoPersona(clienteBean.tipoPersona)}"
+								update="tipoIdentificacionId, infPerNatPanelId, infPerJurPanelId" />
 						</p:selectOneMenu>
 
 						<p:outputLabel for="tipoIdentificacionId" value="#{administrador['cliente.dlg.agregar.tipoIdentificacion']}" styleClass="negrita" />
 						<p:selectOneMenu id="tipoIdentificacionId" value="#{clienteBean.tipoIdentificacion}" required="true"
-							requiredMessage="#{administrador['cliente.dlg.agregar.msg.tipoIdentificacion']}" effect="drop" disabled="#{clienteBacking.activarPanelPersonaJuridica}">
+							requiredMessage="#{administrador['cliente.dlg.agregar.msg.tipoIdentificacion']}" effect="drop"
+							disabled="#{clienteBacking.activarPanelPersonaJuridica}">
 							<f:selectItem itemLabel="Seleccione" noSelectionOption="true" />
 							<f:selectItems value="#{clienteBacking.tipoIdentificacionItems}" />
 						</p:selectOneMenu>
 
 						<p:outputLabel for="idIdentificacion" value="#{administrador['cliente.dlg.agregar.identificacion']}" styleClass="negrita" />
-						<p:inputText id="idIdentificacion" value="#{clienteBean.identificacion}" required="true" requiredMessage="#{administrador['cliente.dlg.agregar.msg.identificacion']}" />
+						<p:inputText id="idIdentificacion" value="#{clienteBean.identificacion}" required="true"
+							requiredMessage="#{administrador['cliente.dlg.agregar.msg.identificacion']}" />
 					</h:panelGrid>
 
 
@@ -150,18 +165,18 @@
 							<p:outputLabel for="apePaterno" value="#{administrador['cliente.dlg.agregar.appPaterno']}" styleClass="negrita" />
 							<p:outputLabel for="apeMaterno" value="#{administrador['cliente.dlg.agregar.appMaterno']}" styleClass="negrita" />
 							<p:inputText id="nombreId" value="#{clienteBean.nombre}" required="#{clienteBacking.activarPanelPersonaNatural}"
-								requiredMessage="#{administrador['cliente.dlg.agregar.msg.nombres']}" styleClass="DialogoCliente-nombre" validatorMessage="#{emision['msg.texto.error']}"
-								style="text-transform:uppercase;">
+								requiredMessage="#{administrador['cliente.dlg.agregar.msg.nombres']}" styleClass="DialogoCliente-nombre"
+								validatorMessage="#{emision['msg.texto.error']}" style="text-transform:uppercase;">
 								<f:validateRegex pattern="#{emision['msg.formato.texto']}" />
 							</p:inputText>
 							<p:inputText id="apePaterno" value="#{clienteBean.apePaterno}" required="#{clienteBacking.activarPanelPersonaNatural}"
-								requiredMessage="#{administrador['cliente.dlg.agregar.msg.appPaterno']}" styleClass="DialogoCliente-apePaterno" validatorMessage="#{emision['msg.texto.error']}"
-								style="text-transform:uppercase;">
+								requiredMessage="#{administrador['cliente.dlg.agregar.msg.appPaterno']}" styleClass="DialogoCliente-apePaterno"
+								validatorMessage="#{emision['msg.texto.error']}" style="text-transform:uppercase;">
 								<f:validateRegex pattern="#{emision['msg.formato.texto']}" />
 							</p:inputText>
 							<p:inputText id="apeMaterno" value="#{clienteBean.apeMaterno}" required="#{clienteBacking.activarPanelPersonaNatural}"
-								requiredMessage="#{administrador['cliente.dlg.agregar.msg.appMaterno']}" styleClass="DialogoCliente-apeMaterno" validatorMessage="#{emision['msg.texto.error']}"
-								style="text-transform:uppercase;">
+								requiredMessage="#{administrador['cliente.dlg.agregar.msg.appMaterno']}" styleClass="DialogoCliente-apeMaterno"
+								validatorMessage="#{emision['msg.texto.error']}" style="text-transform:uppercase;">
 								<f:validateRegex pattern="#{emision['msg.formato.texto']}" />
 							</p:inputText>
 						</h:panelGrid>
@@ -169,7 +184,8 @@
 							<p:outputLabel for="actProfecionId" value="#{administrador['cliente.dlg.agregar.actProfesion']}" styleClass="negrita" />
 							<p:outputLabel for="fechaNacimientoId" value="#{administrador['cliente.dlg.agregar.fechaNacimiento']}" styleClass="negrita" />
 							<p:outputLabel for="contactoId" value="#{administrador['cliente.dlg.agregar.contacto']}" styleClass="negrita" />
-							<p:inputText id="actProfecionId" value="#{clienteBean.actividadProfecion}" styleClass="DialogoCliente-actProfesion" style="text-transform:uppercase;" />
+							<p:inputText id="actProfecionId" value="#{clienteBean.actividadProfecion}" styleClass="DialogoCliente-actProfesion"
+								style="text-transform:uppercase;" />
 							<p:calendar id="fechaNacimientoId" value="#{clienteBean.fechaNacimiento}" locale="de" navigator="true" pattern="MM/dd/yyyy" mask="true" />
 							<p:commandLink id="contactoId">
 								<h:graphicImage name="icono-contacto.jpg" onclick="contactosDlg.show()" library="img" height="30px;" />
@@ -186,8 +202,8 @@
 						</h:panelGrid>
 						<h:panelGrid columns="1" cellpadding="2" cellspacing="2">
 							<p:outputLabel for="giroNegocioId" value="#{administrador['cliente.dlg.agregar.giroNegocio']}" styleClass="negrita" />
-							<p:inputText id="giroNegocioId" value="#{clienteBean.giroNegocio}" required="#{clienteBacking.activarPanelPersonaJuridica}" requiredMessage="emi"
-								styleClass="DialogCliente-giroNegocio" />
+							<p:inputText id="giroNegocioId" value="#{clienteBean.giroNegocio}" required="#{clienteBacking.activarPanelPersonaJuridica}"
+								requiredMessage="emi" styleClass="DialogCliente-giroNegocio" />
 						</h:panelGrid>
 						<h:panelGrid columns="2" cellpadding="2" cellspacing="2">
 							<p:outputLabel value="#{administrador['cliente.dlg.agregar.contacto']}" styleClass="negrita" />
@@ -207,8 +223,8 @@
 				<!-- Footer del Formulario -->
 				<f:facet name="footer">
 					<div id="crearClienteDivFooterId">
-						<p:commandButton id="guardarClienteBtnId" value="#{utilitario['hiperion.btn.guardar']}" actionListener="#{clienteBacking.guardarCliente}" oncomplete="crearClienteDlg.hide();"
-							icon="icon-save" />
+						<p:commandButton id="guardarClienteBtnId" value="#{utilitario['hiperion.btn.guardar']}" actionListener="#{clienteBacking.guardarCliente}"
+							oncomplete="crearClienteDlg.hide();" icon="icon-save" />
 					</div>
 				</f:facet>
 			</p:dialog>
@@ -228,23 +244,25 @@
 						<f:selectItems value="#{contactoBacking.tipoContactosItems}" />
 						<p:ajax listener="#{contactoBacking.validarContacto()}" update="idContactos, idCelular, idTelefono, idMail, idSkype" />
 					</p:selectOneMenu>
-					<p:inputText id="idCelular" value="#{contactoBean.descripcionContacto}" placeholder="#{contactoBean.tipoContacto}" rendered="#{contactoBacking.activarCelular}"
-						validatorMessage="#{emision['msg.formato.celular.error']}">
+					<p:inputText id="idCelular" value="#{contactoBean.descripcionContacto}" placeholder="#{contactoBean.tipoContacto}"
+						rendered="#{contactoBacking.activarCelular}" validatorMessage="#{emision['msg.formato.celular.error']}">
 						<f:validateRegex pattern="#{emision['msg.formato.celular']}" />
 					</p:inputText>
-					<p:inputText id="idTelefono" value="#{contactoBean.descripcionContacto}" placeholder="#{contactoBean.tipoContacto}" rendered="#{contactoBacking.activarTelefono}" />
-					<p:inputText id="idMail" value="#{contactoBean.descripcionContacto}" placeholder="#{contactoBean.tipoContacto}" rendered="#{contactoBacking.activarMail}"
-						validatorMessage="#{emision['msg.correo.error']}">
+					<p:inputText id="idTelefono" value="#{contactoBean.descripcionContacto}" placeholder="#{contactoBean.tipoContacto}"
+						rendered="#{contactoBacking.activarTelefono}" />
+					<p:inputText id="idMail" value="#{contactoBean.descripcionContacto}" placeholder="#{contactoBean.tipoContacto}"
+						rendered="#{contactoBacking.activarMail}" validatorMessage="#{emision['msg.correo.error']}">
 						<f:validateRegex pattern="#{emision['msg.formato.correo']}" />
 					</p:inputText>
-					<p:inputText id="idSkype" value="#{contactoBean.descripcionContacto}" placeholder="#{contactoBean.tipoContacto}" rendered="#{contactoBacking.activarSkype}" />
+					<p:inputText id="idSkype" value="#{contactoBean.descripcionContacto}" placeholder="#{contactoBean.tipoContacto}"
+						rendered="#{contactoBacking.activarSkype}" />
 				</h:panelGrid>
 
 				<!-- Footer del Formulario -->
 				<f:facet name="footer">
 					<div id="contactoDivFooterId">
-						<p:commandButton id="guardarContactoBtnId" value="#{utilitario['hiperion.btn.guardar']}" action="#{contactoBacking.guardarContacto}" oncomplete="agregarContactoDlg.hide();"
-							update=":contactosFormId:contactosTableId" icon="icon-save" />
+						<p:commandButton id="guardarContactoBtnId" value="#{utilitario['hiperion.btn.guardar']}" action="#{contactoBacking.guardarContacto}"
+							oncomplete="agregarContactoDlg.hide();" update=":contactosFormId:contactosTableId" icon="icon-save" />
 					</div>
 				</f:facet>
 			</p:dialog>
@@ -259,8 +277,8 @@
 				</f:facet>
 				<p:messages id="msgsContactos" showDetail="false" autoUpdate="true" closable="true" />
 				<!-- Boton Nuevo Contacto -->
-				<p:commandButton id="crearContactoBtn" value="#{utilitario['hiperion.btn.nuevo']}" update=":agregarContactoFormId" oncomplete="agregarContactoDlg.show()" title="Nuevo"
-					icon="icon-new">
+				<p:commandButton id="crearContactoBtn" value="#{utilitario['hiperion.btn.nuevo']}" update=":agregarContactoFormId"
+					oncomplete="agregarContactoDlg.show()" title="Nuevo" icon="icon-new">
 				</p:commandButton>
 
 				<p:separator />
@@ -281,8 +299,8 @@
 				<!-- Footer del Formulario -->
 				<f:facet name="footer">
 					<div id="contactosDivFooterId">
-						<p:commandButton id="guardarContactosBtnId" value="#{utilitario['hiperion.btn.guardar']}" action="#{contactoBacking.guardarContactos}" oncomplete="contactosDlg.hide();"
-							icon="icon-save" />
+						<p:commandButton id="guardarContactosBtnId" value="#{utilitario['hiperion.btn.guardar']}" action="#{contactoBacking.guardarContactos}"
+							oncomplete="contactosDlg.hide();" icon="icon-save" />
 
 					</div>
 				</f:facet>
@@ -292,15 +310,16 @@
 		<!-- DIALOG - Permite visulaizar, modificar y eliminar las direcciones del Cliente -->
 		<h:form id="direccionesFormId">
 			<p:growl id="msgs" showDetail="true" />
-			<p:dialog id="direccionesDlgId" header="#{administrador['cliente.dlg.direcciones.header']}" widgetVar="direccionesDlg" showEffect="fade" hideEffect="explode" resizable="false"
-				closable="false" modal="true" width="95%">
+			<p:dialog id="direccionesDlgId" header="#{administrador['cliente.dlg.direcciones.header']}" widgetVar="direccionesDlg" showEffect="fade"
+				hideEffect="explode" resizable="false" closable="false" modal="true" width="95%">
 				<!-- Tipo de Direccion -->
 				<h:panelGrid columns="2" cellpadding="2" cellspacing="2">
 					<p:outputLabel value="#{administrador['cliente.dlg.contacto.tipoContacto']}" styleClass="negrita" />
 					<p:selectOneMenu id="tipoDireccionId" value="#{direccionBean.codTipoDireccion}" effect="drop">
 						<f:selectItem itemLabel="Seleccione" noSelectionOption="true" />
 						<f:selectItems value="#{direccionBacking.tipoDireccionItems}" />
-						<p:ajax event="change" listener="#{direccionBacking.selectTipoDireccion}" update=":direccionFormId:inputDireccionDlgId" oncomplete="inputDireccionDlg.show()" />
+						<p:ajax event="change" listener="#{direccionBacking.selectTipoDireccion}" update=":direccionFormId:inputDireccionDlgId"
+							oncomplete="inputDireccionDlg.show()" />
 					</p:selectOneMenu>
 				</h:panelGrid>
 
@@ -385,8 +404,9 @@
 					<div align="center">
 						<p:commandButton id="guardarDireccionesId" value="#{utilitario['hiperion.btn.guardar']}" actionListener="#{direccionBacking.guardarDirecciones}"
 							oncomplete="direccionesDlg.hide();" icon="ui-icon-check" />
-						<p:commandButton id="cancelarDireccionesId" value="#{utilitario['hiperion.btn.cancelar']}" actionListener="#{direccionBacking.cancelarDirecciones}"
-							oncomplete="direccionesDlg.hide();" update=":direccionesFormId:direccionesTableId,:direccionesFormId:tipoDireccionId" icon="ui-icon-circle-close" />
+						<p:commandButton id="cancelarDireccionesId" value="#{utilitario['hiperion.btn.cancelar']}"
+							actionListener="#{direccionBacking.cancelarDirecciones}" oncomplete="direccionesDlg.hide();"
+							update=":direccionesFormId:direccionesTableId,:direccionesFormId:tipoDireccionId" icon="ui-icon-circle-close" />
 					</div>
 				</f:facet>
 			</p:dialog>
@@ -400,14 +420,15 @@
 
 		<!-- DIALOG - Permite ingresar las direcciones del Cliente  -->
 		<h:form id="direccionFormId" prependId="false">
-			<p:dialog id="inputDireccionDlgId" header="Direcci&oacute;n de  #{direccionBean.tipoDireccion}" widgetVar="inputDireccionDlg" resizable="false" showEffect="fade"
-				hideEffect="explode" modal="true" closable="false">
+			<p:dialog id="inputDireccionDlgId" header="Direcci&oacute;n de  #{direccionBean.tipoDireccion}" widgetVar="inputDireccionDlg" resizable="false"
+				showEffect="fade" hideEffect="explode" modal="true" closable="false">
 				<p:messages id="message" showDetail="false" autoUpdate="true" closable="true" />
 				<p:panel>
 					<h:panelGrid id="detalleDireccionId" columns="2" cellpadding="2" cellspacing="2">
 						<p:outputLabel for="provinciaId" value="#{administrador['cliente.dlg.direccion.provicnia']}" styleClass="negrita" />
-						<p:selectOneMenu id="provinciaId" value="#{direccionBean.provinciaDTO}" required="true" requiredMessage="#{administrador['cliente.dlg.direccion.msg.provincia']}"
-							converter="provinciaConverter" effect="fade" var="p" filter="true" style="width:210px;">
+						<p:selectOneMenu id="provinciaId" value="#{direccionBean.provinciaDTO}" required="true"
+							requiredMessage="#{administrador['cliente.dlg.direccion.msg.provincia']}" converter="provinciaConverter" effect="fade" var="p" filter="true"
+							style="width:210px;">
 							<f:selectItems value="#{direccionBacking.provinciasDTO}" var="provincia" itemLabel="#{provincia.nombre}" itemValue="#{provincia}" />
 							<p:column>
 								<h:outputText value="#{p.nombre}" />
@@ -415,16 +436,16 @@
 						</p:selectOneMenu>
 
 						<p:outputLabel for="callePrincipalId" value="#{administrador['cliente.dlg.direccion.callePrincilapal']}" styleClass="negrita" />
-						<p:inputText id="callePrincipalId" value="#{direccionBean.callePrincipal}" required="true" requiredMessage="#{administrador['cliente.dlg.direccion.msg.callePrincipal']}"
-							style="width:200px;text-transform:uppercase;" />
+						<p:inputText id="callePrincipalId" value="#{direccionBean.callePrincipal}" required="true"
+							requiredMessage="#{administrador['cliente.dlg.direccion.msg.callePrincipal']}" style="width:200px;text-transform:uppercase;" />
 
 						<p:outputLabel for="numeracionId" value="#{administrador['cliente.dlg.direccion.numeracion']}" styleClass="negrita" />
-						<p:inputText id="numeracionId" value="#{direccionBean.numeracion}" required="true" requiredMessage="#{administrador['cliente.dlg.direccion.msg.numeracion']}"
-							style="width:200px;" />
+						<p:inputText id="numeracionId" value="#{direccionBean.numeracion}" required="true"
+							requiredMessage="#{administrador['cliente.dlg.direccion.msg.numeracion']}" style="width:200px;" />
 
 						<p:outputLabel for="calleSecundariaId" value="#{administrador['cliente.dlg.direccion.calleSecundaria']}" styleClass="negrita" />
-						<p:inputText id="calleSecundariaId" value="#{direccionBean.calleSecundaria}" required="true" requiredMessage="#{administrador['cliente.dlg.direccion.msg.calleSecundaria']}"
-							style="width:200px; text-transform:uppercase;" />
+						<p:inputText id="calleSecundariaId" value="#{direccionBean.calleSecundaria}" required="true"
+							requiredMessage="#{administrador['cliente.dlg.direccion.msg.calleSecundaria']}" style="width:200px; text-transform:uppercase;" />
 					</h:panelGrid>
 					<h:panelGrid columns="1" cellpadding="2" cellspacing="2">
 						<p:outputLabel for="referenciaId" value="#{administrador['cliente.dlg.direccion.referencia']}" styleClass="negrita" />
@@ -435,10 +456,10 @@
 				<f:facet name="footer">
 					<div align="center">
 						<p:commandButton id="agregarDireccionId" value="Agregar"
-							update=":direccionFormId:detalleDireccionId, :direccionesFormId:direccionesTableId, :direccionesFormId:tipoDireccionId" actionListener="#{direccionBacking.agregarDireccion}"
-							icon="ui-icon-check" />
-						<p:commandButton id="cancelarDireccionId" value="Cancelar" actionListener="#{direccionBacking.cancelarDireccion}" update=":direccionesFormId:tipoDireccionId"
-							oncomplete="inputDireccionDlg.hide();" process="@this" icon="ui-icon-circle-close" />
+							update=":direccionFormId:detalleDireccionId, :direccionesFormId:direccionesTableId, :direccionesFormId:tipoDireccionId"
+							actionListener="#{direccionBacking.agregarDireccion}" icon="ui-icon-check" />
+						<p:commandButton id="cancelarDireccionId" value="Cancelar" actionListener="#{direccionBacking.cancelarDireccion}"
+							update=":direccionesFormId:tipoDireccionId" oncomplete="inputDireccionDlg.hide();" process="@this" icon="ui-icon-circle-close" />
 					</div>
 				</f:facet>
 			</p:dialog>
