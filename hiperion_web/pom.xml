@@ -24,8 +24,8 @@
 		<version.ejb.plugin>2.3</version.ejb.plugin>
 
 		<!-- maven-compiler-plugin -->
-		<maven.compiler.target>1.6</maven.compiler.target>
-		<maven.compiler.source>1.6</maven.compiler.source>
+		<maven.compiler.target>1.7</maven.compiler.target>
+		<maven.compiler.source>1.7</maven.compiler.source>
 
 		<!-- Optional: to use jboss-as:run goal -->
 		<jboss-as.home>C:\ENTORNO_SGS\Servidores\jboss-as-7.1.1.Final</jboss-as.home>
@@ -37,11 +37,13 @@
 			<version>4.9</version><!--$NO-MVN-MAN-VER$ -->
 			<scope>test</scope>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.primefaces/primefaces -->
 		<dependency>
 			<groupId>org.primefaces</groupId>
 			<artifactId>primefaces</artifactId>
-			<version>4.0</version>
+			<version>5.0</version>
 		</dependency>
+
 		<dependency>
 			<groupId>org.primefaces.themes</groupId>
 			<artifactId>redmond</artifactId>
