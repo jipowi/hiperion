@@ -24,6 +24,10 @@ import javax.persistence.NamedQuery;
 		// TIPO_DIRECCION
 		@NamedQuery(name = "TipoDireccion.findCodigo", query = "SELECT t FROM TipoDireccion t WHERE t.codigoTipoDireccion =:codTipoDireccion"),
 		@NamedQuery(name = "TipoDireccion.findDescripcion", query = "SELECT t FROM TipoDireccion t WHERE t.descTipoDireccion =:descripcion"),
+
+		// DIRECCION
+		@NamedQuery(name = "Direccion.findCliente", query = "SELECT d FROM Direccion d WHERE d.cliente.idCliente =:idCliente"),
+
 		// DETALLE_CATALOGO
 		@NamedQuery(name = "DetalleCatalogo.findByCodCatalogo", query = "SELECT d FROM DetalleCatalogo d WHERE d.catalogo.idCatalogo =:idCatalogo ORDER BY d.descDetCatalogo"),
 		@NamedQuery(name = "DetalleCatalogo.findByCodCatalogoAndCodDetalle", query = "SELECT d FROM DetalleCatalogo d WHERE d.catalogo.idCatalogo =:idCatalogo AND d.codDetalleCatalogo=:codDetalleCatalogo"),
@@ -42,7 +46,7 @@ import javax.persistence.NamedQuery;
 		// DETALLE_ANEXO
 		@NamedQuery(name = "DetalleAnexo.findByRamoAndTitulo", query = "SELECT d FROM DetalleAnexo d WHERE d.ramo.idRamo=:idRamo AND d.titulo.idTitulo=:idTitulo"),
 		@NamedQuery(name = "Titulo.findByIdDetalleAnexo", query = "SELECT d.titulo FROM DetalleAnexo d WHERE d.idDetalleAnexo =:idDetalleAnexo"),
-		//REPORTES
+		// REPORTES
 		@NamedQuery(name = "Poliza.reporte1", query = "SELECT p FROM Poliza p WHERE p.fechaRegistro BETWEEN :fechaDesde AND :fechaHasta "),
 		// MENU
 		@NamedQuery(name = "Menu.findByRol", query = "SELECT m FROM RolMenu m WHERE m.rol.idRol =:idRol") })

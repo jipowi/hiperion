@@ -10,6 +10,7 @@ import javax.ejb.Local;
 
 import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.emision.entities.Cliente;
+import ec.com.avila.hiperion.emision.entities.Direccion;
 
 /**
  * 
@@ -74,4 +75,17 @@ public interface ClienteDao extends GenericDAO<Cliente, Long> {
 	 * @throws HiperionException
 	 */
 	public List<Cliente> consultarClienteByAseguradora(String aseguradora) throws HiperionException;
+	
+	/**
+	 * 
+	 * <b> Permite consultar las direcciones de un cliente. </b>
+	 * <p>
+	 * [Author: kruger, Date: 16/09/2016]
+	 * </p>
+	 * 
+	 * @param idCliente
+	 * @return
+	 * @throws HiperionException
+	 */
+	public List<Direccion> consularDireccionByCliente(Integer idCliente) throws HiperionException;
 }
