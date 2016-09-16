@@ -66,7 +66,7 @@
 				<p:spacer height="20px;" />
 				<div align="center">
 					<p:commandButton id="crearClienteBtn" value="Crear nuevo cliente" actionListener="#{clienteBacking.obtenerCodigoCliente}"
-						update=":clienteFormId:agregarClienteDlgId" oncomplete="crearClienteDlg.show();" title="Nuevo" icon="icon-client">
+						update=":clienteFormId:agregarClienteDlgId" oncomplete="PF('crearClienteDlg').show();" title="Nuevo" icon="icon-client">
 						<p:ajax update=":clienteFormId, :direccionesFormId, :direccionFormId" />
 					</p:commandButton>
 				</div>
@@ -224,7 +224,7 @@
 				<f:facet name="footer">
 					<div id="crearClienteDivFooterId">
 						<p:commandButton id="guardarClienteBtnId" value="#{utilitario['hiperion.btn.guardar']}" actionListener="#{clienteBacking.guardarCliente}"
-							oncomplete="crearClienteDlg.hide();" icon="icon-save" />
+							oncomplete="PF('crearClienteDlg').hide();" icon="icon-save" />
 					</div>
 				</f:facet>
 			</p:dialog>
