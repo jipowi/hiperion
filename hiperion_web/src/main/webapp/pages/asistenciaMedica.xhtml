@@ -88,8 +88,6 @@
 												</p:selectOneMenu>
 											</h:panelGrid>
 										</h:panelGrid>
-										Prueba
-										
 										<div align="center">
 											<p:commandButton id="agregarAseguradora" icon="icon-add" value="#{emision['boton.agregar']}"
 												actionListener="#{asistenciaMedicaBacking.addAseguradora()}" title="Agregar" update="tablaAseguradoras" />
@@ -133,7 +131,7 @@
 											<p:panel>
 												<h:panelGrid columns="2">
 													<p:outputLabel value="#{emision['asm.numeroAsegurados']}" styleClass="negrita" />
-													<p:inputText />
+													<p:inputText value="#{ramoAsistenciaMedicaBean.numPersonas}" />
 
 													<p:outputLabel value="#{emision['asm.totalMensualGrupo']}" styleClass="negrita" />
 													<p:inputText value="#{ramoAsistenciaMedicaBean.totalMensualGrupo}" />
@@ -153,7 +151,7 @@
 								<!-- BENEFICIOS -->
 								<h:panelGrid columns="2">
 									<p:outputLabel value="#{emision['lbl.beneficios']}" styleClass="negrita" />
-									<p:commandLink title="#{emision['lbl.beneficios']}" oncomplete="beneficios.show();" update="idBeneficios">
+									<p:commandLink title="#{emision['lbl.beneficios']}" oncomplete="PF('beneficios').show();" update="idBeneficios">
 										<h:graphicImage name="check.png" library="img" />
 									</p:commandLink>
 								</h:panelGrid>
@@ -193,14 +191,14 @@
 										<p:spacer height="15px;" />
 										<div align="center">
 											<p:commandButton id="guardarBeneficios" process="@this" actionListener="#{asistenciaMedicaBacking.setearBeneficios()}" icon="icon-save"
-												value="#{emision['boton.guardar']}" title="Guardar" oncomplete="beneficios.hide()" />
+												value="#{emision['boton.guardar']}" title="Guardar" oncomplete="PF('beneficios').hide()" />
 										</div>
 									</h:form>
 								</p:dialog>
 								<!-- BENEFICIOS ADICIONALES -->
 								<h:panelGrid columns="2">
 									<p:outputLabel value="#{emision['lbl.beneficiosAdd']}" styleClass="negrita" />
-									<p:commandLink title="#{emision['lbl.beneficiosAdd']}" oncomplete="beneficiosAdd.show();" update="idBeneficiosAA">
+									<p:commandLink title="#{emision['lbl.beneficiosAdd']}" oncomplete="PF('beneficiosAdd').show();" update="idBeneficiosAA">
 										<h:graphicImage name="check.png" library="img" />
 									</p:commandLink>
 								</h:panelGrid>
@@ -239,7 +237,7 @@
 										<p:spacer height="15px;" />
 										<div align="center">
 											<p:commandButton id="guardarBeneficiosAdd" process="@this" actionListener="#{asistenciaMedicaBacking.setearBeneficiosAdd()}"
-												icon="icon-save" value="#{emision['boton.guardar']}" title="Guardar" oncomplete="beneficiosAdd.hide()" />
+												icon="icon-save" value="#{emision['boton.guardar']}" title="Guardar" oncomplete="PF('beneficiosAdd').hide();" />
 										</div>
 									</h:form>
 								</p:dialog>
@@ -247,7 +245,7 @@
 								<!-- MATERNIDAD -->
 								<h:panelGrid columns="2">
 									<p:outputLabel value="#{emision['lbl.maternidad']}" styleClass="negrita" />
-									<p:commandLink title="#{emision['lbl.maternidad']}" oncomplete="maternidad.show();" update="idMaternidad">
+									<p:commandLink title="#{emision['lbl.maternidad']}" oncomplete="PF('maternidad').show();" update="idMaternidad">
 										<h:graphicImage name="check.png" library="img" />
 									</p:commandLink>
 								</h:panelGrid>
@@ -287,12 +285,12 @@
 										<p:spacer height="15px;" />
 										<div align="center">
 											<p:commandButton id="guardarMaternidad" process="@this" actionListener="#{asistenciaMedicaBacking.setearMaternidad()}" icon="icon-save"
-												value="#{emision['boton.guardar']}" title="Guardar" oncomplete="maternidad.hide()" />
+												value="#{emision['boton.guardar']}" title="Guardar" oncomplete="PF('maternidad').hide()" />
 										</div>
 									</h:form>
 								</p:dialog>
 								<!-- PAGO POLIZA -->
-								<p:commandLink title="Abrir opciones de pago" oncomplete="pagoPoliza.show();" update="idPagoPoliza">
+								<p:commandLink title="Abrir opciones de pago" oncomplete="PF('pagoPoliza').show();" update="idPagoPoliza">
 									<h:graphicImage name="pago.jpg" library="img" />
 								</p:commandLink>
 								<p:dialog id="idPagoPoliza" header="Pago Poliza" widgetVar="pagoPoliza" modal="true" position="center" showEffect="fade" hideEffect="explode"

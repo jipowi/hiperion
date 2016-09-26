@@ -175,7 +175,7 @@
 							<!-- EXTRAS -->
 							<h:panelGrid columns="2">
 								<p:outputLabel value="#{emision['lbl.extras']}" styleClass="negrita" />
-								<p:commandLink title="#{emision['lbl.extras']}" oncomplete="extras.show();" update="idExtras">
+								<p:commandLink title="#{emision['lbl.extras']}" oncomplete="PF('extras').show();" update="idExtras">
 									<h:graphicImage name="extras.png" library="img" />
 								</p:commandLink>
 							</h:panelGrid>
@@ -236,14 +236,14 @@
 									<p:spacer height="15px;" />
 									<div align="center">
 										<p:commandButton id="guardarExtras" process="@this" actionListener="#{cascoAereoBacking.setearExtras()}" icon="icon-save"
-											value="#{emision['boton.guardar']}" title="Guardar" oncomplete="extras.hide()" />
+											value="#{emision['boton.guardar']}" title="Guardar" oncomplete="PF('extras').hide()" />
 									</div>
 								</h:form>
 							</p:dialog>
 							<!-- COBERTURAS ADICONALES-->
 							<h:panelGrid columns="2">
 								<p:outputLabel value="#{emision['lbl.seleccionarCoberturasAdd']}" styleClass="negrita" />
-								<p:commandLink title="#{emision['lbl.seleccionarCoberturasAdd']}" oncomplete="coberturasAdd.show();" update="idCoberturaAdd">
+								<p:commandLink title="#{emision['lbl.seleccionarCoberturasAdd']}" oncomplete="PF('coberturasAdd').show();" update="idCoberturaAdd">
 									<h:graphicImage name="check.png" library="img" />
 								</p:commandLink>
 							</h:panelGrid>
@@ -283,14 +283,14 @@
 									<p:spacer height="15px;" />
 									<div align="center">
 										<p:commandButton id="guardarCoberturas" process="@this" actionListener="#{cascoAereoBacking.setearCoberturasAdd()}" icon="icon-save"
-											value="#{emision['boton.guardar']}" title="Guardar" oncomplete="coberturasAdd.hide()" />
+											value="#{emision['boton.guardar']}" title="Guardar" oncomplete="PF('coberturasAdd').hide()" />
 									</div>
 								</h:form>
 							</p:dialog>
 							<!-- CLAUSULAS ADICIONALES -->
 							<h:panelGrid columns="2">
 								<p:outputLabel value="#{emision['lbl.seleccionarClausulasAdd']}" styleClass="negrita" />
-								<p:commandLink title="#{emision['lbl.seleccionarClausulasAdd']}" oncomplete="clausulasAdd.show();"
+								<p:commandLink title="#{emision['lbl.seleccionarClausulasAdd']}" oncomplete="PF('clausulasAdd').show();"
 									actionListener="#{cascoAereoBacking.obtenerClausulasAdicionales()}" update="idClausulasAdd">
 									<h:graphicImage name="check.png" library="img" />
 								</p:commandLink>
@@ -331,12 +331,12 @@
 									<p:spacer height="15px;" />
 									<div align="center">
 										<p:commandButton id="guardarClausulas" process="@this" actionListener="#{cascoAereoBacking.setearClausulasAdd()}" icon="icon-save"
-											value="#{emision['boton.guardar']}" title="Guardar" oncomplete="clausulasAdd.hide()" />
+											value="#{emision['boton.guardar']}" title="Guardar" oncomplete="PF('clausulasAdd').hide()" />
 									</div>
 								</h:form>
 							</p:dialog>
 							<!-- PAGO POLIZA -->
-							<p:commandLink title="Abrir opciones de pago" oncomplete="pagoPoliza.show();" update="idPagoPoliza">
+							<p:commandLink title="Abrir opciones de pago" oncomplete="PF('pagoPoliza').show();" update="idPagoPoliza">
 								<h:graphicImage name="pago.jpg" library="img" />
 							</p:commandLink>
 							<p:dialog id="idPagoPoliza" header="Pago Poliza" widgetVar="pagoPoliza" modal="true" position="center" showEffect="fade" hideEffect="explode"

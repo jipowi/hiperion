@@ -168,7 +168,7 @@
 								<!-- CLAUSULAS ADICIONALES -->
 								<h:panelGrid columns="2">
 									<p:outputLabel value="#{emision['lbl.seleccionarClausulasAdd']}" styleClass="negrita" />
-									<p:commandLink title="#{emision['lbl.seleccionarClausulasAdd']}" oncomplete="clausulasAdd.show();"
+									<p:commandLink title="#{emision['lbl.seleccionarClausulasAdd']}" oncomplete="PF('clausulasAdd').show();"
 										actionListener="#{responsabilidadCivilBacking.obtenerClausulasAdicionales()}" update="idClausulasAdd">
 										<h:graphicImage name="check.png" library="img" />
 									</p:commandLink>
@@ -210,13 +210,13 @@
 										<p:spacer height="15px;" />
 										<div align="center">
 											<p:commandButton id="guardarClausulas" process="@this" actionListener="#{responsabilidadCivilBacking.setearClausulasAdd()}"
-												icon="icon-save" value="#{emision['boton.guardar']}" title="Guardar" oncomplete="clausulasAdd.hide()" />
+												icon="icon-save" value="#{emision['boton.guardar']}" title="Guardar" oncomplete="PF('clausulasAdd').hide()" />
 										</div>
 									</h:form>
 								</p:dialog>
 								<!-- PAGO POLIZA -->
 								<div align="center">
-									<p:commandLink title="Abrir opciones de pago" oncomplete="pagoPoliza.show();" update="idPagoPoliza">
+									<p:commandLink title="Abrir opciones de pago" oncomplete="PF('pagoPoliza').show();" update="idPagoPoliza">
 										<h:graphicImage name="pago.jpg" library="img" />
 									</p:commandLink>
 								</div>

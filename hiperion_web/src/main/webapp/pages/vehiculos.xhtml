@@ -300,7 +300,7 @@
 								<!-- CLAUSULAS ADICIONALES -->
 								<h:panelGrid columns="2">
 									<p:outputLabel value="#{emision['lbl.seleccionarClausulasAdd']}" styleClass="negrita" />
-									<p:commandLink title="#{emision['lbl.seleccionarClausulasAdd']}" oncomplete="clausulasAdd.show();"
+									<p:commandLink title="#{emision['lbl.seleccionarClausulasAdd']}" oncomplete="PF('clausulasAdd').show();"
 										actionListener="#{vehiculosBacking.obtenerClausulasAdicionales()}" update="idClausulasAdd">
 										<h:graphicImage name="check.png" library="img" />
 									</p:commandLink>
@@ -341,7 +341,7 @@
 										<p:spacer height="15px;" />
 										<div align="center">
 											<p:commandButton id="guardarClausulas" process="@this" actionListener="#{vehiculosBacking.setearClausulasAdd()}" icon="icon-save"
-												value="#{emision['boton.guardar']}" title="Guardar" oncomplete="clausulasAdd.hide()" />
+												value="#{emision['boton.guardar']}" title="Guardar" oncomplete="PF('clausulasAdd').hide()" />
 										</div>
 									</h:form>
 								</p:dialog>
@@ -349,7 +349,7 @@
 								<!-- CONDICIONES ESPECIALES -->
 								<h:panelGrid columns="2">
 									<p:outputLabel value="#{emision['lbl.seleccionarCondicionesEsp']}" styleClass="negrita" />
-									<p:commandLink title="#{emision['lbl.seleccionarCondicionesEsp']}" oncomplete="clausulasAdd.show();"
+									<p:commandLink title="#{emision['lbl.seleccionarCondicionesEsp']}" oncomplete="PF('clausulasAdd').show();"
 										actionListener="#{vehiculosBacking.obtenerCondicionesEspeciales()}" update="idCondicionesEspeciales">
 										<h:graphicImage name="check.png" library="img" />
 									</p:commandLink>
@@ -391,14 +391,14 @@
 										<p:spacer height="15px;" />
 										<div align="center">
 											<p:commandButton id="guardarClausulas" process="@this" actionListener="#{vehiculosBacking.setearCondiciones()}" icon="icon-save"
-												value="#{emision['boton.guardar']}" title="Guardar" oncomplete="condiciones.hide()" />
+												value="#{emision['boton.guardar']}" title="Guardar" oncomplete="PF('condiciones').hide()" />
 										</div>
 
 									</h:form>
 								</p:dialog>
 								<!-- PAGO POLIZA -->
 								<div align="center">
-									<p:commandLink title="Abrir opciones de pago" oncomplete="pagoPoliza.show();" update="idPagoPoliza">
+									<p:commandLink title="Abrir opciones de pago" oncomplete="PF('pagoPoliza').show();" update="idPagoPoliza">
 										<h:graphicImage name="pago.jpg" library="img" />
 									</p:commandLink>
 								</div>

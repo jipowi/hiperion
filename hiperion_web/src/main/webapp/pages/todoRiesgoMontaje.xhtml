@@ -217,7 +217,7 @@
 								<!-- COBERTURAS -->
 								<h:panelGrid columns="2">
 									<p:outputLabel value="#{emision['lbl.seleccionarCoberturas']}" styleClass="negrita" />
-									<p:commandLink title="#{emision['lbl.seleccionarCoberturas']}" oncomplete="coberturas.show();" update="idCobertura">
+									<p:commandLink title="#{emision['lbl.seleccionarCoberturas']}" oncomplete="PF('coberturas').show();" update="idCobertura">
 										<h:graphicImage name="check.png" library="img" />
 									</p:commandLink>
 								</h:panelGrid>
@@ -258,14 +258,14 @@
 										<p:spacer height="15px;" />
 										<div align="center">
 											<p:commandButton id="guardarCoberturas" process="@this" actionListener="#{riesgosContratistaBacking.setearCoberturas()}" icon="icon-save"
-												value="#{emision['boton.guardar']}" title="Guardar" oncomplete="coberturas.hide()" />
+												value="#{emision['boton.guardar']}" title="Guardar" oncomplete="PF('coberturas').hide()" />
 										</div>
 									</h:form>
 								</p:dialog>
 								<!-- CLAUSULAS ADICIONALES -->
 								<h:panelGrid columns="2">
 									<p:outputLabel value="#{emision['lbl.seleccionarClausulasAdd']}" styleClass="negrita" />
-									<p:commandLink title="#{emision['lbl.seleccionarClausulasAdd']}" oncomplete="clausulasAdd.show();"
+									<p:commandLink title="#{emision['lbl.seleccionarClausulasAdd']}" oncomplete="PF('clausulasAdd').show();"
 										actionListener="#{riesgosContratistaBacking.obtenerClausulasAdicionales()}" update="idClausulasAdd">
 										<h:graphicImage name="check.png" library="img" />
 									</p:commandLink>
@@ -307,13 +307,13 @@
 										<p:spacer height="15px;" />
 										<div align="center">
 											<p:commandButton id="guardarClausulas" process="@this" actionListener="#{riesgosContratistaBacking.setearClausulasAdd()}" icon="icon-save"
-												value="#{emision['boton.guardar']}" title="Guardar" oncomplete="clausulasAdd.hide()" />
+												value="#{emision['boton.guardar']}" title="Guardar" oncomplete="PF('clausulasAdd').hide()" />
 										</div>
 									</h:form>
 								</p:dialog>
 								<!-- PAGO POLIZA -->
 								<div align="center">
-									<p:commandLink title="Abrir opciones de pago" oncomplete="pagoPoliza.show();" update="idPagoPoliza">
+									<p:commandLink title="Abrir opciones de pago" oncomplete="PF('pagoPoliza').show();" update="idPagoPoliza">
 										<h:graphicImage name="pago.jpg" library="img" />
 									</p:commandLink>
 								</div>
