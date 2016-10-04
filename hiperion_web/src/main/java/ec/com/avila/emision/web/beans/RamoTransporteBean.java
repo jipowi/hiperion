@@ -462,21 +462,14 @@ public class RamoTransporteBean implements Serializable {
 	 * 
 	 * @return
 	 */
-	public String addObjeto() {
+	public void addObjeto() {
+
 		ObjetoAseguradoTransporteDTO objeto = new ObjetoAseguradoTransporteDTO(this.item, this.limiteMovilizacionAnual, this.limiteEmbarque,
 				this.medioTransporte, this.trayectoDesde, this.trayectoHasta, this.tipoEmbalaje, this.valuacion);
 		objetoAseguradoList.add(objeto);
 
-		item = 0;
-		limiteMovilizacionAnual = 0;
-		limiteEmbarque = 0;
-		medioTransporte = "";
-		trayectoDesde = "";
-		trayectoHasta = "";
-		tipoEmbalaje = "";
-		valuacion = new BigDecimal(0);
+		
 
-		return null;
 	}
 
 	/**
