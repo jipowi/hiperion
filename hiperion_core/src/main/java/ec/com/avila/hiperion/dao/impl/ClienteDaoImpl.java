@@ -16,6 +16,7 @@ import org.apache.log4j.Logger;
 import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.dao.ClienteDao;
 import ec.com.avila.hiperion.emision.entities.Cliente;
+import ec.com.avila.hiperion.emision.entities.Contacto;
 import ec.com.avila.hiperion.emision.entities.Direccion;
 import ec.com.avila.hiperion.enumeration.EstadoEnum;
 
@@ -102,6 +103,7 @@ public class ClienteDaoImpl extends GenericDAOImpl<Cliente, Long> implements Cli
 		query.setParameter("apellido", "%" + apellido + "%");
 		query.setParameter("nombre", "%" + nombre + "%");
 		List<Cliente> clientes = query.getResultList();
+
 		return clientes;
 	}
 
@@ -116,7 +118,23 @@ public class ClienteDaoImpl extends GenericDAOImpl<Cliente, Long> implements Cli
 		Query query = em.createNamedQuery("Direccion.findCliente");
 		query.setParameter("idCliente", idCliente);
 		List<Direccion> direcciones = query.getResultList();
+
 		return direcciones;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see ec.com.avila.hiperion.dao.ClienteDao#consultarContactoByCliente(java.lang.Integer)
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Contacto> consultarContactoByCliente(Integer idCliente) throws HiperionException {
+		Query query = em.createNamedQuery("Contacto.findByCliente");
+		query.setParameter("idCliente", idCliente);
+		List<Contacto> contactos = query.getResultList();
+
+		return contactos;
 	}
 
 }
