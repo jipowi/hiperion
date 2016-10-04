@@ -84,7 +84,7 @@
 						required="true">
 					</p:fileUpload>
 				</p:panel>
-
+				<!-- TABLA DE BUSQUEDA -->
 				<p:spacer height="20px;" />
 				<div align="center">
 					<h:panelGrid columns="1" id="tablaClientes">
@@ -116,6 +116,17 @@
 										<h:outputText value="#{emision['lbl.direccion']}" />
 									</f:facet>
 							        #{direccion.callePrincipal}, #{direccion.numeracion}, #{direccion.calleSecundaria}
+							    </p:dataList>
+							</p:column>
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="#{emision['lbl.contactos']}" />
+								</f:facet>
+								<p:dataList value="#{cliente.contactos}" var="contacto" type="ordered">
+									<f:facet name="header">
+										<h:outputText value="#{emision['lbl.contactos']}" />
+									</f:facet>
+							        #{contacto.descripcionContacto}
 							    </p:dataList>
 							</p:column>
 						</p:dataTable>
@@ -188,7 +199,7 @@
 								style="text-transform:uppercase;" />
 							<p:calendar id="fechaNacimientoId" value="#{clienteBean.fechaNacimiento}" locale="de" navigator="true" pattern="MM/dd/yyyy" mask="true" />
 							<p:commandLink id="contactoId">
-								<h:graphicImage name="icono-contacto.jpg" onclick="contactosDlg.show()" library="img" height="30px;" />
+								<h:graphicImage name="icono-contacto.jpg" onclick="PF('contactosDlg').show();" library="img" height="30px;" />
 							</p:commandLink>
 						</h:panelGrid>
 					</p:panel>
@@ -208,7 +219,7 @@
 						<h:panelGrid columns="2" cellpadding="2" cellspacing="2">
 							<p:outputLabel value="#{administrador['cliente.dlg.agregar.contacto']}" styleClass="negrita" />
 							<p:commandLink id="contactoIdJuridica">
-								<h:graphicImage name="icono-contacto.jpg" onclick="contactosDlg.show()" library="img" height="30px;" />
+								<h:graphicImage name="icono-contacto.jpg" onclick="PF('contactosDlg').show();" library="img" height="30px;" />
 							</p:commandLink>
 						</h:panelGrid>
 					</p:panel>
@@ -216,7 +227,7 @@
 					<h:panelGrid columns="2" styleClass="DialogCliente-direccion">
 						<p:outputLabel for="direccionId" value="#{administrador['cliente.dlg.agregar.direccion']}" styleClass="negrita" />
 						<p:commandLink id="direccionId" title="Agregar direcciones">
-							<h:graphicImage name="mundo.png" library="img" onclick="direccionesDlg.show();" />
+							<h:graphicImage name="mundo.png" library="img" onclick="PF('direccionesDlg').show();" />
 						</p:commandLink>
 					</h:panelGrid>
 				</div>
@@ -232,7 +243,8 @@
 
 		<!-- DIALOGO - Cotacto (Permite Ingresar un Contacto del Cliente Teléfon, Celular, Email, Twitter, etc. ) -->
 		<h:form id="agregarContactoFormId">
-			<p:dialog id="agregarContactoId" widgetVar="agregarContactoDlg" showEffect="fade" hideEffect="explode" resizable="false" modal="true">
+			<p:dialog id="agregarContactoId" widgetVar="agregarContactoDlg" showEffect="fade" hideEffect="explode" resizable="false" modal="true"
+				closable="true">
 				<f:facet name="header">
 					<p:outputLabel value=" #{administrador['cliente.dlg.contacto.header']}" />
 				</f:facet>
@@ -262,7 +274,7 @@
 				<f:facet name="footer">
 					<div id="contactoDivFooterId">
 						<p:commandButton id="guardarContactoBtnId" value="#{utilitario['hiperion.btn.guardar']}" action="#{contactoBacking.guardarContacto}"
-							oncomplete="agregarContactoDlg.hide();" update=":contactosFormId:contactosTableId" icon="icon-save" />
+							oncomplete="PF('agregarContactoDlg').hide();" update=":contactosFormId:contactosTableId, agregarContactoId" icon="icon-save" />
 					</div>
 				</f:facet>
 			</p:dialog>
@@ -271,14 +283,16 @@
 		<!-- DIALOG - Contactos(Se registra una lista de los Contactos para el Cliente) -->
 		<h:form id="contactosFormId">
 			<!-- DIALOG - Datos del Cliente -->
-			<p:dialog id="contactosId" widgetVar="contactosDlg" showEffect="fade" hideEffect="explode" resizable="false" modal="true" width="46%">
+			<p:growl id="msgs" showDetail="true" />
+			<p:dialog id="contactosId" widgetVar="contactosDlg" showEffect="fade" hideEffect="explode" resizable="false" modal="true" width="46%"
+				closable="true">
 				<f:facet name="header">
 					<p:outputLabel value=" #{administrador['cliente.dlg.contactos.header']}" />
 				</f:facet>
 				<p:messages id="msgsContactos" showDetail="false" autoUpdate="true" closable="true" />
 				<!-- Boton Nuevo Contacto -->
 				<p:commandButton id="crearContactoBtn" value="#{utilitario['hiperion.btn.nuevo']}" update=":agregarContactoFormId"
-					oncomplete="agregarContactoDlg.show()" title="Nuevo" icon="icon-new">
+					oncomplete="PF('agregarContactoDlg').show();" title="Nuevo" icon="icon-new">
 				</p:commandButton>
 
 				<p:separator />
@@ -295,15 +309,11 @@
 						<h:outputText value="#{contacto.descripcionContacto}" />
 					</p:column>
 				</p:dataTable>
-
-				<!-- Footer del Formulario -->
-				<f:facet name="footer">
-					<div id="contactosDivFooterId">
-						<p:commandButton id="guardarContactosBtnId" value="#{utilitario['hiperion.btn.guardar']}" action="#{contactoBacking.guardarContactos}"
-							oncomplete="contactosDlg.hide();" icon="icon-save" />
-
-					</div>
-				</f:facet>
+				<p:spacer height="10px;" />
+				<div align="center">
+					<p:commandButton id="guardarContactosBtnId" value="#{utilitario['hiperion.btn.guardar']}" action="#{contactoBacking.guardarContactos}"
+						oncomplete="PF('contactosDlg').hide();" update="contactosFormId" icon="icon-save" />
+				</div>
 			</p:dialog>
 		</h:form>
 
@@ -319,7 +329,7 @@
 						<f:selectItem itemLabel="Seleccione" noSelectionOption="true" />
 						<f:selectItems value="#{direccionBacking.tipoDireccionItems}" />
 						<p:ajax event="change" listener="#{direccionBacking.selectTipoDireccion}" update=":direccionFormId:inputDireccionDlgId"
-							oncomplete="inputDireccionDlg.show()" />
+							oncomplete="PF('inputDireccionDlg').show();" />
 					</p:selectOneMenu>
 				</h:panelGrid>
 
@@ -403,9 +413,9 @@
 				<f:facet name="footer">
 					<div align="center">
 						<p:commandButton id="guardarDireccionesId" value="#{utilitario['hiperion.btn.guardar']}" actionListener="#{direccionBacking.guardarDirecciones}"
-							oncomplete="direccionesDlg.hide();" icon="ui-icon-check" />
+							oncomplete="PF('direccionesDlg').hide();" icon="ui-icon-check" />
 						<p:commandButton id="cancelarDireccionesId" value="#{utilitario['hiperion.btn.cancelar']}"
-							actionListener="#{direccionBacking.cancelarDirecciones}" oncomplete="direccionesDlg.hide();"
+							actionListener="#{direccionBacking.cancelarDirecciones}" oncomplete="PF('direccionesDlg').hide();"
 							update=":direccionesFormId:direccionesTableId,:direccionesFormId:tipoDireccionId" icon="ui-icon-circle-close" />
 					</div>
 				</f:facet>
@@ -459,7 +469,7 @@
 							update=":direccionFormId:detalleDireccionId, :direccionesFormId:direccionesTableId, :direccionesFormId:tipoDireccionId"
 							actionListener="#{direccionBacking.agregarDireccion}" icon="ui-icon-check" />
 						<p:commandButton id="cancelarDireccionId" value="Cancelar" actionListener="#{direccionBacking.cancelarDireccion}"
-							update=":direccionesFormId:tipoDireccionId" oncomplete="inputDireccionDlg.hide();" process="@this" icon="ui-icon-circle-close" />
+							update=":direccionesFormId:tipoDireccionId, direccionFormId" oncomplete="PF('inputDireccionDlg').hide();" process="@this" icon="ui-icon-circle-close" />
 					</div>
 				</f:facet>
 			</p:dialog>
