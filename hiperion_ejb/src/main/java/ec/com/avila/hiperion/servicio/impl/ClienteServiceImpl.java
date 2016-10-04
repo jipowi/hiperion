@@ -12,6 +12,7 @@ import javax.ejb.Stateless;
 import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.dao.ClienteDao;
 import ec.com.avila.hiperion.emision.entities.Cliente;
+import ec.com.avila.hiperion.emision.entities.Contacto;
 import ec.com.avila.hiperion.emision.entities.Direccion;
 import ec.com.avila.hiperion.servicio.ClienteService;
 
@@ -79,6 +80,16 @@ public class ClienteServiceImpl implements ClienteService {
 	@Override
 	public List<Direccion> consularDireccionByCliente(Integer idCliente) throws HiperionException {
 		return clienteDao.consularDireccionByCliente(idCliente);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see ec.com.avila.hiperion.servicio.ClienteService#consultarContactoByCliente(java.lang.Integer)
+	 */
+	@Override
+	public List<Contacto> consultarContactoByCliente(Integer idCliente) throws HiperionException {
+		return clienteDao.consultarContactoByCliente(idCliente);
 	}
 
 }
