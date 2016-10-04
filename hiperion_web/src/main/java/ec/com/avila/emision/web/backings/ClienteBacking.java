@@ -31,6 +31,7 @@ import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.dto.DireccionDTO;
 import ec.com.avila.hiperion.emision.entities.Catalogo;
 import ec.com.avila.hiperion.emision.entities.Cliente;
+import ec.com.avila.hiperion.emision.entities.Contacto;
 import ec.com.avila.hiperion.emision.entities.DetalleCatalogo;
 import ec.com.avila.hiperion.emision.entities.Direccion;
 import ec.com.avila.hiperion.emision.entities.Poliza;
@@ -221,6 +222,9 @@ public class ClienteBacking implements Serializable {
 				} else {
 					List<Direccion> direcciones = clienteService.consularDireccionByCliente(clienteObtenido.getIdCliente());
 					clienteObtenido.setDireccions(direcciones);
+
+					List<Contacto> contactos = clienteService.consultarContactoByCliente(clienteObtenido.getIdCliente());
+					clienteObtenido.setContactos(contactos);
 					clientesObtenidos.add(clienteObtenido);
 				}
 			} else {
@@ -441,17 +445,20 @@ public class ClienteBacking implements Serializable {
 				String segundoNombre = hssfRow.getCell(1).getStringCellValue();
 				String apellidoPaterno = hssfRow.getCell(2).getStringCellValue();
 				String apellidoMaterno = hssfRow.getCell(3).getStringCellValue();
-				String identificacion = hssfRow.getCell(4).getStringCellValue();
-				Date fechaNacimiento = hssfRow.getCell(5).getDateCellValue();
-				String provinciaExcel = hssfRow.getCell(6).getStringCellValue();
-				String callePrincipal = hssfRow.getCell(7).getStringCellValue();
-				String numeracion = hssfRow.getCell(8).getStringCellValue();
-				String calleSecundaria = hssfRow.getCell(9).getStringCellValue();
-				String referencia = hssfRow.getCell(10).getStringCellValue();
+				//aqui pongo Razon Social y cambio numeros
+				String razonSocial = hssfRow.getCell(4).getStringCellValue();
+				String identificacion = hssfRow.getCell(5).getStringCellValue();
+				Date fechaNacimiento = hssfRow.getCell(6).getDateCellValue();
+				String provinciaExcel = hssfRow.getCell(7).getStringCellValue();
+				String callePrincipal = hssfRow.getCell(8).getStringCellValue();
+				String numeracion = hssfRow.getCell(9).getStringCellValue();
+				String calleSecundaria = hssfRow.getCell(10).getStringCellValue();
+				String referencia = hssfRow.getCell(11).getStringCellValue();
 
 				cliente.setNombrePersona(primerNombre + " " + segundoNombre);
 				cliente.setApellidoPaterno(apellidoPaterno);
 				cliente.setApellidoMaterno(apellidoMaterno);
+				cliente.setRazonSocial(razonSocial);
 				cliente.setIdentificacionPersona(identificacion);
 				cliente.setFechaNacimiento(fechaNacimiento);
 				// Provincias
