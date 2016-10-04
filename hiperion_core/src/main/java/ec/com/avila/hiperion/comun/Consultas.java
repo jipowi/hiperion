@@ -26,7 +26,10 @@ import javax.persistence.NamedQuery;
 		@NamedQuery(name = "TipoDireccion.findDescripcion", query = "SELECT t FROM TipoDireccion t WHERE t.descTipoDireccion =:descripcion"),
 
 		// DIRECCION
-		@NamedQuery(name = "Direccion.findCliente", query = "SELECT d FROM Direccion d WHERE d.cliente.idCliente =:idCliente"),
+		@NamedQuery(name = "Contacto.findByCliente", query = "SELECT c FROM Contacto c WHERE c.cliente.idCliente =:idCliente"),
+		
+		// CONTACTOS
+				@NamedQuery(name = "Direccion.findCliente", query = "SELECT d FROM Direccion d WHERE d.cliente.idCliente =:idCliente"),
 
 		// DETALLE_CATALOGO
 		@NamedQuery(name = "DetalleCatalogo.findByCodCatalogo", query = "SELECT d FROM DetalleCatalogo d WHERE d.catalogo.idCatalogo =:idCatalogo ORDER BY d.descDetCatalogo"),
