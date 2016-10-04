@@ -15,8 +15,6 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.model.SelectItem;
 
-import org.primefaces.context.RequestContext;
-
 import ec.com.avila.emision.web.beans.ContactoBean;
 import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.dto.ContactoDTO;
@@ -109,7 +107,7 @@ public class ContactoBacking implements Serializable {
 		activarSkype = false;
 		activarTelefono = false;
 
-		contactoBean.setDescripcionContacto("");
+		contactoBean.setDescripcionContacto(null);
 		contactoBean.setTipoContacto("");
 	}
 
@@ -121,15 +119,12 @@ public class ContactoBacking implements Serializable {
 	 * </p>
 	 * 
 	 */
-	public void guardarContacto() {
+	public void agregarContacto() {
 		ContactoDTO contactoDTO = new ContactoDTO();
 		contactoDTO.setTipoContacto(contactoBean.getTipoContacto());
 		contactoDTO.setDescripcionContacto(contactoBean.getDescripcionContacto());
 
 		contactoBean.getContactosDTO().add(contactoDTO);
-
-		// Cerramos el Dialogo.
-		RequestContext.getCurrentInstance().execute("agregarContactoDlg.hide();");
 
 		// Refrescamos los campos del Contacto
 		refreshContacto();
@@ -137,9 +132,6 @@ public class ContactoBacking implements Serializable {
 
 	public void cancelarContacto() {
 		refreshContacto();
-	}
-
-	public void guardarContactos() {
 	}
 
 	public void cancelarContactos() {
