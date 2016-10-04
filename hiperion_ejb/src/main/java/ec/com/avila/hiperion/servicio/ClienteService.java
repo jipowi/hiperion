@@ -10,6 +10,7 @@ import javax.ejb.Local;
 
 import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.emision.entities.Cliente;
+import ec.com.avila.hiperion.emision.entities.Contacto;
 import ec.com.avila.hiperion.emision.entities.Direccion;
 
 /**
@@ -99,4 +100,17 @@ public interface ClienteService {
 	 * @throws HiperionException
 	 */
 	public List<Direccion> consularDireccionByCliente(Integer idCliente) throws HiperionException;
+
+	/**
+	 * 
+	 * <b> Permite obtener los contactos del cliente. </b>
+	 * <p>
+	 * [Author: Avila Sistemas, Date: 26/09/2016]
+	 * </p>
+	 * 
+	 * @param idCliente
+	 * @return
+	 * @throws HiperionException
+	 */
+	public List<Contacto> consultarContactoByCliente(Integer idCliente) throws HiperionException;
 }
