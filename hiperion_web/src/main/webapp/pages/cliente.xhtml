@@ -67,7 +67,7 @@
 				<div align="center">
 					<p:commandButton id="crearClienteBtn" value="Crear nuevo cliente" actionListener="#{clienteBacking.obtenerCodigoCliente}"
 						update=":clienteFormId:agregarClienteDlgId" oncomplete="PF('crearClienteDlg').show();" title="Nuevo" icon="icon-client">
-						<p:ajax update=":clienteFormId, :direccionesFormId, :direccionFormId" />
+						<p:ajax update=":clienteFormId " />
 					</p:commandButton>
 				</div>
 				<p:spacer height="20px;" />
@@ -88,7 +88,7 @@
 				<p:spacer height="20px;" />
 				<div align="center">
 					<h:panelGrid columns="1" id="tablaClientes">
-						<p:dataTable value="#{clienteBacking.clientesObtenidos}" var="cliente" widgetVar="50" editable="true">
+						<p:dataTable value="#{clienteBacking.clientesObtenidos}" var="cliente" widgetVar="50" editable="true" style="width: 80%;">
 							<p:column>
 								<f:facet name="header">
 									<h:outputText value="#{emision['cliente.tabla.identificacion']}" />
@@ -139,7 +139,7 @@
 		<!-- DIALOG - Datos del Cliente -->
 		<h:form id="clienteFormId">
 			<p:dialog id="agregarClienteDlgId" widgetVar="crearClienteDlg" styleClass="DialogCliente" modal="true" position="center" showEffect="explote"
-				hideEffect="bounce" resizable="false" closable="true">
+				hideEffect="bounce" resizable="false" closable="true" width="580" height="450">
 
 				<div id="crearClienteDivBodyId">
 					<!-- CLIENTE -->
@@ -166,7 +166,6 @@
 						<p:inputText id="idIdentificacion" value="#{clienteBean.identificacion}" required="true"
 							requiredMessage="#{administrador['cliente.dlg.agregar.msg.identificacion']}" />
 					</h:panelGrid>
-
 
 					<!-- Informacion Persona Natural -->
 					<p:panel id="infPerNatPanelId" visible="#{clienteBacking.activarPanelPersonaNatural}" styleClass="DialogCliente-personaNatural">
@@ -250,7 +249,7 @@
 					</p:panel>
 					<!-- Informacion Persona Juridica -->
 					<p:panel id="infPerJurPanelId" visible="#{clienteBacking.activarPanelPersonaJuridica}" styleClass="DialogCliente-personaJuridica">
-					<f:facet name="header">
+						<f:facet name="header">
 							<p:outputLabel value="PERSONA JURÍDICA" />
 						</f:facet>
 						<h:panelGrid columns="1" cellpadding="2" cellspacing="2">
@@ -263,7 +262,7 @@
 							<p:inputText id="giroNegocioId" value="#{clienteBean.giroNegocio}" required="#{clienteBacking.activarPanelPersonaJuridica}"
 								requiredMessage="emi" styleClass="DialogCliente-giroNegocio" />
 						</h:panelGrid>
-										<p:spacer height="10px;" />
+						<p:spacer height="10px;" />
 						<h:panelGrid columns="2" cellpadding="2" cellspacing="2">
 							<p:outputLabel value="Por favor ingresar todos los contactos " />
 							<h:graphicImage name="icono-contacto.jpg" library="img" style="width: 90px;" />
@@ -309,178 +308,135 @@
 							</p:column>
 						</p:dataTable>
 					</p:panel>
-					<!-- Direccion -->
-					<h:panelGrid columns="2" styleClass="DialogCliente-direccion">
-						<p:outputLabel for="direccionId" value="#{administrador['cliente.dlg.agregar.direccion']}" styleClass="negrita" />
-						<p:commandLink id="direccionId" title="Agregar direcciones">
-							<h:graphicImage name="mundo.png" library="img" onclick="PF('direccionesDlg').show();" />
-						</p:commandLink>
+					<!-- DIRECCION -->
+					<h:panelGrid columns="2" cellpadding="2" cellspacing="2">
+						<p:outputLabel value="Por favor ingresar Las direcciones correspondientes " />
+						<h:graphicImage name="mundo.png" library="img" />
 					</h:panelGrid>
+					<p:spacer height="10px;" />
+
+					<p:panel>
+						<f:facet name="header">
+							<p:outputLabel value="DIRECCIONES" />
+						</f:facet>
+						<h:panelGrid columns="1" cellpadding="2" cellspacing="2">
+							<h:panelGrid id="detalleDireccionId" columns="2" cellpadding="2" cellspacing="2">
+								<p:outputLabel value="#{administrador['cliente.dlg.contacto.tipoContacto']}" styleClass="negrita" />
+								<p:selectOneMenu id="tipoDireccionId" value="#{direccionBean.codTipoDireccion}" effect="drop">
+									<f:selectItem itemLabel="Seleccione" noSelectionOption="true" />
+									<f:selectItems value="#{direccionBacking.tipoDireccionItems}" />
+								</p:selectOneMenu>
+
+								<p:outputLabel for="provinciaId" value="#{administrador['cliente.dlg.direccion.provicnia']}" styleClass="negrita" />
+								<p:selectOneMenu id="provinciaId" value="#{direccionBean.provinciaDTO}" required="true"
+									requiredMessage="#{administrador['cliente.dlg.direccion.msg.provincia']}" converter="provinciaConverter" effect="fade" var="p" filter="true"
+									style="width:210px;">
+									<f:selectItems value="#{direccionBacking.provinciasDTO}" var="provincia" itemLabel="#{provincia.nombre}" itemValue="#{provincia}" />
+									<p:column>
+										<h:outputText value="#{p.nombre}" />
+									</p:column>
+								</p:selectOneMenu>
+
+								<p:outputLabel for="callePrincipalId" value="#{administrador['cliente.dlg.direccion.callePrincilapal']}" styleClass="negrita" />
+								<p:inputText id="callePrincipalId" value="#{direccionBean.callePrincipal}" required="true"
+									requiredMessage="#{administrador['cliente.dlg.direccion.msg.callePrincipal']}" style="width:200px;text-transform:uppercase;" />
+
+								<p:outputLabel for="numeracionId" value="#{administrador['cliente.dlg.direccion.numeracion']}" styleClass="negrita" />
+								<p:inputText id="numeracionId" value="#{direccionBean.numeracion}" required="true"
+									requiredMessage="#{administrador['cliente.dlg.direccion.msg.numeracion']}" style="width:200px;" />
+
+								<p:outputLabel for="calleSecundariaId" value="#{administrador['cliente.dlg.direccion.calleSecundaria']}" styleClass="negrita" />
+								<p:inputText id="calleSecundariaId" value="#{direccionBean.calleSecundaria}" required="true"
+									requiredMessage="#{administrador['cliente.dlg.direccion.msg.calleSecundaria']}" style="width:200px; text-transform:uppercase;" />
+							</h:panelGrid>
+							<h:panelGrid columns="1" cellpadding="2" cellspacing="2">
+								<p:outputLabel for="referenciaId" value="#{administrador['cliente.dlg.direccion.referencia']}" styleClass="negrita" />
+								<p:inputTextarea id="referenciaId" rows="3" cols="45" value="#{direccionBean.referencia}" style="text-transform:uppercase;" />
+							</h:panelGrid>
+							<p:spacer height="5px;" />
+							<div align="center">
+								<p:commandButton id="agregarDireccionId" value="Agregar" actionListener="#{direccionBacking.agregarDireccion}" icon="icon-add"
+									update="direccionesTableId" />
+							</div>
+						</h:panelGrid>
+						<p:spacer height="15px;" />
+						<!-- Tabla - Lista de Direcciones Ingresadas -->
+						<p:dataTable id="direccionesTableId" var="direccion" value="#{direccionBacking.direcciones}" editable="true">
+							<f:facet name="header">
+								<p:outputLabel value="#{administrador['cliente.dlg.direcciones.table.title']}" />
+							</f:facet>
+
+							<p:ajax event="rowEdit" listener="#{direccionBacking.onRowEdit}" />
+							<p:ajax event="rowEditCancel" listener="#{direccionBacking.onRowCancel}" />
+
+							<p:column headerText="#{administrador['cliente.dlg.direcciones.table.tipoDireccion']}" style="width:auto">
+								<h:outputText value="#{direccion.tipoDireccion}" />
+							</p:column>
+							<p:column headerText="#{administrador['cliente.dlg.direcciones.table.provicnia']}" style="width:auto">
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{direccion.provinciaDTO.nombre}" />
+									</f:facet>
+									<f:facet name="input">
+										<h:selectOneMenu value="#{direccion.provinciaDTO.nombre}" style="width:auto">
+											<f:selectItems value="#{direccionBacking.provinciasDTO}" var="provincia" itemLabel="#{provincia.nombre}" itemValue="#{provincia.nombre}" />
+										</h:selectOneMenu>
+									</f:facet>
+								</p:cellEditor>
+							</p:column>
+
+							<p:column headerText="#{administrador['cliente.dlg.direcciones.table.callePrincilapal']}" style="width:auto">
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{direccion.callePrincipal}" />
+									</f:facet>
+									<f:facet name="input">
+										<p:inputText id="callePrincipalId" value="#{direccion.callePrincipal}" style="width:auto;" />
+									</f:facet>
+								</p:cellEditor>
+							</p:column>
+							<p:column headerText="#{administrador['cliente.dlg.direcciones.table.numeracion']}" style="width:auto">
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{direccion.numeracion}" />
+									</f:facet>
+									<f:facet name="input">
+										<p:inputText id="numeracionId" value="#{direccion.numeracion}" style="width:auto" />
+									</f:facet>
+								</p:cellEditor>
+							</p:column>
+							<p:column headerText="#{administrador['cliente.dlg.direcciones.table.calleSecundaria']}" style="width:auto">
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{direccion.calleSecundaria}" />
+									</f:facet>
+									<f:facet name="input">
+										<p:inputText id="calleSecundariaId" value="#{direccion.calleSecundaria}" style="width:auto" />
+									</f:facet>
+								</p:cellEditor>
+							</p:column>
+							<p:column headerText="#{administrador['cliente.dlg.direcciones.table.referencia']}">
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{direccion.referencia}" />
+									</f:facet>
+									<f:facet name="input">
+										<p:inputTextarea value="#{direccion.referencia}" />
+									</f:facet>
+								</p:cellEditor>
+							</p:column>
+
+							<p:column headerText="Options" style="width:50px">
+								<p:rowEditor />
+							</p:column>
+						</p:dataTable>
+					</p:panel>
 				</div>
 				<!-- Footer del Formulario -->
 				<f:facet name="footer">
 					<div id="crearClienteDivFooterId">
 						<p:commandButton id="guardarClienteBtnId" value="#{utilitario['hiperion.btn.guardar']}" actionListener="#{clienteBacking.guardarCliente}"
 							oncomplete="PF('crearClienteDlg').hide();" icon="icon-save" />
-					</div>
-				</f:facet>
-			</p:dialog>
-		</h:form>
-
-		<!-- DIALOG - Permite visulaizar, modificar y eliminar las direcciones del Cliente -->
-		<h:form id="direccionesFormId">
-			<p:growl id="msgs" showDetail="true" />
-			<p:dialog id="direccionesDlgId" header="#{administrador['cliente.dlg.direcciones.header']}" widgetVar="direccionesDlg" showEffect="fade"
-				hideEffect="explode" resizable="false" closable="false" modal="true" width="95%">
-				<!-- Tipo de Direccion -->
-				<h:panelGrid columns="2" cellpadding="2" cellspacing="2">
-					<p:outputLabel value="#{administrador['cliente.dlg.contacto.tipoContacto']}" styleClass="negrita" />
-					<p:selectOneMenu id="tipoDireccionId" value="#{direccionBean.codTipoDireccion}" effect="drop">
-						<f:selectItem itemLabel="Seleccione" noSelectionOption="true" />
-						<f:selectItems value="#{direccionBacking.tipoDireccionItems}" />
-						<p:ajax event="change" listener="#{direccionBacking.selectTipoDireccion}" update=":direccionFormId:inputDireccionDlgId"
-							oncomplete="PF('inputDireccionDlg').show();" />
-					</p:selectOneMenu>
-				</h:panelGrid>
-
-				<p:separator />
-
-				<!-- Tabla - Lista de Direcciones Ingresadas -->
-				<p:dataTable id="direccionesTableId" var="direccion" value="#{direccionBacking.direcciones}" editable="true">
-
-					<f:facet name="header">#{administrador['cliente.dlg.direcciones.table.title']}</f:facet>
-
-					<p:ajax event="rowEdit" listener="#{direccionBacking.onRowEdit}" update=":direccionesFormId:msgs" />
-					<p:ajax event="rowEditCancel" listener="#{direccionBacking.onRowCancel}" update=":direccionesFormId:msgs" />
-
-					<p:column headerText="#{administrador['cliente.dlg.direcciones.table.tipoDireccion']}" style="width:auto">
-						<h:outputText value="#{direccion.tipoDireccion}" />
-					</p:column>
-					<p:column headerText="#{administrador['cliente.dlg.direcciones.table.provicnia']}" style="width:auto">
-						<p:cellEditor>
-							<f:facet name="output">
-								<h:outputText value="#{direccion.provinciaDTO.nombre}" />
-							</f:facet>
-							<f:facet name="input">
-								<h:selectOneMenu value="#{direccion.provinciaDTO.nombre}" style="width:auto">
-									<f:selectItems value="#{direccionBacking.provinciasDTO}" var="provincia" itemLabel="#{provincia.nombre}" itemValue="#{provincia.nombre}" />
-								</h:selectOneMenu>
-							</f:facet>
-						</p:cellEditor>
-					</p:column>
-
-					<p:column headerText="#{administrador['cliente.dlg.direcciones.table.callePrincilapal']}" style="width:auto">
-						<p:cellEditor>
-							<f:facet name="output">
-								<h:outputText value="#{direccion.callePrincipal}" />
-							</f:facet>
-							<f:facet name="input">
-								<p:inputText id="callePrincipalId" value="#{direccion.callePrincipal}" style="width:auto;" />
-							</f:facet>
-						</p:cellEditor>
-					</p:column>
-					<p:column headerText="#{administrador['cliente.dlg.direcciones.table.numeracion']}" style="width:auto">
-						<p:cellEditor>
-							<f:facet name="output">
-								<h:outputText value="#{direccion.numeracion}" />
-							</f:facet>
-							<f:facet name="input">
-								<p:inputText id="numeracionId" value="#{direccion.numeracion}" style="width:auto" />
-							</f:facet>
-						</p:cellEditor>
-					</p:column>
-					<p:column headerText="#{administrador['cliente.dlg.direcciones.table.calleSecundaria']}" style="width:auto">
-						<p:cellEditor>
-							<f:facet name="output">
-								<h:outputText value="#{direccion.calleSecundaria}" />
-							</f:facet>
-							<f:facet name="input">
-								<p:inputText id="calleSecundariaId" value="#{direccion.calleSecundaria}" style="width:auto" />
-							</f:facet>
-						</p:cellEditor>
-					</p:column>
-					<p:column headerText="#{administrador['cliente.dlg.direcciones.table.referencia']}">
-						<p:cellEditor>
-							<f:facet name="output">
-								<h:outputText value="#{direccion.referencia}" />
-							</f:facet>
-							<f:facet name="input">
-								<p:inputTextarea value="#{direccion.referencia}" />
-							</f:facet>
-						</p:cellEditor>
-					</p:column>
-
-					<p:column styleClass="DialogoDirecciones-tableEdit">
-						<p:rowEditor />
-						<p:commandLink actionListener="#{direccionBacking.eliminarDireccion(direccion.tipoDireccion)}"
-							update=":direccionesFormId:direccionesTableId,:direccionesFormId:tipoDireccionId">
-							<span class="ui-icon ui-icon-trash" />
-							<p:confirm header="#{utilitario['hiperion.confirmacion.header']}" message="#{utilitario['hiperion.confirmacion.mensaje']}" icon="ui-icon-alert" />
-						</p:commandLink>
-					</p:column>
-				</p:dataTable>
-
-				<f:facet name="footer">
-					<div align="center">
-						<p:commandButton id="guardarDireccionesId" value="#{utilitario['hiperion.btn.guardar']}" actionListener="#{direccionBacking.guardarDirecciones}"
-							oncomplete="PF('direccionesDlg').hide();" icon="ui-icon-check" />
-						<p:commandButton id="cancelarDireccionesId" value="#{utilitario['hiperion.btn.cancelar']}"
-							actionListener="#{direccionBacking.cancelarDirecciones}" oncomplete="PF('direccionesDlg').hide();"
-							update=":direccionesFormId:direccionesTableId,:direccionesFormId:tipoDireccionId" icon="ui-icon-circle-close" />
-					</div>
-				</f:facet>
-			</p:dialog>
-
-			<!-- Panel de Confirmacion para eliminar una direccion -->
-			<p:confirmDialog global="true" showEffect="fade" hideEffect="explode">
-				<p:commandButton value="#{utilitario['hiperion.confirmacion.si']}" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
-				<p:commandButton value="#{utilitario['hiperion.confirmacion.no']}" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
-			</p:confirmDialog>
-		</h:form>
-
-		<!-- DIALOG - Permite ingresar las direcciones del Cliente  -->
-		<h:form id="direccionFormId" prependId="false">
-			<p:dialog id="inputDireccionDlgId" header="Direcci&oacute;n de  #{direccionBean.tipoDireccion}" widgetVar="inputDireccionDlg" resizable="false"
-				showEffect="fade" hideEffect="explode" modal="true" closable="false">
-				<p:messages id="message" showDetail="false" autoUpdate="true" closable="true" />
-				<p:panel>
-					<h:panelGrid id="detalleDireccionId" columns="2" cellpadding="2" cellspacing="2">
-						<p:outputLabel for="provinciaId" value="#{administrador['cliente.dlg.direccion.provicnia']}" styleClass="negrita" />
-						<p:selectOneMenu id="provinciaId" value="#{direccionBean.provinciaDTO}" required="true"
-							requiredMessage="#{administrador['cliente.dlg.direccion.msg.provincia']}" converter="provinciaConverter" effect="fade" var="p" filter="true"
-							style="width:210px;">
-							<f:selectItems value="#{direccionBacking.provinciasDTO}" var="provincia" itemLabel="#{provincia.nombre}" itemValue="#{provincia}" />
-							<p:column>
-								<h:outputText value="#{p.nombre}" />
-							</p:column>
-						</p:selectOneMenu>
-
-						<p:outputLabel for="callePrincipalId" value="#{administrador['cliente.dlg.direccion.callePrincilapal']}" styleClass="negrita" />
-						<p:inputText id="callePrincipalId" value="#{direccionBean.callePrincipal}" required="true"
-							requiredMessage="#{administrador['cliente.dlg.direccion.msg.callePrincipal']}" style="width:200px;text-transform:uppercase;" />
-
-						<p:outputLabel for="numeracionId" value="#{administrador['cliente.dlg.direccion.numeracion']}" styleClass="negrita" />
-						<p:inputText id="numeracionId" value="#{direccionBean.numeracion}" required="true"
-							requiredMessage="#{administrador['cliente.dlg.direccion.msg.numeracion']}" style="width:200px;" />
-
-						<p:outputLabel for="calleSecundariaId" value="#{administrador['cliente.dlg.direccion.calleSecundaria']}" styleClass="negrita" />
-						<p:inputText id="calleSecundariaId" value="#{direccionBean.calleSecundaria}" required="true"
-							requiredMessage="#{administrador['cliente.dlg.direccion.msg.calleSecundaria']}" style="width:200px; text-transform:uppercase;" />
-					</h:panelGrid>
-					<h:panelGrid columns="1" cellpadding="2" cellspacing="2">
-						<p:outputLabel for="referenciaId" value="#{administrador['cliente.dlg.direccion.referencia']}" styleClass="negrita" />
-						<p:inputTextarea id="referenciaId" rows="3" cols="45" value="#{direccionBean.referencia}" style="text-transform:uppercase;" />
-					</h:panelGrid>
-				</p:panel>
-
-				<f:facet name="footer">
-					<div align="center">
-						<p:commandButton id="agregarDireccionId" value="Agregar"
-							update=":direccionFormId:detalleDireccionId, :direccionesFormId:direccionesTableId, :direccionesFormId:tipoDireccionId"
-							actionListener="#{direccionBacking.agregarDireccion}" icon="ui-icon-check" />
-						<p:commandButton id="cancelarDireccionId" value="Cancelar" actionListener="#{direccionBacking.cancelarDireccion}"
-							update=":direccionesFormId:tipoDireccionId, direccionFormId" oncomplete="PF('inputDireccionDlg').hide();" process="@this"
-							icon="ui-icon-circle-close" />
 					</div>
 				</f:facet>
 			</p:dialog>

@@ -42,7 +42,6 @@ public class DireccionBacking implements Serializable {
 	private TipoDireccionService tipoDireccionService;
 	@EJB
 	private ProvinciaService provinciaService;
-	
 
 	private List<ProvinciaDTO> provinciasDTO;
 	private List<CantonDTO> cantonesDTO;
@@ -54,11 +53,20 @@ public class DireccionBacking implements Serializable {
 
 	@PostConstruct
 	public void inicializar() {
+		obtenerProvincias();
 		setDirecciones(new ArrayList<DireccionDTO>());
 		direccionBean.setDireccionesRegistradas(new ArrayList<DireccionDTO>());
 		obtenerTiposDireccion();
 	}
 
+	/**
+	 * 
+	 * <b> Permite obtener el catalogo de provincias. </b>
+	 * <p>
+	 * [Author: kruger, Date: Oct 4, 2016]
+	 * </p>
+	 * 
+	 */
 	public void obtenerProvincias() {
 		try {
 			this.provinciasDTO = new ArrayList<ProvinciaDTO>();
@@ -77,9 +85,6 @@ public class DireccionBacking implements Serializable {
 			ex.printStackTrace();
 		}
 	}
-
-	
-	
 
 	/**
 	 * 
@@ -147,8 +152,6 @@ public class DireccionBacking implements Serializable {
 		direccionDto.setTelefonoMovil(direccionBean.getTelefonoMovil());
 
 		direcciones.add(direccionDto);
-
-		RequestContext.getCurrentInstance().execute("inputDireccionDlg.hide();");
 
 		// Reresca el combo Tipo Direccion
 		refreshComboTipoDireccion();
@@ -328,7 +331,7 @@ public class DireccionBacking implements Serializable {
 	 *            - parametro a ser modificado.
 	 */
 	public void onRowEdit(RowEditEvent event) {
-		FacesMessage msg = new FacesMessage("Direccion Edited", ((DireccionDTO) event.getObject()).getTipoDireccion());
+		FacesMessage msg = new FacesMessage("Direccion Modificada", ((DireccionDTO) event.getObject()).getTipoDireccion());
 		FacesContext.getCurrentInstance().addMessage(null, msg);
 	}
 
@@ -343,7 +346,7 @@ public class DireccionBacking implements Serializable {
 	 *            - parametro que no se modifico.
 	 */
 	public void onRowCancel(RowEditEvent event) {
-		FacesMessage msg = new FacesMessage("Edit Cancelled", ((DireccionDTO) event.getObject()).getTipoDireccion());
+		FacesMessage msg = new FacesMessage("Direccion Eliminada", ((DireccionDTO) event.getObject()).getTipoDireccion());
 		FacesContext.getCurrentInstance().addMessage(null, msg);
 	}
 
