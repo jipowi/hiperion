@@ -95,24 +95,6 @@ public class ContactoBacking implements Serializable {
 
 	/**
 	 * 
-	 * <b> Permite refrescar los campos del contacto. </b>
-	 * <p>
-	 * [Author: Paul Jimenez, Date: 29/08/2015]
-	 * </p>
-	 * 
-	 */
-	public void refreshContacto() {
-		activarCelular = false;
-		activarMail = false;
-		activarSkype = false;
-		activarTelefono = false;
-
-		contactoBean.setDescripcionContacto(null);
-		contactoBean.setTipoContacto("");
-	}
-
-	/**
-	 * 
 	 * <b> Permite guardar el contacto del cliente. </b>
 	 * <p>
 	 * [Author: Paul Jimenez, Date: 29/08/2015]
@@ -126,14 +108,16 @@ public class ContactoBacking implements Serializable {
 
 		contactoBean.getContactosDTO().add(contactoDTO);
 
-		// Refrescamos los campos del Contacto
-		refreshContacto();
+		activarCelular = false;
+		activarMail = false;
+		activarSkype = false;
+		activarTelefono = false;
+
+		contactoBean.setDescripcionContacto(null);
+
 	}
 
-	public void cancelarContacto() {
-		refreshContacto();
-	}
-
+	
 	public void cancelarContactos() {
 		contactoBean.setContactosDTO(new ArrayList<ContactoDTO>());
 	}

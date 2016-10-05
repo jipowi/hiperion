@@ -201,7 +201,26 @@
 							<p:outputLabel for="fechaNacimientoId" value="#{administrador['cliente.dlg.agregar.fechaNacimiento']}" styleClass="negrita" />
 							<p:calendar id="fechaNacimientoId" value="#{clienteBean.fechaNacimiento}" locale="de" navigator="true" pattern="MM/dd/yyyy" mask="true" />
 						</h:panelGrid>
-						<p:spacer height="10px;" />
+
+					</p:panel>
+					<!-- Informacion Persona Juridica -->
+					<p:panel id="infPerJurPanelId" visible="#{clienteBacking.activarPanelPersonaJuridica}" styleClass="DialogCliente-personaJuridica">
+						<f:facet name="header">
+							<p:outputLabel value="PERSONA JURÍDICA" />
+						</f:facet>
+						<h:panelGrid columns="1" cellpadding="2" cellspacing="2">
+							<p:outputLabel for="razonSocialId" value="#{administrador['cliente.dlg.agregar.razonSocial']}" styleClass="negrita" />
+							<p:inputText id="razonSocialId" value="#{clienteBean.razonSocial}" required="#{clienteBacking.activarPanelPersonaJuridica}"
+								requiredMessage="#{administrador['cliente.dlg.agregar.msg.razonSocial']}" styleClass="DialogCliente-razonSocial" />
+						</h:panelGrid>
+						<h:panelGrid columns="1" cellpadding="2" cellspacing="2">
+							<p:outputLabel for="giroNegocioId" value="#{administrador['cliente.dlg.agregar.giroNegocio']}" styleClass="negrita" />
+							<p:inputText id="giroNegocioId" value="#{clienteBean.giroNegocio}" required="#{clienteBacking.activarPanelPersonaJuridica}"
+								requiredMessage="emi" styleClass="DialogCliente-giroNegocio" />
+						</h:panelGrid>
+					</p:panel>
+					
+					<p:spacer height="10px;" />
 						<h:panelGrid columns="2" cellpadding="2" cellspacing="2">
 							<p:outputLabel value="Por favor ingresar todos los contactos " />
 							<h:graphicImage name="icono-contacto.jpg" library="img" style="width: 90px;" />
@@ -246,68 +265,6 @@
 								<h:outputText value="#{contacto.descripcionContacto}" />
 							</p:column>
 						</p:dataTable>
-					</p:panel>
-					<!-- Informacion Persona Juridica -->
-					<p:panel id="infPerJurPanelId" visible="#{clienteBacking.activarPanelPersonaJuridica}" styleClass="DialogCliente-personaJuridica">
-						<f:facet name="header">
-							<p:outputLabel value="PERSONA JURÍDICA" />
-						</f:facet>
-						<h:panelGrid columns="1" cellpadding="2" cellspacing="2">
-							<p:outputLabel for="razonSocialId" value="#{administrador['cliente.dlg.agregar.razonSocial']}" styleClass="negrita" />
-							<p:inputText id="razonSocialId" value="#{clienteBean.razonSocial}" required="#{clienteBacking.activarPanelPersonaJuridica}"
-								requiredMessage="#{administrador['cliente.dlg.agregar.msg.razonSocial']}" styleClass="DialogCliente-razonSocial" />
-						</h:panelGrid>
-						<h:panelGrid columns="1" cellpadding="2" cellspacing="2">
-							<p:outputLabel for="giroNegocioId" value="#{administrador['cliente.dlg.agregar.giroNegocio']}" styleClass="negrita" />
-							<p:inputText id="giroNegocioId" value="#{clienteBean.giroNegocio}" required="#{clienteBacking.activarPanelPersonaJuridica}"
-								requiredMessage="emi" styleClass="DialogCliente-giroNegocio" />
-						</h:panelGrid>
-						<p:spacer height="10px;" />
-						<h:panelGrid columns="2" cellpadding="2" cellspacing="2">
-							<p:outputLabel value="Por favor ingresar todos los contactos " />
-							<h:graphicImage name="icono-contacto.jpg" library="img" style="width: 90px;" />
-						</h:panelGrid>
-						<h:panelGrid id="idContactosJ" columns="4" cellpadding="2" cellspacing="2">
-							<p:outputLabel for="tipoContactoIdJ" value="#{administrador['cliente.dlg.contacto.tipoContacto']}" styleClass="negrita" />
-							<p:selectOneMenu id="tipoContactoIdJ" value="#{contactoBean.tipoContacto}" effect="fade">
-								<f:selectItem itemLabel="Seleccione" noSelectionOption="true" />
-								<f:selectItems value="#{contactoBacking.tipoContactosItems}" />
-								<p:ajax listener="#{contactoBacking.validarContacto()}" update="idContactosJ, idCelularJ, idTelefonoJ, idMailJ, idSkypeJ" />
-							</p:selectOneMenu>
-							<p:inputText id="idCelularJ" value="#{contactoBean.descripcionContacto}" placeholder="#{contactoBean.tipoContacto}"
-								rendered="#{contactoBacking.activarCelular}" validatorMessage="#{emision['msg.formato.celular.error']}">
-								<f:validateRegex pattern="#{emision['msg.formato.celular']}" />
-							</p:inputText>
-
-							<p:inputText id="idTelefonoJ" value="#{contactoBean.descripcionContacto}" placeholder="#{contactoBean.tipoContacto}"
-								rendered="#{contactoBacking.activarTelefono}" />
-							<p:inputText id="idMailJ" value="#{contactoBean.descripcionContacto}" placeholder="#{contactoBean.tipoContacto}"
-								rendered="#{contactoBacking.activarMail}" validatorMessage="#{emision['msg.correo.error']}">
-								<f:validateRegex pattern="#{emision['msg.formato.correo']}" />
-							</p:inputText>
-							<p:inputText id="idSkypeJ" value="#{contactoBean.descripcionContacto}" placeholder="#{contactoBean.tipoContacto}"
-								rendered="#{contactoBacking.activarSkype}" />
-
-							<p:commandButton value="Agregar Contacto" action="#{contactoBacking.agregarContacto}" icon="icon-add" update="contactosJuridica" />
-						</h:panelGrid>
-
-						<p:spacer height="10px;" />
-
-						<!-- Lista de Contactos para el Cliente -->
-						<p:dataTable id="contactosJuridica" var="contacto" value="#{contactoBean.contactosDTO}" editable="true">
-							<f:facet name="header">
-								<p:outputLabel value="lista de Contactos" />
-							</f:facet>
-
-							<p:column headerText="#{administrador['cliente.dlg.contactos.table.tipoContacto']}" style="width:auto">
-								<h:outputText value="#{contacto.tipoContacto}" />
-							</p:column>
-
-							<p:column headerText="#{administrador['cliente.dlg.contactos.table.descripcionContacto']}" style="width:auto">
-								<h:outputText value="#{contacto.descripcionContacto}" />
-							</p:column>
-						</p:dataTable>
-					</p:panel>
 					<!-- DIRECCION -->
 					<h:panelGrid columns="2" cellpadding="2" cellspacing="2">
 						<p:outputLabel value="Por favor ingresar Las direcciones correspondientes " />
@@ -328,8 +285,7 @@
 								</p:selectOneMenu>
 
 								<p:outputLabel for="provinciaId" value="#{administrador['cliente.dlg.direccion.provicnia']}" styleClass="negrita" />
-								<p:selectOneMenu id="provinciaId" value="#{direccionBean.provinciaDTO}" required="true"
-									requiredMessage="#{administrador['cliente.dlg.direccion.msg.provincia']}" converter="provinciaConverter" effect="fade" var="p" filter="true"
+								<p:selectOneMenu id="provinciaId" value="#{direccionBean.provinciaDTO}" converter="provinciaConverter" effect="fade" var="p" filter="true"
 									style="width:210px;">
 									<f:selectItems value="#{direccionBacking.provinciasDTO}" var="provincia" itemLabel="#{provincia.nombre}" itemValue="#{provincia}" />
 									<p:column>
@@ -338,16 +294,13 @@
 								</p:selectOneMenu>
 
 								<p:outputLabel for="callePrincipalId" value="#{administrador['cliente.dlg.direccion.callePrincilapal']}" styleClass="negrita" />
-								<p:inputText id="callePrincipalId" value="#{direccionBean.callePrincipal}" required="true"
-									requiredMessage="#{administrador['cliente.dlg.direccion.msg.callePrincipal']}" style="width:200px;text-transform:uppercase;" />
+								<p:inputText id="callePrincipalId" value="#{direccionBean.callePrincipal}" style="width:200px;text-transform:uppercase;" />
 
 								<p:outputLabel for="numeracionId" value="#{administrador['cliente.dlg.direccion.numeracion']}" styleClass="negrita" />
-								<p:inputText id="numeracionId" value="#{direccionBean.numeracion}" required="true"
-									requiredMessage="#{administrador['cliente.dlg.direccion.msg.numeracion']}" style="width:200px;" />
+								<p:inputText id="numeracionId" value="#{direccionBean.numeracion}" style="width:200px;" />
 
 								<p:outputLabel for="calleSecundariaId" value="#{administrador['cliente.dlg.direccion.calleSecundaria']}" styleClass="negrita" />
-								<p:inputText id="calleSecundariaId" value="#{direccionBean.calleSecundaria}" required="true"
-									requiredMessage="#{administrador['cliente.dlg.direccion.msg.calleSecundaria']}" style="width:200px; text-transform:uppercase;" />
+								<p:inputText id="calleSecundariaId" value="#{direccionBean.calleSecundaria}" style="width:200px; text-transform:uppercase;" />
 							</h:panelGrid>
 							<h:panelGrid columns="1" cellpadding="2" cellspacing="2">
 								<p:outputLabel for="referenciaId" value="#{administrador['cliente.dlg.direccion.referencia']}" styleClass="negrita" />
