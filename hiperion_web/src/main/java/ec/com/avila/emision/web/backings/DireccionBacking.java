@@ -124,7 +124,7 @@ public class DireccionBacking implements Serializable {
 		String codTipoDireccion = direccionBean.getCodTipoDireccion();
 
 		try {
-			
+
 			TipoDireccion tipoDireccion = tipoDireccionService.consultarTipoDireccionByCodigo(codTipoDireccion);
 			direccionBean.setTipoDireccion(tipoDireccion.getDescTipoDireccion());
 			direccionDto = new DireccionDTO();
@@ -142,9 +142,7 @@ public class DireccionBacking implements Serializable {
 			direccionDto.setTelefonoMovil(direccionBean.getTelefonoMovil());
 
 			direcciones.add(direccionDto);
-
-			// Reresca el combo Tipo Direccion
-			refreshComboTipoDireccion();
+			direccionBean.getDireccionesRegistradas().add(direccionDto);
 
 		} catch (HiperionException e) {
 			throw new HiperionException(e);
@@ -162,27 +160,9 @@ public class DireccionBacking implements Serializable {
 	 * @throws HiperionException
 	 */
 	public void cancelarDireccion() {
-		refreshDialogDireccion();
 		// Permite refrescar el combo de Tipo Direccion.
 		direccionBean.setCodTipoDireccion(null);
 		RequestContext.getCurrentInstance().reset("direccionFormId:inputDireccionDlgId");
-	}
-
-	/**
-	 * 
-	 * <b> Permite guardar la o las direcciones de un cliente. </b>
-	 * <p>
-	 * [Author: Dario Vinueza, Date: 12/08/2014]
-	 * </p>
-	 * 
-	 */
-	public void guardarDirecciones() {
-		if (direcciones.size() > 0) {
-			for (DireccionDTO direccion : direcciones)
-				if (!direccionBean.getDireccionesRegistradas().contains(direccion)) {
-					direccionBean.getDireccionesRegistradas().add(direccion);
-				}
-		}
 	}
 
 	/**
@@ -252,7 +232,6 @@ public class DireccionBacking implements Serializable {
 			obtenerTiposDireccion();
 		}
 
-		refreshDialogDireccion();
 	}
 
 	/**
@@ -277,41 +256,6 @@ public class DireccionBacking implements Serializable {
 		}
 
 		return tipoDireccionItems;
-	}
-
-	/**
-	 * 
-	 * <b> Permite refrescar el combo Tipo Dircci&oacute;n, para evitar el ingreso de una misma de direcci&oacte;n. </b>
-	 * <p>
-	 * [Author: Dario Vinueza, Date: Jul 1, 2014]
-	 * </p>
-	 * 
-	 */
-	public void refreshComboTipoDireccion() {
-		String codTipoDireccion = direccionBean.getCodTipoDireccion();
-		for (int i = 0; i < tipoDireccionItems.size(); i++) {
-			if (codTipoDireccion.equals(tipoDireccionItems.get(i).getValue())) {
-				tipoDireccionItems.remove(i);
-				i = tipoDireccionItems.size();
-			}
-		}
-	}
-
-	/**
-	 * 
-	 * <b> Permite limpiar los campos de la Direcci&oacute;n del Cliente. </b>
-	 * <p>
-	 * [Author: Dario Vinueza, Date: Jul 1, 2014]
-	 * </p>
-	 * 
-	 */
-	public void refreshDialogDireccion() {
-		direccionBean.setCallePrincipal("");
-		direccionBean.setNumeracion("");
-		direccionBean.setCalleSecundaria("");
-		direccionBean.setReferencia("");
-		direccionBean.setTelefonoConvencional("");
-		direccionBean.setTelefonoMovil("");
 	}
 
 	/**

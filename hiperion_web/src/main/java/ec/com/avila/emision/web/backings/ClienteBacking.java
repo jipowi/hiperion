@@ -283,6 +283,7 @@ public class ClienteBacking implements Serializable {
 	public void guardarCliente() {
 		try {
 
+			
 			Integer tipoIdentificacion = Integer.parseInt(clienteBean.getTipoIdentificacion());
 
 			if (tipoIdentificacion == 2 && clienteBean.getIdentificacion().length() != 13) {
