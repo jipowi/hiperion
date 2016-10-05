@@ -112,26 +112,6 @@ public class DireccionBacking implements Serializable {
 
 	/**
 	 * 
-	 * <b> Permite verificar la direcci&oacte;n que se selecciono para registrala al cliente. </b>
-	 * <p>
-	 * [Author: Dario Vinueza, Date: 12/08/2014]
-	 * </p>
-	 * 
-	 */
-	public void selectTipoDireccion() {
-		String codTipoDireccion = direccionBean.getCodTipoDireccion();
-		try {
-			TipoDireccion tipoDireccion = tipoDireccionService.consultarTipoDireccionByCodigo(codTipoDireccion);
-			direccionBean.setTipoDireccion(tipoDireccion.getDescTipoDireccion());
-			obtenerProvincias();
-			refreshDialogDireccion();
-		} catch (HiperionException e) {
-			e.printStackTrace();
-		}
-	}
-
-	/**
-	 * 
 	 * <b> Incluir aqui­ la descripcion del metodo. </b>
 	 * <p>
 	 * [Author: Dario Vinueza, Date: 12/08/2014]
@@ -139,22 +119,36 @@ public class DireccionBacking implements Serializable {
 	 * 
 	 * @throws HiperionException
 	 */
-	public void agregarDireccion() {
-		direccionDto = new DireccionDTO();
-		direccionDto.setProvinciaDTO(direccionBean.getProvinciaDTO());
-		direccionDto.setTipoDireccion(direccionBean.getTipoDireccion());
-		direccionDto.setCallePrincipal(direccionBean.getCallePrincipal());
-		direccionDto.setNumeracion(direccionBean.getNumeracion());
-		direccionDto.setCalleSecundaria(direccionBean.getCalleSecundaria());
-		direccionDto.setReferencia(direccionBean.getReferencia());
-		// Contacto Telefonico
-		direccionDto.setTelefonoConvencional(direccionBean.getTelefonoConvencional());
-		direccionDto.setTelefonoMovil(direccionBean.getTelefonoMovil());
+	public void agregarDireccion() throws HiperionException {
 
-		direcciones.add(direccionDto);
+		String codTipoDireccion = direccionBean.getCodTipoDireccion();
 
-		// Reresca el combo Tipo Direccion
-		refreshComboTipoDireccion();
+		try {
+			
+			TipoDireccion tipoDireccion = tipoDireccionService.consultarTipoDireccionByCodigo(codTipoDireccion);
+			direccionBean.setTipoDireccion(tipoDireccion.getDescTipoDireccion());
+			direccionDto = new DireccionDTO();
+			direccionDto.setProvinciaDTO(direccionBean.getProvinciaDTO());
+
+			direccionBean.setTipoDireccion(tipoDireccion.getDescTipoDireccion());
+
+			direccionDto.setTipoDireccion(direccionBean.getTipoDireccion());
+			direccionDto.setCallePrincipal(direccionBean.getCallePrincipal());
+			direccionDto.setNumeracion(direccionBean.getNumeracion());
+			direccionDto.setCalleSecundaria(direccionBean.getCalleSecundaria());
+			direccionDto.setReferencia(direccionBean.getReferencia());
+			// Contacto Telefonico
+			direccionDto.setTelefonoConvencional(direccionBean.getTelefonoConvencional());
+			direccionDto.setTelefonoMovil(direccionBean.getTelefonoMovil());
+
+			direcciones.add(direccionDto);
+
+			// Reresca el combo Tipo Direccion
+			refreshComboTipoDireccion();
+
+		} catch (HiperionException e) {
+			throw new HiperionException(e);
+		}
 	}
 
 	/**
