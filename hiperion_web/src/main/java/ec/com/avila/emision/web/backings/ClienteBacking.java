@@ -28,6 +28,7 @@ import ec.com.avila.emision.web.beans.DireccionBean;
 import ec.com.avila.emision.web.validator.ValidatorCedula;
 import ec.com.avila.emision.web.validator.ValidatorRuc;
 import ec.com.avila.hiperion.comun.HiperionException;
+import ec.com.avila.hiperion.dto.ContactoDTO;
 import ec.com.avila.hiperion.dto.DireccionDTO;
 import ec.com.avila.hiperion.emision.entities.Catalogo;
 import ec.com.avila.hiperion.emision.entities.Cliente;
@@ -162,8 +163,7 @@ public class ClienteBacking implements Serializable {
 	public List<SelectItem> obtenerTipoIdentificacion() {
 		try {
 			this.tipoIdentificacionItems = new ArrayList<SelectItem>();
-			Catalogo catalogo = catalogoService.consultarCatalogoById(HiperionMensajes.getInstancia().getLong(
-					"ec.gob.avila.hiperion.recursos.catalogoTipoIdentificacion"));
+			Catalogo catalogo = catalogoService.consultarCatalogoById(HiperionMensajes.getInstancia().getLong("ec.gob.avila.hiperion.recursos.catalogoTipoIdentificacion"));
 			List<DetalleCatalogo> tiposPersona = catalogo.getDetalleCatalogos();
 
 			for (DetalleCatalogo detalle : tiposPersona) {
@@ -319,8 +319,8 @@ public class ClienteBacking implements Serializable {
 							List<Direccion> direcciones = new ArrayList<Direccion>();
 							for (DireccionDTO direccionDto : direccionBean.getDireccionesRegistradas()) {
 								Direccion direccion = new Direccion();
+								
 								direccion.setCliente(cliente);
-								// Tipo Direccion
 								TipoDireccion tipoDireccion = tipoDireccionService.consultarTipoDireccionByDescripcion(direccionDto
 										.getTipoDireccion());
 								direccion.setTipoDireccion(tipoDireccion);
@@ -339,13 +339,23 @@ public class ClienteBacking implements Serializable {
 							}
 
 							cliente.setDireccions(direcciones);
+							
+							List<Contacto> contactos = new ArrayList<>();
+							for(ContactoDTO contactoDTO: contactoBean.getContactosDTO()){
+								Contacto contacto = new Contacto();
+								contacto.setCliente(cliente);
+								contacto.setTipoContacto(contactoDTO.getTipoContacto());
+								contacto.setDescripcionContacto(contactoDTO.getDescripcionContacto());
+								contactos.add(contacto);
+							}
+							cliente.setContactos(contactos);
 							// Guardamos al Cliente
-
 							cliente.setIdUsuarioCreacion(usuario.getIdUsuario());
 							cliente.setFechaCreacion(new Date());
 							cliente.setEstado(EstadoEnum.A);
 							clienteService.guardarCliente(cliente);
 							direccionService.guardarDirecciones(direcciones);
+							clienteService.guardarContactos(contactos);
 
 							MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.cliente"));
 						} else {
@@ -438,34 +448,40 @@ public class ClienteBacking implements Serializable {
 			Direccion direccion = new Direccion();
 			try {
 
-				if (hssfRow.getCell(0).getStringCellValue().contentEquals("PRIMER NOMBRE")) {
+				if (hssfRow.getCell(0).getStringCellValue().contentEquals("TIPO PERSONA")) {
 					hssfRow = (HSSFRow) rowIterator.next();
 				}
 
-				String primerNombre = hssfRow.getCell(0).getStringCellValue();
-				String segundoNombre = hssfRow.getCell(1).getStringCellValue();
-				String apellidoPaterno = hssfRow.getCell(2).getStringCellValue();
-				String apellidoMaterno = hssfRow.getCell(3).getStringCellValue();
-				//aqui pongo Razon Social y cambio numeros
-				String razonSocial = hssfRow.getCell(4).getStringCellValue();
-				String identificacion = hssfRow.getCell(5).getStringCellValue();
-				Date fechaNacimiento = hssfRow.getCell(6).getDateCellValue();
-				String provinciaExcel = hssfRow.getCell(7).getStringCellValue();
-				String callePrincipal = hssfRow.getCell(8).getStringCellValue();
-				String numeracion = hssfRow.getCell(9).getStringCellValue();
-				String calleSecundaria = hssfRow.getCell(10).getStringCellValue();
-				String referencia = hssfRow.getCell(11).getStringCellValue();
+				String tipoPersona = hssfRow.getCell(0).getStringCellValue();
+				String tipoIdentificacion = hssfRow.getCell(1).getStringCellValue();
+				String primerNombre = hssfRow.getCell(2).getStringCellValue();
+				String segundoNombre = hssfRow.getCell(3).getStringCellValue();
+				String apellidoPaterno = hssfRow.getCell(4).getStringCellValue();
+				String apellidoMaterno = hssfRow.getCell(5).getStringCellValue();
+				String identificacion = hssfRow.getCell(6).toString();
+				Date fechaNacimiento = hssfRow.getCell(7).getDateCellValue();
+				String razonSocial = hssfRow.getCell(8).getStringCellValue();
+				String provinciaExcel = hssfRow.getCell(9).getStringCellValue();
+				String callePrincipal = hssfRow.getCell(10).getStringCellValue();
+				String numeracion = hssfRow.getCell(11).getStringCellValue();
+				String calleSecundaria = hssfRow.getCell(12).getStringCellValue();
+				String referencia = hssfRow.getCell(13).getStringCellValue();
+				String telefono = hssfRow.getCell(14).getStringCellValue(); 
+				String mail = hssfRow.getCell(15).getStringCellValue();
 
+				cliente.setTipoPersona(tipoPersona);
+				cliente.setTipoIdentificacion(tipoIdentificacion);
 				cliente.setNombrePersona(primerNombre + " " + segundoNombre);
 				cliente.setApellidoPaterno(apellidoPaterno);
 				cliente.setApellidoMaterno(apellidoMaterno);
 				cliente.setRazonSocial(razonSocial);
 				cliente.setIdentificacionPersona(identificacion);
 				cliente.setFechaNacimiento(fechaNacimiento);
-				// Provincias
+				
+				//DIRECCION
 				Provincia provincia = new Provincia();
 				provincia.setNombreProvincia(provinciaExcel);
-				// Direccion Cliente
+				
 				direccion.setCallePrincipal(callePrincipal);
 				direccion.setNumeracion(numeracion);
 				direccion.setCalleSecundaria(calleSecundaria);
@@ -475,13 +491,25 @@ public class ClienteBacking implements Serializable {
 				direcciones.add(direccion);
 				cliente.setDireccions(direcciones);
 
-				// Guardar clientes
+				//CONTACTOS
+				List<Contacto> contactos = new ArrayList<>();
+				Contacto contactoTelf = new Contacto();
+				contactoTelf.setTipoContacto("TELEFONO");
+				contactoTelf.setDescripcionContacto(telefono);
+				
+				Contacto contactoMail = new Contacto();
+				contactoMail.setTipoContacto("MAIL");
+				contactoMail.setDescripcionContacto(mail);
+				
+				contactos.add(contactoTelf);
+				contactos.add(contactoMail);
 
 				cliente.setIdUsuarioCreacion(usuario.getIdUsuario());
 				cliente.setFechaCreacion(new Date());
 				cliente.setEstado(EstadoEnum.A);
 				clienteService.guardarCliente(cliente);
 				direccionService.guardarDirecciones(direcciones);
+				clienteService.guardarContactos(contactos);
 
 			} catch (Exception e) {
 				log.error("Error al cargar la fila: " + contador);
