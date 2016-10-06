@@ -11,6 +11,7 @@ import javax.ejb.Stateless;
 
 import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.dao.ClienteDao;
+import ec.com.avila.hiperion.dao.ContactoDao;
 import ec.com.avila.hiperion.emision.entities.Cliente;
 import ec.com.avila.hiperion.emision.entities.Contacto;
 import ec.com.avila.hiperion.emision.entities.Direccion;
@@ -21,6 +22,8 @@ public class ClienteServiceImpl implements ClienteService {
 
 	@EJB
 	private ClienteDao clienteDao;
+	@EJB
+	private ContactoDao contactoDao;
 
 	/*
 	 * (non-Javadoc)
@@ -92,4 +95,16 @@ public class ClienteServiceImpl implements ClienteService {
 		return clienteDao.consultarContactoByCliente(idCliente);
 	}
 
+	/* (non-Javadoc)
+	 * @see ec.com.avila.hiperion.servicio.ClienteService#guardarContactos(java.util.List)
+	 */
+	@Override
+	public void guardarContactos(List<Contacto> contactos) throws HiperionException {
+
+		for (Contacto contacto : contactos) {
+			contactoDao.persist(contacto);
+		}
+	}
+
+	
 }

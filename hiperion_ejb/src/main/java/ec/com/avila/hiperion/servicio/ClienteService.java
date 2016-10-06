@@ -113,4 +113,16 @@ public interface ClienteService {
 	 * @throws HiperionException
 	 */
 	public List<Contacto> consultarContactoByCliente(Integer idCliente) throws HiperionException;
+
+	/**
+	 * 
+	 * <b> Permite guardar los contactos del cliente. </b>
+	 * <p>
+	 * [Author: kruger, Date: Oct 6, 2016]
+	 * </p>
+	 * 
+	 * @param contactos
+	 * @throws HiperionException
+	 */
+	public void guardarContactos(List<Contacto> contactos) throws HiperionException;
 }
