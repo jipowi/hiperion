@@ -127,8 +127,10 @@ public class DireccionBacking implements Serializable {
 
 			TipoDireccion tipoDireccion = tipoDireccionService.consultarTipoDireccionByCodigo(codTipoDireccion);
 			direccionBean.setTipoDireccion(tipoDireccion.getDescTipoDireccion());
+			
 			direccionDto = new DireccionDTO();
 			direccionDto.setProvinciaDTO(direccionBean.getProvinciaDTO());
+			direccionDto.setCodTipoDireccion(codTipoDireccion);
 
 			direccionBean.setTipoDireccion(tipoDireccion.getDescTipoDireccion());
 
