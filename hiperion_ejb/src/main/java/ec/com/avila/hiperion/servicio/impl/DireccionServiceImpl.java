@@ -10,7 +10,9 @@ import javax.ejb.Stateless;
 
 import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.dao.DireccionDao;
+import ec.com.avila.hiperion.dao.ProvinciaDao;
 import ec.com.avila.hiperion.emision.entities.Direccion;
+import ec.com.avila.hiperion.emision.entities.Provincia;
 import ec.com.avila.hiperion.servicio.DireccionService;
 
 /**
@@ -25,6 +27,9 @@ public class DireccionServiceImpl implements DireccionService {
 
 	@EJB
 	private DireccionDao direccionDao;
+	
+	@EJB
+	private ProvinciaDao provinciaDao;
 
 	public DireccionServiceImpl() {
 	}
@@ -40,6 +45,14 @@ public class DireccionServiceImpl implements DireccionService {
 	public void guardarDirecciones(List<Direccion> direcciones) throws HiperionException {
 		direccionDao.guardarDirecciones(direcciones);
 		
+	}
+
+	/* (non-Javadoc)
+	 * @see ec.com.avila.hiperion.servicio.DireccionService#obtenerProvinciaById(java.lang.Long)
+	 */
+	@Override
+	public Provincia obtenerProvinciaById(Long idProvincia) throws HiperionException {
+		return provinciaDao.findById(idProvincia);
 	}
 
 }
