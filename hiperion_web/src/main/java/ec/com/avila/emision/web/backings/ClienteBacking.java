@@ -283,7 +283,6 @@ public class ClienteBacking implements Serializable {
 	public void guardarCliente() {
 		try {
 
-			
 			Integer tipoIdentificacion = Integer.parseInt(clienteBean.getTipoIdentificacion());
 
 			if (tipoIdentificacion == 2 && clienteBean.getIdentificacion().length() != 13) {
@@ -319,10 +318,9 @@ public class ClienteBacking implements Serializable {
 							List<Direccion> direcciones = new ArrayList<Direccion>();
 							for (DireccionDTO direccionDto : direccionBean.getDireccionesRegistradas()) {
 								Direccion direccion = new Direccion();
-								
+
 								direccion.setCliente(cliente);
-								TipoDireccion tipoDireccion = tipoDireccionService.consultarTipoDireccionByDescripcion(direccionDto
-										.getTipoDireccion());
+								TipoDireccion tipoDireccion = tipoDireccionService.consultarTipoDireccionByDescripcion(direccionDto.getTipoDireccion());
 								direccion.setTipoDireccion(tipoDireccion);
 
 								// Provincia
@@ -339,9 +337,9 @@ public class ClienteBacking implements Serializable {
 							}
 
 							cliente.setDireccions(direcciones);
-							
+
 							List<Contacto> contactos = new ArrayList<>();
-							for(ContactoDTO contactoDTO: contactoBean.getContactosDTO()){
+							for (ContactoDTO contactoDTO : contactoBean.getContactosDTO()) {
 								Contacto contacto = new Contacto();
 								contacto.setCliente(cliente);
 								contacto.setTipoContacto(contactoDTO.getTipoContacto());
@@ -437,7 +435,6 @@ public class ClienteBacking implements Serializable {
 	 */
 	public void lecturaExcel(HSSFWorkbook archivoXLS) {
 
-		List<Cliente> clientes = new ArrayList<Cliente>();
 		HSSFSheet hssfSheet = archivoXLS.getSheetAt(0);
 		Iterator<Row> rowIterator = hssfSheet.rowIterator();
 
@@ -466,7 +463,7 @@ public class ClienteBacking implements Serializable {
 				String numeracion = hssfRow.getCell(11).getStringCellValue();
 				String calleSecundaria = hssfRow.getCell(12).getStringCellValue();
 				String referencia = hssfRow.getCell(13).getStringCellValue();
-				String telefono = hssfRow.getCell(14).getStringCellValue(); 
+				String telefono = hssfRow.getCell(14).getStringCellValue();
 				String mail = hssfRow.getCell(15).getStringCellValue();
 
 				cliente.setTipoPersona(tipoPersona);
@@ -477,11 +474,13 @@ public class ClienteBacking implements Serializable {
 				cliente.setRazonSocial(razonSocial);
 				cliente.setIdentificacionPersona(identificacion);
 				cliente.setFechaNacimiento(fechaNacimiento);
-				
-				//DIRECCION
+
+				// DIRECCION
 				Provincia provincia = new Provincia();
-				provincia.setNombreProvincia(provinciaExcel);
-				
+				Long idProvincia = new Long(provinciaExcel);
+				provincia = direccionService.obtenerProvinciaById(idProvincia);
+
+				direccion.setProvincia(provincia);
 				direccion.setCallePrincipal(callePrincipal);
 				direccion.setNumeracion(numeracion);
 				direccion.setCalleSecundaria(calleSecundaria);
@@ -491,16 +490,16 @@ public class ClienteBacking implements Serializable {
 				direcciones.add(direccion);
 				cliente.setDireccions(direcciones);
 
-				//CONTACTOS
+				// CONTACTOS
 				List<Contacto> contactos = new ArrayList<>();
 				Contacto contactoTelf = new Contacto();
 				contactoTelf.setTipoContacto("TELEFONO");
 				contactoTelf.setDescripcionContacto(telefono);
-				
+
 				Contacto contactoMail = new Contacto();
 				contactoMail.setTipoContacto("MAIL");
 				contactoMail.setDescripcionContacto(mail);
-				
+
 				contactos.add(contactoTelf);
 				contactos.add(contactoMail);
 
@@ -517,7 +516,6 @@ public class ClienteBacking implements Serializable {
 			}
 			contador++;
 
-			clientes.add(cliente);
 		}
 
 	}
