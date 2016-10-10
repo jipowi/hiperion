@@ -26,9 +26,9 @@ import ec.com.avila.hiperion.emision.entities.Provincia;
  * @since JDK1.6
  */
 @Stateless
-public class ProvinciaDaoImpl implements ProvinciaDao {
+public class ProvinciaDaoImpl extends GenericDAOImpl<Provincia, Long> implements ProvinciaDao {
 
-	Logger log = Logger.getLogger(ClienteDaoImpl.class);
+	Logger log = Logger.getLogger(ProvinciaDaoImpl.class);
 
 	@PersistenceContext(unitName = "sgs_pu")
 	private EntityManager em;
@@ -58,4 +58,6 @@ public class ProvinciaDaoImpl implements ProvinciaDao {
 			throw new HiperionException(ex);
 		}
 	}
+
+	
 }

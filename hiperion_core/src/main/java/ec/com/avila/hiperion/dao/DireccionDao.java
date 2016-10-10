@@ -19,9 +19,29 @@ import ec.com.avila.hiperion.emision.entities.Direccion;
  * @since JDK1.6
  */
 @Local
-public interface DireccionDao {
-	public void guardarDireccion (Direccion direccion) throws HiperionException;
-	
-	public void guardarDirecciones (List<Direccion> direcciones) throws HiperionException;
-}
+public interface DireccionDao extends GenericDAO<Direccion, Long> {
 
+	/**
+	 * 
+	 * <b> Permite guardar un registro de direccion en la base de datos. </b>
+	 * <p>
+	 * [Author: kruger, Date: Oct 10, 2016]
+	 * </p>
+	 * 
+	 * @param direccion
+	 * @throws HiperionException
+	 */
+	public void guardarDireccion(Direccion direccion) throws HiperionException;
+
+	/**
+	 * 
+	 * <b> Permite guardar mas de una direccion en la base de datos. </b>
+	 * <p>
+	 * [Author: kruger, Date: Oct 10, 2016]
+	 * </p>
+	 * 
+	 * @param direcciones
+	 * @throws HiperionException
+	 */
+	public void guardarDirecciones(List<Direccion> direcciones) throws HiperionException;
+}

@@ -20,7 +20,7 @@ import ec.com.avila.hiperion.emision.entities.Provincia;
  * @since JDK1.6
  */
 @Local
-public interface ProvinciaDao {
+public interface ProvinciaDao extends GenericDAO<Provincia, Long> {
 
 	/**
 	 * 
@@ -34,5 +34,17 @@ public interface ProvinciaDao {
 	 */
 	public List<Provincia> consultarProvincias() throws HiperionException;
 
+	/**
+	 * 
+	 * <b> Permite consultar una provincia por el codigo. </b>
+	 * <p>
+	 * [Author: kruger, Date: Oct 10, 2016]
+	 * </p>
+	 * 
+	 * @param codProvicia
+	 * @return
+	 * @throws HiperionException
+	 */
 	public Provincia consultarProvinciaPorCodigo(String codProvicia) throws HiperionException;
+
 }

@@ -4,38 +4,37 @@ import java.io.Serializable;
 import javax.persistence.*;
 import java.util.List;
 
-
 /**
  * The persistent class for the provincia database table.
  * 
  */
 @Entity
-@NamedQuery(name="Provincia.findAll", query="SELECT p FROM Provincia p")
+@NamedQuery(name = "Provincia.findAll", query = "SELECT p FROM Provincia p")
 public class Provincia implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="id_provincia")
-	private Integer idProvincia;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id_provincia")
+	private Long idProvincia;
 
 	private String codigo;
 
-	@Column(name="nombre_provincia")
+	@Column(name = "nombre_provincia")
 	private String nombreProvincia;
 
-	//bi-directional many-to-one association to Direccion
-	@OneToMany(mappedBy="provincia")
+	// bi-directional many-to-one association to Direccion
+	@OneToMany(mappedBy = "provincia")
 	private List<Direccion> direccions;
 
 	public Provincia() {
 	}
 
-	public Integer getIdProvincia() {
+	public Long getIdProvincia() {
 		return this.idProvincia;
 	}
 
-	public void setIdProvincia(Integer idProvincia) {
+	public void setIdProvincia(Long idProvincia) {
 		this.idProvincia = idProvincia;
 	}
 

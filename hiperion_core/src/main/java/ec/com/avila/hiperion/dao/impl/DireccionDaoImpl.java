@@ -14,6 +14,7 @@ import org.apache.log4j.Logger;
 
 import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.dao.DireccionDao;
+import ec.com.avila.hiperion.emision.entities.Aseguradora;
 import ec.com.avila.hiperion.emision.entities.Direccion;
 
 /**
@@ -24,7 +25,7 @@ import ec.com.avila.hiperion.emision.entities.Direccion;
  * @since JDK1.6
  */
 @Stateless
-public class DireccionDaoImpl implements DireccionDao {
+public class DireccionDaoImpl extends GenericDAOImpl<Direccion, Long> implements DireccionDao {
 
 	Logger log = Logger.getLogger(ClienteDaoImpl.class);
 
