@@ -163,7 +163,8 @@ public class ClienteBacking implements Serializable {
 	public List<SelectItem> obtenerTipoIdentificacion() {
 		try {
 			this.tipoIdentificacionItems = new ArrayList<SelectItem>();
-			Catalogo catalogo = catalogoService.consultarCatalogoById(HiperionMensajes.getInstancia().getLong("ec.gob.avila.hiperion.recursos.catalogoTipoIdentificacion"));
+			Catalogo catalogo = catalogoService.consultarCatalogoById(HiperionMensajes.getInstancia().getLong(
+					"ec.gob.avila.hiperion.recursos.catalogoTipoIdentificacion"));
 			List<DetalleCatalogo> tiposPersona = catalogo.getDetalleCatalogos();
 
 			for (DetalleCatalogo detalle : tiposPersona) {
@@ -320,7 +321,8 @@ public class ClienteBacking implements Serializable {
 								Direccion direccion = new Direccion();
 
 								direccion.setCliente(cliente);
-								TipoDireccion tipoDireccion = tipoDireccionService.consultarTipoDireccionByDescripcion(direccionDto.getTipoDireccion());
+								TipoDireccion tipoDireccion = tipoDireccionService.consultarTipoDireccionByDescripcion(direccionDto
+										.getTipoDireccion());
 								direccion.setTipoDireccion(tipoDireccion);
 
 								// Provincia
@@ -486,9 +488,7 @@ public class ClienteBacking implements Serializable {
 				direccion.setCalleSecundaria(calleSecundaria);
 				direccion.setReferencia(referencia);
 
-				List<Direccion> direcciones = new ArrayList<>();
-				direcciones.add(direccion);
-				cliente.setDireccions(direcciones);
+				
 
 				// CONTACTOS
 				List<Contacto> contactos = new ArrayList<>();
@@ -500,18 +500,27 @@ public class ClienteBacking implements Serializable {
 				contactoMail.setTipoContacto("MAIL");
 				contactoMail.setDescripcionContacto(mail);
 
-				contactos.add(contactoTelf);
-				contactos.add(contactoMail);
-
+				
 				cliente.setIdUsuarioCreacion(usuario.getIdUsuario());
 				cliente.setFechaCreacion(new Date());
 				cliente.setEstado(EstadoEnum.A);
 				clienteService.guardarCliente(cliente);
+				
+				List<Direccion> direcciones = new ArrayList<>();
+				direccion.setCliente(cliente);
+				direcciones.add(direccion);
+				cliente.setDireccions(direcciones);
+				
 				direccionService.guardarDirecciones(direcciones);
+				
+				contactoTelf.setCliente(cliente);
+				contactoMail.setCliente(cliente);
+				contactos.add(contactoTelf);
+				contactos.add(contactoMail);
 				clienteService.guardarContactos(contactos);
 
 			} catch (Exception e) {
-				log.error("Error al cargar la fila: " + contador);
+				log.error("Error al cargar la fila: " + contador + "causa: " + e);
 
 			}
 			contador++;
