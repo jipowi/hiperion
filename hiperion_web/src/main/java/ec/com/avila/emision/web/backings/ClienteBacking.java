@@ -476,7 +476,7 @@ public class ClienteBacking implements Serializable {
 				cliente.setRazonSocial(razonSocial);
 				cliente.setIdentificacionPersona(identificacion);
 				cliente.setFechaNacimiento(fechaNacimiento);
-
+				
 				// DIRECCION
 				Provincia provincia = new Provincia();
 				Long idProvincia = new Long(provinciaExcel);
@@ -505,6 +505,7 @@ public class ClienteBacking implements Serializable {
 				cliente.setFechaCreacion(new Date());
 				cliente.setEstado(EstadoEnum.A);
 				clienteService.guardarCliente(cliente);
+				
 				
 				List<Direccion> direcciones = new ArrayList<>();
 				direccion.setCliente(cliente);

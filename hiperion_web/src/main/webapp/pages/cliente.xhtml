@@ -28,6 +28,17 @@
 										</p:inputText>
 									</p:panel>
 
+									<h:outputText value="#{emision['lbl.ruc']}: " />
+									<p:selectBooleanCheckbox value="#{clienteBean.activarRuc}">
+										<p:ajax update="pnlRuc" />
+									</p:selectBooleanCheckbox>
+
+									<p:panel id="pnlRuc" visible="#{clienteBean.activarRuc}">
+										<p:inputText value="#{clienteBean.identificacion}" maxlength="13">
+
+										</p:inputText>
+									</p:panel>
+
 									<h:outputText value="Apellido: " />
 									<p:selectBooleanCheckbox value="#{clienteBean.activarApellido}">
 										<p:ajax update="pnlApellido" />
