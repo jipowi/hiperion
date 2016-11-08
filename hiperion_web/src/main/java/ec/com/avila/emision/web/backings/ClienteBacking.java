@@ -236,9 +236,12 @@ public class ClienteBacking implements Serializable {
 						clientesObtenidos = clienteService.consultarClienteByNombres(clienteBean.getNombre(), clienteBean.getApePaterno());
 					} else {
 						clientesObtenidos = clienteService.consultarClienteByApellido(clienteBean.getApePaterno());
-					}
+					} 
 				}
+			}if(!clienteBean.getRazonSocial().equals("")){
+				clientesObtenidos=clienteService.consultarByRazonSocial(clienteBean.getRazonSocial());
 			}
+			
 
 		} catch (HiperionException e) {
 			log.error("Error al momento de buscar clientes", e);
