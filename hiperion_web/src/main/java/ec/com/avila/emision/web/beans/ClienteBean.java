@@ -36,6 +36,7 @@ public class ClienteBean implements Serializable {
 	private boolean activarRuc;
 	private boolean activarNombre;
 	private boolean activarApellido;
+	private boolean activarRazonSocial;
 
 	private Integer tipoPersona;
 	private Integer longitudIdentificacion;
@@ -242,5 +243,20 @@ public class ClienteBean implements Serializable {
 		this.activarRuc = activarRuc;
 	}
 
+	/**
+	 * @return the activarRazonSocial
+	 */
+	public boolean isActivarRazonSocial() {
+		return activarRazonSocial;
+	}
+
+	/**
+	 * @param activarRazonSocial the activarRazonSocial to set
+	 */
+	public void setActivarRazonSocial(boolean activarRazonSocial) {
+		this.activarRazonSocial = activarRazonSocial;
+	}
+
+	
 	
 }
