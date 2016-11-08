@@ -106,5 +106,14 @@ public class ClienteServiceImpl implements ClienteService {
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see ec.com.avila.hiperion.servicio.ClienteService#consultarByRazonSocial(java.lang.String)
+	 */
+	@Override
+	public List<Cliente> consultarByRazonSocial(String razonSocial) throws HiperionException {
+		
+		return clienteDao.consultarByRazonSocial(razonSocial);
+	}
+
 	
 }

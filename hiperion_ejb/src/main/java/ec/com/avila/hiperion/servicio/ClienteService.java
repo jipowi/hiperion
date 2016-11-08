@@ -125,4 +125,17 @@ public interface ClienteService {
 	 * @throws HiperionException
 	 */
 	public void guardarContactos(List<Contacto> contactos) throws HiperionException;
+	
+	/**
+	 * 
+	 * <b>
+	 * Permite obtener los clientes por razon social
+	 * </b>
+	 * <p>[Author: Franklin Pozo , Date: 31/10/2016]</p>
+	 *
+	 * @param razonSocial
+	 * @return
+	 * @throws HiperionException
+	 */
+	public List<Cliente> consultarByRazonSocial(String razonSocial)throws HiperionException;
 }
