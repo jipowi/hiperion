@@ -137,4 +137,18 @@ public class ClienteDaoImpl extends GenericDAOImpl<Cliente, Long> implements Cli
 		return contactos;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see ec.com.avila.hiperion.dao.ClienteDao#consultarByRazonSocial(java.lang.String)
+	 */
+	@Override
+	public List<Cliente> consultarByRazonSocial(String razonSocial) throws HiperionException {
+
+		Query query = em.createNamedQuery("Cliente.fyByRazonSocial");
+		query.setParameter("razonSocial", "%" + razonSocial + "%");
+		List<Cliente> nombreEmpresa = query.getResultList();
+		return nombreEmpresa;
+	}
+
 }
