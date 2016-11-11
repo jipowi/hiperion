@@ -117,10 +117,7 @@
 								<f:facet name="header">
 									<h:outputText value="#{emision['lbl.direccion']}" />
 								</f:facet>
-								<p:dataList value="#{cliente.direccions}" var="direccion" type="ordered">
-									<f:facet name="header">
-										<h:outputText value="#{emision['lbl.direccion']}" />
-									</f:facet>
+								<p:dataList value="#{cliente.direccions}" var="direccion">									
 							        #{direccion.callePrincipal}, #{direccion.numeracion}, #{direccion.calleSecundaria}
 							    </p:dataList>
 							</p:column>
@@ -128,10 +125,7 @@
 								<f:facet name="header">
 									<h:outputText value="#{emision['lbl.contactos']}" />
 								</f:facet>
-								<p:dataList value="#{cliente.contactos}" var="contacto" type="ordered">
-									<f:facet name="header">
-										<h:outputText value="#{emision['lbl.contactos']}" />
-									</f:facet>
+								<p:dataList value="#{cliente.contactos}" var="contacto">									
 							        #{contacto.descripcionContacto}
 							    </p:dataList>
 							</p:column>
