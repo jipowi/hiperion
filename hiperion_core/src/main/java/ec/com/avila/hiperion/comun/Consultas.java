@@ -19,7 +19,7 @@ import javax.persistence.NamedQuery;
 		@NamedQuery(name = "Cliente.findByIdentificacion", query = "SELECT c FROM Cliente c WHERE c.identificacionPersona =:identificacion"),
 		@NamedQuery(name = "Cliente.findByApellido", query = "SELECT c FROM Cliente c WHERE lower(c.apellidoPaterno) like :apellido"),
 		@NamedQuery(name = "Cliente.findByNombres", query = "SELECT c FROM Cliente c WHERE lower(c.apellidoPaterno) like :apellido AND lower(c.nombrePersona) like :nombre"),
-		@NamedQuery(name = "Cliente.findByRazonSocial", query = "SELECT c FROM Cliente c WHERE lower(c.razonSocial) like :razonSocial"),	
+		@NamedQuery(name = "Cliente.findByRazonSocial", query = "SELECT c FROM Cliente c WHERE c.razonSocial like :razonSocial"),
 		@NamedQuery(name = "Cliente.findByAseguradora", query = "SELECT c FROM Cliente c WHERE c.aseguradora.codigoAseguradora =:aseguradora AND c.estado =:estado"),
 
 		// TIPO_DIRECCION
@@ -28,9 +28,9 @@ import javax.persistence.NamedQuery;
 
 		// DIRECCION
 		@NamedQuery(name = "Contacto.findByCliente", query = "SELECT c FROM Contacto c WHERE c.cliente.idCliente =:idCliente"),
-		
+
 		// CONTACTOS
-				@NamedQuery(name = "Direccion.findCliente", query = "SELECT d FROM Direccion d WHERE d.cliente.idCliente =:idCliente"),
+		@NamedQuery(name = "Direccion.findCliente", query = "SELECT d FROM Direccion d WHERE d.cliente.idCliente =:idCliente"),
 
 		// DETALLE_CATALOGO
 		@NamedQuery(name = "DetalleCatalogo.findByCodCatalogo", query = "SELECT d FROM DetalleCatalogo d WHERE d.catalogo.idCatalogo =:idCatalogo ORDER BY d.descDetCatalogo"),
