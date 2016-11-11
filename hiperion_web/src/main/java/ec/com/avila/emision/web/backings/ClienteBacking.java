@@ -89,7 +89,7 @@ public class ClienteBacking implements Serializable {
 	private List<SelectItem> tipoIdentificacionItems;
 
 	private List<Cliente> clientes;
-	private List<Cliente> clientesObtenidos;
+	private List<Cliente> clientesObtenidos = new ArrayList<>();
 	private List<Poliza> polizas;
 	private Cliente clienteObtenido;
 
@@ -214,7 +214,7 @@ public class ClienteBacking implements Serializable {
 	 */
 	public void buscarClientes() throws HiperionException {
 		try {
-			clientesObtenidos = new ArrayList<>();
+			List<Cliente> clientesTemp = new ArrayList<>();
 
 			Cliente clienteObtenido = new Cliente();
 			if (clienteBean.isActivarCedula() || clienteBean.isActivarRuc()) {
@@ -235,13 +235,23 @@ public class ClienteBacking implements Serializable {
 			}
 
 			if (clienteBean.isActivarNombre()) {
-				clientesObtenidos = clienteService.consultarClienteByNombres(clienteBean.getNombre(), clienteBean.getApePaterno());
+				clientesTemp = clienteService.consultarClienteByNombres(clienteBean.getNombre(), clienteBean.getApePaterno());
 			}
+
 			if (clienteBean.isActivarApellido()) {
-				clientesObtenidos = clienteService.consultarClienteByApellido(clienteBean.getApePaterno());
+				clientesTemp = clienteService.consultarClienteByApellido(clienteBean.getApePaterno());
 			}
 			if (clienteBean.isActivarRazonSocial()) {
-				clientesObtenidos = clienteService.consultarByRazonSocial(clienteBean.getRazonSocial());
+				clientesTemp = clienteService.consultarByRazonSocial(clienteBean.getRazonSocial());
+			}
+
+			for (Cliente cliente : clientesTemp) {
+				List<Direccion> direcciones = clienteService.consularDireccionByCliente(cliente.getIdCliente());
+				cliente.setDireccions(direcciones);
+
+				List<Contacto> contactos = clienteService.consultarContactoByCliente(cliente.getIdCliente());
+				cliente.setContactos(contactos);
+				clientesObtenidos.add(cliente);
 			}
 
 		} catch (HiperionException e) {

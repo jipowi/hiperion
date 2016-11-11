@@ -43,7 +43,7 @@
 									</p:selectBooleanCheckbox>
 
 									<p:panel id="pnlApellido" visible="#{clienteBean.activarApellido}">
-										<p:inputText value="#{clienteBean.apePaterno}" validatorMessage="#{emision['msg.texto.error']}">
+										<p:inputText value="#{clienteBean.apePaterno}" validatorMessage="#{emision['msg.texto.error']}" style="text-transform:uppercase;">
 											<f:validateRegex pattern="#{emision['msg.formato.texto']}" disabled="#{!clienteBean.activarApellido}" />
 										</p:inputText>
 									</p:panel>
