@@ -288,12 +288,11 @@ public class ClienteBacking implements Serializable {
 
 	/**
 	 * 
-	 * <b> Permite Guardar a un Nuevo Cliente. </b>
+	 * <b> Permite Guardar a un Nuevo Cliente.. </b>
 	 * <p>
-	 * [Author: Dario Vinueza, Date: Jan 21, 2014]
+	 * [Author: kruger, Date: 11/11/2016]
 	 * </p>
 	 * 
-	 * @param event
 	 */
 	public void guardarCliente() {
 		try {
@@ -372,6 +371,16 @@ public class ClienteBacking implements Serializable {
 							clienteService.guardarContactos(contactos);
 
 							MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.cliente"));
+							direcciones = new ArrayList<>();
+							direccionBean.setDireccionesRegistradas(null);
+							contactos = new ArrayList<>();
+							contactoBean.setContactosDTO(null);
+
+							direccionBean.setCallePrincipal(null);
+							direccionBean.setCalleSecundaria(null);
+							direccionBean.setNumeracion(null);
+							direccionBean.setReferencia(null);
+
 						} else {
 							MessagesController.addWarn(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.warn.direccion"));
 						}
