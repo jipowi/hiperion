@@ -34,9 +34,7 @@
 									</p:selectBooleanCheckbox>
 
 									<p:panel id="pnlRuc" visible="#{clienteBean.activarRuc}">
-										<p:inputText value="#{clienteBean.identificacion}" maxlength="13">
-
-										</p:inputText>
+										<p:inputText value="#{clienteBean.ruc}" maxlength="13" />
 									</p:panel>
 
 									<h:outputText value="Apellido: " />
@@ -67,7 +65,7 @@
 									</p:selectBooleanCheckbox>
 
 									<p:panel id="pn1RazonSocial" visible="#{clienteBean.activarRazonSocial}">
-										<p:inputText value="#{clienteBean.razonSocial}" validatorMessage="#{emision['msg.texto.error']}">
+										<p:inputText value="#{clienteBean.razonSocial}" validatorMessage="#{emision['msg.texto.error']}" style="text-transform:uppercase;">
 											<f:validateRegex pattern="#{emision['msg.formato.texto']}" disabled="#{!clienteBean.activarRazonSocial}" />
 										</p:inputText>
 									</p:panel>
@@ -219,7 +217,8 @@
 						<h:panelGrid columns="1" cellpadding="2" cellspacing="2">
 							<p:outputLabel for="razonSocialId" value="#{administrador['cliente.dlg.agregar.razonSocial']}" styleClass="negrita" />
 							<p:inputText id="razonSocialId" value="#{clienteBean.razonSocial}" required="#{clienteBacking.activarPanelPersonaJuridica}"
-								requiredMessage="#{administrador['cliente.dlg.agregar.msg.razonSocial']}" styleClass="DialogCliente-razonSocial" style="text-transform:uppercase;" />
+								requiredMessage="#{administrador['cliente.dlg.agregar.msg.razonSocial']}" styleClass="DialogCliente-razonSocial"
+								style="text-transform:uppercase;" />
 						</h:panelGrid>
 						<h:panelGrid columns="1" cellpadding="2" cellspacing="2">
 							<p:outputLabel for="giroNegocioId" value="#{administrador['cliente.dlg.agregar.giroNegocio']}" styleClass="negrita" />
