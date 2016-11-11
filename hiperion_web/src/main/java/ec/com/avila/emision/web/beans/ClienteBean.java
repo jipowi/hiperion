@@ -22,6 +22,7 @@ public class ClienteBean implements Serializable {
 
 	private String codigoCliente;
 	private String identificacion;
+	private String ruc;
 	private String tipoIdentificacion;
 	private String nombre;
 	private String apePaterno;
@@ -88,7 +89,7 @@ public class ClienteBean implements Serializable {
 	}
 
 	public void setRazonSocial(String razonSocial) {
-		this.razonSocial = razonSocial;
+		this.razonSocial = razonSocial.toUpperCase();
 	}
 
 	public String getIdentificacion() {
@@ -237,7 +238,8 @@ public class ClienteBean implements Serializable {
 	}
 
 	/**
-	 * @param activarRuc the activarRuc to set
+	 * @param activarRuc
+	 *            the activarRuc to set
 	 */
 	public void setActivarRuc(boolean activarRuc) {
 		this.activarRuc = activarRuc;
@@ -251,12 +253,26 @@ public class ClienteBean implements Serializable {
 	}
 
 	/**
-	 * @param activarRazonSocial the activarRazonSocial to set
+	 * @param activarRazonSocial
+	 *            the activarRazonSocial to set
 	 */
 	public void setActivarRazonSocial(boolean activarRazonSocial) {
 		this.activarRazonSocial = activarRazonSocial;
 	}
 
-	
-	
+	/**
+	 * @return the ruc
+	 */
+	public String getRuc() {
+		return ruc;
+	}
+
+	/**
+	 * @param ruc
+	 *            the ruc to set
+	 */
+	public void setRuc(String ruc) {
+		this.ruc = ruc;
+	}
+
 }

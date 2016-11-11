@@ -216,11 +216,15 @@ public class ClienteBacking implements Serializable {
 		try {
 			clientesObtenidos = new ArrayList<>();
 
-			if (!clienteBean.getIdentificacion().equals("")) {
-				Cliente clienteObtenido = clienteService.consultarClienteByIdentificacion(clienteBean.getIdentificacion());
-				if (clienteObtenido == null) {
-					MessagesController.addWarn(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.warn.buscar"));
+			Cliente clienteObtenido = new Cliente();
+			if (clienteBean.isActivarCedula() || clienteBean.isActivarRuc()) {
+
+				if (clienteBean.getRuc().equals("")) {
+					clienteObtenido = clienteService.consultarClienteByIdentificacion(clienteBean.getIdentificacion());
 				} else {
+					clienteObtenido = clienteService.consultarClienteByIdentificacion(clienteBean.getRuc());
+				}
+				if (clienteObtenido != null) {
 					List<Direccion> direcciones = clienteService.consularDireccionByCliente(clienteObtenido.getIdCliente());
 					clienteObtenido.setDireccions(direcciones);
 
@@ -228,20 +232,17 @@ public class ClienteBacking implements Serializable {
 					clienteObtenido.setContactos(contactos);
 					clientesObtenidos.add(clienteObtenido);
 				}
-			} else {
-				if (clienteBean.getApePaterno().equals("")) {
-					MessagesController.addWarn(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.warn.buscar"));
-				} else {
-					if (!clienteBean.getNombre().equals("")) {
-						clientesObtenidos = clienteService.consultarClienteByNombres(clienteBean.getNombre(), clienteBean.getApePaterno());
-					} else {
-						clientesObtenidos = clienteService.consultarClienteByApellido(clienteBean.getApePaterno());
-					} 
-				}
-			}if(!clienteBean.getRazonSocial().equals("")){
-				clientesObtenidos=clienteService.consultarByRazonSocial(clienteBean.getRazonSocial());
 			}
-			
+
+			if (clienteBean.isActivarNombre()) {
+				clientesObtenidos = clienteService.consultarClienteByNombres(clienteBean.getNombre(), clienteBean.getApePaterno());
+			}
+			if (clienteBean.isActivarApellido()) {
+				clientesObtenidos = clienteService.consultarClienteByApellido(clienteBean.getApePaterno());
+			}
+			if (clienteBean.isActivarRazonSocial()) {
+				clientesObtenidos = clienteService.consultarByRazonSocial(clienteBean.getRazonSocial());
+			}
 
 		} catch (HiperionException e) {
 			log.error("Error al momento de buscar clientes", e);
@@ -479,7 +480,7 @@ public class ClienteBacking implements Serializable {
 				cliente.setRazonSocial(razonSocial);
 				cliente.setIdentificacionPersona(identificacion);
 				cliente.setFechaNacimiento(fechaNacimiento);
-				
+
 				// DIRECCION
 				Provincia provincia = new Provincia();
 				Long idProvincia = new Long(provinciaExcel);
@@ -491,8 +492,6 @@ public class ClienteBacking implements Serializable {
 				direccion.setCalleSecundaria(calleSecundaria);
 				direccion.setReferencia(referencia);
 
-				
-
 				// CONTACTOS
 				List<Contacto> contactos = new ArrayList<>();
 				Contacto contactoTelf = new Contacto();
@@ -503,20 +502,18 @@ public class ClienteBacking implements Serializable {
 				contactoMail.setTipoContacto("MAIL");
 				contactoMail.setDescripcionContacto(mail);
 
-				
 				cliente.setIdUsuarioCreacion(usuario.getIdUsuario());
 				cliente.setFechaCreacion(new Date());
 				cliente.setEstado(EstadoEnum.A);
 				clienteService.guardarCliente(cliente);
-				
-				
+
 				List<Direccion> direcciones = new ArrayList<>();
 				direccion.setCliente(cliente);
 				direcciones.add(direccion);
 				cliente.setDireccions(direcciones);
-				
+
 				direccionService.guardarDirecciones(direcciones);
-				
+
 				contactoTelf.setCliente(cliente);
 				contactoMail.setCliente(cliente);
 				contactos.add(contactoTelf);
