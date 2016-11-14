@@ -55,13 +55,13 @@
 									<p:outputLabel value="#{emision['aseguradora.ruc']}" styleClass="negrita" />
 									<p:inputText value="#{aseguradoraBean.ruc}" />
 
-									<p:outputLabel value="#{emision['aseguradora.direccion']}" styleClass="negrita" style="text-transform:uppercase;" />
-									<p:inputText value="#{aseguradoraBean.direccion}" />
+									<p:outputLabel value="#{emision['aseguradora.direccion']}" styleClass="negrita" />
+									<p:inputText value="#{aseguradoraBean.direccion}" style="text-transform:uppercase;" />
 
 									<p:outputLabel value="#{emision['aseguradora.telefono']}" styleClass="negrita" />
 									<p:inputText value="#{aseguradoraBean.telefono}" />
 
-									<p:outputLabel value="#{emision['aseguradora.contacto.mail']}" styleClass="negrita" />
+									<p:outputLabel value="#{emision['aseguradora.contacto.mail']}:" styleClass="negrita" />
 									<p:inputText value="#{aseguradoraBean.mailAseguradora}" />
 
 								</h:panelGrid>
@@ -94,7 +94,7 @@
 								<f:facet name="footer">
 									<div align="center">
 										<p:commandButton id="agregarContacto" icon="icon-add" value="#{emision['boton.agregar']}" actionListener="#{aseguradoraBean.addContacto}"
-											title="Agregar contactos" update="tabla"/>
+											title="Agregar contactos" update="tabla" />
 									</div>
 								</f:facet>
 							</h:panelGrid>
@@ -206,7 +206,7 @@
 								<p:commandButton id="guardarBtnId" actionListener="#{aseguradoraBacking.guardarAseguradora}" icon="icon-save"
 									value="#{emision['boton.guardar']}" title="Guardar" />
 								<p:spacer width="15px" />
-								<p:commandLink title="Agregar ramos" onclick="ramos.show();">
+								<p:commandLink title="Agregar ramos" onclick="PF('ramos').show();">
 									<h:graphicImage name="seguros.png" library="img/icon" />
 								</p:commandLink>
 							</div>

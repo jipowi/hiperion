@@ -545,22 +545,22 @@
 											</f:facet>
 											<p:separator id="customSeparator" style="width:auto;height:1px" />
 											<p:growl id="messages" showDetail="true" />
-											<p:panelGrid columns="2">
-												<p:outputLabel value="#{emision['ap.grupo.numeroGrupo']}" styleClass="negrita" />
+											<h:panelGrid columns="2">
+												<p:outputLabel value="#{emision['ap.grupo.numeroGrupo']}:" styleClass="negrita" />
 												<p:inputText value="#{ramoAccidentesPersonalesBean.numGrupo}" />
 
-												<p:outputLabel value="#{emision['ap.grupo.nombreGrupo']}" styleClass="negrita" />
+												<p:outputLabel value="#{emision['ap.grupo.nombreGrupo']}:" styleClass="negrita" />
 												<p:inputText value="#{ramoAccidentesPersonalesBean.nomGrupo}" />
 
-												<p:outputLabel value="#{emision['ap.grupo.numeroPersonas']}" styleClass="negrita" />
+												<p:outputLabel value="#{emision['ap.grupo.numeroPersonas']}:" styleClass="negrita" />
 												<p:inputText value="#{ramoAccidentesPersonalesBean.numPersonas}" />
 
-												<p:outputLabel value="#{emision['ap.grupo.actividad']}" styleClass="negrita" />
+												<p:outputLabel value="#{emision['ap.grupo.actividad']}:" styleClass="negrita" />
 												<p:inputText value="#{ramoAccidentesPersonalesBean.actividad}" />
 
-												<p:outputLabel value="#{emision['ap.grupo.valorGrupo']}" styleClass="negrita" />
+												<p:outputLabel value="#{emision['ap.grupo.valorGrupo']}:" styleClass="negrita" />
 												<p:inputText value="#{ramoAccidentesPersonalesBean.valorGrupo}" />
-											</p:panelGrid>
+											</h:panelGrid>
 											<f:facet name="footer">
 												<div align="center">
 													<p:commandButton id="agregarGrupo" update="formGrupos" icon="icon-add" value="#{emision['boton.agregar']}"
