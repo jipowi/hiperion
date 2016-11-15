@@ -252,7 +252,7 @@ public class AseguradoraBean implements Serializable {
 	 *            the nombreRamo to set
 	 */
 	public void setNombreRamo(String nombreRamo) {
-		this.nombreRamo = nombreRamo;
+		this.nombreRamo = nombreRamo.toUpperCase();
 	}
 
 	/**
