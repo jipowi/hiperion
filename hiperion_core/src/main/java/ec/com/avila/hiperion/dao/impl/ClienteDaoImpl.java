@@ -98,9 +98,8 @@ public class ClienteDaoImpl extends GenericDAOImpl<Cliente, Long> implements Cli
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Cliente> consultarClienteByNombres(String nombre, String apellido) throws HiperionException {
+	public List<Cliente> consultarClienteByNombres(String nombre) throws HiperionException {
 		Query query = em.createNamedQuery("Cliente.findByNombres");
-		query.setParameter("apellido", "%" + apellido + "%");
 		query.setParameter("nombre", "%" + nombre + "%");
 		List<Cliente> clientes = query.getResultList();
 

@@ -62,7 +62,7 @@ public interface ClienteDao extends GenericDAO<Cliente, Long> {
 	 * @return
 	 * @throws HiperionException
 	 */
-	public List<Cliente> consultarClienteByNombres(String nombre, String apellido) throws HiperionException;
+	public List<Cliente> consultarClienteByNombres(String nombre) throws HiperionException;
 
 	/**
 	 * 
