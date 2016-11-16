@@ -71,8 +71,8 @@ public class ClienteServiceImpl implements ClienteService {
 	 * @see ec.com.avila.hiperion.servicio.ClienteService#consultarClienteByNombres(java.lang.String, java.lang.String)
 	 */
 	@Override
-	public List<Cliente> consultarClienteByNombres(String nombre, String apellido) throws HiperionException {
-		return clienteDao.consultarClienteByNombres(nombre, apellido);
+	public List<Cliente> consultarClienteByNombres(String nombre) throws HiperionException {
+		return clienteDao.consultarClienteByNombres(nombre);
 	}
 
 	/*
