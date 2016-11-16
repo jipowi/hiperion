@@ -123,7 +123,7 @@ public class AseguradoraBacking implements Serializable {
 			save = true;
 			aseguradora = new Aseguradora();
 		}
-	
+
 		aseguradora.setCodigoAseguradora(aseguradoraBean.getCodAseguradora().toString());
 		aseguradora.setDirecion(aseguradoraBean.getDireccion());
 		aseguradora.setEmailAseguradora(aseguradoraBean.getMailAseguradora());
@@ -170,7 +170,15 @@ public class AseguradoraBacking implements Serializable {
 			aseguradoraService.guardarAseguradora(aseguradora, contactosAseguradora, save);
 
 			MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.save.aseguradora"));
+			aseguradoraBean.setRuc(null);
+			aseguradoraBean.setTelefono(null);
 			aseguradoraBean.setContactoList(null);
+			aseguradoraBean.setApellidoMaterno(null);
+			aseguradoraBean.setApellidoPaterno(null);
+			aseguradoraBean.setCargo(null);
+			aseguradoraBean.setDireccion(null);
+			aseguradoraBean.setEmail(null);
+
 			aseguradora = new Aseguradora();
 			contactosAseguradora = new ArrayList<>();
 		} else {
@@ -198,23 +206,23 @@ public class AseguradoraBacking implements Serializable {
 			aseguradoraBean.setTelefono(aseguradora.getTelfConvencionalAseg());
 
 			aseguradoraBean.setActivarNewAseguradora(true);
-			
-			//Obtener contactos de la aseguradora seleccionada
+
+			// Obtener contactos de la aseguradora seleccionada
 			List<Cliente> clientesAseguradora = aseguradoraService.consultarClienteByAseguradora(aseguradora.getCodigoAseguradora());
 			List<PersonaContactoAseguradoraDTO> contactos = new ArrayList<>();
-			
+
 			for (Cliente cliente : clientesAseguradora) {
 				PersonaContactoAseguradoraDTO personaDTO = new PersonaContactoAseguradoraDTO();
-				
+
 				personaDTO.setNombre(cliente.getNombrePersona());
 				personaDTO.setIdentificacion(cliente.getIdentificacionPersona());
 				personaDTO.setApellidoPaterno(cliente.getApellidoPaterno());
 				personaDTO.setApellidoMaterno(cliente.getApellidoMaterno());
 				personaDTO.setCargo(cliente.getActividadProfesion());
-				
+
 				contactos.add(personaDTO);
 			}
-			
+
 			aseguradoraBean.setContactoList(contactos);
 		} else {
 			MessagesController.addWarn(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.war.aseguradora"));

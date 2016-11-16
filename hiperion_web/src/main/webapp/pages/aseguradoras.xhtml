@@ -68,7 +68,7 @@
 							</p:panel>
 							<p:spacer height="30px;" />
 							<!-- CONTACTOS -->
-							<h:panelGrid columns="1">
+							<h:panelGrid id="idInfoContacto" columns="1">
 								<h:panelGrid columns="2" cellpadding="2" cellspacing="2">
 									<h:outputLabel value="#{emision['aseguradora.contacto.nombre']}: " styleClass="negrita" />
 									<p:inputText value="#{aseguradoraBean.nombre}" style="text-transform:uppercase;" />
@@ -94,7 +94,7 @@
 								<f:facet name="footer">
 									<div align="center">
 										<p:commandButton id="agregarContacto" icon="icon-add" value="#{emision['boton.agregar']}" actionListener="#{aseguradoraBean.addContacto}"
-											title="Agregar contactos" update="tabla" />
+											title="Agregar contactos" update="idInfoContacto, tabla" />
 									</div>
 								</f:facet>
 							</h:panelGrid>

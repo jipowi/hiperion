@@ -355,19 +355,19 @@ public class AseguradoraBean implements Serializable {
 	 * @return
 	 */
 	public String addContacto() {
-		contactoList = new ArrayList<PersonaContactoAseguradoraDTO>();
+		
 		PersonaContactoAseguradoraDTO item = new PersonaContactoAseguradoraDTO(this.nombre, this.apellidoMaterno, this.apellidoPaterno,
 				this.identificacion, this.cargo, this.email, this.telefonoContacto);
 
 		contactoList.add(item);
 
-		nombre = "";
-		apellidoMaterno = "";
-		apellidoPaterno = "";
-		identificacion = "";
-		cargo = "";
-		email = "";
-		telefonoContacto = "";
+		this.nombre = "";
+		this.apellidoMaterno = "";
+		this.apellidoPaterno = "";
+		this.identificacion = "";
+		this.cargo = "";
+		this.email = "";
+		this.telefonoContacto = "";
 
 		return null;
 	}

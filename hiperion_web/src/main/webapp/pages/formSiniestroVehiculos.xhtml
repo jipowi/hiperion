@@ -21,21 +21,47 @@
 
 					<p:outputLabel value="#{administrador['cliente.dlg.agregar.identificacion']}:" styleClass="negrita" />
 					<p:inputText value="#{formSiniestroVehiculosBean.identificacion}">
-						<p:ajax event="blur" listener="#{formSiniestroVehiculosBacking.buscarCliente}" update="pnlInformacion" />
+						<p:ajax event="blur" listener="#{formSiniestroVehiculosBacking.buscarCliente}" update="pnlInformacion,tablaPoliza" />
 					</p:inputText>
 				</h:panelGrid>
 				<h:panelGrid id="pnlInformacion" columns="2" cellpadding="2" cellspacing="2">
 					<p:outputLabel value="#{administrador['cliente.dlg.agregar.nombres']}" styleClass="negrita" />
 					<p:inputText placeholder="Primero y segundo nombre" value="#{formSiniestroVehiculosBacking.clienteObtenido.nombrePersona}" disabled="true" />
 
-					<p:outputLabel for="apePaterno"  value="#{administrador['cliente.dlg.agregar.appPaterno']}" styleClass="negrita" />
-					<p:inputText id="apePaterno" placeholder="Primer Apellido" value="#{formSiniestroVehiculosBacking.clienteObtenido.apellidoPaterno}" disabled="true" />
+					<p:outputLabel value="#{administrador['cliente.dlg.agregar.appPaterno']}" styleClass="negrita" />
+					<p:inputText placeholder="Primer Apellido" value="#{formSiniestroVehiculosBacking.clienteObtenido.apellidoPaterno}" disabled="true" />
 
+					<p:outputLabel value="#{administrador['cliente.dlg.agregar.appMaterno']}" styleClass="negrita" />
+					<p:inputText placeholder="Segundo Apellido" value="#{formSiniestroVehiculosBacking.clienteObtenido.apellidoMaterno}" disabled="true" />
+				</h:panelGrid>
 
-					<p:outputLabel for="apeMaterno" value="#{administrador['cliente.dlg.agregar.appMaterno']}" styleClass="negrita" />
-					<p:inputText id="apeMaterno" placeholder="Segundo Apellido" value="#{formSiniestroVehiculosBacking.clienteObtenido.apellidoMaterno}" disabled="true" />
+				<p:spacer height="20px;" />
+				<h:panelGrid columns="1" id="tablaPoliza">
+					<p:dataTable value="#{formSiniestroVehiculosBacking.polizas}" var="poliza" widgetVar="50" editable="true" style="width: 700px;">
+						<p:column>
+							<f:facet name="header">
+								<h:outputText value="#{emision['cliente.poliza.ramo']}" />
+							</f:facet>
+							<h:outputText value="#{poliza.ramo}" />
+						</p:column>
+						
+						<p:column>
+							<f:facet name="header">
+								<h:outputText value="#{emision['cliente.poliza.vigenciaDesde']}" />
+							</f:facet>
+							<h:outputText value="#{poliza.vigenciaDesde}" />
+						</p:column>
+						
+						<p:column>
+							<f:facet name="header">
+								<h:outputText value="#{emision['cliente.poliza.vigenciaHasta']}" />
+							</f:facet>
+							<h:outputText value="#{poliza.vigenciaHasta}" />
+						</p:column>
+					</p:dataTable>
 				</h:panelGrid>
 			</p:panel>
+
 		</h:form>
 	</ui:define>
 </ui:composition>
