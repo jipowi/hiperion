@@ -235,7 +235,7 @@ public class ClienteBacking implements Serializable {
 			}
 
 			if (clienteBean.isActivarNombre()) {
-				clientesTemp = clienteService.consultarClienteByNombres(clienteBean.getNombre(), clienteBean.getApePaterno());
+				clientesTemp = clienteService.consultarClienteByNombres(clienteBean.getNombre());
 			}
 
 			if (clienteBean.isActivarApellido()) {

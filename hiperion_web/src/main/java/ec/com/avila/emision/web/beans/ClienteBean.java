@@ -57,7 +57,7 @@ public class ClienteBean implements Serializable {
 	}
 
 	public void setNombre(String nombre) {
-		this.nombre = nombre;
+		this.nombre = nombre.toUpperCase();
 	}
 
 	public String getApePaterno() {
@@ -65,7 +65,7 @@ public class ClienteBean implements Serializable {
 	}
 
 	public void setApePaterno(String apePaterno) {
-		this.apePaterno = apePaterno.toUpperCase();;
+		this.apePaterno = apePaterno.toUpperCase();
 	}
 
 	public String getApeMaterno() {
