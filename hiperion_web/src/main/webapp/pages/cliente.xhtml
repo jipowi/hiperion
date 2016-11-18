@@ -257,13 +257,25 @@
 						<f:facet name="header">
 							<p:outputLabel value="lista de Contactos" />
 						</f:facet>
+						<p:ajax event="rowEdit" listener="#{contactoBacking.onEditContacto}" />
+						<p:ajax event="rowEditCancel" listener="#{contactoBacking.onCancel}" />
 
 						<p:column headerText="#{administrador['cliente.dlg.contactos.table.tipoContacto']}" style="width:auto">
 							<h:outputText value="#{contacto.tipoContacto}" />
 						</p:column>
 
 						<p:column headerText="#{administrador['cliente.dlg.contactos.table.descripcionContacto']}" style="width:auto">
-							<h:outputText value="#{contacto.descripcionContacto}" />
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText value="#{contacto.descripcionContacto}" />
+								</f:facet>
+								<f:facet name="input">
+									<p:inputText value="#{contactoBean.descripcionContacto}" />
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+						<p:column headerText="Options" style="width:50px">
+							<p:rowEditor />
 						</p:column>
 					</p:dataTable>
 					<!-- DIRECCION -->

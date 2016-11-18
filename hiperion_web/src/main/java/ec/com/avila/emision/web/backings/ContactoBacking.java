@@ -10,10 +10,14 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
+
+import org.primefaces.event.RowEditEvent;
 
 import ec.com.avila.emision.web.beans.ContactoBean;
 import ec.com.avila.hiperion.comun.HiperionException;
@@ -52,6 +56,15 @@ public class ContactoBacking implements Serializable {
 		obtenerContactos();
 	}
 
+	/**
+	 * 
+	 * <b> Permite obtener la lista de contactos. </b>
+	 * <p>
+	 * [Author: kruger, Date: 17/11/2016]
+	 * </p>
+	 * 
+	 * @return
+	 */
 	public List<SelectItem> obtenerContactos() {
 		try {
 			List<DetalleCatalogo> detalleCatalogos = detalleCatalogoService.consultarDetalleCatalogoByCodCatalogo(new Long(23));
@@ -114,10 +127,37 @@ public class ContactoBacking implements Serializable {
 		activarTelefono = false;
 
 		contactoBean.setDescripcionContacto(null);
-
 	}
 
-	
+	/**
+	 * 
+	 * <b> Permite editar un contacto. </b>
+	 * <p>
+	 * [Author: kruger, Date: 17/11/2016]
+	 * </p>
+	 * 
+	 * @param event
+	 */
+	public void onEditContacto(RowEditEvent event) {
+		FacesMessage msg = new FacesMessage("Contacto Editado", ((ContactoDTO) event.getObject()).getDescripcionContacto());
+		FacesContext.getCurrentInstance().addMessage(null, msg);
+	}
+
+	/**
+	 * 
+	 * <b> Permite eliminar un contacto. </b>
+	 * <p>
+	 * [Author: kruger, Date: 17/11/2016]
+	 * </p>
+	 * 
+	 * @param event
+	 */
+	public void onCancel(RowEditEvent event) {
+		FacesMessage msg = new FacesMessage("Contacto Eliminado");
+		FacesContext.getCurrentInstance().addMessage(null, msg);
+		contactoBean.getContactosDTO().remove((ContactoDTO) event.getObject());
+	}
+
 	public void cancelarContactos() {
 		contactoBean.setContactosDTO(new ArrayList<ContactoDTO>());
 	}
