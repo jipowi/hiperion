@@ -14,15 +14,18 @@ import java.math.BigDecimal;
  */
 public class RamoDTO {
 
+	private Long idRamo;
 	private String nombreRamo;
 	private BigDecimal comision;
 
 	/**
+	 * @param idRamo
 	 * @param nombreRamo
 	 * @param comision
 	 */
-	public RamoDTO(String nombreRamo, BigDecimal comision) {
+	public RamoDTO(Long idRamo, String nombreRamo, BigDecimal comision) {
 		super();
+		this.idRamo = idRamo;
 		this.nombreRamo = nombreRamo;
 		this.comision = comision;
 	}
@@ -55,6 +58,21 @@ public class RamoDTO {
 	 */
 	public void setComision(BigDecimal comision) {
 		this.comision = comision;
+	}
+
+	/**
+	 * @return the idRamo
+	 */
+	public Long getIdRamo() {
+		return idRamo;
+	}
+
+	/**
+	 * @param idRamo
+	 *            the idRamo to set
+	 */
+	public void setIdRamo(Long idRamo) {
+		this.idRamo = idRamo;
 	}
 
 }

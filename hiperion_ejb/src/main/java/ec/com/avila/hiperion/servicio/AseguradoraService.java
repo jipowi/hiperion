@@ -11,6 +11,8 @@ import javax.ejb.Local;
 import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.emision.entities.Aseguradora;
 import ec.com.avila.hiperion.emision.entities.Cliente;
+import ec.com.avila.hiperion.emision.entities.Ramo;
+import ec.com.avila.hiperion.emision.entities.RamoAseguradora;
 
 /**
  * <b> Servicio de interface local para realizar las operaciones sobre la tabla Aseguradora</b>
@@ -35,7 +37,7 @@ public interface AseguradoraService {
 	 * @throws HiperionException
 	 */
 	public Aseguradora consultarAseguradoraByRucAseg(String ruc, Integer aseguradora) throws HiperionException;
-	
+
 	/**
 	 * 
 	 * <b> Permite guardar las aseguradoras con sus respectivos contactos. </b>
@@ -47,8 +49,8 @@ public interface AseguradoraService {
 	 * @param contactos
 	 * @throws HiperionException
 	 */
-	public void guardarAseguradora(Aseguradora aseguradora, List<Cliente> contactos, boolean save) throws HiperionException;
-	
+	public void guardarAseguradora(Aseguradora aseguradora, List<Cliente> contactos, List<RamoAseguradora> ramos, boolean save) throws HiperionException;
+
 	/**
 	 * 
 	 * <b> Permite consultar la lista de clientes que posee una aseguradora. </b>
@@ -74,7 +76,7 @@ public interface AseguradoraService {
 	 * @throws HiperionException
 	 */
 	public Aseguradora consultarAseguradoraById(Long idAseguradora) throws HiperionException;
-	
+
 	/**
 	 * 
 	 * <b> Permite consultar una aseguradora por el codigo. </b>
@@ -87,5 +89,30 @@ public interface AseguradoraService {
 	 * @throws HiperionException
 	 */
 	public Aseguradora consultarAseguradoraByCodigo(String codigo) throws HiperionException;
+
+	/**
+	 * 
+	 * <b> Permite consultar todos los ramos de la tabla. </b>
+	 * <p>
+	 * [Author: kruger, Date: 21/11/2016]
+	 * </p>
+	 * 
+	 * @return
+	 * @throws HiperionException
+	 */
+	public List<Ramo> consultarRamos() throws HiperionException;
+
+	/**
+	 * 
+	 * <b> Permite consulta el ramo por id. </b>
+	 * <p>
+	 * [Author: kruger, Date: 21/11/2016]
+	 * </p>
+	 * 
+	 * @param idRamo
+	 * @return
+	 * @throws HiperionException
+	 */
+	public Ramo consultarRamoById(Long idRamo) throws HiperionException;
 
 }

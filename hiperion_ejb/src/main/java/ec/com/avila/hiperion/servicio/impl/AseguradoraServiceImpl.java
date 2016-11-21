@@ -12,8 +12,12 @@ import javax.ejb.Stateless;
 import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.dao.AseguradoraDao;
 import ec.com.avila.hiperion.dao.ClienteDao;
+import ec.com.avila.hiperion.dao.RamoAseguradoraDao;
+import ec.com.avila.hiperion.dao.RamoDao;
 import ec.com.avila.hiperion.emision.entities.Aseguradora;
 import ec.com.avila.hiperion.emision.entities.Cliente;
+import ec.com.avila.hiperion.emision.entities.Ramo;
+import ec.com.avila.hiperion.emision.entities.RamoAseguradora;
 import ec.com.avila.hiperion.enumeration.EstadoEnum;
 import ec.com.avila.hiperion.servicio.AseguradoraService;
 
@@ -33,24 +37,38 @@ public class AseguradoraServiceImpl implements AseguradoraService {
 	@EJB
 	private ClienteDao clienteDao;
 
+	@EJB
+	private RamoAseguradoraDao ramoAseguradoraDao;
+
+	@EJB
+	private RamoDao ramoDao;
+
 	/*
 	 * (non-Javadoc)
 	 * 
 	 * @see ec.com.avila.hiperion.servicio.PolizaService#guardarAseguradora(ec.com.avila.hiperion.emision.entities.Aseguradora, java.util.List)
 	 */
 	@Override
-	public void guardarAseguradora(Aseguradora aseguradora, List<Cliente> contactos, boolean save) throws HiperionException {
+	public void guardarAseguradora(Aseguradora aseguradora, List<Cliente> contactos, List<RamoAseguradora> ramos, boolean save) throws HiperionException {
 
 		if (save) {
 			aseguradoraDao.persist(aseguradora);
 
+			// Guardar Contactos en la tabla Cliente
 			for (Cliente cliente : contactos) {
 				cliente.setAseguradora(aseguradora);
 				clienteDao.persist(cliente);
 			}
+
+			// Guardar RamoAseguradora
+			for (RamoAseguradora ramo : ramos) {
+				ramo.setAseguradora(aseguradora);
+				ramoAseguradoraDao.persist(ramo);
+			}
+
 		} else {
 			aseguradoraDao.update(aseguradora);
-			
+
 			List<Cliente> clientesDB = clienteDao.consultarClienteByAseguradora(aseguradora.getCodigoAseguradora());
 			// Eliminar registros
 			for (Cliente cliente : clientesDB) {
@@ -105,6 +123,26 @@ public class AseguradoraServiceImpl implements AseguradoraService {
 	@Override
 	public Aseguradora consultarAseguradoraByCodigo(String codigo) throws HiperionException {
 		return aseguradoraDao.consultarAseguradoraByCodigo(codigo);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see ec.com.avila.hiperion.servicio.AseguradoraService#consultarRamos()
+	 */
+	@Override
+	public List<Ramo> consultarRamos() throws HiperionException {
+		return ramoDao.findAll();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see ec.com.avila.hiperion.servicio.AseguradoraService#consultarRamoById(java.lang.Long)
+	 */
+	@Override
+	public Ramo consultarRamoById(Long idRamo) throws HiperionException {
+		return ramoDao.findById(idRamo);
 	}
 
 }
