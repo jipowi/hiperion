@@ -139,7 +139,7 @@
 		<!-- DIALOG - Datos del Cliente -->
 		<h:form id="clienteFormId">
 			<p:dialog id="agregarClienteDlgId" widgetVar="crearClienteDlg" styleClass="DialogCliente" modal="true" position="center" showEffect="explote"
-				hideEffect="bounce" resizable="false" closable="true" width="580" height="450">
+				hideEffect="bounce" resizable="false" closable="true" width="650" height="450">
 
 				<div id="crearClienteDivBodyId">
 					<!-- CLIENTE -->
@@ -208,13 +208,34 @@
 						<f:facet name="header">
 							<p:outputLabel value="PERSONA JURÍDICA" />
 						</f:facet>
-						<h:panelGrid columns="1" cellpadding="2" cellspacing="2">
+						<h:panelGrid columns="2" cellpadding="2" cellspacing="2">
+							<p:outputLabel for="nombreJId" value="#{administrador['cliente.dlg.agregar.nombres']}" styleClass="negrita" />
+							<p:inputText id="nombreJId" value="#{clienteBean.nombre}" required="#{clienteBacking.activarPanelPersonaJuridica}"
+								requiredMessage="#{administrador['cliente.dlg.agregar.msg.nombres']}" styleClass="DialogoCliente-nombre"
+								validatorMessage="#{emision['msg.texto.error']}" style="text-transform:uppercase;">
+								<f:validateRegex pattern="#{emision['msg.formato.texto']}" />
+							</p:inputText>
+
+							<p:outputLabel for="apePaternoJ" value="#{administrador['cliente.dlg.agregar.appPaterno']}" styleClass="negrita" />
+							<p:inputText id="apePaternoJ" value="#{clienteBean.apePaterno}" required="#{clienteBacking.activarPanelPersonaJuridica}"
+								requiredMessage="#{administrador['cliente.dlg.agregar.msg.appPaterno']}" styleClass="DialogoCliente-apePaterno"
+								validatorMessage="#{emision['msg.texto.error']}" style="text-transform:uppercase;">
+								<f:validateRegex pattern="#{emision['msg.formato.texto']}" />
+							</p:inputText>
+
+							<p:outputLabel for="apeMaternoJ" value="#{administrador['cliente.dlg.agregar.appMaterno']}" styleClass="negrita" />
+							<p:inputText id="apeMaternoJ" value="#{clienteBean.apeMaterno}" required="#{clienteBacking.activarPanelPersonaJuridica}"
+								requiredMessage="#{administrador['cliente.dlg.agregar.msg.appMaterno']}" styleClass="DialogoCliente-apeMaterno"
+								validatorMessage="#{emision['msg.texto.error']}" style="text-transform:uppercase;">
+								<f:validateRegex pattern="#{emision['msg.formato.texto']}" />
+							</p:inputText>
+
 							<p:outputLabel for="razonSocialId" value="#{administrador['cliente.dlg.agregar.razonSocial']}" styleClass="negrita" />
 							<p:inputText id="razonSocialId" value="#{clienteBean.razonSocial}" required="#{clienteBacking.activarPanelPersonaJuridica}"
 								requiredMessage="#{administrador['cliente.dlg.agregar.msg.razonSocial']}" styleClass="DialogCliente-razonSocial"
 								style="text-transform:uppercase;" />
-						</h:panelGrid>
-						<h:panelGrid columns="1" cellpadding="2" cellspacing="2">
+
+
 							<p:outputLabel for="giroNegocioId" value="#{administrador['cliente.dlg.agregar.giroNegocio']}" styleClass="negrita" />
 							<p:inputText id="giroNegocioId" value="#{clienteBean.giroNegocio}" required="#{clienteBacking.activarPanelPersonaJuridica}"
 								requiredMessage="emi" styleClass="DialogCliente-giroNegocio" style="text-transform:uppercase;" />

@@ -326,6 +326,9 @@ public class ClienteBacking implements Serializable {
 							} else {
 								// Persona Juridica
 								cliente.setRazonSocial(clienteBean.getRazonSocial());
+								cliente.setNombrePersona(clienteBean.getNombre());
+								cliente.setApellidoPaterno(clienteBean.getApePaterno());
+								cliente.setApellidoMaterno(clienteBean.getApeMaterno());
 							}
 							cliente.setTipoPersona(clienteBean.getTipoPersona().toString());
 							// Direcciones del Cliente
