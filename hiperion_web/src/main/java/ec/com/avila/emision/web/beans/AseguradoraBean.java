@@ -4,7 +4,6 @@
 package ec.com.avila.emision.web.beans;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +16,6 @@ import org.primefaces.event.RowEditEvent;
 
 import ec.com.avila.hiperion.dto.AseguradoraDTO;
 import ec.com.avila.hiperion.dto.PersonaContactoAseguradoraDTO;
-import ec.com.avila.hiperion.dto.RamoDTO;
 
 /**
  * 
@@ -41,6 +39,7 @@ public class AseguradoraBean implements Serializable {
 	private String telefono;
 	private String mailAseguradora;
 	private List<AseguradoraDTO> aseguradorasList;
+	private Long idRamo;
 
 	// Informacion del contacto
 	private String nombre;
@@ -51,11 +50,6 @@ public class AseguradoraBean implements Serializable {
 	private String email;
 	private String telefonoContacto;
 	private static List<PersonaContactoAseguradoraDTO> contactoList = new ArrayList<>();
-
-	// informacion del ramo de la aseguradora
-	private String nombreRamo;
-	private BigDecimal comision;
-	private static ArrayList<RamoDTO> ramoList = new ArrayList<RamoDTO>();
 
 	private Boolean activarTabla = false;
 	private Boolean activarNewAseguradora = false;
@@ -241,51 +235,6 @@ public class AseguradoraBean implements Serializable {
 	}
 
 	/**
-	 * @return the nombreRamo
-	 */
-	public String getNombreRamo() {
-		return nombreRamo;
-	}
-
-	/**
-	 * @param nombreRamo
-	 *            the nombreRamo to set
-	 */
-	public void setNombreRamo(String nombreRamo) {
-		this.nombreRamo = nombreRamo.toUpperCase();
-	}
-
-	/**
-	 * @return the comision
-	 */
-	public BigDecimal getComision() {
-		return comision;
-	}
-
-	/**
-	 * @param comision
-	 *            the comision to set
-	 */
-	public void setComision(BigDecimal comision) {
-		this.comision = comision;
-	}
-
-	/**
-	 * @return the ramoList
-	 */
-	public ArrayList<RamoDTO> getRamoList() {
-		return ramoList;
-	}
-
-	/**
-	 * @param ramoList
-	 *            the ramoList to set
-	 */
-	public static void setRamoList(ArrayList<RamoDTO> ramoList) {
-		AseguradoraBean.ramoList = ramoList;
-	}
-
-	/**
 	 * @return the mailAseguradora
 	 */
 	public String getMailAseguradora() {
@@ -355,7 +304,7 @@ public class AseguradoraBean implements Serializable {
 	 * @return
 	 */
 	public String addContacto() {
-		
+
 		PersonaContactoAseguradoraDTO item = new PersonaContactoAseguradoraDTO(this.nombre, this.apellidoMaterno, this.apellidoPaterno,
 				this.identificacion, this.cargo, this.email, this.telefonoContacto);
 
@@ -374,26 +323,6 @@ public class AseguradoraBean implements Serializable {
 
 	/**
 	 * 
-	 * <b> Permite agregar un nuevo ramo asociado a la aseguradora </b>
-	 * <p>
-	 * [Author: Paul Jimenez, Date: Aug 10, 2014]
-	 * </p>
-	 * 
-	 * @return
-	 */
-	public String addRamo() {
-		RamoDTO item = new RamoDTO(this.nombreRamo, this.comision);
-
-		ramoList.add(item);
-
-		nombreRamo = "";
-		comision = new BigDecimal(0.0);
-
-		return null;
-	}
-
-	/**
-	 * 
 	 * <b> Permite editar un contacto una vez ingresado </b>
 	 * <p>
 	 * [Author: Paul Jimenez, Date: Aug 3, 2014]
@@ -406,19 +335,7 @@ public class AseguradoraBean implements Serializable {
 		FacesContext.getCurrentInstance().addMessage(null, msg);
 	}
 
-	/**
-	 * 
-	 * <b> Permite editar una ramo ingresado </b>
-	 * <p>
-	 * [Author: Paul Jimenez, Date: Aug 10, 2014]
-	 * </p>
-	 * 
-	 * @param event
-	 */
-	public void editRamo(RowEditEvent event) {
-		FacesMessage msg = new FacesMessage("Item Edited", ((RamoDTO) event.getObject()).getNombreRamo());
-		FacesContext.getCurrentInstance().addMessage(null, msg);
-	}
+	
 
 	/**
 	 * 
@@ -435,18 +352,21 @@ public class AseguradoraBean implements Serializable {
 		contactoList.remove((PersonaContactoAseguradoraDTO) event.getObject());
 	}
 
+	
+
 	/**
-	 * 
-	 * <b> Permite eliminar un ramo </b>
-	 * <p>
-	 * [Author: Paul Jimenez, Date: Aug 10, 2014]
-	 * </p>
-	 * 
-	 * @param event
+	 * @return the idRamo
 	 */
-	public void cancelRamo(RowEditEvent event) {
-		FacesMessage msg = new FacesMessage("Item Cancelled");
-		FacesContext.getCurrentInstance().addMessage(null, msg);
-		contactoList.remove((RamoDTO) event.getObject());
+	public Long getIdRamo() {
+		return idRamo;
 	}
+
+	/**
+	 * @param idRamo
+	 *            the idRamo to set
+	 */
+	public void setIdRamo(Long idRamo) {
+		this.idRamo = idRamo;
+	}
+
 }

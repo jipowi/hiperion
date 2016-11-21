@@ -14,7 +14,6 @@
 						</f:facet>
 						<h:panelGrid columns="2">
 							<h:panelGrid columns="2">
-
 								<p:outputLabel value="#{emision['aseguradora.aseguradora']}" styleClass="negrita" />
 								<p:selectOneMenu id="idAseguradora" value="#{aseguradoraBean.codAseguradora}" effect="drop">
 									<f:selectItem itemLabel="Seleccione Aseguradora" noSelectionOption="true" />
@@ -47,13 +46,13 @@
 								</f:facet>
 								<h:panelGrid columns="2" cellpadding="3">
 									<p:outputLabel value="#{emision['aseguradora.aseguradora']}" styleClass="negrita" />
-									<p:selectOneMenu value="#{aseguradoraBean.codAseguradora}" effect="drop">
+									<p:selectOneMenu value="#{aseguradoraBean.codAseguradora}" effect="drop" disabled="true">
 										<f:selectItem itemLabel="Seleccione Aseguradora" noSelectionOption="true" />
 										<f:selectItems value="#{aseguradoraBacking.aseguradorasItems}" />
 									</p:selectOneMenu>
 
 									<p:outputLabel value="#{emision['aseguradora.ruc']}" styleClass="negrita" />
-									<p:inputText value="#{aseguradoraBean.ruc}" />
+									<p:inputText value="#{aseguradoraBean.ruc}" disabled="true"/>
 
 									<p:outputLabel value="#{emision['aseguradora.direccion']}" styleClass="negrita" />
 									<p:inputText value="#{aseguradoraBean.direccion}" style="text-transform:uppercase;" />
@@ -217,29 +216,33 @@
 		</h:form>
 
 		<!-- RAMOS -->
-		<p:dialog header="Ramos" widgetVar="ramos" modal="true" position="center" showEffect="fade" hideEffect="explode" resizable="false" closable="true">
+		<p:dialog header="RAMOS Y COMISIÓN" widgetVar="ramos" modal="true" position="center" showEffect="fade" hideEffect="explode" resizable="false"
+			closable="true" width="580" height="350">
 			<h:form id="formRamos">
 				<div align="center">
 					<p:growl id="messagesRamos" showDetail="true" />
 					<h:panelGrid columns="1">
-						<p:panelGrid columns="2">
-							<h:outputLabel value="#{emision['aseguradora.ramo.ramo']}" styleClass="negrita" />
-							<p:inputText value="#{aseguradoraBean.nombreRamo}" />
+						<h:panelGrid columns="2">
+							<h:outputLabel value="#{emision['aseguradora.ramo.ramo']}:" styleClass="negrita" />
+							<p:selectOneMenu id="tipoIdentificacionId" value="#{aseguradoraBean.idRamo}" effect="drop">
+								<f:selectItem itemLabel="Seleccione Ramo" noSelectionOption="true" />
+								<f:selectItems value="#{aseguradoraBacking.ramoItems}" />
+							</p:selectOneMenu>
 
-							<h:outputLabel value="#{emision['aseguradora.ramo.comision']}" styleClass="negrita" />
-							<p:inputText value="#{aseguradoraBean.comision}" />
-						</p:panelGrid>
+							<h:outputLabel value="#{emision['aseguradora.ramo.comision']}:" styleClass="negrita" />
+							<p:inputText value="#{aseguradoraBacking.comision}" />
+						</h:panelGrid>
 						<f:facet name="footer">
 							<div align="center">
 								<p:commandButton id="agregarRamo" update="formRamos, messagesRamos" icon="icon-add" value="#{emision['boton.agregar']}"
-									actionListener="#{aseguradoraBean.addRamo}" title="Agregar ramos" />
+									actionListener="#{aseguradoraBacking.addRamo}" title="Agregar ramos" />
 							</div>
 						</f:facet>
 					</h:panelGrid>
 					<p:spacer height="30px;" />
-					<p:dataTable id="tabla" value="#{aseguradoraBean.ramoList}" var="obj" widgetVar="50" style="width: 60%;" editable="true">
-						<p:ajax event="rowEdit" listener="#{aseguradoraBean.editRamo}" />
-						<p:ajax event="rowEditCancel" listener="#{aseguradoraBean.cancelRamo}" />
+					<p:dataTable id="tabla" value="#{aseguradoraBacking.ramoList}" var="obj" widgetVar="50" style="width: 60%;" editable="true">
+						<p:ajax event="rowEdit" listener="#{aseguradoraBacking.editRamo}" />
+						<p:ajax event="rowEditCancel" listener="#{aseguradoraBacking.cancelRamo}" />
 						<p:column>
 							<f:facet name="header">
 								<h:outputText value="#{emision['aseguradora.ramo.ramo']}" />
@@ -249,7 +252,10 @@
 									<h:outputText value="#{obj.nombreRamo}" />
 								</f:facet>
 								<f:facet name="input">
-									<p:inputText value="#{obj.nombreRamo}" />
+									<p:selectOneMenu id="tipoIdentificacionId" value="#{aseguradoraBean.idRamo}" effect="drop">
+										<f:selectItem itemLabel="Seleccione Ramo" noSelectionOption="true" />
+										<f:selectItems value="#{aseguradoraBacking.ramoItems}" />
+									</p:selectOneMenu>
 								</f:facet>
 							</p:cellEditor>
 						</p:column>

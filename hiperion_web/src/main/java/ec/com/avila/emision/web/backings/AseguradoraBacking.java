@@ -4,6 +4,7 @@
 package ec.com.avila.emision.web.backings;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -14,6 +15,7 @@ import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
@@ -22,14 +24,19 @@ import javax.faces.model.SelectItem;
 import javax.servlet.http.HttpServletRequest;
 import javax.sql.DataSource;
 
+import org.primefaces.event.RowEditEvent;
+
 import ec.com.avila.emision.web.beans.AseguradoraBean;
 import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.dto.PersonaContactoAseguradoraDTO;
+import ec.com.avila.hiperion.dto.RamoDTO;
 import ec.com.avila.hiperion.emision.entities.Aseguradora;
 import ec.com.avila.hiperion.emision.entities.Catalogo;
 import ec.com.avila.hiperion.emision.entities.Cliente;
 import ec.com.avila.hiperion.emision.entities.Contacto;
 import ec.com.avila.hiperion.emision.entities.DetalleCatalogo;
+import ec.com.avila.hiperion.emision.entities.Ramo;
+import ec.com.avila.hiperion.emision.entities.RamoAseguradora;
 import ec.com.avila.hiperion.emision.entities.Usuario;
 import ec.com.avila.hiperion.enumeration.EstadoEnum;
 import ec.com.avila.hiperion.servicio.AseguradoraService;
@@ -77,6 +84,10 @@ public class AseguradoraBacking implements Serializable {
 	private UsuarioBean usuarioBean;
 
 	private String rutaReporte;
+	private List<SelectItem> ramoItems;
+	private ArrayList<RamoDTO> ramoList = new ArrayList<RamoDTO>();
+	private String nombreRamo;
+	private BigDecimal comision;
 
 	@PostConstruct
 	public void inicializar() throws HiperionException {
@@ -103,6 +114,58 @@ public class AseguradoraBacking implements Serializable {
 			parametros.put("TIPO_REPORTE", "excel");
 
 		request.getSession().setAttribute(ReportServlet.OBJETO_REPORTE, parametros);
+	}
+
+	/**
+	 * 
+	 * <b> Permite agregar un nuevo ramo asociado a la aseguradora </b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: Aug 10, 2014]
+	 * </p>
+	 * 
+	 * @return
+	 * @throws HiperionException
+	 */
+	public String addRamo() throws HiperionException {
+
+		Ramo ramoTemp = aseguradoraService.consultarRamoById(aseguradoraBean.getIdRamo());
+		RamoDTO item = new RamoDTO(aseguradoraBean.getIdRamo(), ramoTemp.getNombreRamo(), this.comision);
+
+		ramoList.add(item);
+
+		nombreRamo = "";
+		comision = new BigDecimal(0.0);
+
+		return null;
+	}
+
+	/**
+	 * 
+	 * <b> Permite editar una ramo ingresado </b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: Aug 10, 2014]
+	 * </p>
+	 * 
+	 * @param event
+	 */
+	public void editRamo(RowEditEvent event) {
+		FacesMessage msg = new FacesMessage("Item Edited", ((RamoDTO) event.getObject()).getNombreRamo());
+		FacesContext.getCurrentInstance().addMessage(null, msg);
+	}
+
+	/**
+	 * 
+	 * <b> Permite eliminar un ramo </b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: Aug 10, 2014]
+	 * </p>
+	 * 
+	 * @param event
+	 */
+	public void cancelRamo(RowEditEvent event) {
+		FacesMessage msg = new FacesMessage("Item Cancelled");
+		FacesContext.getCurrentInstance().addMessage(null, msg);
+		ramoList.remove((RamoDTO) event.getObject());
 	}
 
 	/**
@@ -167,7 +230,17 @@ public class AseguradoraBacking implements Serializable {
 				contactosAseguradora.add(persona);
 			}
 
-			aseguradoraService.guardarAseguradora(aseguradora, contactosAseguradora, save);
+			List<RamoAseguradora> ramos = new ArrayList<>();
+			for (RamoDTO ramoDTO : ramoList) {
+				RamoAseguradora ramoAseg = new RamoAseguradora();
+
+				ramoAseg.setComision(ramoDTO.getComision());
+				ramos.add(ramoAseg);
+			}
+
+			aseguradora.setRamoAseguradoras(ramos);
+
+			aseguradoraService.guardarAseguradora(aseguradora, contactosAseguradora, ramos, save);
 
 			MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.save.aseguradora"));
 			aseguradoraBean.setRuc(null);
@@ -197,6 +270,7 @@ public class AseguradoraBacking implements Serializable {
 	 */
 	public void consultarAseguradoras() throws HiperionException {
 
+		aseguradoraBean.setContactoList(null);
 		Aseguradora aseguradora = aseguradoraService.consultarAseguradoraByRucAseg(aseguradoraBean.getRuc(), aseguradoraBean.getCodAseguradora());
 		if (aseguradora != null) {
 
@@ -318,4 +392,72 @@ public class AseguradoraBacking implements Serializable {
 		this.usuarioBean = usuarioBean;
 	}
 
+	/**
+	 * @return the ramoItems
+	 * @throws HiperionException
+	 */
+	public List<SelectItem> getRamoItems() throws HiperionException {
+		this.ramoItems = new ArrayList<SelectItem>();
+		List<Ramo> ramos = aseguradoraService.consultarRamos();
+
+		for (Ramo ramo : ramos) {
+			SelectItem selectItem = new SelectItem(ramo.getIdRamo(), ramo.getNombreRamo());
+			ramoItems.add(selectItem);
+		}
+
+		return ramoItems;
+	}
+
+	/**
+	 * @param ramoItems
+	 *            the ramoItems to set
+	 */
+	public void setRamoItems(List<SelectItem> ramoItems) {
+		this.ramoItems = ramoItems;
+	}
+
+	/**
+	 * @return the ramoList
+	 */
+	public ArrayList<RamoDTO> getRamoList() {
+		return ramoList;
+	}
+
+	/**
+	 * @param ramoList
+	 *            the ramoList to set
+	 */
+	public void setRamoList(ArrayList<RamoDTO> ramoList) {
+		this.ramoList = ramoList;
+	}
+
+	/**
+	 * @return the nombreRamo
+	 */
+	public String getNombreRamo() {
+		return nombreRamo;
+	}
+
+	/**
+	 * @param nombreRamo
+	 *            the nombreRamo to set
+	 */
+	public void setNombreRamo(String nombreRamo) {
+		this.nombreRamo = nombreRamo.toUpperCase();
+	}
+
+	/**
+	 * @return the comision
+	 */
+	public BigDecimal getComision() {
+		return comision;
+	}
+
+	/**
+	 * @param comision
+	 *            the comision to set
+	 */
+	public void setComision(BigDecimal comision) {
+		this.comision = comision;
+	}
 }
