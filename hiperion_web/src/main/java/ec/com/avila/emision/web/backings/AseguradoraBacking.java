@@ -186,8 +186,8 @@ public class AseguradoraBacking implements Serializable {
 	 * @return
 	 */
 	public String addContacto() {
-		
-		if(contactoList == null){
+
+		if (contactoList == null) {
 			contactoList = new ArrayList<>();
 		}
 
@@ -301,7 +301,11 @@ public class AseguradoraBacking implements Serializable {
 			List<RamoAseguradora> ramos = new ArrayList<>();
 			for (RamoDTO ramoDTO : ramoList) {
 				RamoAseguradora ramoAseg = new RamoAseguradora();
-				
+				Ramo ramo = new Ramo();
+				ramo.setCodigoRamo(ramoDTO.getIdRamo().toString());
+				ramo.setNombreRamo(ramoDTO.getNombreRamo());
+
+				ramoAseg.setRamo(ramo);
 				ramoAseg.setEstado("A");
 				ramoAseg.setFechaCreacion(new Date());
 				ramoAseg.setIdUsuarioCreacion(usuario.getIdUsuario());
@@ -337,7 +341,7 @@ public class AseguradoraBacking implements Serializable {
 	 */
 	public void consultarAseguradoras() throws HiperionException {
 
-		contactoList = null;
+		contactoList = new ArrayList<>();
 		Aseguradora aseguradora = aseguradoraService.consultarAseguradoraByRucAseg(aseguradoraBean.getRuc(), aseguradoraBean.getCodAseguradora());
 		if (aseguradora != null) {
 
@@ -364,6 +368,9 @@ public class AseguradoraBacking implements Serializable {
 			}
 
 		} else {
+			aseguradoraBean.setDireccion(null);
+			aseguradoraBean.setMailAseguradora(null);
+			aseguradoraBean.setTelefono(null);
 			MessagesController.addWarn(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.war.aseguradora"));
 			aseguradoraBean.setActivarNewAseguradora(true);
 		}

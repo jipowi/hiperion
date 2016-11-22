@@ -7,6 +7,9 @@
 		<h:form id="formPricipal">
 			<p:panel>
 				<p:messages id="messagesCliente" showDetail="true" autoUpdate="true" closable="true" />
+				<f:facet name="header">
+					<h:outputText value="ADMINISTRACIÓN CLIENTES" />
+				</f:facet>
 
 				<h:panelGrid columns="2">
 					<h:panelGrid columns="1">
@@ -78,7 +81,6 @@
 							</h:panelGrid>
 						</p:panel>
 					</h:panelGrid>
-
 					<h:panelGrid columns="1">
 						<h:panelGrid columns="1">
 							<h:graphicImage name="client.jpg" library="img" />
