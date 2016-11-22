@@ -46,7 +46,7 @@ INSERT INTO MENU VALUES (38, 3, 'Ingresar Aseguradora', '/pages/aseguradoras.jsf
 INSERT INTO MENU VALUES (39, 4, 'Ingresar Usuarios', '/pages/usuarios.jsf','A');
 INSERT INTO MENU VALUES (40, 5, 'Enviar correo', '/pages/correspondencia.jsf','A');
 INSERT INTO MENU VALUES (41, 6, 'Formulario Vehiculos', '/pages/formSiniestroVehiculos.jsf','A');
-INSERT INTO MENU VALUES (42, 1, 'Información Cliente', '/pages/polizasCliente.jsf','A');
+INSERT INTO MENU VALUES (42, 7, 'Información Cliente', '/pages/reporteClientes.jsf','A');
 INSERT INTO MENU VALUES (43, 7, 'Información Polizas', '/pages/reportePolizas.jsf','A');
 
 
