@@ -86,8 +86,16 @@ public class AseguradoraBacking implements Serializable {
 	private String rutaReporte;
 	private List<SelectItem> ramoItems;
 	private ArrayList<RamoDTO> ramoList = new ArrayList<RamoDTO>();
+	private ArrayList<PersonaContactoAseguradoraDTO> contactoList = new ArrayList<PersonaContactoAseguradoraDTO>();
 	private String nombreRamo;
 	private BigDecimal comision;
+	private String nombre;
+	private String apellidoMaterno;
+	private String apellidoPaterno;
+	private String identificacion;
+	private String cargo;
+	private String email;
+	private String telefonoContacto;
 
 	@PostConstruct
 	public void inicializar() throws HiperionException {
@@ -170,6 +178,66 @@ public class AseguradoraBacking implements Serializable {
 
 	/**
 	 * 
+	 * <b> Pemrite agregar un contacto </b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: Aug 3, 2014]
+	 * </p>
+	 * 
+	 * @return
+	 */
+	public String addContacto() {
+		
+		if(contactoList == null){
+			contactoList = new ArrayList<>();
+		}
+
+		PersonaContactoAseguradoraDTO item = new PersonaContactoAseguradoraDTO(this.nombre, this.apellidoMaterno, this.apellidoPaterno,
+				this.identificacion, this.cargo, this.email, this.telefonoContacto);
+
+		contactoList.add(item);
+
+		this.nombre = "";
+		this.apellidoMaterno = "";
+		this.apellidoPaterno = "";
+		this.identificacion = "";
+		this.cargo = "";
+		this.email = "";
+		this.telefonoContacto = "";
+
+		return null;
+	}
+
+	/**
+	 * 
+	 * <b> Permite editar un contacto una vez ingresado </b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: Aug 3, 2014]
+	 * </p>
+	 * 
+	 * @param event
+	 */
+	public void onEdit(RowEditEvent event) {
+		FacesMessage msg = new FacesMessage("Item Edited", ((PersonaContactoAseguradoraDTO) event.getObject()).getNombre());
+		FacesContext.getCurrentInstance().addMessage(null, msg);
+	}
+
+	/**
+	 * 
+	 * <b> Permite eliminar un contacto </b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: Aug 3, 2014]
+	 * </p>
+	 * 
+	 * @param event
+	 */
+	public void onCancel(RowEditEvent event) {
+		FacesMessage msg = new FacesMessage("Item Cancelled");
+		FacesContext.getCurrentInstance().addMessage(null, msg);
+		contactoList.remove((PersonaContactoAseguradoraDTO) event.getObject());
+	}
+
+	/**
+	 * 
 	 * <b> Permite guardar una aseguradora en la base de datos </b>
 	 * <p>
 	 * [Author: Paul Jimenez, Date: Aug 10, 2014]
@@ -196,10 +264,10 @@ public class AseguradoraBacking implements Serializable {
 		aseguradora.setFechaCreacion(new Date());
 		aseguradora.setEstado(EstadoEnum.A);
 
-		if (aseguradoraBean.getContactoList() != null) {
+		if (contactoList != null) {
 			List<Cliente> contactosAseguradora = new ArrayList<>();
 
-			for (PersonaContactoAseguradoraDTO contactoAseguradora : aseguradoraBean.getContactoList()) {
+			for (PersonaContactoAseguradoraDTO contactoAseguradora : contactoList) {
 
 				Cliente persona = new Cliente();
 
@@ -233,6 +301,10 @@ public class AseguradoraBacking implements Serializable {
 			List<RamoAseguradora> ramos = new ArrayList<>();
 			for (RamoDTO ramoDTO : ramoList) {
 				RamoAseguradora ramoAseg = new RamoAseguradora();
+				
+				ramoAseg.setEstado("A");
+				ramoAseg.setFechaCreacion(new Date());
+				ramoAseg.setIdUsuarioCreacion(usuario.getIdUsuario());
 
 				ramoAseg.setComision(ramoDTO.getComision());
 				ramos.add(ramoAseg);
@@ -245,12 +317,7 @@ public class AseguradoraBacking implements Serializable {
 			MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.save.aseguradora"));
 			aseguradoraBean.setRuc(null);
 			aseguradoraBean.setTelefono(null);
-			aseguradoraBean.setContactoList(null);
-			aseguradoraBean.setApellidoMaterno(null);
-			aseguradoraBean.setApellidoPaterno(null);
-			aseguradoraBean.setCargo(null);
-			aseguradoraBean.setDireccion(null);
-			aseguradoraBean.setEmail(null);
+			contactoList = null;
 
 			aseguradora = new Aseguradora();
 			contactosAseguradora = new ArrayList<>();
@@ -270,7 +337,7 @@ public class AseguradoraBacking implements Serializable {
 	 */
 	public void consultarAseguradoras() throws HiperionException {
 
-		aseguradoraBean.setContactoList(null);
+		contactoList = null;
 		Aseguradora aseguradora = aseguradoraService.consultarAseguradoraByRucAseg(aseguradoraBean.getRuc(), aseguradoraBean.getCodAseguradora());
 		if (aseguradora != null) {
 
@@ -283,7 +350,6 @@ public class AseguradoraBacking implements Serializable {
 
 			// Obtener contactos de la aseguradora seleccionada
 			List<Cliente> clientesAseguradora = aseguradoraService.consultarClienteByAseguradora(aseguradora.getCodigoAseguradora());
-			List<PersonaContactoAseguradoraDTO> contactos = new ArrayList<>();
 
 			for (Cliente cliente : clientesAseguradora) {
 				PersonaContactoAseguradoraDTO personaDTO = new PersonaContactoAseguradoraDTO();
@@ -294,10 +360,9 @@ public class AseguradoraBacking implements Serializable {
 				personaDTO.setApellidoMaterno(cliente.getApellidoMaterno());
 				personaDTO.setCargo(cliente.getActividadProfesion());
 
-				contactos.add(personaDTO);
+				contactoList.add(personaDTO);
 			}
 
-			aseguradoraBean.setContactoList(contactos);
 		} else {
 			MessagesController.addWarn(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.war.aseguradora"));
 			aseguradoraBean.setActivarNewAseguradora(true);
@@ -460,4 +525,125 @@ public class AseguradoraBacking implements Serializable {
 	public void setComision(BigDecimal comision) {
 		this.comision = comision;
 	}
+
+	/**
+	 * @return the nombre
+	 */
+	public String getNombre() {
+		return nombre;
+	}
+
+	/**
+	 * @param nombre
+	 *            the nombre to set
+	 */
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	/**
+	 * @return the apellidoMaterno
+	 */
+	public String getApellidoMaterno() {
+		return apellidoMaterno;
+	}
+
+	/**
+	 * @param apellidoMaterno
+	 *            the apellidoMaterno to set
+	 */
+	public void setApellidoMaterno(String apellidoMaterno) {
+		this.apellidoMaterno = apellidoMaterno;
+	}
+
+	/**
+	 * @return the apellidoPaterno
+	 */
+	public String getApellidoPaterno() {
+		return apellidoPaterno;
+	}
+
+	/**
+	 * @param apellidoPaterno
+	 *            the apellidoPaterno to set
+	 */
+	public void setApellidoPaterno(String apellidoPaterno) {
+		this.apellidoPaterno = apellidoPaterno;
+	}
+
+	/**
+	 * @return the identificacion
+	 */
+	public String getIdentificacion() {
+		return identificacion;
+	}
+
+	/**
+	 * @param identificacion
+	 *            the identificacion to set
+	 */
+	public void setIdentificacion(String identificacion) {
+		this.identificacion = identificacion;
+	}
+
+	/**
+	 * @return the cargo
+	 */
+	public String getCargo() {
+		return cargo;
+	}
+
+	/**
+	 * @param cargo
+	 *            the cargo to set
+	 */
+	public void setCargo(String cargo) {
+		this.cargo = cargo;
+	}
+
+	/**
+	 * @return the email
+	 */
+	public String getEmail() {
+		return email;
+	}
+
+	/**
+	 * @param email
+	 *            the email to set
+	 */
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	/**
+	 * @return the telefonoContacto
+	 */
+	public String getTelefonoContacto() {
+		return telefonoContacto;
+	}
+
+	/**
+	 * @param telefonoContacto
+	 *            the telefonoContacto to set
+	 */
+	public void setTelefonoContacto(String telefonoContacto) {
+		this.telefonoContacto = telefonoContacto;
+	}
+
+	/**
+	 * @return the contactoList
+	 */
+	public ArrayList<PersonaContactoAseguradoraDTO> getContactoList() {
+		return contactoList;
+	}
+
+	/**
+	 * @param contactoList
+	 *            the contactoList to set
+	 */
+	public void setContactoList(ArrayList<PersonaContactoAseguradoraDTO> contactoList) {
+		this.contactoList = contactoList;
+	}
+
 }
