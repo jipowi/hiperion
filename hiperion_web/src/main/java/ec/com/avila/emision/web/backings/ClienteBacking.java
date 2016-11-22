@@ -266,31 +266,7 @@ public class ClienteBacking implements Serializable {
 		}
 	}
 
-	/**
-	 * 
-	 * <b> Permite buscar un cliente por medio del numero de identificacion. </b>
-	 * <p>
-	 * [Author: HIPERION, Date: 16/02/2016]
-	 * </p>
-	 * 
-	 * @throws HiperionException
-	 */
-	public void buscarCliente() throws HiperionException {
-		try {
-
-			if (!clienteBean.getIdentificacion().equals("")) {
-				clienteObtenido = clienteService.consultarClienteByIdentificacion(clienteBean.getIdentificacion());
-				polizas = polizaService.consultarPolizasByCliente(clienteObtenido.getIdCliente());
-				if (clienteObtenido == null) {
-					MessagesController.addWarn(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.warn.buscar"));
-				}
-			}
-
-		} catch (HiperionException e) {
-			log.error("Error al momento de buscar clientes", e);
-			throw new HiperionException(e);
-		}
-	}
+	
 
 	/**
 	 * 

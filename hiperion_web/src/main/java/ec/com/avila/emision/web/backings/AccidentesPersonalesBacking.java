@@ -48,6 +48,7 @@ import ec.com.avila.hiperion.servicio.AseguradoraService;
 import ec.com.avila.hiperion.servicio.CatalogoService;
 import ec.com.avila.hiperion.servicio.ClienteService;
 import ec.com.avila.hiperion.servicio.DetalleCatalogoService;
+import ec.com.avila.hiperion.servicio.PolizaService;
 import ec.com.avila.hiperion.servicio.RamoAccidentesPersonalesService;
 import ec.com.avila.hiperion.servicio.RamoService;
 import ec.com.avila.hiperion.web.beans.RamoBean;
@@ -95,6 +96,9 @@ public class AccidentesPersonalesBacking implements Serializable {
 	@ManagedProperty(value = "#{ramoAccidentesPersonalesBean}")
 	private RamoAccidentesPersonalesBean ramoAccidentesPersonalesBean;
 
+	@EJB
+	private PolizaService polizaService;
+
 	private List<DetalleAnexo> anexos;
 	private List<ClausulaAdicionalDTO> clausulasAdicionalesDTO;
 	private List<ClausulasAddAccPer> clausulasAdicionales;
@@ -119,6 +123,7 @@ public class AccidentesPersonalesBacking implements Serializable {
 	private Boolean activarPanelPagoDebitoBancario = false;
 	private Boolean activarDatosCliente = false;
 	private Boolean activarDatosAseguradora = false;
+	private Boolean polizaActiva = false;
 	private static List<AseguradoraDTO> aseguradorasDTO = new ArrayList<AseguradoraDTO>();
 
 	private Usuario usuario;
@@ -180,10 +185,17 @@ public class AccidentesPersonalesBacking implements Serializable {
 
 			if (!identificacion.equals("") && ValidatorCedula.getInstancia().validateCedula(identificacion)) {
 				cliente = clienteService.consultarClienteByIdentificacion(identificacion);
+
 				if (cliente == null) {
 					MessagesController.addWarn(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.warn.buscar"));
 				} else {
+					List<Poliza> polizas = polizaService.consultarPolizasByCliente(cliente.getIdCliente());
 
+					for (Poliza poliza : polizas) {
+						if (poliza.getRamo().equals("ACCIDENTES PERSONALES")) {
+							polizaBean.setEstadoPoliza("COTIZADO");
+						}
+					}
 					ramoAccidentesPersonalesBean.setNombreCliente(cliente.getNombrePersona() + " " + cliente.getApellidoPaterno() + " "
 							+ cliente.getApellidoMaterno());
 				}
@@ -574,20 +586,24 @@ public class AccidentesPersonalesBacking implements Serializable {
 	public void guardarRamo() throws HiperionException {
 
 		try {
+			if (polizaActiva) {
+				MessagesController.addWarn(null, HiperionMensajes.getInstancia().getString("Usted tiene una Poliza Activa para este ramo"));
+			} else {
 
-			Poliza poliza = setearDatosPoliza();
+				Poliza poliza = setearDatosPoliza();
 
-			accidentesPersonales.setPrimaNetaPersona(ramoAccidentesPersonalesBean.getPrimaNetaPersona());
-			accidentesPersonales.setPrimaTotalPersona(ramoAccidentesPersonalesBean.getPrimaTotalPersona());
-			accidentesPersonales.setTasaAccidente(ramoAccidentesPersonalesBean.getTasa());
-			accidentesPersonales.setFacturacion(ramoAccidentesPersonalesBean.getFacturacion());
-			accidentesPersonales.setIdUsuarioCreacion(usuario.getIdUsuario());
-			accidentesPersonales.setFechaCreacion(new Date());
-			accidentesPersonales.setEstado(EstadoEnum.A);
+				accidentesPersonales.setPrimaNetaPersona(ramoAccidentesPersonalesBean.getPrimaNetaPersona());
+				accidentesPersonales.setPrimaTotalPersona(ramoAccidentesPersonalesBean.getPrimaTotalPersona());
+				accidentesPersonales.setTasaAccidente(ramoAccidentesPersonalesBean.getTasa());
+				accidentesPersonales.setFacturacion(ramoAccidentesPersonalesBean.getFacturacion());
+				accidentesPersonales.setIdUsuarioCreacion(usuario.getIdUsuario());
+				accidentesPersonales.setFechaCreacion(new Date());
+				accidentesPersonales.setEstado(EstadoEnum.A);
 
-			ramoAccidentesPersonalesService.guardarRamoAccidentesPersonales(accidentesPersonales, poliza);
+				ramoAccidentesPersonalesService.guardarRamoAccidentesPersonales(accidentesPersonales, poliza);
 
-			MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.save"));
+				MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.save"));
+			}
 
 		} catch (HiperionException e) {
 			log.error("Error al momento de guardar el ramo accidentes personales", e);
