@@ -126,7 +126,7 @@ public class AseguradoraBean implements Serializable {
 	 *            the nombre to set
 	 */
 	public void setNombre(String nombre) {
-		this.nombre = nombre;
+		this.nombre = nombre.toUpperCase();
 	}
 
 	/**
@@ -141,7 +141,7 @@ public class AseguradoraBean implements Serializable {
 	 *            the apellidoMaterno to set
 	 */
 	public void setApellidoMaterno(String apellidoMaterno) {
-		this.apellidoMaterno = apellidoMaterno;
+		this.apellidoMaterno = apellidoMaterno.toUpperCase();
 	}
 
 	/**
@@ -156,7 +156,7 @@ public class AseguradoraBean implements Serializable {
 	 *            the apellidoPaterno to set
 	 */
 	public void setApellidoPaterno(String apellidoPaterno) {
-		this.apellidoPaterno = apellidoPaterno;
+		this.apellidoPaterno = apellidoPaterno.toUpperCase();
 	}
 
 	/**
@@ -186,7 +186,7 @@ public class AseguradoraBean implements Serializable {
 	 *            the cargo to set
 	 */
 	public void setCargo(String cargo) {
-		this.cargo = cargo;
+		this.cargo = cargo.toUpperCase();
 	}
 
 	/**
