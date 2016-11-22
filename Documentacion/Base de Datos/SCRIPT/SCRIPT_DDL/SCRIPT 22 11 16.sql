@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      PostgreSQL 8                                 */
-/* Created on:     22/02/2016 18:35:31                          */
+/* Created on:     22/11/2016 14:59:43                          */
 /*==============================================================*/
 
 
@@ -2881,7 +2881,6 @@ ID_AST_MEDICA
 create table POLIZA (
    ID_POLIZA            SERIAL               not null,
    ID_CLIENTE           INT4                 null,
-   ID_ID_POLIZA         INT4                 null,
    ID_PAGO_POLIZA       INT4                 null,
    NUMERO_POLIZA        NUMERIC              null,
    NUMERO_ANEXO         TEXT                 null,
@@ -2920,13 +2919,6 @@ ID_PAGO_POLIZA
 /* Index: POLIZA_FK2                                            */
 /*==============================================================*/
 create  index POLIZA_FK2 on POLIZA (
-ID_ID_POLIZA
-);
-
-/*==============================================================*/
-/* Index: POLIZA_FK3                                            */
-/*==============================================================*/
-create  index POLIZA_FK3 on POLIZA (
 ID_CLIENTE
 );
 
@@ -4541,11 +4533,6 @@ alter table PLAN_ASM
 alter table POLIZA
    add constraint FK_POLIZA_POLIZA_PA_PAGO_POL foreign key (ID_PAGO_POLIZA)
       references PAGO_POLIZA (ID_PAGO_POLIZA)
-      on delete restrict on update restrict;
-
-alter table POLIZA
-   add constraint FK_POLIZA_RELATIONS_POLIZA foreign key (ID_ID_POLIZA)
-      references POLIZA (ID_POLIZA)
       on delete restrict on update restrict;
 
 alter table POLIZA
