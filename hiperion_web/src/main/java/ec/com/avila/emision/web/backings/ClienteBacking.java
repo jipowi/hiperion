@@ -231,6 +231,8 @@ public class ClienteBacking implements Serializable {
 					List<Contacto> contactos = clienteService.consultarContactoByCliente(clienteObtenido.getIdCliente());
 					clienteObtenido.setContactos(contactos);
 					clientesObtenidos.add(clienteObtenido);
+				} else {
+					MessagesController.addWarn(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.warn.buscar"));
 				}
 			}
 
@@ -245,13 +247,17 @@ public class ClienteBacking implements Serializable {
 				clientesTemp = clienteService.consultarByRazonSocial(clienteBean.getRazonSocial());
 			}
 
-			for (Cliente cliente : clientesTemp) {
-				List<Direccion> direcciones = clienteService.consularDireccionByCliente(cliente.getIdCliente());
-				cliente.setDireccions(direcciones);
+			if (clientesTemp.isEmpty()) {
+				for (Cliente cliente : clientesTemp) {
+					List<Direccion> direcciones = clienteService.consularDireccionByCliente(cliente.getIdCliente());
+					cliente.setDireccions(direcciones);
 
-				List<Contacto> contactos = clienteService.consultarContactoByCliente(cliente.getIdCliente());
-				cliente.setContactos(contactos);
-				clientesObtenidos.add(cliente);
+					List<Contacto> contactos = clienteService.consultarContactoByCliente(cliente.getIdCliente());
+					cliente.setContactos(contactos);
+					clientesObtenidos.add(cliente);
+				}
+			} else {
+				MessagesController.addWarn(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.warn.buscar"));
 			}
 
 		} catch (HiperionException e) {
