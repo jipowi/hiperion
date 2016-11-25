@@ -4,12 +4,11 @@
  */
 package ec.com.avila.hiperion.servicio;
 
-import java.util.List;
-
 import javax.ejb.Local;
 
 import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.emision.entities.Ramo;
+import ec.com.avila.hiperion.emision.entities.RamoAccidentesPersonale;
 
 /**
  * <b> Servicio de interface local para realizar las operaciones sobre la tabla Ramo</b>
@@ -20,30 +19,6 @@ import ec.com.avila.hiperion.emision.entities.Ramo;
  */
 @Local
 public interface RamoService {
-	/**
-	 * 
-	 * <b> Permite guardar los registros en la tabla Ramo. </b>
-	 * <p>
-	 * [Author: Susana Diaz, Date: 16/01/2014]
-	 * </p>
-	 * 
-	 * @param ramo
-	 * @throws HiperionException
-	 */
-
-	public void guardarRamo(Ramo ramo) throws HiperionException;
-
-	/**
-	 * 
-	 * <b> Permite Obtener la lista de Ramo que se encuentran en la base de datos </b>
-	 * <p>
-	 * [Author: Susana Diaz, Date: 16/01/2014]
-	 * </p>
-	 * 
-	 * @return
-	 * @throws HiperionException
-	 */
-	public List<Ramo> consultarRamo() throws HiperionException;
 
 	/**
 	 * 
@@ -59,5 +34,18 @@ public interface RamoService {
 	 *             - Excepci&oacute;n del servicio
 	 */
 	public Ramo consultarRamoPorCodigo(String codigoRamo) throws HiperionException;
+
+	/**
+	 * 
+	 * <b> Permite consultar el ramoAccidentePersonales mediante el idPoliza. </b>
+	 * <p>
+	 * [Author: kruger, Date: 23/11/2016]
+	 * </p>
+	 * 
+	 * @param ipPoliza
+	 * @return
+	 * @throws HiperionException
+	 */
+	public RamoAccidentesPersonale consultarRamo(Integer ipPoliza) throws HiperionException;
 
 }

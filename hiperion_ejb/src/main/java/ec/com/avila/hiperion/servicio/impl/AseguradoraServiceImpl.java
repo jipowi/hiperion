@@ -62,7 +62,7 @@ public class AseguradoraServiceImpl implements AseguradoraService {
 
 			// Guardar RamoAseguradora
 			for (RamoAseguradora ramo : ramos) {
-				ramo.setAseguradora(aseguradora);
+				ramo.setAseguradora(aseguradora);				
 				ramoAseguradoraDao.persist(ramo);
 			}
 
