@@ -191,9 +191,13 @@ public class AccidentesPersonalesBacking implements Serializable {
 				} else {
 					List<Poliza> polizas = polizaService.consultarPolizasByCliente(cliente.getIdCliente());
 
-					for (Poliza poliza : polizas) {
-						if (poliza.getRamo().equals("ACCIDENTES PERSONALES")) {
-							polizaBean.setEstadoPoliza("COTIZADO");
+					if (polizas!=null) {
+						for (Poliza poliza : polizas) {
+							if (poliza.getRamo().equals("ACCIDENTES PERSONALES")) {
+								polizaBean.setEstadoPoliza("COTIZADO");
+
+								accidentesPersonales = ramoService.consultarRamo(poliza.getIdPoliza());
+							}
 						}
 					}
 					ramoAccidentesPersonalesBean.setNombreCliente(cliente.getNombrePersona() + " " + cliente.getApellidoPaterno() + " "

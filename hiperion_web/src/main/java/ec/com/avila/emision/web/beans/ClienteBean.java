@@ -27,6 +27,9 @@ public class ClienteBean implements Serializable {
 	private String nombre;
 	private String apePaterno;
 	private String apeMaterno;
+	private String nombreJuridico;
+	private String apePaternoJuridico;
+	private String apeMaternoJuridico;
 	private String emailPerNatural;
 	private String emailPerJuridica;
 	private String razonSocial;
@@ -273,6 +276,51 @@ public class ClienteBean implements Serializable {
 	 */
 	public void setRuc(String ruc) {
 		this.ruc = ruc;
+	}
+
+	/**
+	 * @return the nombreJuridico
+	 */
+	public String getNombreJuridico() {
+		return nombreJuridico;
+	}
+
+	/**
+	 * @param nombreJuridico
+	 *            the nombreJuridico to set
+	 */
+	public void setNombreJuridico(String nombreJuridico) {
+		this.nombreJuridico = nombreJuridico;
+	}
+
+	/**
+	 * @return the apePaternoJuridico
+	 */
+	public String getApePaternoJuridico() {
+		return apePaternoJuridico;
+	}
+
+	/**
+	 * @param apePaternoJuridico
+	 *            the apePaternoJuridico to set
+	 */
+	public void setApePaternoJuridico(String apePaternoJuridico) {
+		this.apePaternoJuridico = apePaternoJuridico;
+	}
+
+	/**
+	 * @return the apeMaternoJuridico
+	 */
+	public String getApeMaternoJuridico() {
+		return apeMaternoJuridico;
+	}
+
+	/**
+	 * @param apeMaternoJuridico
+	 *            the apeMaternoJuridico to set
+	 */
+	public void setApeMaternoJuridico(String apeMaternoJuridico) {
+		this.apeMaternoJuridico = apeMaternoJuridico;
 	}
 
 }

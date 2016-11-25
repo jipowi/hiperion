@@ -266,8 +266,6 @@ public class ClienteBacking implements Serializable {
 		}
 	}
 
-	
-
 	/**
 	 * 
 	 * <b> Permite Guardar a un Nuevo Cliente.. </b>
@@ -308,9 +306,9 @@ public class ClienteBacking implements Serializable {
 							} else {
 								// Persona Juridica
 								cliente.setRazonSocial(clienteBean.getRazonSocial());
-								cliente.setNombrePersona(clienteBean.getNombre());
-								cliente.setApellidoPaterno(clienteBean.getApePaterno());
-								cliente.setApellidoMaterno(clienteBean.getApeMaterno());
+								cliente.setNombrePersona(clienteBean.getNombreJuridico());
+								cliente.setApellidoPaterno(clienteBean.getApePaternoJuridico());
+								cliente.setApellidoMaterno(clienteBean.getApeMaternoJuridico());
 							}
 							cliente.setTipoPersona(clienteBean.getTipoPersona().toString());
 							// Direcciones del Cliente
@@ -509,6 +507,10 @@ public class ClienteBacking implements Serializable {
 				cliente.setIdUsuarioCreacion(usuario.getIdUsuario());
 				cliente.setFechaCreacion(new Date());
 				cliente.setEstado(EstadoEnum.A);
+
+				List<Cliente> clientesTemp = clienteService.consultarClientes();
+				cliente.setCodigoCliente(EmisionUtil.obtenerCodigoCliente(clientesTemp.size() + 1));
+
 				clienteService.guardarCliente(cliente);
 
 				List<Direccion> direcciones = new ArrayList<>();

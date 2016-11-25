@@ -302,8 +302,8 @@ public class AseguradoraBacking implements Serializable {
 			for (RamoDTO ramoDTO : ramoList) {
 				RamoAseguradora ramoAseg = new RamoAseguradora();
 				Ramo ramo = new Ramo();
-				ramo.setCodigoRamo(ramoDTO.getIdRamo().toString());
 				ramo.setNombreRamo(ramoDTO.getNombreRamo());
+				ramo.setIdRamo(ramoDTO.getIdRamo());
 
 				ramoAseg.setRamo(ramo);
 				ramoAseg.setEstado("A");
@@ -321,7 +321,10 @@ public class AseguradoraBacking implements Serializable {
 			MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.save.aseguradora"));
 			aseguradoraBean.setRuc(null);
 			aseguradoraBean.setTelefono(null);
-			contactoList = null;
+			aseguradoraBean.setDireccion(null);
+			aseguradoraBean.setTelefono(null);
+			aseguradoraBean.setMailAseguradora(null);
+			contactoList = new ArrayList<>();
 
 			aseguradora = new Aseguradora();
 			contactosAseguradora = new ArrayList<>();
