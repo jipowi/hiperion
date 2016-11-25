@@ -6,6 +6,7 @@ package ec.com.avila.hiperion.dao;
 
 import javax.ejb.Local;
 
+import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.emision.entities.RamoAccidentesPersonale;
 
 /**
@@ -18,4 +19,16 @@ import ec.com.avila.hiperion.emision.entities.RamoAccidentesPersonale;
 @Local
 public interface RamoAccidentesPersonalesDao extends GenericDAO<RamoAccidentesPersonale, Long> {
 
+	/**
+	 * 
+	 * <b> Permite consultar el ramoAccidentePersonales mediante el idPoliza. </b>
+	 * <p>
+	 * [Author: kruger, Date: 23/11/2016]
+	 * </p>
+	 * 
+	 * @param ipPoliza
+	 * @return
+	 * @throws HiperionException
+	 */
+	public RamoAccidentesPersonale consultarRamo(Integer ipPoliza) throws HiperionException;
 }
