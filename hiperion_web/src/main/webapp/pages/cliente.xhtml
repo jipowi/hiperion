@@ -214,21 +214,21 @@
 						</f:facet>
 						<h:panelGrid columns="2" cellpadding="2" cellspacing="2">
 							<p:outputLabel for="nombreJId" value="#{administrador['cliente.dlg.agregar.nombres']}" styleClass="negrita" />
-							<p:inputText id="nombreJId" value="#{clienteBean.nombre}" required="#{clienteBacking.activarPanelPersonaJuridica}"
+							<p:inputText id="nombreJId" value="#{clienteBean.nombreJuridico}" required="#{clienteBacking.activarPanelPersonaJuridica}"
 								requiredMessage="#{administrador['cliente.dlg.agregar.msg.nombres']}" styleClass="DialogoCliente-nombre"
 								validatorMessage="#{emision['msg.texto.error']}" style="text-transform:uppercase;">
 								<f:validateRegex pattern="#{emision['msg.formato.texto']}" />
 							</p:inputText>
 
 							<p:outputLabel for="apePaternoJ" value="#{administrador['cliente.dlg.agregar.appPaterno']}" styleClass="negrita" />
-							<p:inputText id="apePaternoJ" value="#{clienteBean.apePaterno}" required="#{clienteBacking.activarPanelPersonaJuridica}"
+							<p:inputText id="apePaternoJ" value="#{clienteBean.apePaternoJuridico}" required="#{clienteBacking.activarPanelPersonaJuridica}"
 								requiredMessage="#{administrador['cliente.dlg.agregar.msg.appPaterno']}" styleClass="DialogoCliente-apePaterno"
 								validatorMessage="#{emision['msg.texto.error']}" style="text-transform:uppercase;">
 								<f:validateRegex pattern="#{emision['msg.formato.texto']}" />
 							</p:inputText>
 
 							<p:outputLabel for="apeMaternoJ" value="#{administrador['cliente.dlg.agregar.appMaterno']}" styleClass="negrita" />
-							<p:inputText id="apeMaternoJ" value="#{clienteBean.apeMaterno}" styleClass="DialogoCliente-apeMaterno"
+							<p:inputText id="apeMaternoJ" value="#{clienteBean.apeMaternoJuridico}" styleClass="DialogoCliente-apeMaterno"
 								validatorMessage="#{emision['msg.texto.error']}" style="text-transform:uppercase;">
 								<f:validateRegex pattern="#{emision['msg.formato.texto']}" />
 							</p:inputText>
