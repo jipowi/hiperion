@@ -494,7 +494,7 @@
 										</p:panel>
 									</h:panelGrid>
 									<p:commandLink title="Calcular valores de pago"
-										update="panelPago, pagoContadoId, pagoFinanciadoId, pagoTarjetaCreditoId, pagoDebitoBancarioId"
+										update="panelPago, pagoContadoId, pagoFinanciadoId, pagoTarjetaCreditoId, pagoDebitoBancarioId, tablaAmortizacion"
 										actionListener="#{accidentesPersonalesBacking.calcularValoresPago()}">
 										<h:graphicImage name="boton_calcular.png" library="img" />
 									</p:commandLink>
@@ -504,7 +504,7 @@
 
 											<p:outputLabel value="#{emision['poliza.info.tablaAmortizacion']}" style="color:green;" />
 
-											<p:commandLink title="Generar tabla" actionListener="#{accidentesPersonalesBacking.generarTablaAmortizacion()}">
+											<p:commandLink title="Generar tabla" actionListener="#{accidentesPersonalesBacking.generarTablaAmortizacion()}" update="tablaAmortizacion">
 												<h:graphicImage name="timeTable.png" library="img" />
 											</p:commandLink>
 										</h:panelGrid>
@@ -542,6 +542,10 @@
 											<p:rowEditor />
 										</p:column>
 									</p:dataTable>
+									<p:spacer height="15px;" />
+									<div align="center">
+										<p:commandButton process="@this" icon="icon-save" value="#{emision['boton.aceptar']}" title="Aceptar" oncomplete="PF('pagoPoliza').hide()" />
+									</div>
 								</div>
 							</h:form>
 						</p:dialog>
@@ -689,7 +693,10 @@
 										<p:inputText value="#{ramoAccidentesPersonalesBean.edad}" />
 									</h:panelGrid>
 								</h:panelGrid>
-
+								<p:spacer height="15px;" />
+								<div align="center">
+									<p:commandButton process="@this" icon="icon-save" value="#{emision['boton.aceptar']}" title="Aceptar" oncomplete="PF('grupo').hide()" />
+								</div>
 							</h:form>
 						</p:dialog>
 					</ui:define>

@@ -52,7 +52,7 @@
 									</p:selectOneMenu>
 
 									<p:outputLabel value="#{emision['aseguradora.ruc']}" styleClass="negrita" />
-									<p:inputText value="#{aseguradoraBean.ruc}" disabled="true"/>
+									<p:inputText value="#{aseguradoraBean.ruc}" disabled="true" />
 
 									<p:outputLabel value="#{emision['aseguradora.direccion']}" styleClass="negrita" />
 									<p:inputText value="#{aseguradoraBean.direccion}" style="text-transform:uppercase;" />
@@ -276,6 +276,10 @@
 							<p:rowEditor />
 						</p:column>
 					</p:dataTable>
+				</div>
+				<p:spacer height="15px;" />
+				<div align="center">
+					<p:commandButton process="@this" icon="icon-save" value="#{emision['boton.aceptar']}" title="Aceptar" oncomplete="PF('ramos').hide()" />
 				</div>
 			</h:form>
 		</p:dialog>
