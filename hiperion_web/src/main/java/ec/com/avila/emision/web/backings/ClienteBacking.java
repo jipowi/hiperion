@@ -247,7 +247,7 @@ public class ClienteBacking implements Serializable {
 				clientesTemp = clienteService.consultarByRazonSocial(clienteBean.getRazonSocial());
 			}
 
-			if (clientesTemp.isEmpty()) {
+			if (!clientesTemp.isEmpty()) {
 				for (Cliente cliente : clientesTemp) {
 					List<Direccion> direcciones = clienteService.consularDireccionByCliente(cliente.getIdCliente());
 					cliente.setDireccions(direcciones);

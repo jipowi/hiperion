@@ -328,6 +328,8 @@ public class AseguradoraBacking implements Serializable {
 
 			aseguradora = new Aseguradora();
 			contactosAseguradora = new ArrayList<>();
+			ramos = new ArrayList<>();
+			
 		} else {
 			MessagesController.addWarn(null, HiperionMensajes.getInstancia().getString("Es necesario agregar contactos para la aseguradora"));
 		}
