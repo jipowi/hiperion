@@ -8,15 +8,12 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
 import org.primefaces.context.RequestContext;
-import org.primefaces.event.RowEditEvent;
 
 import ec.com.avila.emision.web.beans.DireccionBean;
 import ec.com.avila.hiperion.comun.HiperionException;
@@ -49,7 +46,6 @@ public class DireccionBacking implements Serializable {
 	private List<DireccionDTO> direcciones;
 	private List<SelectItem> tipoDireccionItems;
 
-	private DireccionDTO direccionDto;
 
 	@PostConstruct
 	public void inicializar() {
@@ -110,46 +106,7 @@ public class DireccionBacking implements Serializable {
 		return tipoDireccionItems;
 	}
 
-	/**
-	 * 
-	 * <b> Incluir aqui­ la descripcion del metodo. </b>
-	 * <p>
-	 * [Author: Dario Vinueza, Date: 12/08/2014]
-	 * </p>
-	 * 
-	 * @throws HiperionException
-	 */
-	public void agregarDireccion() throws HiperionException {
 
-		String codTipoDireccion = direccionBean.getCodTipoDireccion();
-
-		try {
-
-			TipoDireccion tipoDireccion = tipoDireccionService.consultarTipoDireccionByCodigo(codTipoDireccion);
-			direccionBean.setTipoDireccion(tipoDireccion.getDescTipoDireccion());
-			
-			direccionDto = new DireccionDTO();
-			direccionDto.setProvinciaDTO(direccionBean.getProvinciaDTO());
-			direccionDto.setCodTipoDireccion(codTipoDireccion);
-
-			direccionBean.setTipoDireccion(tipoDireccion.getDescTipoDireccion());
-
-			direccionDto.setTipoDireccion(direccionBean.getTipoDireccion());
-			direccionDto.setCallePrincipal(direccionBean.getCallePrincipal());
-			direccionDto.setNumeracion(direccionBean.getNumeracion());
-			direccionDto.setCalleSecundaria(direccionBean.getCalleSecundaria());
-			direccionDto.setReferencia(direccionBean.getReferencia());
-			// Contacto Telefonico
-			direccionDto.setTelefonoConvencional(direccionBean.getTelefonoConvencional());
-			direccionDto.setTelefonoMovil(direccionBean.getTelefonoMovil());
-
-			direcciones.add(direccionDto);
-			direccionBean.getDireccionesRegistradas().add(direccionDto);
-
-		} catch (HiperionException e) {
-			throw new HiperionException(e);
-		}
-	}
 
 	/**
 	 * 
@@ -260,36 +217,7 @@ public class DireccionBacking implements Serializable {
 		return tipoDireccionItems;
 	}
 
-	/**
-	 * 
-	 * <b> Permite visualizar en pantalla el registro de la Direcci&oacte;n que fue modificado. </b>
-	 * <p>
-	 * [Author: Dario Vinueza, Date: 31/08/2014]
-	 * </p>
-	 * 
-	 * @param event
-	 *            - parametro a ser modificado.
-	 */
-	public void onRowEdit(RowEditEvent event) {
-		FacesMessage msg = new FacesMessage("Direccion Modificada", ((DireccionDTO) event.getObject()).getTipoDireccion());
-		FacesContext.getCurrentInstance().addMessage(null, msg);
-	}
-
-	/**
-	 * 
-	 * <b> Permite visualizar en pantalla el registro de la Direcci&oacte;n que no se modifico (se cancelo) </b>
-	 * <p>
-	 * [Author: Dario Vinueza, Date: 31/08/2014]
-	 * </p>
-	 * 
-	 * @param event
-	 *            - parametro que no se modifico.
-	 */
-	public void onRowCancel(RowEditEvent event) {
-		FacesMessage msg = new FacesMessage("Direccion Eliminada", ((DireccionDTO) event.getObject()).getTipoDireccion());
-		FacesContext.getCurrentInstance().addMessage(null, msg);
-	}
-
+	
 	public void refresh() {
 	}
 

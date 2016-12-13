@@ -8,9 +8,11 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
 import org.apache.log4j.Logger;
@@ -20,6 +22,7 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 import org.apache.poi.ss.usermodel.Row;
 import org.primefaces.event.FileUploadEvent;
+import org.primefaces.event.RowEditEvent;
 import org.primefaces.model.UploadedFile;
 
 import ec.com.avila.emision.web.beans.ClienteBean;
@@ -30,6 +33,7 @@ import ec.com.avila.emision.web.validator.ValidatorRuc;
 import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.dto.ContactoDTO;
 import ec.com.avila.hiperion.dto.DireccionDTO;
+import ec.com.avila.hiperion.dto.ProvinciaDTO;
 import ec.com.avila.hiperion.emision.entities.Catalogo;
 import ec.com.avila.hiperion.emision.entities.Cliente;
 import ec.com.avila.hiperion.emision.entities.Contacto;
@@ -88,6 +92,8 @@ public class ClienteBacking implements Serializable {
 	private List<SelectItem> tipoPersonaItems;
 	private List<SelectItem> tipoIdentificacionItems;
 
+	private DireccionDTO direccionDto;
+	private List<DireccionDTO> direccionesDTO = new ArrayList<>();
 	private List<Cliente> clientes;
 	private List<Cliente> clientesObtenidos = new ArrayList<>();
 	private List<Poliza> polizas;
@@ -98,6 +104,8 @@ public class ClienteBacking implements Serializable {
 	private boolean activarPanelDireccionCobro;
 	private boolean activarPanelDireccionDomicilio;
 	private boolean activarPanelDireccionOficina;
+	private boolean save = true;
+	private boolean editar = false;
 
 	private Usuario usuario;
 
@@ -123,6 +131,7 @@ public class ClienteBacking implements Serializable {
 		try {
 			setClientes(clienteService.consultarClientes());
 			clienteBean.setCodigoCliente(EmisionUtil.obtenerCodigoCliente(clientes.size() + 1));
+
 		} catch (HiperionException e) {
 			e.printStackTrace();
 		}
@@ -205,6 +214,137 @@ public class ClienteBacking implements Serializable {
 
 	/**
 	 * 
+	 * <b> Permite editar los datos del cliente. </b>
+	 * <p>
+	 * [Author: kruger, Date: 12/12/2016]
+	 * </p>
+	 * 
+	 * @throws HiperionException
+	 */
+	public void editarCliente() throws HiperionException {
+
+		direccionesDTO = new ArrayList<>();
+		save = false;
+		editar = true;
+
+		if (clienteBean.getIdentificacion().equals("")) {
+			MessagesController.addWarn(null, "Ingresar el número de identificación.");
+		} else {
+			clienteObtenido = clienteService.consultarClienteByIdentificacion(clienteBean.getIdentificacion());
+
+			clienteBean.setCodigoCliente(clienteObtenido.getCodigoCliente());
+			clienteBean.setTipoPersona(Integer.parseInt(clienteObtenido.getTipoPersona()));
+			clienteBean.setTipoIdentificacion(clienteObtenido.getTipoIdentificacion());
+			List<Contacto> contactos = clienteService.consultarContactoByCliente(clienteObtenido.getIdCliente());
+			List<ContactoDTO> contactoDTOs = new ArrayList<>();
+			for (Contacto contacto : contactos) {
+				ContactoDTO contactoDTO = new ContactoDTO();
+				contactoDTO.setDescripcionContacto(contacto.getDescripcionContacto());
+				contactoDTO.setTipoContacto(contacto.getTipoContacto());
+				contactoDTO.setIdContacto(contacto.getIdContacto());
+
+				contactoDTOs.add(contactoDTO);
+			}
+			contactoBean.setContactosDTO(contactoDTOs);
+			List<Direccion> direcciones = clienteService.consularDireccionByCliente(clienteObtenido.getIdCliente());
+			for (Direccion direccion : direcciones) {
+				DireccionDTO direccionDTO = new DireccionDTO();
+
+				direccionDTO.setIdDireccion(direccion.getIdDireccion());
+				direccionDTO.setCallePrincipal(direccion.getCallePrincipal());
+				direccionDTO.setCalleSecundaria(direccion.getCalleSecundaria());
+				direccionDTO.setNumeracion(direccion.getNumeracion());
+				direccionDTO.setReferencia(direccion.getReferencia());
+
+				ProvinciaDTO provinciaDTO = new ProvinciaDTO();
+				provinciaDTO.setCodProvincia(direccion.getProvincia().getCodigo());
+				provinciaDTO.setNombre(direccion.getProvincia().getNombreProvincia());
+
+				direccionDTO.setProvinciaDTO(provinciaDTO);
+
+				TipoDireccion tipoDireccion = tipoDireccionService.consultarTipoDireccionByDescripcion(direccion.getTipoDireccion()
+						.getDescTipoDireccion());
+				direccionDTO.setTipoDireccion(tipoDireccion.getDescTipoDireccion());
+
+				direccionesDTO.add(direccionDTO);
+			}
+
+		}
+
+	}
+
+	/**
+	 * 
+	 * <b> Incluir aqui­ la descripcion del metodo. </b>
+	 * <p>
+	 * [Author: Dario Vinueza, Date: 12/08/2014]
+	 * </p>
+	 * 
+	 * @throws HiperionException
+	 */
+	public void agregarDireccion() throws HiperionException {
+
+		String codTipoDireccion = direccionBean.getCodTipoDireccion();
+
+		try {
+
+			TipoDireccion tipoDireccion = tipoDireccionService.consultarTipoDireccionByCodigo(codTipoDireccion);
+			direccionBean.setTipoDireccion(tipoDireccion.getDescTipoDireccion());
+
+			direccionDto = new DireccionDTO();
+			direccionDto.setProvinciaDTO(direccionBean.getProvinciaDTO());
+			direccionDto.setCodTipoDireccion(codTipoDireccion);
+
+			direccionBean.setTipoDireccion(tipoDireccion.getDescTipoDireccion());
+
+			direccionDto.setTipoDireccion(direccionBean.getTipoDireccion());
+			direccionDto.setCallePrincipal(direccionBean.getCallePrincipal());
+			direccionDto.setNumeracion(direccionBean.getNumeracion());
+			direccionDto.setCalleSecundaria(direccionBean.getCalleSecundaria());
+			direccionDto.setReferencia(direccionBean.getReferencia());
+			// Contacto Telefonico
+			direccionDto.setTelefonoConvencional(direccionBean.getTelefonoConvencional());
+			direccionDto.setTelefonoMovil(direccionBean.getTelefonoMovil());
+
+			direccionesDTO.add(direccionDto);
+
+		} catch (HiperionException e) {
+			throw new HiperionException(e);
+		}
+	}
+
+	/**
+	 * 
+	 * <b> Permite visualizar en pantalla el registro de la Direcci&oacte;n que fue modificado. </b>
+	 * <p>
+	 * [Author: Dario Vinueza, Date: 31/08/2014]
+	 * </p>
+	 * 
+	 * @param event
+	 *            - parametro a ser modificado.
+	 */
+	public void onRowEdit(RowEditEvent event) {
+		FacesMessage msg = new FacesMessage("Direccion Modificada", ((DireccionDTO) event.getObject()).getTipoDireccion());
+		FacesContext.getCurrentInstance().addMessage(null, msg);
+	}
+
+	/**
+	 * 
+	 * <b> Permite visualizar en pantalla el registro de la Direcci&oacte;n que no se modifico (se cancelo) </b>
+	 * <p>
+	 * [Author: Dario Vinueza, Date: 31/08/2014]
+	 * </p>
+	 * 
+	 * @param event
+	 *            - parametro que no se modifico.
+	 */
+	public void onRowCancel(RowEditEvent event) {
+		FacesMessage msg = new FacesMessage("Direccion Eliminada", ((DireccionDTO) event.getObject()).getTipoDireccion());
+		FacesContext.getCurrentInstance().addMessage(null, msg);
+	}
+
+	/**
+	 * 
 	 * <b> Permite buscar cliente por medio de ingreso de parametros en la pantalla </b>
 	 * <p>
 	 * [Author: Paul Jimenez, Date: 07/01/2015]
@@ -257,7 +397,9 @@ public class ClienteBacking implements Serializable {
 					clientesObtenidos.add(cliente);
 				}
 			} else {
-				MessagesController.addWarn(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.warn.buscar"));
+				if (clienteObtenido == null) {
+					MessagesController.addWarn(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.warn.buscar"));
+				}
 			}
 
 		} catch (HiperionException e) {
@@ -282,13 +424,16 @@ public class ClienteBacking implements Serializable {
 			if (tipoIdentificacion == 2 && clienteBean.getIdentificacion().length() != 13) {
 				MessagesController.addError(null, HiperionMensajes.getInstancia().getString("hiperion.mensage.error.tamanioRuc"));
 			} else {
-				Cliente clienteObtenido = clienteService.consultarClienteByIdentificacion(clienteBean.getIdentificacion());
 
-				if (clienteObtenido == null) {
-					if (validarDocumentos(clienteBean.getIdentificacion(), tipoIdentificacion)) {
-						// Direccion del Cliente
-						if (direccionBean.getDireccionesRegistradas() != null && direccionBean.getDireccionesRegistradas().size() > 0) {
-							Cliente cliente = new Cliente();
+				if (validarDocumentos(clienteBean.getIdentificacion(), tipoIdentificacion)) {
+					// Direccion del Cliente
+					if (direccionesDTO != null && direccionesDTO.size() > 0) {
+
+						Cliente cliente = new Cliente();
+						if (editar) {
+							cliente = clienteObtenido;
+						} else {
+
 							cliente.setCodigoCliente(clienteBean.getCodigoCliente());
 
 							cliente.setTipoIdentificacion(clienteBean.getTipoIdentificacion());
@@ -311,69 +456,72 @@ public class ClienteBacking implements Serializable {
 								cliente.setApellidoMaterno(clienteBean.getApeMaternoJuridico());
 							}
 							cliente.setTipoPersona(clienteBean.getTipoPersona().toString());
-							// Direcciones del Cliente
-							List<Direccion> direcciones = new ArrayList<Direccion>();
-							for (DireccionDTO direccionDto : direccionBean.getDireccionesRegistradas()) {
-								Direccion direccion = new Direccion();
-
-								direccion.setCliente(cliente);
-								TipoDireccion tipoDireccion = tipoDireccionService.consultarTipoDireccionByDescripcion(direccionDto
-										.getTipoDireccion());
-								direccion.setTipoDireccion(tipoDireccion);
-
-								// Provincia
-								Provincia provincia = provinciaService.consultarProvinciaPorCodigo(direccionDto.getProvinciaDTO().getCodProvincia());
-								direccion.setProvincia(provincia);
-
-								// Calles y Numeracion
-								direccion.setCallePrincipal(direccionDto.getCallePrincipal());
-								direccion.setNumeracion(direccionDto.getNumeracion());
-								direccion.setCalleSecundaria(direccionDto.getCalleSecundaria());
-								direccion.setReferencia(direccionDto.getReferencia());
-
-								direcciones.add(direccion);
-							}
-
-							cliente.setDireccions(direcciones);
-
-							List<Contacto> contactos = new ArrayList<>();
-							for (ContactoDTO contactoDTO : contactoBean.getContactosDTO()) {
-								Contacto contacto = new Contacto();
-								contacto.setCliente(cliente);
-								contacto.setTipoContacto(contactoDTO.getTipoContacto());
-								contacto.setDescripcionContacto(contactoDTO.getDescripcionContacto());
-								contactos.add(contacto);
-							}
-							cliente.setContactos(contactos);
-							// Guardamos al Cliente
-							cliente.setIdUsuarioCreacion(usuario.getIdUsuario());
-							cliente.setFechaCreacion(new Date());
-							cliente.setEstado(EstadoEnum.A);
-							clienteService.guardarCliente(cliente);
-							direccionService.guardarDirecciones(direcciones);
-							clienteService.guardarContactos(contactos);
-
-							MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.cliente"));
-							direcciones = new ArrayList<>();
-							direccionBean.setDireccionesRegistradas(null);
-							contactos = new ArrayList<>();
-							contactoBean.setContactosDTO(null);
-
-							direccionBean.setCallePrincipal(null);
-							direccionBean.setCalleSecundaria(null);
-							direccionBean.setNumeracion(null);
-							direccionBean.setReferencia(null);
-
-						} else {
-							MessagesController.addWarn(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.warn.direccion"));
 						}
+						// Direcciones del Cliente
+						List<Direccion> direcciones = new ArrayList<Direccion>();
+						for (DireccionDTO direccionDto : direccionesDTO) {
+							Direccion direccion = new Direccion();
+
+							direccion.setCliente(cliente);
+							TipoDireccion tipoDireccion = tipoDireccionService.consultarTipoDireccionByDescripcion(direccionDto.getTipoDireccion());
+							direccion.setTipoDireccion(tipoDireccion);
+
+							// Provincia
+							Provincia provincia = provinciaService.consultarProvinciaPorCodigo(direccionDto.getProvinciaDTO().getCodProvincia());
+							direccion.setProvincia(provincia);
+
+							// Calles y Numeracion
+							if (direccionDto.getIdDireccion() != null) {
+								direccion.setIdDireccion(direccionDto.getIdDireccion());
+							}
+							direccion.setCallePrincipal(direccionDto.getCallePrincipal());
+							direccion.setNumeracion(direccionDto.getNumeracion());
+							direccion.setCalleSecundaria(direccionDto.getCalleSecundaria());
+							direccion.setReferencia(direccionDto.getReferencia());
+
+							direcciones.add(direccion);
+						}
+
+						cliente.setDireccions(direcciones);
+
+						List<Contacto> contactos = new ArrayList<>();
+						for (ContactoDTO contactoDTO : contactoBean.getContactosDTO()) {
+							Contacto contacto = new Contacto();
+							contacto.setCliente(cliente);
+							contacto.setTipoContacto(contactoDTO.getTipoContacto());
+							contacto.setDescripcionContacto(contactoDTO.getDescripcionContacto());
+							contactos.add(contacto);
+						}
+						cliente.setContactos(contactos);
+						// Guardamos al Cliente
+						cliente.setIdUsuarioCreacion(usuario.getIdUsuario());
+						cliente.setFechaCreacion(new Date());
+						cliente.setEstado(EstadoEnum.A);
+						if (editar) {
+							save = false;
+						}
+						clienteService.guardarCliente(cliente, save);
+						direccionService.guardarDirecciones(direcciones, save);
+						clienteService.guardarContactos(contactos, save);
+
+						MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.cliente"));
+						direcciones = new ArrayList<>();
+						direccionBean.setDireccionesRegistradas(null);
+						contactos = new ArrayList<>();
+						contactoBean.setContactosDTO(null);
+
+						direccionBean.setCallePrincipal(null);
+						direccionBean.setCalleSecundaria(null);
+						direccionBean.setNumeracion(null);
+						direccionBean.setReferencia(null);
+
 					} else {
-						MessagesController.addError(null, HiperionMensajes.getInstancia().getString("hiperion.mensage.error.identificacionNoValido"));
+						MessagesController.addWarn(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.warn.direccion"));
 					}
 				} else {
-
-					MessagesController.addWarn(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.warn.clienteDuplicado"));
+					MessagesController.addError(null, HiperionMensajes.getInstancia().getString("hiperion.mensage.error.identificacionNoValido"));
 				}
+
 			}
 
 		} catch (HiperionException e) {
@@ -443,6 +591,8 @@ public class ClienteBacking implements Serializable {
 	 */
 	public void lecturaExcel(HSSFWorkbook archivoXLS) {
 
+		save = true;
+
 		HSSFSheet hssfSheet = archivoXLS.getSheetAt(0);
 		Iterator<Row> rowIterator = hssfSheet.rowIterator();
 
@@ -511,20 +661,20 @@ public class ClienteBacking implements Serializable {
 				List<Cliente> clientesTemp = clienteService.consultarClientes();
 				cliente.setCodigoCliente(EmisionUtil.obtenerCodigoCliente(clientesTemp.size() + 1));
 
-				clienteService.guardarCliente(cliente);
+				clienteService.guardarCliente(cliente, save);
 
 				List<Direccion> direcciones = new ArrayList<>();
 				direccion.setCliente(cliente);
 				direcciones.add(direccion);
 				cliente.setDireccions(direcciones);
 
-				direccionService.guardarDirecciones(direcciones);
+				direccionService.guardarDirecciones(direcciones, save);
 
 				contactoTelf.setCliente(cliente);
 				contactoMail.setCliente(cliente);
 				contactos.add(contactoTelf);
 				contactos.add(contactoMail);
-				clienteService.guardarContactos(contactos);
+				clienteService.guardarContactos(contactos, save);
 
 			} catch (Exception e) {
 				log.error("Error al cargar la fila: " + contador + "causa: " + e);
@@ -731,6 +881,21 @@ public class ClienteBacking implements Serializable {
 	 */
 	public void setPolizas(List<Poliza> polizas) {
 		this.polizas = polizas;
+	}
+
+	/**
+	 * @return the direccionesDTO
+	 */
+	public List<DireccionDTO> getDireccionesDTO() {
+		return direccionesDTO;
+	}
+
+	/**
+	 * @param direccionesDTO
+	 *            the direccionesDTO to set
+	 */
+	public void setDireccionesDTO(List<DireccionDTO> direccionesDTO) {
+		this.direccionesDTO = direccionesDTO;
 	}
 
 }

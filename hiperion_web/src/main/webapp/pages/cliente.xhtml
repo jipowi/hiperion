@@ -89,7 +89,12 @@
 				</h:panelGrid>
 				<p:spacer height="20px;" />
 				<div align="center">
-					<p:commandButton id="crearClienteBtn" value="Crear nuevo cliente" actionListener="#{clienteBacking.obtenerCodigoCliente}"
+					<p:commandButton id="crearClienteBtn" value="Crear Cliente" actionListener="#{clienteBacking.obtenerCodigoCliente}"
+						update=":clienteFormId:agregarClienteDlgId" oncomplete="PF('crearClienteDlg').show();" title="Nuevo" icon="icon-client">
+						<p:ajax update=":clienteFormId " />
+					</p:commandButton>
+					<p:spacer width="5px;" />
+					<p:commandButton id="botonEditar" value="Editar Cliente" actionListener="#{clienteBacking.editarCliente}"
 						update=":clienteFormId:agregarClienteDlgId" oncomplete="PF('crearClienteDlg').show();" title="Nuevo" icon="icon-client">
 						<p:ajax update=":clienteFormId " />
 					</p:commandButton>
@@ -345,19 +350,19 @@
 							</h:panelGrid>
 							<p:spacer height="5px;" />
 							<div align="center">
-								<p:commandButton id="agregarDireccionId" value="Agregar" actionListener="#{direccionBacking.agregarDireccion}" icon="icon-add"
+								<p:commandButton id="agregarDireccionId" value="Agregar" actionListener="#{clienteBacking.agregarDireccion}" icon="icon-add"
 									update="direccionesTableId" />
 							</div>
 						</h:panelGrid>
 						<p:spacer height="15px;" />
 						<!-- Tabla - Lista de Direcciones Ingresadas -->
-						<p:dataTable id="direccionesTableId" var="direccion" value="#{direccionBacking.direcciones}" editable="true">
+						<p:dataTable id="direccionesTableId" var="direccion" value="#{clienteBacking.direccionesDTO}" editable="true">
 							<f:facet name="header">
 								<p:outputLabel value="#{administrador['cliente.dlg.direcciones.table.title']}" />
 							</f:facet>
 
-							<p:ajax event="rowEdit" listener="#{direccionBacking.onRowEdit}" />
-							<p:ajax event="rowEditCancel" listener="#{direccionBacking.onRowCancel}" />
+							<p:ajax event="rowEdit" listener="#{clienteBacking.onRowEdit}" />
+							<p:ajax event="rowEditCancel" listener="#{clienteBacking.onRowCancel}" />
 
 							<p:column headerText="#{administrador['cliente.dlg.direcciones.table.tipoDireccion']}" style="width:auto">
 								<h:outputText value="#{direccion.tipoDireccion}" />
@@ -368,9 +373,13 @@
 										<h:outputText value="#{direccion.provinciaDTO.nombre}" />
 									</f:facet>
 									<f:facet name="input">
-										<h:selectOneMenu value="#{direccion.provinciaDTO.nombre}" style="width:auto">
-											<f:selectItems value="#{direccionBacking.provinciasDTO}" var="provincia" itemLabel="#{provincia.nombre}" itemValue="#{provincia.nombre}" />
-										</h:selectOneMenu>
+										<p:selectOneMenu id="provinciaId" value="#{direccion.provinciaDTO}" converter="provinciaConverter" effect="fade" var="p" filter="true"
+											style="width:210px;">
+											<f:selectItems value="#{direccionBacking.provinciasDTO}" var="provincia" itemLabel="#{provincia.nombre}" itemValue="#{provincia}" />
+											<p:column>
+												<h:outputText value="#{p.nombre}" />
+											</p:column>
+										</p:selectOneMenu>
 									</f:facet>
 								</p:cellEditor>
 							</p:column>
