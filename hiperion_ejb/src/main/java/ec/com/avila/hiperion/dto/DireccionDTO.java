@@ -13,6 +13,7 @@ package ec.com.avila.hiperion.dto;
 public class DireccionDTO {
 
 	private ProvinciaDTO provinciaDTO;
+	private Long idDireccion;
 	private String codTipoDireccion;
 	private String tipoDireccion;
 	private String callePrincipal;
@@ -127,7 +128,6 @@ public class DireccionDTO {
 		this.provinciaDTO = provinciaDTO;
 	}
 
-	
 	/**
 	 * @return the telefonoConvencional
 	 */
@@ -157,4 +157,20 @@ public class DireccionDTO {
 	public void setTelefonoMovil(String telefonoMovil) {
 		this.telefonoMovil = telefonoMovil;
 	}
+
+	/**
+	 * @return the idDireccion
+	 */
+	public Long getIdDireccion() {
+		return idDireccion;
+	}
+
+	/**
+	 * @param idDireccion
+	 *            the idDireccion to set
+	 */
+	public void setIdDireccion(Long idDireccion) {
+		this.idDireccion = idDireccion;
+	}
+
 }

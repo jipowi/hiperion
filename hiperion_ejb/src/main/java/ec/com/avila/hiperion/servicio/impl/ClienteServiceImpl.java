@@ -51,8 +51,12 @@ public class ClienteServiceImpl implements ClienteService {
 	 * @see ec.com.avila.hiperion.servicio.ClienteService#guardarCliente(ec.com.avila.hiperion.emision.entities.Cliente)
 	 */
 	@Override
-	public void guardarCliente(Cliente cliente) throws HiperionException {
-		clienteDao.persist(cliente);
+	public void guardarCliente(Cliente cliente, boolean save) throws HiperionException {
+
+		if (save)
+			clienteDao.persist(cliente);
+		else
+			clienteDao.update(cliente);
 	}
 
 	/*
@@ -95,25 +99,32 @@ public class ClienteServiceImpl implements ClienteService {
 		return clienteDao.consultarContactoByCliente(idCliente);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see ec.com.avila.hiperion.servicio.ClienteService#guardarContactos(java.util.List)
 	 */
 	@Override
-	public void guardarContactos(List<Contacto> contactos) throws HiperionException {
+	public void guardarContactos(List<Contacto> contactos, boolean save) throws HiperionException {
 
 		for (Contacto contacto : contactos) {
-			contactoDao.persist(contacto);
+			if (save) {
+				contactoDao.persist(contacto);
+			} else {
+				contactoDao.update(contacto);
+			}
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see ec.com.avila.hiperion.servicio.ClienteService#consultarByRazonSocial(java.lang.String)
 	 */
 	@Override
 	public List<Cliente> consultarByRazonSocial(String razonSocial) throws HiperionException {
-		
+
 		return clienteDao.consultarByRazonSocial(razonSocial);
 	}
 
-	
 }

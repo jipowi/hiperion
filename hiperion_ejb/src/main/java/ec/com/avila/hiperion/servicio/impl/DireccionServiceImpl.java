@@ -27,7 +27,7 @@ public class DireccionServiceImpl implements DireccionService {
 
 	@EJB
 	private DireccionDao direccionDao;
-	
+
 	@EJB
 	private ProvinciaDao provinciaDao;
 
@@ -35,24 +35,45 @@ public class DireccionServiceImpl implements DireccionService {
 	}
 
 	public void guardarDireccion(Direccion direccion) throws HiperionException {
-		direccionDao.guardarDireccion(direccion);
+		direccionDao.persist(direccion);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see ec.com.avila.hiperion.servicio.DireccionService#guardarDirecciones(java.util.List)
 	 */
 	@Override
-	public void guardarDirecciones(List<Direccion> direcciones) throws HiperionException {
-		direccionDao.guardarDirecciones(direcciones);
-		
+	public void guardarDirecciones(List<Direccion> direcciones, boolean save) throws HiperionException {
+
+		for (Direccion direccion : direcciones) {
+			if (save) {
+				direccionDao.persist(direccion);
+			} else {
+				direccionDao.update(direccion);
+			}
+		}
+
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see ec.com.avila.hiperion.servicio.DireccionService#obtenerProvinciaById(java.lang.Long)
 	 */
 	@Override
 	public Provincia obtenerProvinciaById(Long idProvincia) throws HiperionException {
 		return provinciaDao.findById(idProvincia);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see ec.com.avila.hiperion.servicio.DireccionService#obtenerDireccionById(java.lang.Long)
+	 */
+	@Override
+	public Direccion obtenerDireccionById(Long idDireccion) throws HiperionException {
+		return direccionDao.findById(idDireccion);
 	}
 
 }

@@ -34,7 +34,7 @@ public interface ClienteService {
 	 * @param cliente
 	 * @throws HiperionException
 	 */
-	public void guardarCliente(Cliente cliente) throws HiperionException;
+	public void guardarCliente(Cliente cliente, boolean save) throws HiperionException;
 
 	/**
 	 * 
@@ -123,7 +123,7 @@ public interface ClienteService {
 	 * @param contactos
 	 * @throws HiperionException
 	 */
-	public void guardarContactos(List<Contacto> contactos) throws HiperionException;
+	public void guardarContactos(List<Contacto> contactos, boolean save) throws HiperionException;
 	
 	/**
 	 * 

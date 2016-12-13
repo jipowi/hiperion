@@ -12,8 +12,9 @@ package ec.com.avila.hiperion.dto;
  */
 public class ContactoDTO {
 
-	public String tipoContacto;
-	public String descripcionContacto;
+	private String tipoContacto;
+	private String descripcionContacto;
+	private Integer idContacto;
 
 	/**
 	 * @return the tipoContacto
@@ -44,4 +45,20 @@ public class ContactoDTO {
 	public void setDescripcionContacto(String descripcionContacto) {
 		this.descripcionContacto = descripcionContacto;
 	}
+
+	/**
+	 * @return the idContacto
+	 */
+	public Integer getIdContacto() {
+		return idContacto;
+	}
+
+	/**
+	 * @param idContacto
+	 *            the idContacto to set
+	 */
+	public void setIdContacto(Integer idContacto) {
+		this.idContacto = idContacto;
+	}
+
 }

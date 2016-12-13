@@ -43,7 +43,7 @@ public interface DireccionService {
 	 * @param direcciones
 	 * @throws HiperionException
 	 */
-	public void guardarDirecciones(List<Direccion> direcciones) throws HiperionException;
+	public void guardarDirecciones(List<Direccion> direcciones, boolean save) throws HiperionException;
 
 	/**
 	 * 
@@ -56,5 +56,18 @@ public interface DireccionService {
 	 * @throws HiperionException
 	 */
 	public Provincia obtenerProvinciaById(Long idProvincia) throws HiperionException;
+
+	/**
+	 * 
+	 * <b> Permite obtener la direccion por medio del ID. </b>
+	 * <p>
+	 * [Author: kruger, Date: 12/12/2016]
+	 * </p>
+	 * 
+	 * @param idDireccion
+	 * @return
+	 * @throws HiperionException
+	 */
+	public Direccion obtenerDireccionById(Long idDireccion) throws HiperionException;
 
 }
