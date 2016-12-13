@@ -16,7 +16,7 @@ public class Direccion implements Serializable {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="id_direccion")
-	private Integer idDireccion;
+	private Long idDireccion;
 
 	@Column(name="calle_principal")
 	private String callePrincipal;
@@ -34,23 +34,23 @@ public class Direccion implements Serializable {
 	private Cliente cliente;
 
 	//bi-directional many-to-one association to Provincia
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="id_provincia")
 	private Provincia provincia;
 
 	//bi-directional many-to-one association to TipoDireccion
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="id_tipo_direccion")
 	private TipoDireccion tipoDireccion;
 
 	public Direccion() {
 	}
 
-	public Integer getIdDireccion() {
+	public Long getIdDireccion() {
 		return this.idDireccion;
 	}
 
-	public void setIdDireccion(Integer idDireccion) {
+	public void setIdDireccion(Long idDireccion) {
 		this.idDireccion = idDireccion;
 	}
 
@@ -110,4 +110,5 @@ public class Direccion implements Serializable {
 		this.tipoDireccion = tipoDireccion;
 	}
 
+	
 }

@@ -4,17 +4,13 @@
  */
 package ec.com.avila.hiperion.dao.impl;
 
-import java.util.List;
-
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import org.apache.log4j.Logger;
 
-import ec.com.avila.hiperion.comun.HiperionException;
 import ec.com.avila.hiperion.dao.DireccionDao;
-import ec.com.avila.hiperion.emision.entities.Aseguradora;
 import ec.com.avila.hiperion.emision.entities.Direccion;
 
 /**
@@ -32,29 +28,5 @@ public class DireccionDaoImpl extends GenericDAOImpl<Direccion, Long> implements
 	@PersistenceContext(unitName = "sgs_pu")
 	protected EntityManager em;
 
-	public void guardarDireccion(Direccion direccion) throws HiperionException {
-		try {
-			em.persist(direccion);
-		} catch (Exception e) {
-			log.error("Error no se pudo guardar la cliente", e);
-			throw new HiperionException(e);
-		}
-	}
-
-	/* (non-Javadoc)
-	 * @see ec.com.avila.hiperion.dao.DireccionDao#guardarDirecciones(java.util.List)
-	 */
-	@Override
-	public void guardarDirecciones(List<Direccion> direcciones) throws HiperionException {
-		try {
-			for (Direccion direccion : direcciones) {
-				em.persist(direccion);
-			}
-		} catch (Exception e) {
-			log.error("Error no se pudo guardar la cliente", e);
-			throw new HiperionException(e);
-		}
-		
-	}
-
+	
 }
