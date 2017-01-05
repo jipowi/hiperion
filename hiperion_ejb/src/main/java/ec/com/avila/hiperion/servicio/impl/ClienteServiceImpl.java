@@ -102,23 +102,6 @@ public class ClienteServiceImpl implements ClienteService {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see ec.com.avila.hiperion.servicio.ClienteService#guardarContactos(java.util.List)
-	 */
-	@Override
-	public void guardarContactos(List<Contacto> contactos, boolean save) throws HiperionException {
-
-		for (Contacto contacto : contactos) {
-			if (save) {
-				contactoDao.persist(contacto);
-			} else {
-				contactoDao.update(contacto);
-			}
-		}
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
 	 * @see ec.com.avila.hiperion.servicio.ClienteService#consultarByRazonSocial(java.lang.String)
 	 */
 	@Override
@@ -127,4 +110,55 @@ public class ClienteServiceImpl implements ClienteService {
 		return clienteDao.consultarByRazonSocial(razonSocial);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see ec.com.avila.hiperion.servicio.ClienteService#guardarContactos(java.util.List)
+	 */
+	@Override
+	public void guardarContactos(List<Contacto> contactos) throws HiperionException {
+		for (Contacto contacto : contactos) {
+			contactoDao.persist(contacto);
+		}
+
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see ec.com.avila.hiperion.servicio.ClienteService#actulizarContactos(java.util.List, java.lang.Integer)
+	 */
+	@Override
+	public void actualizarContactos(List<Contacto> contactos, Integer idCliente) throws HiperionException {
+		List<Contacto> contactosTemp = consultarContactoByCliente(idCliente);
+		if (!contactosTemp.isEmpty()) {
+			eliminarContactos(contactosTemp, idCliente);
+		}
+
+		for (Contacto contacto : contactos) {
+			if (contacto.getIdContacto() != null) {
+				contactoDao.update(contacto);
+			} else {
+				contactoDao.persist(contacto);
+			}
+		}
+
+	}
+
+	/**
+	 * 
+	 * <b> Permite eliminar los contactos de la tabla. </b>
+	 * <p>
+	 * [Author: kruger, Date: 04/01/2017]
+	 * </p>
+	 * 
+	 * @param contactos
+	 * @param idCliente
+	 * @throws HiperionException
+	 */
+	private void eliminarContactos(List<Contacto> contactos, Integer idCliente) throws HiperionException {
+		for (Contacto contacto : contactos) {
+			contactoDao.delete(contacto);
+		}
+	}
 }

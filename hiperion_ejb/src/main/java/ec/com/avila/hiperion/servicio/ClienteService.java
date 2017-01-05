@@ -123,18 +123,31 @@ public interface ClienteService {
 	 * @param contactos
 	 * @throws HiperionException
 	 */
-	public void guardarContactos(List<Contacto> contactos, boolean save) throws HiperionException;
-	
+	public void guardarContactos(List<Contacto> contactos) throws HiperionException;
+
 	/**
 	 * 
-	 * <b>
-	 * Permite obtener los clientes por razon social
-	 * </b>
-	 * <p>[Author: Franklin Pozo , Date: 31/10/2016]</p>
-	 *
+	 * <b> Permite eliminar los contactos del cliente y actualizar por loos nuevos. </b>
+	 * <p>
+	 * [Author: kruger, Date: 04/01/2017]
+	 * </p>
+	 * 
+	 * @param contactos
+	 * @param idCliente
+	 * @throws HiperionException
+	 */
+	public void actualizarContactos(List<Contacto> contactos, Integer idCliente) throws HiperionException;
+
+	/**
+	 * 
+	 * <b> Permite obtener los clientes por razon social </b>
+	 * <p>
+	 * [Author: Franklin Pozo , Date: 31/10/2016]
+	 * </p>
+	 * 
 	 * @param razonSocial
 	 * @return
 	 * @throws HiperionException
 	 */
-	public List<Cliente> consultarByRazonSocial(String razonSocial)throws HiperionException;
+	public List<Cliente> consultarByRazonSocial(String razonSocial) throws HiperionException;
 }
