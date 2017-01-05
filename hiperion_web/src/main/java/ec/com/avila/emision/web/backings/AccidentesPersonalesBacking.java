@@ -27,6 +27,7 @@ import ec.com.avila.hiperion.dto.AseguradoraDTO;
 import ec.com.avila.hiperion.dto.ClausulaAdicionalDTO;
 import ec.com.avila.hiperion.dto.CoberturaDTO;
 import ec.com.avila.hiperion.dto.CondicionEspecialDTO;
+import ec.com.avila.hiperion.dto.GrupoAccPersonalesDTO;
 import ec.com.avila.hiperion.dto.TablaAmortizacionDTO;
 import ec.com.avila.hiperion.emision.entities.Aseguradora;
 import ec.com.avila.hiperion.emision.entities.Catalogo;
@@ -125,6 +126,14 @@ public class AccidentesPersonalesBacking implements Serializable {
 	private Boolean activarDatosAseguradora = false;
 	private Boolean polizaActiva = false;
 	private static List<AseguradoraDTO> aseguradorasDTO = new ArrayList<AseguradoraDTO>();
+	private static List<GrupoAccPersonalesDTO> gruposDTO = new ArrayList<GrupoAccPersonalesDTO>();
+
+	// Tabla Grupos
+	private Integer numGrupo;
+	private String nomGrupo;
+	private Integer numPersonas;
+	private String actividad;
+	private Double valorGrupo;
 
 	private Usuario usuario;
 	RamoAccidentesPersonale accidentesPersonales = new RamoAccidentesPersonale();
@@ -191,7 +200,7 @@ public class AccidentesPersonalesBacking implements Serializable {
 				} else {
 					List<Poliza> polizas = polizaService.consultarPolizasByCliente(cliente.getIdCliente());
 
-					if (polizas!=null) {
+					if (polizas != null) {
 						for (Poliza poliza : polizas) {
 							if (poliza.getRamo().equals("ACCIDENTES PERSONALES")) {
 								polizaBean.setEstadoPoliza("COTIZADO");
@@ -598,7 +607,6 @@ public class AccidentesPersonalesBacking implements Serializable {
 
 				accidentesPersonales.setPrimaNetaPersona(ramoAccidentesPersonalesBean.getPrimaNetaPersona());
 				accidentesPersonales.setPrimaTotalPersona(ramoAccidentesPersonalesBean.getPrimaTotalPersona());
-				accidentesPersonales.setTasaAccidente(ramoAccidentesPersonalesBean.getTasa());
 				accidentesPersonales.setFacturacion(ramoAccidentesPersonalesBean.getFacturacion());
 				accidentesPersonales.setIdUsuarioCreacion(usuario.getIdUsuario());
 				accidentesPersonales.setFechaCreacion(new Date());
@@ -1264,6 +1272,146 @@ public class AccidentesPersonalesBacking implements Serializable {
 	 */
 	public static void setAseguradorasDTO(List<AseguradoraDTO> aseguradorasDTO) {
 		AccidentesPersonalesBacking.aseguradorasDTO = aseguradorasDTO;
+	}
+
+	/**
+	 * 
+	 * <b> Permite agregar un registro de grupo a la tabla </b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: 05/01/2015]
+	 * </p>
+	 * 
+	 * @return
+	 */
+	public void addGrupo() {
+		GrupoAccPersonalesDTO grupo = new GrupoAccPersonalesDTO(this.numGrupo, this.nomGrupo, this.numPersonas, this.actividad, this.valorGrupo);
+		gruposDTO.add(grupo);
+
+		numGrupo = 0;
+		nomGrupo = "";
+		numPersonas = 0;
+		actividad = "";
+		valorGrupo = 0.0;
+
+	}
+
+	/**
+	 * 
+	 * <b> Permite editar un grupo </b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: Mar 3, 2014]
+	 * </p>
+	 * 
+	 * @param event
+	 */
+	public void editarGrupo(RowEditEvent event) {
+		FacesMessage msg = new FacesMessage("Item Edited", ((GrupoAccPersonalesDTO) event.getObject()).getNumGrupo().toString());
+		FacesContext.getCurrentInstance().addMessage(null, msg);
+	}
+
+	/**
+	 * 
+	 * <b> Permite remover un objeto asegurado de la tabla </b>
+	 * <p>
+	 * [Author: Paul Jimenez, Date: Mar 3, 2014]
+	 * </p>
+	 * 
+	 * @param event
+	 */
+	public void eliminarGrupo(RowEditEvent event) {
+		FacesMessage msg = new FacesMessage("Item Cancelled");
+		FacesContext.getCurrentInstance().addMessage(null, msg);
+		gruposDTO.remove((GrupoAccPersonalesDTO) event.getObject());
+	}
+
+	/**
+	 * @return the gruposDTO
+	 */
+	public List<GrupoAccPersonalesDTO> getGruposDTO() {
+		return gruposDTO;
+	}
+
+	/**
+	 * @param gruposDTO
+	 *            the gruposDTO to set
+	 */
+	public static void setGruposDTO(List<GrupoAccPersonalesDTO> gruposDTO) {
+		AccidentesPersonalesBacking.gruposDTO = gruposDTO;
+	}
+
+	/**
+	 * @return the numGrupo
+	 */
+	public Integer getNumGrupo() {
+		return numGrupo;
+	}
+
+	/**
+	 * @param numGrupo
+	 *            the numGrupo to set
+	 */
+	public void setNumGrupo(Integer numGrupo) {
+		this.numGrupo = numGrupo;
+	}
+
+	/**
+	 * @return the nomGrupo
+	 */
+	public String getNomGrupo() {
+		return nomGrupo;
+	}
+
+	/**
+	 * @param nomGrupo
+	 *            the nomGrupo to set
+	 */
+	public void setNomGrupo(String nomGrupo) {
+		this.nomGrupo = nomGrupo;
+	}
+
+	/**
+	 * @return the numPersonas
+	 */
+	public Integer getNumPersonas() {
+		return numPersonas;
+	}
+
+	/**
+	 * @param numPersonas
+	 *            the numPersonas to set
+	 */
+	public void setNumPersonas(Integer numPersonas) {
+		this.numPersonas = numPersonas;
+	}
+
+	/**
+	 * @return the actividad
+	 */
+	public String getActividad() {
+		return actividad;
+	}
+
+	/**
+	 * @param actividad
+	 *            the actividad to set
+	 */
+	public void setActividad(String actividad) {
+		this.actividad = actividad;
+	}
+
+	/**
+	 * @return the valorGrupo
+	 */
+	public Double getValorGrupo() {
+		return valorGrupo;
+	}
+
+	/**
+	 * @param valorGrupo
+	 *            the valorGrupo to set
+	 */
+	public void setValorGrupo(Double valorGrupo) {
+		this.valorGrupo = valorGrupo;
 	}
 
 }

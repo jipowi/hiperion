@@ -2,18 +2,10 @@ package ec.com.avila.emision.web.beans;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.FacesContext;
-
-import org.primefaces.event.RowEditEvent;
-
-import ec.com.avila.hiperion.dto.GrupoAccPersonalesDTO;
 
 /**
  * s
@@ -35,20 +27,11 @@ public class RamoAccidentesPersonalesBean implements Serializable {
 	// Tabla RamoAccidentesPersonales
 	private BigDecimal primaNetaPersona;
 	private BigDecimal primaTotalPersona;
-	private BigDecimal tasa;
 	private Integer facturacion;
 	private BigDecimal deducible;
 
 	// Tabla ClausulasAddAccPer
 	private String clausula;
-
-	// Tabla Grupos
-	private String grupo;
-	private Integer numGrupo;
-	private String nomGrupo;
-	private Integer numPersonas;
-	private String actividad;
-	private Double valorGrupo;
 
 	// Tabla miembros grupo
 	private String nombre;
@@ -57,6 +40,7 @@ public class RamoAccidentesPersonalesBean implements Serializable {
 	private String parentezco;
 	private String sexo;
 	private Integer edad;
+	private String grupo;
 
 	// Coberturas grupo
 	private String cebertura;
@@ -67,9 +51,6 @@ public class RamoAccidentesPersonalesBean implements Serializable {
 	private String aseguradora;
 	private String nombreCliente;
 	private String contactoAseguradora;
-
-	private static List<GrupoAccPersonalesDTO> grupos = new ArrayList<GrupoAccPersonalesDTO>();
-	
 
 	// Getters and Setters
 	/**
@@ -115,96 +96,6 @@ public class RamoAccidentesPersonalesBean implements Serializable {
 	 */
 	public void setClausula(String clausula) {
 		this.clausula = clausula;
-	}
-
-	/**
-	 * @return the grupo
-	 */
-	public String getGrupo() {
-		return grupo;
-	}
-
-	/**
-	 * @param grupo
-	 *            the grupo to set
-	 */
-	public void setGrupo(String grupo) {
-		this.grupo = grupo;
-	}
-
-	/**
-	 * @return the numGrupo
-	 */
-	public Integer getNumGrupo() {
-		return numGrupo;
-	}
-
-	/**
-	 * @param numGrupo
-	 *            the numGrupo to set
-	 */
-	public void setNumGrupo(Integer numGrupo) {
-		this.numGrupo = numGrupo;
-	}
-
-	/**
-	 * @return the nomGrupo
-	 */
-	public String getNomGrupo() {
-		return nomGrupo;
-	}
-
-	/**
-	 * @param nomGrupo
-	 *            the nomGrupo to set
-	 */
-	public void setNomGrupo(String nomGrupo) {
-		this.nomGrupo = nomGrupo;
-	}
-
-	/**
-	 * @return the numPersonas
-	 */
-	public Integer getNumPersonas() {
-		return numPersonas;
-	}
-
-	/**
-	 * @param numPersonas
-	 *            the numPersonas to set
-	 */
-	public void setNumPersonas(Integer numPersonas) {
-		this.numPersonas = numPersonas;
-	}
-
-	/**
-	 * @return the actividad
-	 */
-	public String getActividad() {
-		return actividad;
-	}
-
-	/**
-	 * @param actividad
-	 *            the actividad to set
-	 */
-	public void setActividad(String actividad) {
-		this.actividad = actividad;
-	}
-
-	/**
-	 * @return the valorGrupo
-	 */
-	public Double getValorGrupo() {
-		return valorGrupo;
-	}
-
-	/**
-	 * @param valorGrupo
-	 *            the valorGrupo to set
-	 */
-	public void setValorGrupo(Double valorGrupo) {
-		this.valorGrupo = valorGrupo;
 	}
 
 	/**
@@ -335,88 +226,12 @@ public class RamoAccidentesPersonalesBean implements Serializable {
 		this.facturacion = facturacion;
 	}
 
-	public BigDecimal getTasa() {
-		return tasa;
-	}
-
-	public void setTasa(BigDecimal tasa) {
-		this.tasa = tasa;
-	}
-
 	public BigDecimal getDeducible() {
 		return deducible;
 	}
 
 	public void setDeducible(BigDecimal deducible) {
 		this.deducible = deducible;
-	}
-
-	/**
-	 * @return the grupos
-	 */
-	public List<GrupoAccPersonalesDTO> getGrupos() {
-		return grupos;
-	}
-
-	/**
-	 * @param grupos
-	 *            the grupos to set
-	 */
-	public static void setGrupos(List<GrupoAccPersonalesDTO> grupos) {
-		RamoAccidentesPersonalesBean.grupos = grupos;
-	}
-
-	/**
-	 * 
-	 * <b> Permite agregar un registro de grupo a la tabla </b>
-	 * <p>
-	 * [Author: Paul Jimenez, Date: 05/01/2015]
-	 * </p>
-	 * 
-	 * @return
-	 */
-	public String addGrupo() {
-		GrupoAccPersonalesDTO grupo = new GrupoAccPersonalesDTO(this.numGrupo, this.nomGrupo, this.numPersonas, this.actividad, this.valorGrupo);
-		grupos.add(grupo);
-
-		numGrupo = 0;
-		nomGrupo = "";
-		numPersonas = 0;
-		actividad = "";
-		valorGrupo = 0.0;
-
-		return null;
-	}
-
-
-
-	/**
-	 * 
-	 * <b> Permite editar un grupo </b>
-	 * <p>
-	 * [Author: Paul Jimenez, Date: Mar 3, 2014]
-	 * </p>
-	 * 
-	 * @param event
-	 */
-	public void onEdit(RowEditEvent event) {
-		FacesMessage msg = new FacesMessage("Item Edited", ((GrupoAccPersonalesDTO) event.getObject()).getNumGrupo().toString());
-		FacesContext.getCurrentInstance().addMessage(null, msg);
-	}
-
-	/**
-	 * 
-	 * <b> Permite remover un objeto asegurado de la tabla </b>
-	 * <p>
-	 * [Author: Paul Jimenez, Date: Mar 3, 2014]
-	 * </p>
-	 * 
-	 * @param event
-	 */
-	public void onCancel(RowEditEvent event) {
-		FacesMessage msg = new FacesMessage("Item Cancelled");
-		FacesContext.getCurrentInstance().addMessage(null, msg);
-		grupos.remove((GrupoAccPersonalesDTO) event.getObject());
 	}
 
 	/**
@@ -479,7 +294,18 @@ public class RamoAccidentesPersonalesBean implements Serializable {
 		this.contactoAseguradora = contactoAseguradora;
 	}
 
-	
+	/**
+	 * @return the grupo
+	 */
+	public String getGrupo() {
+		return grupo;
+	}
 
+	/**
+	 * @param grupo the grupo to set
+	 */
+	public void setGrupo(String grupo) {
+		this.grupo = grupo;
+	}
 
 }

@@ -432,6 +432,13 @@ public class ClienteBacking implements Serializable {
 						Cliente cliente = new Cliente();
 						if (editar) {
 							cliente = clienteObtenido;
+							
+							if(cliente.getTipoPersona().equals("1")){
+								activarPanelPersonaNatural = true;
+							}else{
+								activarPanelPersonaJuridica = true;
+							}
+							
 						} else {
 
 							cliente.setCodigoCliente(clienteBean.getCodigoCliente());
