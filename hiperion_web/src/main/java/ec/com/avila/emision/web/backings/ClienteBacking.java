@@ -487,10 +487,12 @@ public class ClienteBacking implements Serializable {
 						List<Contacto> contactos = new ArrayList<>();
 						for (ContactoDTO contactoDTO : contactoBean.getContactosDTO()) {
 							Contacto contacto = new Contacto();
+							contacto.setIdContacto(contactoDTO.getIdContacto());
 							contacto.setCliente(cliente);
 							contacto.setTipoContacto(contactoDTO.getTipoContacto());
 							contacto.setDescripcionContacto(contactoDTO.getDescripcionContacto());
 							contactos.add(contacto);
+
 						}
 						cliente.setContactos(contactos);
 						// Guardamos al Cliente
@@ -502,7 +504,12 @@ public class ClienteBacking implements Serializable {
 						}
 						clienteService.guardarCliente(cliente, save);
 						direccionService.guardarDirecciones(direcciones, save);
-						clienteService.guardarContactos(contactos, save);
+						
+						if (editar) {
+							clienteService.actualizarContactos(contactos, cliente.getIdCliente());
+						} else {
+							clienteService.guardarContactos(contactos);
+						}
 
 						MessagesController.addInfo(null, HiperionMensajes.getInstancia().getString("hiperion.mensaje.exito.cliente"));
 						direcciones = new ArrayList<>();
@@ -674,7 +681,7 @@ public class ClienteBacking implements Serializable {
 				contactoMail.setCliente(cliente);
 				contactos.add(contactoTelf);
 				contactos.add(contactoMail);
-				clienteService.guardarContactos(contactos, save);
+				clienteService.guardarContactos(contactos);
 
 			} catch (Exception e) {
 				log.error("Error al cargar la fila: " + contador + "causa: " + e);

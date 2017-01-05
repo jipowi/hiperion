@@ -287,7 +287,7 @@
 							<p:outputLabel value="lista de Contactos" />
 						</f:facet>
 						<p:ajax event="rowEdit" listener="#{contactoBacking.onEditContacto}" />
-						<p:ajax event="rowEditCancel" listener="#{contactoBacking.onCancel}" />
+						<p:ajax event="rowEditCancel" listener="#{contactoBacking.onCancel}" update="contactosTableId"/>
 
 						<p:column headerText="#{administrador['cliente.dlg.contactos.table.tipoContacto']}" style="width:auto">
 							<h:outputText value="#{contacto.tipoContacto}" />
